@@ -10,7 +10,6 @@ export class LobbySession extends Session {
   constructor(socket) {
     super(socket);
     this.nickname = 'tmpName';
-
     this.characterType = CharacterType.Dinosour;
   }
 

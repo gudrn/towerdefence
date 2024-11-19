@@ -2,7 +2,7 @@
 // @generated from file monster.proto (package Protocol, syntax proto3)
 /* eslint-disable */
 
-import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1.js";
+import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
 
 /**
  * Describes the file monster.proto.
