@@ -1,5 +1,0 @@
-C:/Project/Sparta/Sparta_Node_Final/.utmp/RelWithDebInfo/45383n5z/arm64-v8a/CMakeFiles/edit_cache.dir
-C:/Project/Sparta/Sparta_Node_Final/.utmp/RelWithDebInfo/45383n5z/arm64-v8a/CMakeFiles/rebuild_cache.dir
-C:/Project/Sparta/Sparta_Node_Final/.utmp/RelWithDebInfo/45383n5z/arm64-v8a/FramePacing/CMakeFiles/swappywrapper.dir
-C:/Project/Sparta/Sparta_Node_Final/.utmp/RelWithDebInfo/45383n5z/arm64-v8a/FramePacing/CMakeFiles/edit_cache.dir
-C:/Project/Sparta/Sparta_Node_Final/.utmp/RelWithDebInfo/45383n5z/arm64-v8a/FramePacing/CMakeFiles/rebuild_cache.dir
