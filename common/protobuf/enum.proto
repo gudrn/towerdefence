@@ -2,9 +2,23 @@ syntax = "proto3";
 
 package Protocol;
 
-enum ObjectType
-{
-	PLAYER = 0;
-	MONSTER =1;
-	PROJECTILE = 2;
+
+//변경 주의(클라 의존성)
+enum RoomStateType {
+  WAIT = 0;
+  PREPARE = 1;
+  INAGAME = 2;
+}
+
+enum ObjectType {
+	TOWER = 0;
+	PLAYER = 1;
+	MONSTER = 2;
+	ENV = 3;
+}
+
+enum CardType {
+	ATTACK_TOWER = 0;
+	STR_ATTACK_TOWER = 1;
+	// 추가해야됨
 }

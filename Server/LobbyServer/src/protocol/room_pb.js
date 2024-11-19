@@ -3,97 +3,123 @@
 /* eslint-disable */
 
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import { file_client } from "./client_pb";
-import { file_server } from "./server_pb";
 import { file_struct } from "./struct_pb";
 
 /**
  * Describes the file room.proto.
  */
 export const file_room = /*@__PURE__*/
-  fileDesc("Cgpyb29tLnByb3RvEghQcm90b2NvbCJFCg1DMkxfRW50ZXJSb29tEiQKBG1ldGEYASABKAsyFi5Qcm90b2NvbC5DMlNfTWV0YWRhdGESDgoGcm9vbUlkGAIgASgNIoABCg9MMkNfRW50ZXJSb29tTWUSJAoEbWV0YRgBIAEoCzIWLlByb3RvY29sLlMyQ19NZXRhZGF0YRIhCgV1c2VycxgCIAMoCzISLlByb3RvY29sLlVzZXJJbmZvEiQKCHJvb21JbmZvGAMgASgLMhIuUHJvdG9jb2wuUm9vbUluZm8iXwoSTDJDX0VudGVyUm9vbU90aGVyEiQKBG1ldGEYASABKAsyFi5Qcm90b2NvbC5TMkNfTWV0YWRhdGESIwoHbmV3VXNlchgCIAEoCzISLlByb3RvY29sLlVzZXJJbmZvIlUKDUMyTF9MZWF2ZVJvb20SJAoEbWV0YRgBIAEoCzIWLlByb3RvY29sLkMyU19NZXRhZGF0YRIOCgZyb29tSWQYAiABKA0SDgoGdXNlcklkGAMgASgJIjcKD0wyQ19MZWF2ZVJvb21NZRIkCgRtZXRhGAEgASgLMhYuUHJvdG9jb2wuUzJDX01ldGFkYXRhIkoKEkwyQ19MZWF2ZVJvb21PdGhlchIkCgRtZXRhGAEgASgLMhYuUHJvdG9jb2wuUzJDX01ldGFkYXRhEg4KBnVzZXJJZBgCIAEoCSI0CgxDMkxfUm9vbUxpc3QSJAoEbWV0YRgBIAEoCzIWLlByb3RvY29sLkMyU19NZXRhZGF0YSJXCgxMMkNfUm9vbUxpc3QSJAoEbWV0YRgBIAEoCzIWLlByb3RvY29sLlMyQ19NZXRhZGF0YRIhCgVyb29tcxgCIAMoCzISLlByb3RvY29sLlJvb21JbmZvIkUKDUMyTF9HYW1lU3RhcnQSJAoEbWV0YRgBIAEoCzIWLlByb3RvY29sLkMyU19NZXRhZGF0YRIOCgZyb29tSWQYAiABKA0iYQoNTDJDX0dhbWVTdGFydBIkCgRtZXRhGAEgASgLMhYuUHJvdG9jb2wuUzJDX01ldGFkYXRhEgwKBGhvc3QYAiABKAkSDAoEcG9ydBgDIAEoBRIOCgZyb29tSWQYBCABKA0iNAoOTDJCX0NyZWF0ZVJvb20SDgoGcm9vbUlkGAEgASgNEhIKCm1heFBsYXllcnMYAiABKA0iMwoOQjJMX0NyZWF0ZVJvb20SEQoJaXNDcmVhdGVkGAEgASgIEg4KBnJvb21JZBgCIAEoDWIGcHJvdG8z", [file_client, file_server, file_struct]);
+  fileDesc("Cgpyb29tLnByb3RvEghQcm90b2NvbCI5ChVDMkxfQ3JlYXRlUm9vbVJlcXVlc3QSDAoEbmFtZRgBIAEoCRISCgptYXhVc2VyTnVtGAIgASgFIk0KFkwyQ19DcmVhdGVSb29tUmVzcG9uc2USEQoJaXNTdWNjZXNzGAEgASgIEiAKBHJvb20YAiABKAsyEi5Qcm90b2NvbC5Sb29tRGF0YSI/ChlMMkJfQ3JlYXRlR2FtZVJvb21SZXF1ZXN0Eg4KBnJvb21JZBgBIAEoBRISCgptYXhQbGF5ZXJzGAIgASgFIj4KGUIyTF9DcmVhdGVHYW1lUm9vbVJlc3BvbmUSEQoJaXNDcmVhdGVkGAEgASgIEg4KBnJvb21JZBgCIAEoBSI4ChRMMkJfR2FtZVN0YXJ0UmVxdWVzdBIMCgRuYW1lGAEgASgJEhIKCm1heFVzZXJOdW0YAiABKAUiGAoWQzJMX0dldFJvb21MaXN0UmVxdWVzdCI8ChdMMkNfR2V0Um9vbUxpc3RSZXNwb25zZRIhCgVyb29tcxgBIAMoCzISLlByb3RvY29sLlJvb21EYXRhIiUKE0MyTF9Kb2luUm9vbVJlcXVlc3QSDgoGcm9vbUlkGAEgASgFIksKFEwyQ19Kb2luUm9vbVJlc3BvbnNlEhEKCWlzU3VjY2VzcxgBIAEoCBIgCgRyb29tGAIgASgLMhIuUHJvdG9jb2wuUm9vbURhdGEiFgoUQzJMX0xlYXZlUm9vbVJlcXVlc3QiKgoVTDJDX0xlYXZlUm9vbVJlc3BvbnNlEhEKCWlzU3VjY2VzcxgBIAEoCCIrChlMMkNfTGVhdmVSb29tTm90aWZpY2F0aW9uEg4KBnVzZXJJZBgBIAEoBSJAChhMMkNfSm9pblJvb21Ob3RpZmljYXRpb24SJAoIam9pblVzZXIYASABKAsyEi5Qcm90b2NvbC5Vc2VyRGF0YSIvCg1DMkxfR2FtZVN0YXJ0Eg4KBnVzZXJJZBgBIAEoBRIOCgZyb29tSWQYAiABKA0iNQoOTDJDX1BsYXllckxpc3QSIwoHcGxheWVycxgBIAMoCzISLlByb3RvY29sLlVzZXJEYXRhIk0KDUwyQ19HYW1lU3RhcnQSEgoKZ2FtZVJvb21JcBgBIAEoCRIUCgxnYW1lUm9vbVBvcnQYAiABKAkSEgoKZ2FtZVJvb21JZBgDIAEoBWIGcHJvdG8z", [file_struct]);
 
 /**
- * Describes the message Protocol.C2L_EnterRoom.
- * Use `create(C2L_EnterRoomSchema)` to create a new message.
+ * Describes the message Protocol.C2L_CreateRoomRequest.
+ * Use `create(C2L_CreateRoomRequestSchema)` to create a new message.
  */
-export const C2L_EnterRoomSchema = /*@__PURE__*/
+export const C2L_CreateRoomRequestSchema = /*@__PURE__*/
   messageDesc(file_room, 0);
 
 /**
- * Describes the message Protocol.L2C_EnterRoomMe.
- * Use `create(L2C_EnterRoomMeSchema)` to create a new message.
+ * Describes the message Protocol.L2C_CreateRoomResponse.
+ * Use `create(L2C_CreateRoomResponseSchema)` to create a new message.
  */
-export const L2C_EnterRoomMeSchema = /*@__PURE__*/
+export const L2C_CreateRoomResponseSchema = /*@__PURE__*/
   messageDesc(file_room, 1);
 
 /**
- * Describes the message Protocol.L2C_EnterRoomOther.
- * Use `create(L2C_EnterRoomOtherSchema)` to create a new message.
+ * Describes the message Protocol.L2B_CreateGameRoomRequest.
+ * Use `create(L2B_CreateGameRoomRequestSchema)` to create a new message.
  */
-export const L2C_EnterRoomOtherSchema = /*@__PURE__*/
+export const L2B_CreateGameRoomRequestSchema = /*@__PURE__*/
   messageDesc(file_room, 2);
 
 /**
- * Describes the message Protocol.C2L_LeaveRoom.
- * Use `create(C2L_LeaveRoomSchema)` to create a new message.
+ * Describes the message Protocol.B2L_CreateGameRoomRespone.
+ * Use `create(B2L_CreateGameRoomResponeSchema)` to create a new message.
  */
-export const C2L_LeaveRoomSchema = /*@__PURE__*/
+export const B2L_CreateGameRoomResponeSchema = /*@__PURE__*/
   messageDesc(file_room, 3);
 
 /**
- * Describes the message Protocol.L2C_LeaveRoomMe.
- * Use `create(L2C_LeaveRoomMeSchema)` to create a new message.
+ * Describes the message Protocol.L2B_GameStartRequest.
+ * Use `create(L2B_GameStartRequestSchema)` to create a new message.
  */
-export const L2C_LeaveRoomMeSchema = /*@__PURE__*/
+export const L2B_GameStartRequestSchema = /*@__PURE__*/
   messageDesc(file_room, 4);
 
 /**
- * Describes the message Protocol.L2C_LeaveRoomOther.
- * Use `create(L2C_LeaveRoomOtherSchema)` to create a new message.
+ * Describes the message Protocol.C2L_GetRoomListRequest.
+ * Use `create(C2L_GetRoomListRequestSchema)` to create a new message.
  */
-export const L2C_LeaveRoomOtherSchema = /*@__PURE__*/
+export const C2L_GetRoomListRequestSchema = /*@__PURE__*/
   messageDesc(file_room, 5);
 
 /**
- * Describes the message Protocol.C2L_RoomList.
- * Use `create(C2L_RoomListSchema)` to create a new message.
+ * Describes the message Protocol.L2C_GetRoomListResponse.
+ * Use `create(L2C_GetRoomListResponseSchema)` to create a new message.
  */
-export const C2L_RoomListSchema = /*@__PURE__*/
+export const L2C_GetRoomListResponseSchema = /*@__PURE__*/
   messageDesc(file_room, 6);
 
 /**
- * Describes the message Protocol.L2C_RoomList.
- * Use `create(L2C_RoomListSchema)` to create a new message.
+ * Describes the message Protocol.C2L_JoinRoomRequest.
+ * Use `create(C2L_JoinRoomRequestSchema)` to create a new message.
  */
-export const L2C_RoomListSchema = /*@__PURE__*/
+export const C2L_JoinRoomRequestSchema = /*@__PURE__*/
   messageDesc(file_room, 7);
+
+/**
+ * Describes the message Protocol.L2C_JoinRoomResponse.
+ * Use `create(L2C_JoinRoomResponseSchema)` to create a new message.
+ */
+export const L2C_JoinRoomResponseSchema = /*@__PURE__*/
+  messageDesc(file_room, 8);
+
+/**
+ * Describes the message Protocol.C2L_LeaveRoomRequest.
+ * Use `create(C2L_LeaveRoomRequestSchema)` to create a new message.
+ */
+export const C2L_LeaveRoomRequestSchema = /*@__PURE__*/
+  messageDesc(file_room, 9);
+
+/**
+ * Describes the message Protocol.L2C_LeaveRoomResponse.
+ * Use `create(L2C_LeaveRoomResponseSchema)` to create a new message.
+ */
+export const L2C_LeaveRoomResponseSchema = /*@__PURE__*/
+  messageDesc(file_room, 10);
+
+/**
+ * Describes the message Protocol.L2C_LeaveRoomNotification.
+ * Use `create(L2C_LeaveRoomNotificationSchema)` to create a new message.
+ */
+export const L2C_LeaveRoomNotificationSchema = /*@__PURE__*/
+  messageDesc(file_room, 11);
+
+/**
+ * Describes the message Protocol.L2C_JoinRoomNotification.
+ * Use `create(L2C_JoinRoomNotificationSchema)` to create a new message.
+ */
+export const L2C_JoinRoomNotificationSchema = /*@__PURE__*/
+  messageDesc(file_room, 12);
 
 /**
  * Describes the message Protocol.C2L_GameStart.
  * Use `create(C2L_GameStartSchema)` to create a new message.
  */
 export const C2L_GameStartSchema = /*@__PURE__*/
-  messageDesc(file_room, 8);
+  messageDesc(file_room, 13);
+
+/**
+ * Describes the message Protocol.L2C_PlayerList.
+ * Use `create(L2C_PlayerListSchema)` to create a new message.
+ */
+export const L2C_PlayerListSchema = /*@__PURE__*/
+  messageDesc(file_room, 14);
 
 /**
  * Describes the message Protocol.L2C_GameStart.
  * Use `create(L2C_GameStartSchema)` to create a new message.
  */
 export const L2C_GameStartSchema = /*@__PURE__*/
-  messageDesc(file_room, 9);
-
-/**
- * Describes the message Protocol.L2B_CreateRoom.
- * Use `create(L2B_CreateRoomSchema)` to create a new message.
- */
-export const L2B_CreateRoomSchema = /*@__PURE__*/
-  messageDesc(file_room, 10);
-
-/**
- * Describes the message Protocol.B2L_CreateRoom.
- * Use `create(B2L_CreateRoomSchema)` to create a new message.
- */
-export const B2L_CreateRoomSchema = /*@__PURE__*/
-  messageDesc(file_room, 11);
+  messageDesc(file_room, 15);
 

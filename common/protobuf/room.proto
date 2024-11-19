@@ -2,83 +2,77 @@ syntax = "proto3";
 
 package Protocol;
 
-import "client.proto";
-import "server.proto";
-import "struct.proto";
+import 'struct.proto';
 
-// 방 입장 요청 패킷
-message C2L_EnterRoom 
-{
-  C2S_Metadata meta = 1;
-  uint32 roomId = 2;       // 입장하려는 Room ID
+message C2L_CreateRoomRequest {
+    string name = 1;
+    int32 maxUserNum = 2;
 }
 
-// 방 입장 응답 패킷(내가 입장)
-message L2C_EnterRoomMe 
-{
-  S2C_Metadata meta = 1;    // 공통 응답 메타 데이터
-  repeated UserInfo users = 2;  // 방에 있는 기존 유저 정보
-  RoomInfo roomInfo =3; //방 정보(방ID, 방 이름, 현재 인원 수, 최대 인원 수)
+message L2C_CreateRoomResponse {
+    bool isSuccess = 1;
+    RoomData room = 2;
 }
 
-//방 입장 응답 패킷(남이 입장)
-message L2C_EnterRoomOther 
-{
-  S2C_Metadata meta = 1;    // 공통 응답 메타 데이터
-  UserInfo newUser = 2;       // 신규 유저 정보
+message L2B_CreateGameRoomRequest {
+  int32 roomId = 1;
+  int32 maxPlayers = 2; //게임에 참가하는 인원수
 }
 
-message C2L_LeaveRoom
-{
-    C2S_Metadata meta = 1;
-    uint32 roomId = 2;
-    string userId = 3;
+message B2L_CreateGameRoomRespone {
+  bool isCreated = 1;
+  int32 roomId = 2;
 }
 
-message L2C_LeaveRoomMe
-{
-    S2C_Metadata meta = 1;    // 공통 응답 메타 데이터
+message L2B_GameStartRequest {
+    string name = 1;
+    int32 maxUserNum = 2;
 }
 
-message L2C_LeaveRoomOther
-{
-    S2C_Metadata meta = 1;    // 공통 응답 메타 데이터
-    string userId = 2;
+message C2L_GetRoomListRequest {
+    
 }
 
-message C2L_RoomList
-{
-  C2S_Metadata meta = 1;
+message L2C_GetRoomListResponse {
+    repeated RoomData rooms = 1;
 }
 
-message L2C_RoomList
-{
-  S2C_Metadata meta = 1; //공통 응답 메타 데이터
-  repeated RoomInfo rooms = 2; //방 목록
+message C2L_JoinRoomRequest {
+    int32 roomId = 1;
 }
 
-message C2L_GameStart
-{
-    C2S_Metadata meta = 1;
+message L2C_JoinRoomResponse {
+    bool isSuccess = 1;
+    RoomData room = 2;
+}
+
+message C2L_LeaveRoomRequest {
+
+}
+
+message L2C_LeaveRoomResponse {
+    bool isSuccess = 1;
+}
+
+message L2C_LeaveRoomNotification {
+    int32 userId = 1;
+}
+
+message L2C_JoinRoomNotification {
+    UserData joinUser = 1;
+}
+
+message C2L_GameStart {
+    int32 userId = 1;        //방장(보내는 사람의 )의 ID
     uint32 roomId = 2;       // 입장하려는 Room ID
 }
 
-message L2C_GameStart
-{
-    S2C_Metadata meta = 1; //공통 응답 메타 데이터
-    string host = 2; //ex: localhost
-    int32 port = 3; //포트번호
-    uint32 roomId = 4;
+message L2C_PlayerList {
+    repeated UserData players = 1;
 }
 
-message L2B_CreateRoom
-{
-  uint32 roomId = 1;
-  uint32 maxPlayers = 2;
-}
-
-message B2L_CreateRoom
-{
-  bool isCreated = 1;
-  uint32 roomId = 2;
+message L2C_GameStart {
+    string gameRoomIp = 1;
+    string gameRoomPort = 2;
+    int32 gameRoomId = 3;
 }

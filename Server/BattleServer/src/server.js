@@ -1,13 +1,11 @@
 import net from 'net';
-import { LobbySession } from './main/lobbySession.js';
-import { onConnection } from './main/initPacketHandler.js';
+import { LobbySession } from './main/session/lobbySession.js';
+import { onConnection } from './main/handler/initPacketHandler.js';
 
-import { BattleSession } from './main/battleSession.js';
+import { BattleSession } from './main/session/battleSession.js';
 
 import { SessionManager } from 'servercore/src/network/sessionManager.js';
 import { battleConfig } from './config/config.js';
-
-
 
 const server = net.createServer(onConnection);
 
@@ -33,7 +31,9 @@ const initServer = async () => {
 initServer()
   .then(() => {
     server.listen(battleConfig.server.port, battleConfig.server.host, () => {
-      console.log(`서버가 ${battleConfig.server.host}:${battleConfig.server.port}에서 실행 중입니다.`);
+      console.log(
+        `서버가 ${battleConfig.server.host}:${battleConfig.server.port}에서 실행 중입니다.`,
+      );
       console.log(server.address());
     });
   })

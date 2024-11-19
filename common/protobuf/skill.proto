@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package Protocol;
+
+import "enum.proto";
+
+//스킬 카드 사용 요청
+message C2B_SkillRequest {
+    CardType cardType = 1;
+}
+
+//스킬 카드 사용 응답
+message C2B_SkillResponse {
+    bool isSuccess = 1;
+}
+
+//스킬 카드 사용 알림
+message C2B_SkillNotify {
+    CardType cardType = 1;
+    int32 userId = 2;
+}

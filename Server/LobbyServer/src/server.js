@@ -1,12 +1,10 @@
 import net from 'net';
 
-import { onConnection } from './main/initPacketHandler.js';
+import { onConnection } from './main/handler/initPacketHandler.js';
 import { SessionManager } from 'ServerCore/src/network/sessionManager.js';
-import { LobbySession } from './main/lobbySession.js';
-import { BattleSession } from './main/battleSession.js';
 import { lobbyConfig } from './config/config.js';
-
-
+import { LobbySession } from './main/session/lobbySession.js';
+import { BattleSession } from './main/session/battleSession.js';
 
 const server = net.createServer(onConnection);
 
@@ -15,13 +13,13 @@ const server = net.createServer(onConnection);
     - sessionManager: Lobby 서버 세션 관리
     - battleSessionManager: Battle 서버 세션 관리
 ---------------------------------------------*/
-export const sessionManager = new SessionManager(LobbySession);
+export const lobbySessionManager = new SessionManager(LobbySession);
 export const battleSessionManager = new SessionManager(BattleSession);
 
 const initServer = async () => {
   try {
+    // 테스트 코드를 여기에 추가해주세요
     //await testAllConnections(pools);
-    // 다음 작업
   } catch (error) {
     console.error(error.message);
     process.exit(1); // 오류 발생 시 프로세스 종료

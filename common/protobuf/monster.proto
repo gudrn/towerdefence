@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package Protocol;
+
+message C2B_SpawnMonsterRequest {
+}
+
+message B2C_SpawnMonsterResponse {
+    int32 monsterId = 1; 
+    int32 monsterNumber = 2;
+}
+
+message S2B_SpawnMonsterNotification {
+    int32 monsterId = 1;
+    int32 monsterNumber = 2;
+}
+
+message B2S_MonsterAttackTowerRequest {
+    int32 monsterId = 1;
+    int32 towerId = 2;
+}
+
+message S2B_UpdateTowerHPNotification {
+    int32 towerId = 1;
+    int32 updatedTowerHP = 2;
+}
+
+message B2S_MonsterAttackBaseRequest {
+    int32 damage = 1;
+}
+
+message C2B_MonsterDeathRequest {
+    int32 monsterId = 1;
+}
+
+message B2C_MonsterDeathNotification {
+    int32 monsterId = 1;
+}

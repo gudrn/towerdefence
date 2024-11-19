@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package Protocol;
+
+message L2C_Init 
+{
+  int32 userId = 1;             // 유저 ID (UUID, 16바이트)
+}
+
+// 최초 패킷 구조
+message C2L_InitialPacket {
+    int32 userId = 1;
+    int32 playerId = 2;
+    float latency = 3;
+    string nickname = 4;
+}
+
+message B2L_InitialPacket
+{
+  string serverId = 1; //UUID
+}

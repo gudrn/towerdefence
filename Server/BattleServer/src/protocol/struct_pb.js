@@ -9,33 +9,54 @@ import { file_enum } from "./enum_pb";
  * Describes the file struct.proto.
  */
 export const file_struct = /*@__PURE__*/
-  fileDesc("CgxzdHJ1Y3QucHJvdG8SCFByb3RvY29sIjEKB1Bvc0luZm8SEAoIb2JqZWN0SWQYASABKAkSCQoBeBgCIAEoAhIJCgF5GAMgASgCIiwKCFVzZXJJbmZvEg4KBnVzZXJJZBgBIAEoCRIQCghuaWNrbmFtZRgCIAEoCSJYCghSb29tSW5mbxIOCgZyb29tSWQYASABKA0SEAoIcm9vbU5hbWUYAiABKAkSFgoOY3VycmVudFBsYXllcnMYAyABKA0SEgoKbWF4UGxheWVycxgEIAEoDSJFCgpPYmplY3RJbmZvEiIKB3Bvc2luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhMKC3ByZWZhYkluZGV4GAIgASgNYgZwcm90bzM", [file_enum]);
+  fileDesc("CgxzdHJ1Y3QucHJvdG8SCFByb3RvY29sIiUKCEJhc2VEYXRhEgoKAmhwGAEgASgFEg0KBW1heEhwGAIgASgFIlYKCVRvd2VyRGF0YRIPCgd0b3dlcklkGAEgASgFEhMKC3Rvd2VyTnVtYmVyGAIgASgFEiMKCHRvd2VyUG9zGAMgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyJtCgtNb25zdGVyRGF0YRIRCgltb25zdGVySWQYASABKAUSFQoNbW9uc3Rlck51bWJlchgCIAEoBRINCgVsZXZlbBgDIAEoBRIlCgptb25zdGVyUG9zGAQgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyIkCghVc2VyRGF0YRIKCgJpZBgBIAEoBRIMCgRuYW1lGAIgASgJIpQBCghSb29tRGF0YRIKCgJpZBgBIAEoBRIPCgdvd25lcklkGAIgASgJEgwKBG5hbWUYAyABKAkSEgoKbWF4VXNlck51bRgEIAEoBRImCgVzdGF0ZRgFIAEoDjIXLlByb3RvY29sLlJvb21TdGF0ZVR5cGUSIQoFdXNlcnMYBiADKAsyEi5Qcm90b2NvbC5Vc2VyRGF0YSJNCg1DaGFyYWN0ZXJEYXRhEhMKC2NoYXJhY3RlcklkGAEgASgFEicKDGNoYXJhY3RlclBvcxgCIAEoCzIRLlByb3RvY29sLlBvc0luZm8iHwoHUG9zSW5mbxIJCgF4GAEgASgCEgkKAXkYAiABKAJiBnByb3RvMw", [file_enum]);
+
+/**
+ * Describes the message Protocol.BaseData.
+ * Use `create(BaseDataSchema)` to create a new message.
+ */
+export const BaseDataSchema = /*@__PURE__*/
+  messageDesc(file_struct, 0);
+
+/**
+ * Describes the message Protocol.TowerData.
+ * Use `create(TowerDataSchema)` to create a new message.
+ */
+export const TowerDataSchema = /*@__PURE__*/
+  messageDesc(file_struct, 1);
+
+/**
+ * Describes the message Protocol.MonsterData.
+ * Use `create(MonsterDataSchema)` to create a new message.
+ */
+export const MonsterDataSchema = /*@__PURE__*/
+  messageDesc(file_struct, 2);
+
+/**
+ * Describes the message Protocol.UserData.
+ * Use `create(UserDataSchema)` to create a new message.
+ */
+export const UserDataSchema = /*@__PURE__*/
+  messageDesc(file_struct, 3);
+
+/**
+ * Describes the message Protocol.RoomData.
+ * Use `create(RoomDataSchema)` to create a new message.
+ */
+export const RoomDataSchema = /*@__PURE__*/
+  messageDesc(file_struct, 4);
+
+/**
+ * Describes the message Protocol.CharacterData.
+ * Use `create(CharacterDataSchema)` to create a new message.
+ */
+export const CharacterDataSchema = /*@__PURE__*/
+  messageDesc(file_struct, 5);
 
 /**
  * Describes the message Protocol.PosInfo.
  * Use `create(PosInfoSchema)` to create a new message.
  */
 export const PosInfoSchema = /*@__PURE__*/
-  messageDesc(file_struct, 0);
-
-/**
- * Describes the message Protocol.UserInfo.
- * Use `create(UserInfoSchema)` to create a new message.
- */
-export const UserInfoSchema = /*@__PURE__*/
-  messageDesc(file_struct, 1);
-
-/**
- * Describes the message Protocol.RoomInfo.
- * Use `create(RoomInfoSchema)` to create a new message.
- */
-export const RoomInfoSchema = /*@__PURE__*/
-  messageDesc(file_struct, 2);
-
-/**
- * Describes the message Protocol.ObjectInfo.
- * Use `create(ObjectInfoSchema)` to create a new message.
- */
-export const ObjectInfoSchema = /*@__PURE__*/
-  messageDesc(file_struct, 3);
+  messageDesc(file_struct, 6);
 

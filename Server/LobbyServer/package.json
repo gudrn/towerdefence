@@ -17,7 +17,9 @@
     "servercore": "file:../ServerCore"
   },
   "devDependencies": {
-    "@bufbuild/buf": "^1.46.0",
-    "@bufbuild/protoc-gen-es": "^2.2.2"
+    "@bufbuild/buf": "^1.47.2",
+    "@bufbuild/protoc-gen-es": "^2.2.2",
+    "nodemon": "^3.1.7",
+    "prettier": "^3.3.3"
   }
 }

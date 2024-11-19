@@ -41,10 +41,15 @@ class SessionManager {
   /*---------------------------------------------
       [getter]
   ---------------------------------------------*/
-  getSessionOrNull(uuid) {
-    return this.sessions.get(uuid) || null;
+  getSessionOrNull(id) {
+    return this.sessions.get(id) || null;
   }
 
+  //배틀 서버 세션 가져오기(임시)
+  getRandomSession() {
+    const entries = Array.from(sessions.entries());
+    return entries[Math.floor(Math.random() * entries.length)];
+  }
   getNextSequenceOrNull(uuid) {
     const session = this.getSessionOrNull(uuid);
     if (!session) {

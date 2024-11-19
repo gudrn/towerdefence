@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package Protocol;
+
+import "struct.proto";
+
+//타워 생성 요청
+message C2B_TowerBuildRequest 
+{
+    TowerData tower = 1; //타워 정보
+    int32 ownerId = 2; //유저 ID
+}
+
+//타워 생성 응답
+message B2C_TowerBuildResponse
+{
+    bool isSuccess = 1;
+    TowerData tower = 2; //생성된 타워 정보
+}
+
+//타워 생성 알림
+message B2C_AddTowerNotification
+{
+    TowerData tower = 1; //생성된 타워 정보
+    int32 ownerId = 2; //타워 생성자 ID
+}
+
+//타워 공격 요청
+message B2C_TowerAttackRequest
+{
+    int32 towerId = 1;
+    int32 targetId = 2;
+}
+
+message B2C_TowerAttackNotification
+{
+    bool isSuccess = 1;
+    int32 damage = 2;
+    int32 targetHealth =3;
+}
+
+message C2B_TowerDestroyRequest
+{
+    int32 towerId = 1;
+}
+
+message C2B_TowerDestroyResponse
+{
+    int32 towerId = 1;
+}
+
+message C2B_TowerDestroyNotification
+{
+    int32 towerId = 1;
+}

@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".", // 기본 경로 설정
     "paths": {
-      "servercore/*": ["../ServerCore/*"], // ServerCore를 절대 경로로 설정
+      "ServerCore/*": ["../ServerCore/*"], // ServerCore를 절대 경로로 설정
       "src/*": ["./src/*"] // src도 절대 경로로 설정
     }
   },

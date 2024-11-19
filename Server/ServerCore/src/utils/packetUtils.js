@@ -1,3 +1,5 @@
+import { config } from "../config/config.js";
+import { toBinary } from '@bufbuild/protobuf';
 
 export class PacketUtils {
   /*---------------------------------------------
@@ -6,7 +8,7 @@ export class PacketUtils {
   static readPacketHeader(buffer) {
     const size = buffer.readUInt16LE(0); // 2바이트
     const id = buffer.readUInt16LE(config.packet.sizeOfSize); // 2바이트
-    const sequence = buffer.readUint32LE(config.packet.sizeOfSequence);
+    const sequence = buffer.readUint32LE(config.packet.sizeOfSequence);// 4바이트
     return { size, id, sequence };
   }
 
@@ -42,3 +44,4 @@ export class PacketUtils {
     return sendBuffer;
   }
 }
+

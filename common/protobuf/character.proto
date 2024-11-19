@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package Protocol;
+
+import "struct.proto";
+import "enum.proto";
+
+// 캐릭터 위치 동기화
+message C2B_PositionUpdateRequest {
+    double x = 1;
+    double y = 2;
+}
+
+// 캐릭터 위치 동기화 알림
+message B2C_PositionUpdateNotification 
+{
+    repeated CharacterData characterPositions = 1;
+}
+
+// 카드 사용
+message C2B_UseCardRequest { 
+    CardType cardType = 1; 
+}
+
+// 카드 사용 알림
+message B2C_UseCardNotification {
+    bool isSuccess = 1;
+}
+
