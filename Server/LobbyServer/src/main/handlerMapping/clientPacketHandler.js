@@ -1,4 +1,5 @@
 import { ePacketId } from "servercore/src/network/packetId.js";
+import { roomManager } from "../../contents/room/roomManager.js";
 
 /**
  * @type {Object.<ePacketId, Function>}
@@ -7,13 +8,9 @@ import { ePacketId } from "servercore/src/network/packetId.js";
 const handlerMappings = {
   [ePacketId.C2L_CreateRoom]: (buffer, session) =>
     roomManager.createRoomHandler(buffer, session),
-  [ePacketId.C2L_EnterRoom]: (buffer, session) =>
+  [ePacketId.C2L_JoinRoomRequest]: (buffer, session) =>
     roomManager.enterRoomHandler(buffer, session),
-  [ePacketId.C2L_RandomEnterRoom]:(buffer,session)=>
-    roomManager.randomEnterRoomHandler(buffer,session),
-  [ePacketId.C2L_LeaveRoom]: (buffer, session) =>
-    roomManager.enterRoomHandler(buffer, session),
-  [ePacketId.C2L_GetRooms]: (buffer, session) =>
+  [ePacketId.C2L_GetRoomListRequest]: (buffer, session) =>
     roomManager.getRoomsHandler(buffer, session),
   [ePacketId.C2L_GameStart]: (buffer, session) =>
     roomManager.gameStartHandler(buffer, session),
