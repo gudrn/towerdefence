@@ -1,6 +1,5 @@
 import { fromBinary, create } from '@bufbuild/protobuf';
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
-import { Session } from 'ServerCore/src/network/session.js';
 import { CustomError } from 'ServerCore/src/utils/error/customError.js';
 import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
 import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
@@ -25,22 +24,36 @@ class RoomManager {
   constructor() {
     /** @private @type {Map<string, Room>} */
     this.rooms = new Map();
-    this.availableRoomIds = Array.rom({ length: MAX_ROOMS_SIZE }, (_, i) => i + 1);
+    this.availableRoomIds = Array.from({ length: MAX_ROOMS_SIZE }, (_, i) => i + 1);
+  }
+
+  sendResponse(session, responsePacket, packetId) {
+    const response = PacketUtils.SerializePacket(
+      responsePacket,
+      packetId,
+      session.getId(),
+      session.getSequence(),
+    );
+    session.send(response);
   }
 
   createRoomHandler(buffer, session) {
     console.log('createRoomHandler');
     // 클라이언트가 보낸 패킷 역직렬화
     const packet = fromBinary(C2L_CreateRoomRequestSchema, buffer);
-    let tmpRoomId = this.availableRoomIds.shift() || 0;
-
     if (packet.maxUserNum < 4) {
+      const responsePacket = create(L2C_CreateRoomResponseSchema, {
+        isSuccess: false,
+        room: {},
+        failCode: ErrorCodes.CREATE_ROOM_FAILED,
+      });
+      this.sendResponse(session, responsePacket, ePacketId.S2CCreateRoomResponse);
       throw new CustomError(
         ErrorCodes.CREATE_ROOM_FAILED,
         '방 인원수는 최대 4명 이상이어야 합니다.',
       );
     }
-
+    let tmpRoomId = this.availableRoomIds.shift() || 0;
     const newRoom = new Room(tmpRoomId, packet.name, packet.maxUserNum);
     this.rooms.set(tmpRoomId, newRoom);
 
@@ -50,13 +63,7 @@ class RoomManager {
       room: newRoom,
       failCode: 0,
     });
-    const response = PacketUtils.SerializePacket(
-      responsePacket,
-      ePacketId.S2CCreateRoomResponse, //수정할 부분
-      session.getId(),
-      session.getSequence(),
-    );
-    session.send(response);
+    this.sendResponse(session, responsePacket, ePacketId.S2CCreateRoomResponse);
   }
 
   /**---------------------------------------------
@@ -76,31 +83,25 @@ class RoomManager {
     // 방 ID를 통해 해당 방을 가져오기
     const room = this.rooms.get(packet.roomId);
     if (!room) {
-      JoinRoomResponsePacket = create(L2C_JoinRoomResponseSchema, {
+      const JoinRoomResponsePacket = create(L2C_JoinRoomResponseSchema, {
         isSuccess: false,
         room: {},
         failCode: ErrorCodes.ROOM_NOT_FOUND,
       });
+      this.sendResponse(session, JoinRoomResponsePacket, ePacketId.L2C_EnterRoomMe);
+      return;
     }
-됨됨
+
     if (room.getCurrentUsersCount() >= room.getMaxUsersCount()) {
-      JoinRoomResponsePacket = create(L2C_JoinRoomResponseSchema, {
+      const JoinRoomResponsePacket = create(L2C_JoinRoomResponseSchema, {
         isSuccess: false,
         room: {},
         failCode: ErrorCodes.JOIN_ROOM_FAILED,
       });
-    }
-
-    if(JoinRoomResponsePacket){
-      const JoinRoomResponseBuffer = PacketUtils.SerializePacket(
-        JoinRoomResponsePacket,
-        L2C_JoinRoomResponseSchema,
-        ePacketId.L2C_EnterRoomMe,
-        newUser.getNextSequence(),
-      );
-      session.send(JoinRoomResponseBuffer);
+      this.sendResponse(session, JoinRoomResponsePacket, ePacketId.L2C_EnterRoomMe);
       return;
     }
+
     const enterRoomsuccess = room.enterRoom(session);
     if (!enterRoomsuccess) {
       throw new CustomError(ErrorCodes.JOIN_ROOM_FAILED, '방 입장에 실패했습니다.');
@@ -120,13 +121,22 @@ class RoomManager {
 
     const room = this.rooms.get(packet.roomId);
 
-    let JoinRoomResponsePacket;
     if (!room) {
+      const LeaveRoomResponsePacket = create(L2C_LeaveRoomResponseSchema, {
+        isSuccess: false,
+        failCode: ErrorCodes.ROOM_NOT_FOUND,
+      });
+      this.sendResponse(session, LeaveRoomResponsePacket, ePacketId.L2C_LeaveRoomMe);
       throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, '방을 찾을 수 없습니다.');
     }
 
     const leaveRoomsuccess = room.leaveRoom(session);
     if (!leaveRoomsuccess) {
+      const LeaveRoomResponsePacket = create(L2C_LeaveRoomResponseSchema, {
+        isSuccess: false,
+        failCode: ErrorCodes.LEAVE_ROOM_FAILED,
+      });
+      this.sendResponse(session, LeaveRoomResponsePacket, ePacketId.L2C_LeaveRoomMe);
       throw new CustomError(ErrorCodes.LEAVE_ROOM_FAILED, '방 퇴장에 실패했습니다.');
     }
 
@@ -165,13 +175,7 @@ class RoomManager {
 
     // 방 목록 응답
     const responsePacket = create(L2C_GetRoomListResponseSchema, { rooms: roomsData });
-    const response = PacketUtils.SerializePacket(
-      responsePacket,
-      L2C_GetRoomListResponseSchema,
-      ePacketId.L2C_RoomList,
-      session.getNextSequence(),
-    );
-    session.send(response);
+    this.sendResponse(session, responsePacket, ePacketId.L2C_RoomList);
   }
 
   /**---------------------------------------------
@@ -180,11 +184,16 @@ class RoomManager {
     * @param {LobbySession} session
 ---------------------------------------------*/
 
-  randomEnterRoomHandler(buffer,session){
+  randomEnterRoomHandler(buffer, session) {
     console.log('randomEnterRoomHandler')
     if (this.rooms.size === 0) {
-      //무슨 에러
-      throw new CustomError(ErrorCodes.ROOM_NOT_FOUND,'입장 가능한 방이 없습니다.') // 이렇게...?
+      const responsePacket = create(L2C_JoinRoomResponseSchema, {
+        isSuccess: false,
+        room: {},
+        failCode: ErrorCodes.JOIN_ROOM_FAILED,
+      });
+      this.sendResponse(session, responsePacket, ePacketId.L2C_EnterRoomMe);
+      throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, '입장 가능한 방이 없습니다.') // 이렇게...?
     }
     const randomKey = Array.from(this.rooms.keys())[Math.floor(Math.random() * this.rooms.size)];
     const room = this.rooms.get(randomKey);

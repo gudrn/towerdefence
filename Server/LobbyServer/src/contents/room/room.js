@@ -4,7 +4,7 @@ import {
   L2C_JoinRoomNotificationSchema,
   L2C_JoinRoomResponseSchema,
   L2C_LeaveRoomNotificationSchema,
-  L2C_PlayerListSchema,
+  L2C_LeaveRoomResponseSchema,
 } from 'src/protocol/room_pb';
 
 /**
@@ -101,8 +101,9 @@ export class Room {
     // 유저 제거
     this.users = this.users.filter((user) => user !== player);
 
-    const leaveResponse = create(L2C_LeaveRoomResponse, {
+    const leaveResponse = create(L2C_LeaveRoomResponseSchema, {
       isSuccess: true,
+      failCode: 0,
     });
     player.send(leaveResponse);
 
