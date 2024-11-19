@@ -1,5 +1,4 @@
 import defaultHandler from 'ServerCore/handlers/default.handler';
-import { ePacketId } from 'ServerCore/src/network/packetId.js';
 import { gameRoomManager } from 'src/classes/managers/GameRoomManager';
 
 /**

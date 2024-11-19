@@ -1,12 +1,10 @@
-import { Session } from 'ServerCore/src/network/session.js';
-import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
-import { battleConfig } from '../../config/config.js';
-import { create } from '@bufbuild/protobuf';
-import { handleError } from '../../utils/error/errorHandler.js';
-import { CustomError } from 'ServerCore/src/utils/error/customError.js';
-import { B2L_InitialPacketSchema } from '../../protocol/server_pb.js';
-import { ePacketId } from 'ServerCore/src/network/packetId.js';
-import lobbyHandlerMappings from '../handlerMapping/lobbyServerPacketHandler.js';
+import { Session } from "ServerCore/src/network/session.js";
+import { PacketUtils } from "ServerCore/src/utils/packetUtils.js";
+import { battleConfig } from "../config/config.js";
+import { create } from "@bufbuild/protobuf";
+import { handleError } from "../utils/error/errorHandler.js";
+import { CustomError } from "ServerCore/src/utils/error/customError.js";
+
 
 export class LobbySession extends Session {
   constructor(socket) {
@@ -28,8 +26,9 @@ export class LobbySession extends Session {
         packet,
         B2L_InitialPacketSchema,
         ePacketId.B2L_Init,
-        0,
+        0
       );
+
       this.send(sendBuffer);
     });
   }
@@ -41,10 +40,10 @@ export class LobbySession extends Session {
     throw new Error('Method not implemented.');
   }
 
-  /**---------------------------------------------
-     * [소켓 에러 처리]
-     * @param {Error} error - 발생한 에러
-     ---------------------------------------------*/
+/**---------------------------------------------
+   * [소켓 에러 처리]
+   * @param {Error} error - 발생한 에러
+   ---------------------------------------------*/
   onError(error) {
     console.error('소켓 오류:', error);
     handleError(this, new CustomError(500, `소켓 오류: ${error.message}`));
@@ -69,10 +68,7 @@ export class LobbySession extends Session {
 
       // 2-1. 핸들러가 존재하지 않을 경우 오류 출력
       if (!handler) {
-        throw new CustomError(
-          ErrorCodes.INVALID_PACKET_ID,
-          `패킷id가 잘못되었습니다: ${header.id}`,
-        );
+        throw new CustomError(ErrorCodes.INVALID_PACKET_ID, `패킷id가 잘못되었습니다: ${header.id}`);
       }
 
       // 3. 핸들러 호출
