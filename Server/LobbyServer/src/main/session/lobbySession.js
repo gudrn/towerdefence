@@ -1,6 +1,9 @@
 import { Session } from 'ServerCore/src/network/session.js';
 import handlerMappings from '../handlerMapping/clientPacketHandler.js';
 import { lobbySessionManager } from '../../server.js';
+import { handleError } from '../../utils/errorHandler.js';
+import { CustomError } from 'ServerCore/src/utils/error/customError.js';
+import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
 
 export class LobbySession extends Session {
   constructor(socket) {

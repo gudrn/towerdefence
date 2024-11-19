@@ -1,11 +1,12 @@
-import { ePacketId } from 'ServerCore/src/network/packetId';
-import { PacketUtils } from 'ServerCore/src/utils/packetUtils';
+import { ePacketId } from 'ServerCore/src/network/packetId.js';
+import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
 import {
   L2C_JoinRoomNotificationSchema,
   L2C_JoinRoomResponseSchema,
   L2C_LeaveRoomNotificationSchema,
   L2C_LeaveRoomResponseSchema,
-} from 'src/protocol/room_pb';
+} from '../../protocol/room_pb.js';
+import { LobbySession } from '../../main/session/lobbySession.js';
 
 /**
  * @enum {number}
@@ -45,7 +46,7 @@ export class Room {
     // 1. 유저 추가
     this.users.push(newUser); // 방에 새 유저 추가
 
-    // 2. 기존 플레이어 목록 전송
+    // 2. 기존 플레이어 목록 및 룸 데이터 전송
     const existingPlayers = this.users.map((user) => ({
       id: user.getId(),
       name: user.getNickname(),
