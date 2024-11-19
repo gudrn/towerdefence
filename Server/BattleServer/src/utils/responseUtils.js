@@ -1,5 +1,6 @@
 import { create } from "@bufbuild/protobuf";
 import { S2C_MetadataSchema, S2C_ErrorSchema } from "../protocol/server_pb.js";
+
 export class ResponseUtils {
   static createMetaResponse(responseCode) {
     const ret = create(S2C_MetadataSchema, {

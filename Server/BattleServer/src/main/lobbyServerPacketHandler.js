@@ -3,7 +3,6 @@ import { LobbySession } from 'src/Main/network/LobbySession';
 import { BattleSession } from 'src/Main/network/BattleSession';
 import { gameRoomManager } from 'src/Game/GameRoomManager';
 import defaultHandler from 'ServerCore/utils/default.handler';
-import { ePacketId } from 'ServerCore/src/network/packetId.js';
 
 /**---------------------------------------------
  * @type {Object.<ePacketId, Function>}
