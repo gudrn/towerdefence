@@ -4,11 +4,14 @@ import { lobbySessionManager } from '../../server.js';
 import { handleError } from '../../utils/errorHandler.js';
 import { CustomError } from 'ServerCore/src/utils/error/customError.js';
 import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
+import { CharacterType } from '../../protocol/enum_pb.js';
 
 export class LobbySession extends Session {
   constructor(socket) {
     super(socket);
     this.nickname = 'tmpName';
+
+    this.characterType = CharacterType.Dinosour;
   }
 
   /*---------------------------------------------
@@ -86,5 +89,11 @@ export class LobbySession extends Session {
   ---------------------------------------------*/
   setNickname(nickname) {
     this.nickname = nickname;
+  }
+  /*---------------------------------------------
+    [getter]
+  ---------------------------------------------*/
+  getCharacterType() {
+    return this.characterType;
   }
 }

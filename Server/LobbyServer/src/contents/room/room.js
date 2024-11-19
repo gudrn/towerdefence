@@ -9,7 +9,7 @@ import {
 } from '../../protocol/room_pb.js';
 import { LobbySession } from '../../main/session/lobbySession.js';
 import { create } from '@bufbuild/protobuf';
-
+import { CharacterDataSchema } from '../../protocol/struct_pb.js';
 /**
  * @enum {number}
  */
@@ -77,11 +77,13 @@ export class Room {
 
     newUser.send(JoinRoomResponseBuffer);
 
-    console.log(newUser.getId(), newUser.getNickname());
-    // 3. 새 유저 입장 알림 (본인 제외)
-
+    // 3. 새 유저 입장 알림 
     const joinNotificationPacket = create(L2C_JoinRoomNotificationSchema, {
-      userData: { id: newUser.getId(), name: newUser.getNickname() },
+      userData: {
+        id: newUser.getId(), name: newUser.getNickname(), character: {
+          characterType: newUser.getCharacterType()
+        }
+      },
     });
 
     const joinNotificationBuffer = PacketUtils.SerializePacket(
@@ -92,7 +94,7 @@ export class Room {
     );
 
     // 모든 유저에게 새 유저 입장 알림 전송 (본인 제외)
-    this.broadcast(joinNotificationBuffer, newUser);
+    this.broadcast(joinNotificationBuffer);
 
     return true; // 입장 성공
   }
@@ -138,11 +140,9 @@ export class Room {
   /**---------------------------------------------
     [broadcast]
 ---------------------------------------------*/
-  broadcast(buffer, excludeUser = null) {
+  broadcast(buffer) {
     this.users.forEach(user => {
-      if (user !== excludeUser) {
-        user.send(buffer);
-      }
+      user.send(buffer);
     });
   }
 

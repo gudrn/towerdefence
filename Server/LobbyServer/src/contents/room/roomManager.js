@@ -47,6 +47,7 @@ class RoomManager {
     console.log('createRoomHandler');
     // 클라이언트가 보낸 패킷 역직렬화
     const packet = fromBinary(C2L_CreateRoomRequestSchema, buffer);
+    packet.maxUserNum += 1;
     if (packet.maxUserNum < 4) {
       const responsePacket = create(L2C_CreateRoomResponseSchema, {
         isSuccess: false,
@@ -62,6 +63,7 @@ class RoomManager {
     let tmpRoomId = this.availableRoomIds.shift() || 0;
     const newRoom = new Room(tmpRoomId, packet.name, packet.maxUserNum);
     this.rooms.set(tmpRoomId, newRoom);
+    console.log(newRoom);
 
     // 응답 정보 생성
     const responsePacket = create(L2C_CreateRoomResponseSchema, {
