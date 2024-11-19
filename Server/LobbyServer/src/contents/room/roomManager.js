@@ -14,9 +14,11 @@ import {
   B2L_CreateGameRoomResponeSchema,
   L2C_GameStartSchema,
   L2C_JoinRoomResponseSchema,
-} from 'src/protocol/room_pb.js';
-import { battleSessionManager } from 'src/server.js';
+} from '../../protocol/room_pb.js';
+import { battleSessionManager } from '../../server.js';
 import { Room } from './room.js';
+import { handleError } from '../../utils/errorHandler.js';
+import { LobbySession } from '../../main/session/lobbySession.js';
 
 const MAX_ROOMS_SIZE = 10000;
 
@@ -25,16 +27,22 @@ class RoomManager {
     /** @private @type {Map<string, Room>} */
     this.rooms = new Map();
     this.availableRoomIds = Array.from({ length: MAX_ROOMS_SIZE }, (_, i) => i + 1);
+
+    let tmpRoomId = this.availableRoomIds.shift();
+    if (!tmpRoomId) tmpRoomId = 0;
+    this.rooms.set(tmpRoomId, new Room(tmpRoomId, '정현의 방', 2));
   }
 
-  sendResponse(session, responsePacket, packetId) {
+  sendResponse(responsePacket, packetSchema , packetId) {
     const response = PacketUtils.SerializePacket(
       responsePacket,
+      packetSchema,
       packetId,
-      session.getId(),
       session.getSequence(),
     );
     session.send(response);
+
+    //handleError();
   }
 
   createRoomHandler(buffer, session) {
@@ -61,7 +69,7 @@ class RoomManager {
     const responsePacket = create(L2C_CreateRoomResponseSchema, {
       isSuccess: true,
       room: newRoom,
-      failCode: 0,
+      failCode: ErrorCodes.NONE_FAILCODE, //fail안넣어도돼요요
     });
     this.sendResponse(session, responsePacket, ePacketId.S2CCreateRoomResponse);
   }
@@ -73,9 +81,7 @@ class RoomManager {
 ---------------------------------------------*/
   enterRoomHandler(buffer, session) {
     console.log('enterRoomHandler');
-    /*
-      83번
-    */
+
 
     // 클라이언트가 보낸 패킷 역직렬화
     const packet = fromBinary(C2L_JoinRoomRequestSchema, buffer);
@@ -88,7 +94,7 @@ class RoomManager {
         room: {},
         failCode: ErrorCodes.ROOM_NOT_FOUND,
       });
-      this.sendResponse(session, JoinRoomResponsePacket, ePacketId.L2C_EnterRoomMe);
+      this.sendResponse(JoinRoomResponsePacket,L2C_JoinRoomResponseSchema, ePacketId.L2C_EnterRoomMe);
       return;
     }
 
@@ -98,7 +104,7 @@ class RoomManager {
         room: {},
         failCode: ErrorCodes.JOIN_ROOM_FAILED,
       });
-      this.sendResponse(session, JoinRoomResponsePacket, ePacketId.L2C_EnterRoomMe);
+      this.sendResponse(JoinRoomResponsePacket,L2C_JoinRoomResponseSchema, ePacketId.L2C_EnterRoomMe);
       return;
     }
 
@@ -161,21 +167,19 @@ class RoomManager {
     this.rooms.forEach((room, roomId) => {
       const roomData = {
         id: roomId,
-        ownerId: room.id,
-        name: room.getName(),
+        name: room.getRoomName(),
         maxUserNum: room.getMaxUsersCount(),
         state: room.state,
-        users: room.getUsers().map((user) => ({
-          id: user.id,
-          nickname: user.getNickname(),
-        })),
       };
       roomsData.push(roomData);
     });
 
     // 방 목록 응답
     const responsePacket = create(L2C_GetRoomListResponseSchema, { rooms: roomsData });
-    this.sendResponse(session, responsePacket, ePacketId.L2C_RoomList);
+    //this.sendResponse(session, responsePacket, ePacketId.L2C_RoomList);
+    const sendBuffer = PacketUtils.SerializePacket(responsePacket, L2C_GetRoomListResponseSchema, ePacketId.L2C_GetRoomListResponse, 0);
+    session.send(sendBuffer)
+    
   }
 
   /**---------------------------------------------
@@ -184,21 +188,24 @@ class RoomManager {
     * @param {LobbySession} session
 ---------------------------------------------*/
 
-  randomEnterRoomHandler(buffer, session) {
-    console.log('randomEnterRoomHandler')
-    if (this.rooms.size === 0) {
-      const responsePacket = create(L2C_JoinRoomResponseSchema, {
-        isSuccess: false,
-        room: {},
-        failCode: ErrorCodes.JOIN_ROOM_FAILED,
-      });
-      this.sendResponse(session, responsePacket, ePacketId.L2C_EnterRoomMe);
-      throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, '입장 가능한 방이 없습니다.') // 이렇게...?
-    }
-    const randomKey = Array.from(this.rooms.keys())[Math.floor(Math.random() * this.rooms.size)];
-    const room = this.rooms.get(randomKey);
-    room.enterRoom(session);
-  }
+  // randomEnterRoomHandler(buffer, session) {
+  //   console.log('randomEnterRoomHandler')
+  //   if (this.rooms.size === 0) {
+  //     const responsePacket = create(L2C_JoinRoomResponseSchema, {
+  //       isSuccess: false,
+  //       room: {},
+  //       failCode: ErrorCodes.JOIN_ROOM_FAILED,
+  //     });
+  //     this.sendResponse(session, responsePacket, ePacketId.L2C_EnterRoomMe);
+  //     throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, '입장 가능한 방이 없습니다.')
+  //   }
+  //   const randomKey = Array.from(this.rooms.keys())[Math.floor(Math.random() * this.rooms.size)];
+  //   const room = this.rooms.get(randomKey);
+  //   room.enterRoom(session);
+  // }
+  // 수정 요구사항:
+  // randomMatching으로 변경, 인원수 4명으로 
+
 
   /**---------------------------------------------
    * [게임 시작] - 배틀서버에게 게임 방 생성 요청
@@ -276,7 +283,7 @@ class RoomManager {
     const response = PacketUtils.SerializePacket(
       responsePacket,
       L2C_GameStartSchema,
-      ePacketId.B2C_GameStart,
+      ePacketId.L2C_GameStart,
       session.getNextSequence(),
     );
 
