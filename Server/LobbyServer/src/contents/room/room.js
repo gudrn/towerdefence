@@ -1,5 +1,6 @@
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
 import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
+import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
 import {
   L2C_JoinRoomNotificationSchema,
   L2C_JoinRoomResponseSchema,
@@ -7,6 +8,7 @@ import {
   L2C_LeaveRoomResponseSchema,
 } from '../../protocol/room_pb.js';
 import { LobbySession } from '../../main/session/lobbySession.js';
+import { create } from '@bufbuild/protobuf';
 
 /**
  * @enum {number}
@@ -51,7 +53,6 @@ export class Room {
       id: user.getId(),
       name: user.getNickname(),
     }));
-
     const roomData = {
       id: this.id, // 방 ID
       ownerId: this.users[0].getId(), // 방 소유자 ID
@@ -64,27 +65,29 @@ export class Room {
     const JoinRoomResponsePacket = create(L2C_JoinRoomResponseSchema, {
       isSuccess: true,
       room: roomData,
-      failCode: 0,
+      failCode: ErrorCodes.NONE_FAILCODE,
     });
 
     const JoinRoomResponseBuffer = PacketUtils.SerializePacket(
       JoinRoomResponsePacket,
       L2C_JoinRoomResponseSchema,
-      ePacketId.L2C_EnterRoomMe,
+      ePacketId.L2C_JoinRoomResponse,
       newUser.getNextSequence(),
     );
 
     newUser.send(JoinRoomResponseBuffer);
 
+    console.log(newUser.getId(), newUser.getNickname());
     // 3. 새 유저 입장 알림 (본인 제외)
+
     const joinNotificationPacket = create(L2C_JoinRoomNotificationSchema, {
-      joinUser: { id: newUser.getId(), name: newUser.getNickname() },
+      userData: { id: newUser.getId(), name: newUser.getNickname() },
     });
 
     const joinNotificationBuffer = PacketUtils.SerializePacket(
       joinNotificationPacket,
       L2C_JoinRoomNotificationSchema,
-      ePacketId.L2C_EnterRoomOther,
+      ePacketId.L2C_JoinRoomNotification,
       newUser.getNextSequence(),
     );
 
@@ -106,7 +109,13 @@ export class Room {
       isSuccess: true,
       failCode: 0,
     });
-    player.send(leaveResponse);
+    const leaveResponseBuffer = PacketUtils.SerializePacket(
+      leaveResponse,
+      L2C_LeaveRoomResponseSchema,
+      ePacketId.L2C_LeaveRoomResponse,
+      player.getNextSequence(),
+    );
+    player.send(leaveResponseBuffer);
 
     // 유저 퇴장 알림
     const leaveNotificationPacket = create(L2C_LeaveRoomNotificationSchema, {
@@ -116,7 +125,7 @@ export class Room {
     const leaveNotificationBuffer = PacketUtils.SerializePacket(
       leaveNotificationPacket,
       L2C_LeaveRoomNotificationSchema,
-      ePacketId.L2C_LeaveRoomOther,
+      ePacketId.L2C_LeaveRoomNotification,
       player.getNextSequence(),
     );
 
