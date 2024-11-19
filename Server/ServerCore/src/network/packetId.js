@@ -32,6 +32,7 @@ export const ePacketId = {
     C2L_LeaveRoomRequest : 114,
     L2C_LeaveRoomResponse : 115,
     L2C_LeaveRoomNotification : 116,
+    B2C_JoinRoomResponse : 117,
     C2B_SpawnMonsterRequest: 201,
     B2C_SpawnMonsterResponse: 202,
     S2B_SpawnMonsterNotification: 203,
