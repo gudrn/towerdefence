@@ -22,3 +22,16 @@ enum CardType {
 	STR_ATTACK_TOWER = 1;
 	// 추가해야됨
 }
+
+// 캐릭터 타입, 변경 주의(클라 의존성)
+enum CharacterType {
+  NoneCharacter = 0;
+  Red = 1;
+  Shark = 3;
+  Malang = 5;
+  Froggy = 7;
+  BombMan = 8;
+  SlowMan = 9;
+  Mask = 10;
+  Dinosour = 12;
+}

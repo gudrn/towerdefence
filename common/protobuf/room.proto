@@ -4,75 +4,92 @@ package Protocol;
 
 import 'struct.proto';
 
-message C2L_CreateRoomRequest {
+message C2L_CreateRoomRequest 
+{
     string name = 1;
     int32 maxUserNum = 2;
 }
 
-message L2C_CreateRoomResponse {
+message L2C_CreateRoomResponse 
+{
     bool isSuccess = 1;
     RoomData room = 2;
 }
 
-message L2B_CreateGameRoomRequest {
+message L2B_CreateGameRoomRequest 
+{
   int32 roomId = 1;
   int32 maxPlayers = 2; //게임에 참가하는 인원수
 }
 
-message B2L_CreateGameRoomRespone {
+message B2L_CreateGameRoomRespone 
+{
   bool isCreated = 1;
   int32 roomId = 2;
 }
 
-message L2B_GameStartRequest {
+message C2L_GameStart
+{
+    string userId = 1; //방장(보내는 사람의 )의 I
+    int32 roomId = 2;       // 입장하려는 Room ID
+}
+
+message L2C_GameStart 
+{
+    string host = 1; //ex: localhost
+    int32 port = 2; //포트번호
+    int32 roomId = 3;
+}
+
+message L2B_GameStartRequest 
+{
     string name = 1;
     int32 maxUserNum = 2;
 }
 
-message C2L_GetRoomListRequest {
+message B2C_GameStartNotification  
+{
+    //UserData를 wrapping한 새로운 struct 필요할 듯
+    repeated UserData userData = 1;
+}
+
+message C2L_GetRoomListRequest 
+{
     
 }
 
-message L2C_GetRoomListResponse {
+message L2C_GetRoomListResponse 
+{
     repeated RoomData rooms = 1;
 }
 
-message C2L_JoinRoomRequest {
+message C2L_JoinRoomRequest 
+{
     int32 roomId = 1;
 }
 
-message L2C_JoinRoomResponse {
+message L2C_JoinRoomResponse 
+{
     bool isSuccess = 1;
-    RoomData room = 2;
+    RoomData roomInfo = 2; //방 정보(방ID, 방 이름, 현재 인원 수, 최대 인원 수)
 }
 
-message C2L_LeaveRoomRequest {
-
-}
-
-message L2C_LeaveRoomResponse {
-    bool isSuccess = 1;
-}
-
-message L2C_LeaveRoomNotification {
-    int32 userId = 1;
-}
-
-message L2C_JoinRoomNotification {
+message L2C_JoinRoomNotification 
+{
     UserData joinUser = 1;
 }
 
-message C2L_GameStart {
-    int32 userId = 1;        //방장(보내는 사람의 )의 ID
-    uint32 roomId = 2;       // 입장하려는 Room ID
+message C2L_LeaveRoomRequest 
+{
+    int32 roomId = 1;
 }
 
-message L2C_PlayerList {
-    repeated UserData players = 1;
+message L2C_LeaveRoomResponse 
+{
+    bool isSuccess = 1;
 }
 
-message L2C_GameStart {
-    string gameRoomIp = 1;
-    string gameRoomPort = 2;
-    int32 gameRoomId = 3;
+message L2C_LeaveRoomNotification 
+{
+    string userId = 1;
 }

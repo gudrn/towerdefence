@@ -2,20 +2,28 @@ syntax = "proto3";
 
 package Protocol;
 
+import "struct.proto";
+
+
 message L2C_Init 
 {
-  int32 userId = 1;             // 유저 ID (UUID, 16바이트)
+  bool isSuccess = 1;
 }
 
 // 최초 패킷 구조
-message C2L_InitialPacket {
-    int32 userId = 1;
-    int32 playerId = 2;
-    float latency = 3;
-    string nickname = 4;
+message C2L_Init 
+{
+  string userId = 1;
+  string nickname = 2;
 }
 
-message B2L_InitialPacket
+message C2B_Init 
+{
+  UserData userData = 1;
+  int32 roomId = 2;
+}
+
+message B2L_Init
 {
   string serverId = 1; //UUID
 }
