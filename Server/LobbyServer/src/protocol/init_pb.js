@@ -3,12 +3,13 @@
 /* eslint-disable */
 
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
+import { file_struct } from "./struct_pb.js";
 
 /**
  * Describes the file init.proto.
  */
 export const file_init = /*@__PURE__*/
-  fileDesc("Cgppbml0LnByb3RvEghQcm90b2NvbCIaCghMMkNfSW5pdBIOCgZ1c2VySWQYASABKAUiWAoRQzJMX0luaXRpYWxQYWNrZXQSDgoGdXNlcklkGAEgASgFEhAKCHBsYXllcklkGAIgASgFEg8KB2xhdGVuY3kYAyABKAISEAoIbmlja25hbWUYBCABKAkiJQoRQjJMX0luaXRpYWxQYWNrZXQSEAoIc2VydmVySWQYASABKAliBnByb3RvMw");
+  fileDesc("Cgppbml0LnByb3RvEghQcm90b2NvbCIdCghMMkNfSW5pdBIRCglpc1N1Y2Nlc3MYASABKAgiLAoIQzJMX0luaXQSDgoGdXNlcklkGAEgASgJEhAKCG5pY2tuYW1lGAIgASgJIkAKCEMyQl9Jbml0EiQKCHVzZXJEYXRhGAEgASgLMhIuUHJvdG9jb2wuVXNlckRhdGESDgoGcm9vbUlkGAIgASgFIhwKCEIyTF9Jbml0EhAKCHNlcnZlcklkGAEgASgJYgZwcm90bzM", [file_struct]);
 
 /**
  * Describes the message Protocol.L2C_Init.
@@ -18,16 +19,23 @@ export const L2C_InitSchema = /*@__PURE__*/
   messageDesc(file_init, 0);
 
 /**
- * Describes the message Protocol.C2L_InitialPacket.
- * Use `create(C2L_InitialPacketSchema)` to create a new message.
+ * Describes the message Protocol.C2L_Init.
+ * Use `create(C2L_InitSchema)` to create a new message.
  */
-export const C2L_InitialPacketSchema = /*@__PURE__*/
+export const C2L_InitSchema = /*@__PURE__*/
   messageDesc(file_init, 1);
 
 /**
- * Describes the message Protocol.B2L_InitialPacket.
- * Use `create(B2L_InitialPacketSchema)` to create a new message.
+ * Describes the message Protocol.C2B_Init.
+ * Use `create(C2B_InitSchema)` to create a new message.
  */
-export const B2L_InitialPacketSchema = /*@__PURE__*/
+export const C2B_InitSchema = /*@__PURE__*/
   messageDesc(file_init, 2);
+
+/**
+ * Describes the message Protocol.B2L_Init.
+ * Use `create(B2L_InitSchema)` to create a new message.
+ */
+export const B2L_InitSchema = /*@__PURE__*/
+  messageDesc(file_init, 3);
 

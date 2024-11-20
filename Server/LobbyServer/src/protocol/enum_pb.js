@@ -8,7 +8,7 @@ import { enumDesc, fileDesc, tsEnum } from "@bufbuild/protobuf/codegenv1";
  * Describes the file enum.proto.
  */
 export const file_enum = /*@__PURE__*/
-  fileDesc("CgplbnVtLnByb3RvEghQcm90b2NvbCozCg1Sb29tU3RhdGVUeXBlEggKBFdBSVQQABILCgdQUkVQQVJFEAESCwoHSU5BR0FNRRACKjkKCk9iamVjdFR5cGUSCQoFVE9XRVIQABIKCgZQTEFZRVIQARILCgdNT05TVEVSEAISBwoDRU5WEAMqMgoIQ2FyZFR5cGUSEAoMQVRUQUNLX1RPV0VSEAASFAoQU1RSX0FUVEFDS19UT1dFUhABYgZwcm90bzM");
+  fileDesc("CgplbnVtLnByb3RvEghQcm90b2NvbCozCg1Sb29tU3RhdGVUeXBlEggKBFdBSVQQABILCgdQUkVQQVJFEAESCwoHSU5BR0FNRRACKjkKCk9iamVjdFR5cGUSCQoFVE9XRVIQABIKCgZQTEFZRVIQARILCgdNT05TVEVSEAISBwoDRU5WEAMqMgoIQ2FyZFR5cGUSEAoMQVRUQUNLX1RPV0VSEAASFAoQU1RSX0FUVEFDS19UT1dFUhABKoABCg1DaGFyYWN0ZXJUeXBlEhEKDU5vbmVDaGFyYWN0ZXIQABIHCgNSZWQQARIJCgVTaGFyaxADEgoKBk1hbGFuZxAFEgoKBkZyb2dneRAHEgsKB0JvbWJNYW4QCBILCgdTbG93TWFuEAkSCAoETWFzaxAKEgwKCERpbm9zb3VyEAxiBnByb3RvMw");
 
 /**
  * Describes the enum Protocol.RoomStateType.
@@ -47,4 +47,18 @@ export const CardTypeSchema = /*@__PURE__*/
  */
 export const CardType = /*@__PURE__*/
   tsEnum(CardTypeSchema);
+
+/**
+ * Describes the enum Protocol.CharacterType.
+ */
+export const CharacterTypeSchema = /*@__PURE__*/
+  enumDesc(file_enum, 3);
+
+/**
+ * 캐릭터 타입, 변경 주의(클라 의존성)
+ *
+ * @generated from enum Protocol.CharacterType
+ */
+export const CharacterType = /*@__PURE__*/
+  tsEnum(CharacterTypeSchema);
 

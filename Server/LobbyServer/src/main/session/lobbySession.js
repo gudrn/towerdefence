@@ -1,11 +1,17 @@
 import { Session } from 'ServerCore/src/network/session.js';
 import handlerMappings from '../handlerMapping/clientPacketHandler.js';
 import { lobbySessionManager } from '../../server.js';
+import { handleError } from '../../utils/errorHandler.js';
+import { CustomError } from 'ServerCore/src/utils/error/customError.js';
+import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
+import { CharacterType } from '../../protocol/enum_pb.js';
+import { roomManager } from '../../contents/room/roomManager.js'; // 방 관리자를 임포트합니다.
 
 export class LobbySession extends Session {
   constructor(socket) {
     super(socket);
     this.nickname = 'tmpName';
+    this.characterType = CharacterType.Dinosour;
   }
 
   /*---------------------------------------------
@@ -15,6 +21,7 @@ export class LobbySession extends Session {
   ---------------------------------------------*/
   onEnd() {
     console.log('클라이언트 연결이 종료되었습니다.');
+    roomManager.onSocketDisconnected(this.getId()); // 방에서 플레이어를 제거합니다.
     lobbySessionManager.removeSession(this.getId());
   }
 
@@ -29,6 +36,7 @@ export class LobbySession extends Session {
     console.error('소켓 오류:', error);
     handleError(this, new CustomError(500, `소켓 오류: ${error.message}`));
     // 세션에서 유저 삭제
+    roomManager.onSocketDisconnected(this.getId()); // 방에서 플레이어를 제거합니다.
     console.log('유저 제거: ', lobbySessionManager.removeSession(this.getId()));
   }
 
@@ -83,5 +91,11 @@ export class LobbySession extends Session {
   ---------------------------------------------*/
   setNickname(nickname) {
     this.nickname = nickname;
+  }
+  /*---------------------------------------------
+    [getter]
+  ---------------------------------------------*/
+  getCharacterType() {
+    return this.characterType;
   }
 }

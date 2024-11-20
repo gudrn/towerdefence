@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "protoc": "cd ../.. && npx buf generate ./common/protobuf"
+    "protoc": "cd ../.. && npx buf generate ./common/protobuf",
+    "start": "nodemon src/server.js"
   },
   "keywords": [],
   "author": "",

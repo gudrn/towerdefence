@@ -1,4 +1,6 @@
 import { Socket } from "net";
+import { config } from "../config/config.js";
+import { PacketUtils } from "../utils/packetUtils.js";
 
 /*---------------------------------------------
     *******추상 클래스*******

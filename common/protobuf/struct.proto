@@ -5,27 +5,28 @@ package Protocol;
 import "enum.proto";
 
 message BaseData {
-	int32 hp = 1;         // 현재 체력
-    int32 maxHp = 2;    // 최대 체력
+	int32 hp = 1; // 현재 체력
+    int32 maxHp = 2; // 최대 체력
 }
 
 message TowerData {
-    int32 towerId = 1;        // 타워 식별 id
-    int32 towerNumber = 2;    // 타워 종류 구분하는 번호
+    int32 towerId = 1; // 타워 식별 id
+    int32 towerNumber = 2; // 타워 종류 구분하는 번호
     PosInfo towerPos = 3;
 }
 
 message MonsterData {
-    int32 monsterId = 1;      // 몬스터 식별 id
-    int32 monsterNumber = 2;  // 몬스터 종류 구분하는 번호
-    int32 level = 3;          // 레벨
+    int32 monsterId = 1; // 몬스터 식별 id
+    int32 monsterNumber = 2; // 몬스터 종류 구분하는 번호
+    int32 level = 3; // 레벨
     PosInfo monsterPos = 4;
 }
 
 // 변경 주의(클라 의존성)
 message UserData {
-  int32 id = 1;       // 유저 식별 id
-  string name = 2;    // 닉네임
+  string id = 1; // 유저 식별 id
+  string name = 2; // 닉네임
+  CharacterData character = 3;
 }
 
 // 변경 주의(클라 의존성)
@@ -38,9 +39,15 @@ message RoomData {
   repeated UserData users = 6; // 방에 참여하는 사용자 목록
 }
 
+// 캐릭터 데이터, 변경 주의(클라 의존성)
 message CharacterData {
-	int32 characterId = 1;		// 캐릭터 식별 ID
-	PosInfo characterPos = 2;
+  // 필드 정의
+  CharacterType characterType = 1;  // 캐릭터 타입
+//  CharacterStateInfoData stateInfo = 5;  // 상태 정보
+
+//  repeated int32 equips = 6;        // 장착된 아이템
+//  repeated int32 debuffs = 7;       // 디버프 ID
+//  repeated CardData handCards = 8;  // 손에 든 카드
 }
 
 message PosInfo
@@ -49,3 +56,8 @@ message PosInfo
 	float y = 2;
 }
 
+message ErrorData
+{
+  int32 responseCode = 1; // 에러코드
+  string message = 2; //에러 내용
+}
