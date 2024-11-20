@@ -90,7 +90,7 @@ class RoomManager {
     // 방 ID를 통해 해당 방을 가져오기
     const room = this.rooms.get(packet.roomId);
     room.enterRoom(session);
-  
+
   }
 
   /**---------------------------------------------
@@ -170,21 +170,6 @@ class RoomManager {
       battleSession.send(sendBuffer);
     }
   }
-  // randomEnterRoomHandler(buffer, session) {
-  //   console.log('randomEnterRoomHandler')
-  //   if (this.rooms.size === 0) {
-  //     const responsePacket = create(L2C_JoinRoomResponseSchema, {
-  //       isSuccess: false,
-  //       room: {},
-  //       failCode: ErrorCodes.JOIN_ROOM_FAILED,
-  //     });
-  //     this.sendResponse(session, responsePacket, ePacketId.L2C_EnterRoomMe);
-  //     throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, '입장 가능한 방이 없습니다.')
-  //   }
-  //   const randomKey = Array.from(this.rooms.keys())[Math.floor(Math.random() * this.rooms.size)];
-  //   const room = this.rooms.get(randomKey);
-  //   room.enterRoom(session);
-  // }
   // 수정 요구사항:
   // randomMatching으로 변경, 인원수 4명으로 
 
@@ -258,7 +243,7 @@ class RoomManager {
 
     //B2L_CreateRoomSchema(수신받은  packetId)
     const packet = fromBinary(B2L_CreateGameRoomResponeSchema, buffer);
-    
+
     if (packet.isCreated == false) {
       console.log('onGameStartHandler: 실패');
       throw new CustomError(ErrorCodes.SOCKET_ERROR, '방 생성 실패');
@@ -276,7 +261,7 @@ class RoomManager {
       port: lobbyConfig.battleServer.port,
       roomId: packet.roomId,
     });
-    
+
     const sendBuffer = PacketUtils.SerializePacket(
       L2C_GameStartPacket,
       L2C_GameStartSchema,
@@ -298,6 +283,20 @@ class RoomManager {
 
     this.rooms.delete(roomId);
     this.availableRoomIds.push(roomId);
+  }
+
+  onSocketDisconnected(playerId) {
+    console.log('onSocketDisconnected');
+    for (const room of this.rooms.values()) {
+      const player = room.users.find(user => user.getId() === playerId);
+      if (player) {
+        room.leaveRoom(player);
+        if (room.getCurrentUsersCount() <= 0) {
+          this.freeRoomId(room.id);
+        }
+        break;
+      }
+    }
   }
 }
 

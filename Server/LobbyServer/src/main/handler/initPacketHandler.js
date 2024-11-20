@@ -81,9 +81,9 @@ const initialHandler = async (buffer, socket, packetId) => {
 
     //4. 버퍼 전송
     lobbySessionManager.getSessionOrNull(packet.userId)?.send(sendBuffer);
-  } 
-    //배틀 서버 접속
-    else if (packetId === ePacketId.B2L_Init) {
+  }
+  //배틀 서버 접속
+  else if (packetId === ePacketId.B2L_Init) {
     let packet;
     try {
       packet = fromBinary(B2L_InitSchema, buffer);

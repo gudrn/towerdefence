@@ -14,7 +14,8 @@ const handlerMappings = {
     roomManager.getRoomsHandler(buffer, session),
   [ePacketId.C2L_GameStart]: (buffer, session) =>
     roomManager.gameStartHandler(buffer, session),
-
+  [ePacketId.C2L_LeaveRoomRequest]: (buffer, session) =>
+    roomManager.leaveRoomHandler(buffer, session),
   [ePacketId.C2L_Init]: (buffer, session) => defaultHandler(buffer, session),
   [ePacketId.B2L_Init]: (buffer, session) => defaultHandler(buffer, session),
 
