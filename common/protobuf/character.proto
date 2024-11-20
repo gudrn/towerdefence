@@ -6,15 +6,16 @@ import "struct.proto";
 import "enum.proto";
 
 // 캐릭터 위치 동기화
-message C2B_PositionUpdateRequest {
-    double x = 1;
-    double y = 2;
+message C2B_PositionUpdateRequest 
+{
+    EntityData entityData = 1;
+    int32 roomId = 2;
 }
 
 // 캐릭터 위치 동기화 알림
 message B2C_PositionUpdateNotification 
 {
-    repeated CharacterData characterPositions = 1;
+    EntityData entityData = 1;
 }
 
 // 카드 사용

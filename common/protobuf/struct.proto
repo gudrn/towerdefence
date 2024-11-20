@@ -56,6 +56,13 @@ message PosInfo
 	float y = 2;
 }
 
+message EntityData
+{
+  PosInfo pos = 1;
+  ObjectType objectType = 2;
+  string uuid = 3;
+}
+
 message ErrorData
 {
   int32 responseCode = 1; // 에러코드
