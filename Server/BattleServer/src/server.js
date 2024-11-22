@@ -4,8 +4,10 @@ import { onConnection } from './main/handler/initPacketHandler.js';
 
 import { BattleSession } from './main/session/battleSession.js';
 
-import { SessionManager } from 'ServerCore/src/network/sessionManager.js';
+
 import { battleConfig } from './config/config.js';
+import { SessionManager } from 'ServerCore/src/network/sessionManager.js';
+
 
 const server = net.createServer(onConnection);
 

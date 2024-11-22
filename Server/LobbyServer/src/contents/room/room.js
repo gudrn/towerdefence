@@ -1,11 +1,16 @@
-import { ePacketId } from 'ServerCore/src/network/packetId';
-import { PacketUtils } from 'ServerCore/src/utils/packetUtils';
+import { ePacketId } from 'ServerCore/src/network/packetId.js';
+import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
+import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
+import { LobbySession } from '../../main/session/lobbySession.js';
 import {
   L2C_JoinRoomNotificationSchema,
   L2C_JoinRoomResponseSchema,
   L2C_LeaveRoomNotificationSchema,
   L2C_LeaveRoomResponseSchema,
-} from 'src/protocol/room_pb';
+} from '../../protocol/room_pb.js';
+import { create } from '@bufbuild/protobuf';
+import { CharacterDataSchema, RoomDataSchema, UserDataSchema } from '../../protocol/struct_pb.js';
+import { RoomStateType } from '../../protocol/enum_pb.js';
 
 /**
  * @enum {number}
@@ -13,7 +18,8 @@ import {
 export const eRoomStateId = {
   WAITING: 0,
   IN_PROGRESS: 1,
-};
+}
+
 
 export class Room {
   /**---------------------------------------------
@@ -35,77 +41,105 @@ export class Room {
    * @param {LobbySession} newUser - 새로운 유저 세션
    * @returns {boolean} - 입장 성공 여부
   
-       1. 방이 가득 찼는지 확인
-       2. 기존 플레이어 목록을 유저에게 보내기
-       3. 유저 추가
-       4. 새 유저 입장 정보를 다른 유저들에게 알리기
+  1. 방이 가득 찼는지 확인
+  2. 기존 플레이어 목록을 유저에게 보내기
+  3. 유저 추가
+  4. 새 유저 입장 정보를 다른 유저들에게 알리기
   ---------------------------------------------*/
   enterRoom(newUser) {
     console.log('enterRoom 호출 됨');
-    // 1. 유저 추가
-    this.users.push(newUser); // 방에 새 유저 추가
+    // 1. 방이 가득 찼는지 확인
+    if(this.users.length>=this.maxPlayerCount){
+      console.log('풀방');
+      return false; //패킷으로 변경해야할듯
+    }
+    
+    // 2. 기존 플레이어 목록 및 룸 데이터를 유저에게 보내기 전송
+    const existingPlayers = [];
+    for (const user of this.users) {
+      existingPlayers.push(create(UserDataSchema, {
+        id: user.getId(),
+        name: user.getNickname(),
+        characterType: create(CharacterDataSchema, {
+          characterType: user.getCharacterType(),
+        })
+      }));
+    }
 
-    // 2. 기존 플레이어 목록 전송
-    const existingPlayers = this.users.map((user) => ({
-      id: user.getId(),
-      name: user.getNickname(),
-    }));
-
-    const roomData = {
+    const roomData = create(RoomDataSchema, {
       id: this.id, // 방 ID
-      ownerId: this.users[0].getId(), // 방 소유자 ID
       name: this.getRoomName(), // 방 이름
       maxUserNum: this.maxPlayerCount, // 최대 유저 수
-      state: this.state, // 방 상태
-      users: existingPlayers, // 최대 유저 수 반환
-    };
+      ownerId: "tmp",
+      state: RoomStateType.WAIT, // 방 상태
+      users: existingPlayers, // 유저, 캐릭터 반환
+    });
 
     const JoinRoomResponsePacket = create(L2C_JoinRoomResponseSchema, {
-      isSuccess: true,
-      room: roomData,
-      failCode: 0,
+      roomInfo: roomData,
     });
 
     const JoinRoomResponseBuffer = PacketUtils.SerializePacket(
       JoinRoomResponsePacket,
       L2C_JoinRoomResponseSchema,
-      ePacketId.L2C_EnterRoomMe,
+      ePacketId.L2C_JoinRoomResponse,
       newUser.getNextSequence(),
     );
 
     newUser.send(JoinRoomResponseBuffer);
 
-    // 3. 새 유저 입장 알림 (본인 제외)
-    const joinNotificationPacket = create(L2C_JoinRoomNotificationSchema, {
-      joinUser: { id: newUser.getId(), name: newUser.getNickname() },
-    });
-
-    const joinNotificationBuffer = PacketUtils.SerializePacket(
-      joinNotificationPacket,
-      L2C_JoinRoomNotificationSchema,
-      ePacketId.L2C_EnterRoomOther,
-      newUser.getNextSequence(),
-    );
-
-    // 모든 유저에게 새 유저 입장 알림 전송 (본인 제외)
-    this.broadcast(joinNotificationBuffer, newUser);
-
+    //3. 유저 추가
+    this.users.push(newUser);
+    
+    try {
+      //4. 새 유저 입장 정보를 다른 유저들에게 알리기
+      const joinNotificationPacket = create(L2C_JoinRoomNotificationSchema, {
+        joinUser: create(UserDataSchema, {
+          id: newUser.getId(),
+          name: newUser.getNickname(),
+          character: create(CharacterDataSchema, {
+            characterType: newUser.getCharacterType()
+          })
+        }),
+      });
+      
+      const joinNotificationBuffer = PacketUtils.SerializePacket(
+        joinNotificationPacket,
+        L2C_JoinRoomNotificationSchema,
+        ePacketId.L2C_JoinRoomNotification,
+        0
+      );
+      
+      this.broadcast(joinNotificationBuffer);
+    } catch (error) {
+      console.log(error);
+    }
+    
     return true; // 입장 성공
   }
 
   /**---------------------------------------------
     [방 퇴장]
+
+    1. 퇴장하는 유저에게 결과 통보
+    2. 기존 유저에게 퇴장하는 유저 정보 전송
   ---------------------------------------------*/
   leaveRoom(player) {
     console.log('leaveRoom 호출 됨');
-    // 유저 제거
+    // 유저 제거, 최대 4명의 유저가 담겨서 filter로 충분
     this.users = this.users.filter((user) => user !== player);
 
     const leaveResponse = create(L2C_LeaveRoomResponseSchema, {
       isSuccess: true,
       failCode: 0,
     });
-    player.send(leaveResponse);
+    const leaveResponseBuffer = PacketUtils.SerializePacket(
+      leaveResponse,
+      L2C_LeaveRoomResponseSchema,
+      ePacketId.L2C_LeaveRoomResponse,
+      player.getNextSequence(),
+    );
+    player.send(leaveResponseBuffer);
 
     // 유저 퇴장 알림
     const leaveNotificationPacket = create(L2C_LeaveRoomNotificationSchema, {
@@ -115,7 +149,7 @@ export class Room {
     const leaveNotificationBuffer = PacketUtils.SerializePacket(
       leaveNotificationPacket,
       L2C_LeaveRoomNotificationSchema,
-      ePacketId.L2C_LeaveRoomOther,
+      ePacketId.L2C_LeaveRoomNotification,
       player.getNextSequence(),
     );
 
@@ -128,12 +162,10 @@ export class Room {
   /**---------------------------------------------
     [broadcast]
 ---------------------------------------------*/
-  broadcast(buffer, excludeUser = null) {
-    this.users.forEach(user => {
-      if (user !== excludeUser) {
-        user.send(buffer);
-      }
-    });
+  broadcast(buffer) {
+    for (const user of this.users) {
+      user.send(buffer);
+    }
   }
 
   /**---------------------------------------------

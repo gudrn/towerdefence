@@ -2,6 +2,7 @@ import { Session } from 'servercore/src/network/session.js';
 import { CustomError } from 'servercore/src/utils/error/customError.js';
 import { ErrorCodes } from 'servercore/src/utils/error/errorCodes.js';
 import { battleSessionManager } from '../../server.js';
+import battleHandlerMappings from '../handlerMapping/battleServerPacketHandler.js'
 
 export class BattleSession extends Session {
   constructor(socket) {
@@ -64,6 +65,7 @@ export class BattleSession extends Session {
       // 3. 핸들러 호출
       await handler(packet, this);
     } catch (error) {
+      console.log(error);
       handleError(this, error);
     }
   }

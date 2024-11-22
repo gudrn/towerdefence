@@ -1,18 +1,19 @@
 {
   "name": "lobbyserver",
   "version": "1.0.0",
-  "description": "",
   "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "protoc": "cd ../.. && npx buf generate ./common/protobuf"
+    "protoc": "cd ../.. && npx buf generate ./common/protobuf",
+    "start": "nodemon src/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@bufbuild/protobuf": "^2.2.2",
+    "bufbuild": "^0.2.0",
     "dotenv": "^16.4.5",
     "servercore": "file:../ServerCore"
   },

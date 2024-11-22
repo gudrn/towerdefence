@@ -7,7 +7,7 @@ import { CustomError } from 'ServerCore/src/utils/error/customError.js';
 import { UserDb } from '../../db/user.db.js';
 import { battleSessionManager, lobbySessionManager } from '../../server.js';
 import { lobbyConfig } from '../../config/config.js';
-import { B2L_InitialPacketSchema } from '../../protocol/init_pb.js';
+import { B2L_InitSchema, C2L_InitSchema, L2C_InitSchema } from '../../protocol/init_pb.js';
 
 export const onConnection = (socket) => {
   console.log('새로운 연결이 감지되었습니다:', socket.remoteAddress, socket.remotePort);
@@ -57,47 +57,38 @@ const initialHandler = async (buffer, socket, packetId) => {
   if (packetId === ePacketId.C2L_Init) {
     let packet;
     try {
-      packet = fromBinary(C2L_InitialPacketSchema, buffer);
+      packet = fromBinary(C2L_InitSchema, buffer);
     } catch (error) {
+      console.log(error);
       throw new CustomError(ErrorCodes.PACKET_DECODE_ERROR, '패킷 디코딩 중 오류가 발생했습니다');
     }
 
-    if (packet.meta?.clientVersion !== lobbyConfig.client.version) {
-      throw new CustomError(
-        ErrorCodes.CLIENT_VERSION_MISMATCH,
-        '클라이언트 버전이 일치하지 않습니다.',
-      );
-    }
+    //1. sessionManager에 로비세션 추가
+    lobbySessionManager.addSession(packet.userId, socket).setNickname(packet.nickname);
 
-    let user = await UserDb.findUserByDeviceID(packet.meta.userId);
-    if (!user) {
-      user = await UserDb.createUser(packet.meta.userId);
-    } else {
-      UserDb.updateUserLogin(user.id);
-    }
-
-    lobbySessionManager.addSession(packet.meta.userId, socket);
-    lobbySessionManager.getSessionOrNull(packet.meta.userId)?.setNickname(packet.nickname);
-
+    //2. 유저 정보 응답 생성
     const initPacket = create(L2C_InitSchema, {
-      meta: ResponseUtils.createMetaResponse(RESPONSE_SUCCESS_CODE),
-      userId: packet.meta.userId,
+      isSuccess: true
     });
 
+    //3. 유저 정보 직렬화
     const sendBuffer = PacketUtils.SerializePacket(
       initPacket,
       L2C_InitSchema,
       ePacketId.L2C_Init,
-      lobbySessionManager.getSessionOrNull(packet.meta.userId)?.getNextSequence() || 0,
+      0,
     );
-    console.log('Serialized sendBuffer length:', sendBuffer.length);
-    lobbySessionManager.getSessionOrNull(packet.meta.userId)?.send(sendBuffer);
-  } else if (packetId === ePacketId.B2L_Init) {
+
+    //4. 버퍼 전송
+    lobbySessionManager.getSessionOrNull(packet.userId)?.send(sendBuffer);
+  }
+  //배틀 서버 접속
+  else if (packetId === ePacketId.B2L_Init) {
     let packet;
     try {
-      packet = fromBinary(B2L_InitialPacketSchema, buffer);
+      packet = fromBinary(B2L_InitSchema, buffer);
     } catch (error) {
-      throw new CustomError(ErrorCodes.PACKET_DECODE_ERROR, '패킷 디코딩 중 오류가 발생했습니다');
+      throw new CustomError(ErrorCodes.PACKET_DECODE_ERROR, '패킷 디코딩 중 오류가 발생했습니다2');
     }
     battleSessionManager.addSession(packet.serverId, socket);
   }

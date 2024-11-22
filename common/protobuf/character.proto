@@ -23,7 +23,12 @@ message C2B_UseCardRequest {
 }
 
 // 카드 사용 알림
-message B2C_UseCardNotification {
+message B2C_UseCardResponse {
     bool isSuccess = 1;
 }
 
+//스킬 카드 사용 알림
+message C2B_SkillNotify {
+    CardType cardType = 1;
+    int32 userId = 2;
+}

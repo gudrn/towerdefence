@@ -1,8 +1,14 @@
 import { Socket } from 'net';
 import { config } from 'ServerCore/src/config/config.js';
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
-import { C2B_InitialPacketSchema } from 'src/protocol/game_pb.js';
-import { sessionManager } from 'src/server.js';
+import { C2B_InitSchema } from '../../protocol/init_pb.js';
+import { sessionManager } from '../../server.js';
+import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
+import { CustomError } from 'ServerCore/src/utils/error/customError.js';
+import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
+import { fromBinary } from '@bufbuild/protobuf';
+import { GamePlayer } from '../../contents/room/GamePlayer.js';
+import { gameRoomManager } from '../../contents/room/GameRoomManager.js';
 
 export const onConnection = (socket) => {
   console.log('새로운 연결이 감지되었습니다:', socket.remoteAddress, socket.remotePort);
@@ -26,7 +32,7 @@ export const onConnection = (socket) => {
 
     const packet = buffer.subarray(config.packet.sizeOfHeader, header.size);
 
-    if (header.id === ePacketId.C2B_Init) {
+    if (header.id == ePacketId.C2B_Init) {
       console.log('클라 접속');
       initialHandler(packet, socket);
     } else {
@@ -44,23 +50,23 @@ const initialHandler = async (buffer, socket) => {
 
   let packet;
   try {
-    packet = fromBinary(C2B_InitialPacketSchema, buffer);
+    packet = fromBinary(C2B_InitSchema, buffer);
   } catch (error) {
     throw new CustomError(ErrorCodes.PACKET_DECODE_ERROR, '패킷 디코딩 중 오류가 발생했습니다');
   }
 
-  // 3. sessionManager에 세션 추가
+  //3. sessionManager에 세션 추가
   let session;
   // 세션이 생성되었으므로, 더 이상 주체 판별이 필요하지 않음
-  if (packet.PlayerInfo && packet.PlayerInfo.posInfo) {
-    session = sessionManager.addSession(packet.PlayerInfo.posInfo.objectId, socket);
+  if (packet.userData) {
+    session = sessionManager.addSession(packet.userData.id, socket);
   } else {
     throw new CustomError(ErrorCodes.PACKET_DECODE_ERROR, '패킷 디코딩 중 오류가 발생했습니다');
   }
 
-  sessionManager.getSessionOrNull(packet.PlayerInfo.posInfo.objectId)?.setNickname(packet.nickname);
+  sessionManager.getSessionOrNull(packet.userData.id)?.setNickname(packet.userData.name);
 
-  const player = new GamePlayer(session, packet.PlayerInfo);
+  const player = new GamePlayer(session, packet.userData);
   gameRoomManager.enterRoomHandler(packet.roomId, player);
 };
 
