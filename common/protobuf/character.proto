@@ -8,16 +8,17 @@ import "enum.proto";
 // 캐릭터 위치 동기화
 message C2B_PositionUpdateRequest 
 {
-    EntityData entityData = 1;
+    PosInfo posInfos = 1;
     int32 roomId = 2;
+    int32 prefabIndex = 3; //아직 구현X
 }
 
 // 캐릭터 위치 동기화 알림
 message B2C_PositionUpdateNotification 
 {
-    EntityData entityData = 1;
+    PosInfo posInfos = 1;
+    int32 prefabIndex = 2; //아직 구현X
 }
-
 // 카드 사용
 message C2B_UseCardRequest { 
     CardType cardType = 1; 

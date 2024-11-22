@@ -52,16 +52,17 @@ message CharacterData {
 
 message PosInfo
 {
-	float x = 1;
-	float y = 2;
+  string uuid = 1;
+	float x = 2;
+	float y = 3;
 }
 
-message EntityData
-{
-  PosInfo pos = 1;
-  ObjectType objectType = 2;
-  string uuid = 3;
+message GamePlayerData {
+  PosInfo position = 1;
+  string nickname = 2;
+  CharacterType characterType = 3;
 }
+
 
 message ErrorData
 {
