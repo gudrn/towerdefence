@@ -55,7 +55,12 @@ class RoomManager {
         room: {},
         failCode: ErrorCodes.CREATE_ROOM_FAILED,
       });
-      this.sendResponse(session, responsePacket, L2C_CreateRoomResponseSchema, ePacketId.L2C_CreateRoomResponse);
+      this.sendResponse(
+        session,
+        responsePacket,
+        L2C_CreateRoomResponseSchema,
+        ePacketId.L2C_CreateRoomResponse,
+      );
       throw new CustomError(
         ErrorCodes.CREATE_ROOM_FAILED,
         '방 인원수는 최대 4명 이상이어야 합니다.',
@@ -72,7 +77,12 @@ class RoomManager {
       room: newRoom,
       failCode: ErrorCodes.NONE_FAILCODE,
     });
-    this.sendResponse(session, responsePacket, L2C_CreateRoomResponseSchema, ePacketId.L2C_CreateRoomResponse);
+    this.sendResponse(
+      session,
+      responsePacket,
+      L2C_CreateRoomResponseSchema,
+      ePacketId.L2C_CreateRoomResponse,
+    );
   }
 
   /**---------------------------------------------
@@ -90,7 +100,6 @@ class RoomManager {
     // 방 ID를 통해 해당 방을 가져오기
     const room = this.rooms.get(packet.roomId);
     room.enterRoom(session);
-
   }
 
   /**---------------------------------------------
@@ -138,9 +147,13 @@ class RoomManager {
 
     // 방 목록 응답
     const responsePacket = create(L2C_GetRoomListResponseSchema, { rooms: roomsData });
-    const sendBuffer = PacketUtils.SerializePacket(responsePacket, L2C_GetRoomListResponseSchema, ePacketId.L2C_GetRoomListResponse, 0);
-    session.send(sendBuffer)
-
+    const sendBuffer = PacketUtils.SerializePacket(
+      responsePacket,
+      L2C_GetRoomListResponseSchema,
+      ePacketId.L2C_GetRoomListResponse,
+      0,
+    );
+    session.send(sendBuffer);
   }
 
   /**---------------------------------------------
@@ -155,7 +168,7 @@ class RoomManager {
     if (this.waitingQueue.length >= 4) {
       const room = new Room(this.availableRoomIds.shift() || 0, '랜덤방', 4);
       this.rooms.set(room.id, room);
-      this.waitingQueue.splice(0, 4).forEach(user => room.enterRoom(user));
+      this.waitingQueue.splice(0, 4).forEach((user) => room.enterRoom(user));
 
       const L2BPacket = create(L2B_CreateGameRoomRequestSchema, {
         roomId: room.id,
@@ -171,8 +184,7 @@ class RoomManager {
     }
   }
   // 수정 요구사항:
-  // randomMatching으로 변경, 인원수 4명으로 
-
+  // randomMatching으로 변경, 인원수 4명으로
 
   /**---------------------------------------------
    * [게임 시작] - 배틀서버에게 게임 방 생성 요청
@@ -288,7 +300,7 @@ class RoomManager {
   onSocketDisconnected(playerId) {
     console.log('onSocketDisconnected');
     for (const room of this.rooms.values()) {
-      const player = room.users.find(user => user.getId() === playerId);
+      const player = room.users.find((user) => user.getId() === playerId);
       if (player) {
         room.leaveRoom(player);
         if (room.getCurrentUsersCount() <= 0) {

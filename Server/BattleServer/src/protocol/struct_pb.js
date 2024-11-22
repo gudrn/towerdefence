@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import { file_enum } from "./enum_pb";
+import { file_enum } from "./enum_pb.js";
 
 /**
  * Describes the file struct.proto.

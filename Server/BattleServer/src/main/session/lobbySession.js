@@ -4,9 +4,10 @@ import { battleConfig } from '../../config/config.js';
 import { create } from '@bufbuild/protobuf';
 import { handleError } from '../../utils/error/errorHandler.js';
 import { CustomError } from 'ServerCore/src/utils/error/customError.js';
-import { B2L_InitialPacketSchema } from '../../protocol/server_pb.js';
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
 import lobbyHandlerMappings from '../handlerMapping/lobbyServerPacketHandler.js';
+import { B2L_InitSchema } from '../../protocol/init_pb.js';
+import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
 
 export class LobbySession extends Session {
   constructor(socket) {
@@ -20,16 +21,11 @@ export class LobbySession extends Session {
   connectLobbyServer() {
     this.socket.connect(battleConfig.lobbyServer.port, battleConfig.lobbyServer.host, async () => {
       console.log('Connected to server');
-      const packet = create(B2L_InitialPacketSchema, {
+      const packet = create(B2L_InitSchema, {
         serverId: this.getId(),
       });
 
-      const sendBuffer = PacketUtils.SerializePacket(
-        packet,
-        B2L_InitialPacketSchema,
-        ePacketId.B2L_Init,
-        0,
-      );
+      const sendBuffer = PacketUtils.SerializePacket(packet, B2L_InitSchema, ePacketId.B2L_Init, 0);
       this.send(sendBuffer);
     });
   }

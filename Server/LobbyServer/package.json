@@ -1,7 +1,6 @@
 {
   "name": "lobbyserver",
   "version": "1.0.0",
-  "description": "",
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -14,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@bufbuild/protobuf": "^2.2.2",
+    "bufbuild": "^0.2.0",
     "dotenv": "^16.4.5",
     "servercore": "file:../ServerCore"
   },
