@@ -1,5 +1,4 @@
-import { create } from "@bufbuild/protobuf";
-import { S2C_MetadataSchema, S2C_ErrorSchema } from "../protocol/server_pb.js";
+import { create } from '@bufbuild/protobuf';
 
 export class ResponseUtils {
   static createMetaResponse(responseCode) {

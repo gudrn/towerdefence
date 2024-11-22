@@ -18,8 +18,7 @@ import { RoomStateType } from '../../protocol/enum_pb.js';
 export const eRoomStateId = {
   WAITING: 0,
   IN_PROGRESS: 1,
-}
-
+};
 
 export class Room {
   /**---------------------------------------------
@@ -49,28 +48,46 @@ export class Room {
   enterRoom(newUser) {
     console.log('enterRoom 호출 됨');
     // 1. 방이 가득 찼는지 확인
-    if(this.users.length>=this.maxPlayerCount){
+    if (this.users.length >= this.maxPlayerCount) {
       console.log('풀방');
-      return false; //패킷으로 변경해야할듯
+
+      // 방이 가득 찼을 때 실패 패킷 생성 및 전송
+      const fullRoomPacket = create(L2C_JoinRoomResponseSchema, {
+        roomInfo: {},
+        failCode: ErrorCodes.ROOM_FULL, // ROOM_FULL 추가 필요
+        isSuccess: false,
+      });
+
+      const fullRoomBuffer = PacketUtils.SerializePacket(
+        fullRoomPacket,
+        L2C_JoinRoomResponseSchema,
+        ePacketId.L2C_JoinRoomResponse,
+        newUser.getNextSequence(),
+      );
+
+      newUser.send(fullRoomBuffer);
+      return false; // 방 입장 실패
     }
-    
+
     // 2. 기존 플레이어 목록 및 룸 데이터를 유저에게 보내기 전송
     const existingPlayers = [];
     for (const user of this.users) {
-      existingPlayers.push(create(UserDataSchema, {
-        id: user.getId(),
-        name: user.getNickname(),
-        characterType: create(CharacterDataSchema, {
-          characterType: user.getCharacterType(),
-        })
-      }));
+      existingPlayers.push(
+        create(UserDataSchema, {
+          id: user.getId(),
+          name: user.getNickname(),
+          characterType: create(CharacterDataSchema, {
+            characterType: user.getCharacterType(),
+          }),
+        }),
+      );
     }
 
     const roomData = create(RoomDataSchema, {
       id: this.id, // 방 ID
       name: this.getRoomName(), // 방 이름
       maxUserNum: this.maxPlayerCount, // 최대 유저 수
-      ownerId: "tmp",
+      ownerId: 'tmp',
       state: RoomStateType.WAIT, // 방 상태
       users: existingPlayers, // 유저, 캐릭터 반환
     });
@@ -90,7 +107,7 @@ export class Room {
 
     //3. 유저 추가
     this.users.push(newUser);
-    
+
     try {
       //4. 새 유저 입장 정보를 다른 유저들에게 알리기
       const joinNotificationPacket = create(L2C_JoinRoomNotificationSchema, {
@@ -98,23 +115,23 @@ export class Room {
           id: newUser.getId(),
           name: newUser.getNickname(),
           character: create(CharacterDataSchema, {
-            characterType: newUser.getCharacterType()
-          })
+            characterType: newUser.getCharacterType(),
+          }),
         }),
       });
-      
+
       const joinNotificationBuffer = PacketUtils.SerializePacket(
         joinNotificationPacket,
         L2C_JoinRoomNotificationSchema,
         ePacketId.L2C_JoinRoomNotification,
-        0
+        0,
       );
-      
+
       this.broadcast(joinNotificationBuffer);
     } catch (error) {
       console.log(error);
     }
-    
+
     return true; // 입장 성공
   }
 

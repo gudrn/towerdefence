@@ -1,3 +1,7 @@
+import { ePacketId } from 'ServerCore/src/network/packetId.js';
+import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
+import { B2C_PositionUpdateNotificationSchema } from '../../protocol/character_pb.js';
+
 export class GameRoom {
   /**---------------------------------------------
    * @param {number} id - 방의 고유 ID
@@ -30,23 +34,38 @@ export class GameRoom {
   // 3. 해당 유저에게 B2C_EnterRoomMe 패킷 전송
   // 4. 모든 인원이 들어왔다면 B2C_GameStart 패킷 전송
 
-  /**---------------------------------------------
-   * [이동 동기화]
-   * @param {Buffer} buffer - 이동 패킷 데이터
-   ---------------------------------------------*/
-  handleMove(buffer) {}
+  // /**---------------------------------------------
+  //  * [이동 동기화]
+  //  * @param {GamePlayer} player - 이동한 플레이어
+  //  * @param {Object} position - 새로운 위치 {x, y}
+  //  * @param {BattleSession} session - 플레이어 세션
+  //  ---------------------------------------------*/
+  // handleMove(player, position, session) {
 
-  /**---------------------------------------------
-   * [카드 사용 동기화]
-   * @param {Buffer} buffer - 카드 사용 패킷 데이터
-   ---------------------------------------------*/
-  handleUseCard(buffer) {}
+  //   // 1. 플레이어 위치 정보 업데이트
+  //   player.updatePosition(position);
 
-  /**---------------------------------------------
-   * [스킬 사용 동기화]
-   * @param {Buffer} buffer - 스킬 사용 패킷 데이터
-   ---------------------------------------------*/
-  handleSkill(buffer) {}
+  //   // 3. 브로드캐스트용 패킷 생성
+  //   const notificationPacket = create(B2C_PositionUpdateNotificationSchema, {
+  //     entityData: {
+  //       pos: position,
+  //       objectType: ObjectType.PLAYER,
+  //       uuid: player.id,
+  //     },
+  //   });
+
+  //   // 4. 패킷 직렬화
+  //   const sendBuffer = PacketUtils.SerializePacket(
+  //     notificationPacket,
+  //     B2C_PositionUpdateNotificationSchema,
+  //     ePacketId.B2C_PositionUpdateNotification,
+  //     session.getNextSequence(),
+  //   );
+
+  //   // 5. 방의 모든 플레이어에게 브로드캐스트
+  //   this.broadcast(sendBuffer);
+  //   console.log(`플레이어 ${player.id} 이동 동기화 완료`);
+  // }
 
   /**---------------------------------------------
    * [타워 생성 동기화]

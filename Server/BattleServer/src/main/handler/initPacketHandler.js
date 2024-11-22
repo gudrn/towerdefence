@@ -1,8 +1,10 @@
 import { Socket } from 'net';
 import { config } from 'ServerCore/src/config/config.js';
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
-import { C2B_InitialPacketSchema } from 'src/protocol/game_pb.js';
-import { sessionManager } from 'src/server.js';
+import { C2B_InitSchema } from '../../protocol/init_pb.js';
+import { sessionManager } from '../../server.js';
+import { gameRoomManager } from '../../contents/room/GameRoomManager.js';
+import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
 
 export const onConnection = (socket) => {
   console.log('새로운 연결이 감지되었습니다:', socket.remoteAddress, socket.remotePort);
@@ -44,7 +46,7 @@ const initialHandler = async (buffer, socket) => {
 
   let packet;
   try {
-    packet = fromBinary(C2B_InitialPacketSchema, buffer);
+    packet = fromBinary(C2B_InitSchema, buffer);
   } catch (error) {
     throw new CustomError(ErrorCodes.PACKET_DECODE_ERROR, '패킷 디코딩 중 오류가 발생했습니다');
   }

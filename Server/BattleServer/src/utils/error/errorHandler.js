@@ -1,8 +1,7 @@
-import { ePacketId } from "../../../../ServerCore/src/network/packetId.js";
-import { ErrorCodes } from "../../../../ServerCore/src/utils/error/errorCodes.js";
-import { ResponseUtils } from "../responseUtils.js";
-import { PacketUtils } from "../../../../ServerCore/src/utils/packetUtils.js";
-import { S2C_ErrorSchema } from "../../protocol/server_pb.js";
+import { ePacketId } from '../../../../ServerCore/src/network/packetId.js';
+import { ErrorCodes } from '../../../../ServerCore/src/utils/error/errorCodes.js';
+import { ResponseUtils } from '../responseUtils.js';
+import { PacketUtils } from '../../../../ServerCore/src/utils/packetUtils.js';
 
 export const handleError = (session, error) => {
   let responseCode;
@@ -18,6 +17,11 @@ export const handleError = (session, error) => {
   }
 
   const packet = ResponseUtils.createErrorResponse(responseCode, message);
-  const sendBuffer = PacketUtils.SerializePacket(packet, S2C_ErrorSchema, ePacketId.S2C_Error, session.getNextSequence());
+  const sendBuffer = PacketUtils.SerializePacket(
+    packet,
+    S2C_ErrorSchema,
+    ePacketId.S2C_Error,
+    session.getNextSequence(),
+  );
   session.send(sendBuffer);
 };

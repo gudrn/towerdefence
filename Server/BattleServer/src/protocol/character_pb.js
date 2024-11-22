@@ -3,14 +3,14 @@
 /* eslint-disable */
 
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import { file_struct } from "./struct_pb";
-import { file_enum } from "./enum_pb";
+import { file_struct } from "./struct_pb.js";
+import { file_enum } from "./enum_pb.js";
 
 /**
  * Describes the file character.proto.
  */
 export const file_character = /*@__PURE__*/
-  fileDesc("Cg9jaGFyYWN0ZXIucHJvdG8SCFByb3RvY29sIjEKGUMyQl9Qb3NpdGlvblVwZGF0ZVJlcXVlc3QSCQoBeBgBIAEoARIJCgF5GAIgASgBIlUKHkIyQ19Qb3NpdGlvblVwZGF0ZU5vdGlmaWNhdGlvbhIzChJjaGFyYWN0ZXJQb3NpdGlvbnMYASADKAsyFy5Qcm90b2NvbC5DaGFyYWN0ZXJEYXRhIjoKEkMyQl9Vc2VDYXJkUmVxdWVzdBIkCghjYXJkVHlwZRgBIAEoDjISLlByb3RvY29sLkNhcmRUeXBlIiwKF0IyQ19Vc2VDYXJkTm90aWZpY2F0aW9uEhEKCWlzU3VjY2VzcxgBIAEoCGIGcHJvdG8z", [file_struct, file_enum]);
+  fileDesc("Cg9jaGFyYWN0ZXIucHJvdG8SCFByb3RvY29sImUKGUMyQl9Qb3NpdGlvblVwZGF0ZVJlcXVlc3QSIwoIcG9zSW5mb3MYASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEg4KBnJvb21JZBgCIAEoBRITCgtwcmVmYWJJbmRleBgDIAEoBSJaCh5CMkNfUG9zaXRpb25VcGRhdGVOb3RpZmljYXRpb24SIwoIcG9zSW5mb3MYASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhMKC3ByZWZhYkluZGV4GAIgASgFIjoKEkMyQl9Vc2VDYXJkUmVxdWVzdBIkCghjYXJkVHlwZRgBIAEoDjISLlByb3RvY29sLkNhcmRUeXBlIiwKF0IyQ19Vc2VDYXJkTm90aWZpY2F0aW9uEhEKCWlzU3VjY2VzcxgBIAEoCGIGcHJvdG8z", [file_struct, file_enum]);
 
 /**
  * Describes the message Protocol.C2B_PositionUpdateRequest.

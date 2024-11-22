@@ -1,14 +1,14 @@
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
 import { CustomError } from 'ServerCore/src/utils/error/customError.js';
 import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
-import { B2C_EnterRoomSchema } from 'src/protocol/game_pb.js';
 import { GameRoom } from './GameRoom.js';
 import { create } from '@bufbuild/protobuf';
 import {
   B2L_CreateGameRoomResponeSchema,
   L2B_CreateGameRoomRequestSchema,
-} from 'src/protocol/room_pb.js';
+} from '../../protocol/room_pb.js';
 import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
+import { C2B_PositionUpdateRequestSchema } from '../../protocol/character_pb.js';
 
 const MAX_ROOMS_SIZE = 10000;
 
@@ -112,21 +112,28 @@ class GameRoomManager {
    * @param {Buffer} buffer - 이동 데이터 버퍼
    * @param {BattleSession} session - 이동 요청을 보낸 세션
    ---------------------------------------------*/
-  moveHandler(buffer, session) {}
+  moveHandler(buffer, session) {
+    console.log('moveHandler 호출됨');
 
-  /**---------------------------------------------
-   * [카드 사용 동기화]
-   * @param {Buffer} buffer - 카드 사용 패킷 데이터
-   * @param {BattleSession} session - 카드 사용 요청을 보낸 세션
-   ---------------------------------------------*/
-  useCardHandler(buffer, session) {}
+    const packet = fromBinary(C2B_PositionUpdateRequestSchema, buffer);
 
-  /**---------------------------------------------
-   * [스킬 사용 동기화]
-   * @param {Buffer} buffer - 스킬 사용 패킷 데이터
-   * @param {BattleSession} session - 스킬 사용 요청을 보낸 세션
-   ---------------------------------------------*/
-  skillHandler(buffer, session) {}
+    const { entityData, roomId } = packet;
+    const { pos, uuid } = entityData;
+
+    // 1. 유효한 방 확인
+    const room = this.rooms.get(roomId);
+    if (!room) {
+      throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, '해당 roomId를 찾을 수 없습니다.');
+    }
+
+    // 2. 유효한 플레이어 확인
+    const player = room.users.find((user) => user.id === uuid);
+    if (!player) {
+      throw new CustomError(ErrorCodes.USER_NOT_FOUND, '플레이어를 찾을 수 없습니다.');
+    }
+
+    room.handleMove(player, pos, session);
+  }
 
   /**---------------------------------------------
    * [타워 생성 동기화]
