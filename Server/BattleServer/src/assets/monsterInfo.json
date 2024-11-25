@@ -1,0 +1,44 @@
+{
+  "monsterInfo": [
+    {
+      "id": 1,
+      "number": 1,
+      "atk": 10,
+      "maxHp": 100,
+      "curHp": 100,
+      "score": 100
+    },
+    {
+      "id": 2,
+      "number": 2,
+      "atk": 10,
+      "maxHp": 100,
+      "curHp": 100,
+      "score": 100
+    },
+    {
+      "id": 3,
+      "number": 3,
+      "atk": 10,
+      "maxHp": 100,
+      "curHp": 100,
+      "score": 100
+    },
+    {
+      "id": 4,
+      "number": 4,
+      "atk": 10,
+      "maxHp": 100,
+      "curHp": 100,
+      "score": 100
+    },
+    {
+      "id": 5,
+      "number": 5,
+      "atk": 10,
+      "maxHp": 100,
+      "curHp": 100,
+      "score": 100
+    }
+  ]
+}

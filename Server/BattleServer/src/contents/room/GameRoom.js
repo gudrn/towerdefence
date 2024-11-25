@@ -3,13 +3,12 @@ import { B2C_SpawnMonsterResponseSchema } from '../../protocol/monster_pb.js';
 import {
   B2C_GameStartNotificationSchema,
   B2C_JoinRoomResponseSchema,
-  B2L_CreateGameRoomResponeSchema,
-  L2B_CreateGameRoomRequestSchema,
 } from '../../protocol/room_pb.js';
 import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
 import { CustomError } from 'ServerCore/src/utils/error/customError.js';
 import { fromBinary, create } from '@bufbuild/protobuf';
 import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
+import monsterInfo from '../../assets/monsterInfo.json' with { type: 'json' };
 
 export class GameRoom {
   /**---------------------------------------------
@@ -133,7 +132,7 @@ export class GameRoom {
   /**---------------------------------------------
    * [몬스터 생성]
    ---------------------------------------------*/
-  handleSpawnMonster() {}
+  handleSpawnMonster(session) {}
 
   /**---------------------------------------------
    * [몬스터 타워 공격 동기화]
@@ -181,14 +180,6 @@ export class GameRoom {
   }
 
   /**
-   * 고유 Room ID를 생성하는 함수
-   * @returns {string} 생성된 Room ID
-   */
-  generateUniqueMonsterId() {
-    // monsterId를 만드는데 UUID를 쓸건지는 자유
-    return `${Date.now()}-${Math.floor(Math.random() * 1000 + 1)}`;
-  }
-  /**
    * 고유 monsterId ID를 제거하는 함수
    * @returns {string} 생성된 monsterId
    */
@@ -204,13 +195,17 @@ export class GameRoom {
     }
   }
 
+  getMonsterSearchAndReward = (monster) => {
+    const reward = monsterInfo.monsterInfo[monster.monsterNumber - 1];
+    this.score += reward.score;
+  };
+
   /**
    * monster 처치 시 보상주는 함수
    * @returns {string} 생성된 monster
    */
-  getMonsterSearchAndReward = (monster) => {
-    //여기의  monsterJson는 json파일명에 따라 달라짐.
-    const reward = monsterJson[monster.monsterNumber - 1];
-    this.score += reward.score;
-  };
+  generateUniqueMonsterId() {
+    // roomId를 만드는데 UUID를 쓸건지는 자유
+    return `room-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+  }
 }

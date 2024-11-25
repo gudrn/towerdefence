@@ -9,6 +9,17 @@ import {
 } from '../../protocol/room_pb.js';
 import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
 import { BattleSession } from '../../main/session/battleSession.js';
+import {
+  B2C_MonsterDeathNotificationSchema,
+  B2C_SpawnMonsterResponseSchema,
+  C2B_MonsterDeathRequestSchema,
+  C2B_SpawnMonsterRequestSchema,
+  S2B_SpawnMonsterNotificationSchema,
+} from '../../protocol/monster_pb.js';
+import monsterInfo from '../../assets/monsterInfo.json' with { type: 'json' };
+
+const monsterNumber = Math.floor(Math.random() * monsterInfo.monsterInfo.length) + 1;
+console.log(monsterNumber);
 
 const MAX_ROOMS_SIZE = 10000;
 
@@ -123,7 +134,54 @@ class GameRoomManager {
    * @param {Buffer} buffer - 몬스터 생성 패킷 데이터
    * @param {BattleSession} session - 몬스터 생성 요청을 보낸 세션
    ---------------------------------------------*/
-  spawnMonsterHandler(buffer, session) {}
+  spawnMonsterHandler(buffer, session) {
+    fromBinary(C2B_SpawnMonsterRequestSchema, buffer);
+
+    const monsterId = this.generateUniqueMonsterId(); // 여기서 몬스터 ID가 나오는데 따로 넣을 필요가 있나?
+    const monsterNumber = Math.floor(Math.random() * monsterInfo.monsterInfo.length) + 1;
+    console.log(monsterNumber);
+    monsterInfo.monsterInfo[monsterNumber - 1];
+    if (monsterId === undefined) {
+      console.log(`add monster 되돌려 보낸다`);
+      return;
+    }
+
+    this.monsterList.push({
+      monsterId,
+      monsterNumber,
+    });
+
+    // 3. 클라이언트에 전송할 데이터 생성
+    const responsePacket = create(B2C_SpawnMonsterResponseSchema, {
+      monsterId: monsterId,
+      monsterNumber: monsterNumber,
+    });
+
+    // 4. 패킷 직렬화
+    const responseBuffer = PacketUtils.SerializePacket(
+      responsePacket,
+      B2C_SpawnMonsterResponseSchema,
+      //B2C_spawnMonster는 아직 안 만들어짐.
+      ePacketId.B2C_spawnMonster,
+      session.getNextSequence(),
+    );
+    session.send(responseBuffer);
+
+    // 3. 클라이언트에 전송할 데이터 생성
+    const notificationPacket = create(S2B_SpawnMonsterNotificationSchema, {
+      monsterId: monsterId,
+      monsterNumber: monsterNumber,
+    });
+
+    // 4. 패킷 직렬화
+    const notificationBuffer = PacketUtils.SerializePacket(
+      notificationPacket,
+      S2B_SpawnMonsterNotificationSchema,
+      ePacketId.S2B_SpawnMonsterNotification,
+      session.getNextSequence(),
+    );
+    this.broadcast(notificationBuffer);
+  }
 
   /**---------------------------------------------
    * [몬스터 타워 공격 동기화]
@@ -151,7 +209,26 @@ class GameRoomManager {
    * @param {Buffer} buffer - 몬스터 사망 패킷 데이터
    * @param {BattleSession} session - 몬스터 사망 요청을 보낸 세션
    ---------------------------------------------*/
-  monsterDeathHandler(buffer, session) {}
+  monsterDeathHandler(buffer, session) {
+    fromBinary(C2B_MonsterDeathRequestSchema, buffer);
+    const { monsterId } = buffer;
+
+    session.removeMonster(monsterId);
+
+    // 3. 클라이언트에 전송할 데이터 생성
+    const notificationPacket = create(B2C_MonsterDeathNotificationSchema, {
+      monsterId: monsterId,
+    });
+
+    // 4. 패킷 직렬화
+    const notificationBuffer = PacketUtils.SerializePacket(
+      notificationPacket,
+      B2C_MonsterDeathNotificationSchema,
+      ePacketId.B2C_MonsterDeathNotification,
+      session.getNextSequence(),
+    );
+    this.broadcast(notificationBuffer);
+  }
 
   /**---------------------------------------------
    * [broadcast] - 모든 유저에게 패킷 전송
@@ -163,5 +240,4 @@ class GameRoomManager {
     }
   }
 }
-
 export const gameRoomManager = new GameRoomManager();
