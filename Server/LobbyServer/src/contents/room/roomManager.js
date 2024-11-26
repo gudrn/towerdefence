@@ -187,7 +187,7 @@ createRoomHandler(buffer, session) {
    * @param {Buffer} buffer
    * @param {LobbySession | BattleSession} session
    ---------------------------------------------*/
-  gameStartHandler(buffer, sesison) {
+  gameStartHandler(buffer, session) {
     console.log('gameStartHandler');
     const battleSession =
       battleSessionManager.getSessionOrNull('battleServerSession');
@@ -213,7 +213,7 @@ createRoomHandler(buffer, session) {
       L2BPacket,
       L2B_CreateGameRoomRequestSchema,
       ePacketId.L2B_CreateGameRoomRequest,
-      sesison.getNextSequence(),
+      session.getNextSequence(),
     );
 
     console.log('내가 받은 roomId', packet.roomId);
@@ -229,7 +229,7 @@ createRoomHandler(buffer, session) {
    * 
    * 
    ---------------------------------------------*/
-  onGameStartHandler(buffer, sesison) {
+  onGameStartHandler(buffer, session) {
     console.log('------------------------------');
     console.log('onGameStartHandler');
     console.log('------------------------------');
