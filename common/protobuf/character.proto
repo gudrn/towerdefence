@@ -6,15 +6,16 @@ import "struct.proto";
 import "enum.proto";
 
 // 캐릭터 위치 동기화
-message C2B_PositionUpdateRequest {
-    double x = 1;
-    double y = 2;
+message C2B_PositionUpdateRequest 
+{
+    PosInfo posInfos = 1;
+    int32 roomId = 2;
 }
 
 // 캐릭터 위치 동기화 알림
 message B2C_PositionUpdateNotification 
 {
-    repeated CharacterData characterPositions = 1;
+    PosInfo posInfos = 1;
 }
 
 // 카드 사용
@@ -23,12 +24,7 @@ message C2B_UseCardRequest {
 }
 
 // 카드 사용 알림
-message B2C_UseCardResponse {
+message B2C_UseCardNotification {
     bool isSuccess = 1;
 }
 
-//스킬 카드 사용 알림
-message C2B_SkillNotify {
-    CardType cardType = 1;
-    int32 userId = 2;
-}

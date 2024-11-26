@@ -1,7 +1,7 @@
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
 import { CustomError } from 'ServerCore/src/utils/error/customError.js';
 import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
-import { GameRoom } from './GameRoom.js';
+import { GameRoom } from './gameRoom.js';
 import { fromBinary, create } from '@bufbuild/protobuf';
 import {
   B2L_CreateGameRoomResponeSchema,
@@ -9,6 +9,11 @@ import {
 } from '../../protocol/room_pb.js';
 import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
 import { BattleSession } from '../../main/session/battleSession.js';
+import {
+  B2C_MonsterDeathNotificationSchema,
+  C2B_MonsterDeathRequestSchema,
+} from '../../protocol/monster_pb.js';
+import { C2B_PositionUpdateRequestSchema } from '../../protocol/character_pb.js';
 
 const MAX_ROOMS_SIZE = 10000;
 
@@ -81,7 +86,17 @@ class GameRoomManager {
    * @param {Buffer} buffer - 이동 데이터 버퍼
    * @param {BattleSession} session - 이동 요청을 보낸 세션
    ---------------------------------------------*/
-  moveHandler(buffer, session) {}
+  moveHandler(buffer, session) {
+    const packet = fromBinary(C2B_PositionUpdateRequestSchema, buffer);
+
+    const room = this.rooms.get(packet.roomId);
+    if (room == undefined) {
+      console.log('유효하지 않은 roomId');
+      throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
+    }
+
+    room.handleMove(packet, session);
+  }
 
   /**---------------------------------------------
    * [카드 사용 동기화]
@@ -119,13 +134,6 @@ class GameRoomManager {
   towerDestroyHandler(buffer, session) {}
 
   /**---------------------------------------------
-   * [몬스터 생성 동기화]
-   * @param {Buffer} buffer - 몬스터 생성 패킷 데이터
-   * @param {BattleSession} session - 몬스터 생성 요청을 보낸 세션
-   ---------------------------------------------*/
-  spawnMonsterHandler(buffer, session) {}
-
-  /**---------------------------------------------
    * [몬스터 타워 공격 동기화]
    * @param {Buffer} buffer - 몬스터 타워 공격 패킷 데이터
    * @param {BattleSession} session - 몬스터 타워 공격 요청을 보낸 세션
@@ -151,17 +159,25 @@ class GameRoomManager {
    * @param {Buffer} buffer - 몬스터 사망 패킷 데이터
    * @param {BattleSession} session - 몬스터 사망 요청을 보낸 세션
    ---------------------------------------------*/
-  monsterDeathHandler(buffer, session) {}
+  monsterDeathHandler(buffer, session) {
+    fromBinary(C2B_MonsterDeathRequestSchema, buffer);
+    const { monsterId } = buffer;
 
-  /**---------------------------------------------
-   * [broadcast] - 모든 유저에게 패킷 전송
-   * @param {Buffer} buffer - 전송할 데이터 버퍼
-   ---------------------------------------------*/
-  broadcast(buffer) {
-    for (const user of this.users) {
-      user.session.send(buffer);
-    }
+    session.removeMonster(monsterId);
+
+    // 3. 클라이언트에 전송할 데이터 생성
+    const notificationPacket = create(B2C_MonsterDeathNotificationSchema, {
+      monsterId: monsterId,
+    });
+
+    // 4. 패킷 직렬화
+    const notificationBuffer = PacketUtils.SerializePacket(
+      notificationPacket,
+      B2C_MonsterDeathNotificationSchema,
+      ePacketId.B2C_MonsterDeathNotification,
+      session.getNextSequence(),
+    );
+    this.broadcast(notificationBuffer);
   }
 }
-
 export const gameRoomManager = new GameRoomManager();

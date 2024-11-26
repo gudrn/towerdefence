@@ -15,7 +15,8 @@
   "dependencies": {
     "@bufbuild/protobuf": "^2.2.2",
     "dotenv": "^16.4.5",
-    "servercore": "file:../ServerCore"
+    "servercore": "file:../ServerCore",
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@bufbuild/buf": "^1.47.2",

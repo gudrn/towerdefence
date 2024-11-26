@@ -19,7 +19,7 @@ message C2L_Init
 
 message C2B_Init 
 {
-  UserData userData = 1;
+  GamePlayerData playerData = 1;
   int32 roomId = 2;
 }
 

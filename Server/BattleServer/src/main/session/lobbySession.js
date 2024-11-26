@@ -2,7 +2,7 @@ import { Session } from 'ServerCore/src/network/session.js';
 import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
 import { battleConfig } from '../../config/config.js';
 import { create } from '@bufbuild/protobuf';
-import { handleError } from '../../utils/error/errorHandler.js';
+import { handleError } from '../../utils/errorHandler.js';
 import { CustomError } from 'ServerCore/src/utils/error/customError.js';
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
 import lobbyHandlerMappings from '../handlerMapping/lobbyServerPacketHandler.js';
@@ -74,6 +74,7 @@ export class LobbySession extends Session {
       // 3. 핸들러 호출
       await handler(packet, this);
     } catch (error) {
+      console.log("로비 세션에서 발생 ㅇㅇ")
       handleError(this, error);
     }
   }

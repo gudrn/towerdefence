@@ -9,7 +9,7 @@ import { file_struct } from "./struct_pb.js";
  * Describes the file init.proto.
  */
 export const file_init = /*@__PURE__*/
-  fileDesc("Cgppbml0LnByb3RvEghQcm90b2NvbCIdCghMMkNfSW5pdBIRCglpc1N1Y2Nlc3MYASABKAgiLAoIQzJMX0luaXQSDgoGdXNlcklkGAEgASgJEhAKCG5pY2tuYW1lGAIgASgJIkAKCEMyQl9Jbml0EiQKCHVzZXJEYXRhGAEgASgLMhIuUHJvdG9jb2wuVXNlckRhdGESDgoGcm9vbUlkGAIgASgFIhwKCEIyTF9Jbml0EhAKCHNlcnZlcklkGAEgASgJYgZwcm90bzM", [file_struct]);
+  fileDesc("Cgppbml0LnByb3RvEghQcm90b2NvbCIdCghMMkNfSW5pdBIRCglpc1N1Y2Nlc3MYASABKAgiLAoIQzJMX0luaXQSDgoGdXNlcklkGAEgASgJEhAKCG5pY2tuYW1lGAIgASgJIkgKCEMyQl9Jbml0EiwKCnBsYXllckRhdGEYASABKAsyGC5Qcm90b2NvbC5HYW1lUGxheWVyRGF0YRIOCgZyb29tSWQYAiABKAUiHAoIQjJMX0luaXQSEAoIc2VydmVySWQYASABKAliBnByb3RvMw", [file_struct]);
 
 /**
  * Describes the message Protocol.L2C_Init.

@@ -7,8 +7,8 @@ import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
 import { CustomError } from 'ServerCore/src/utils/error/customError.js';
 import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
 import { fromBinary } from '@bufbuild/protobuf';
-import { GamePlayer } from '../../contents/room/GamePlayer.js';
-import { gameRoomManager } from '../../contents/room/GameRoomManager.js';
+import { gameRoomManager } from '../../contents/room/gameRoomManager.js';
+import { GamePlayer } from '../../contents/game/gamePlayer.js';
 
 export const onConnection = (socket) => {
   console.log('새로운 연결이 감지되었습니다:', socket.remoteAddress, socket.remotePort);
@@ -52,21 +52,23 @@ const initialHandler = async (buffer, socket) => {
   try {
     packet = fromBinary(C2B_InitSchema, buffer);
   } catch (error) {
-    throw new CustomError(ErrorCodes.PACKET_DECODE_ERROR, '패킷 디코딩 중 오류가 발생했습니다');
+    console.log(error)
+    throw new CustomError(ErrorCodes.PACKET_DECODE_ERROR, '패킷 디코딩 중 오류가 발생했습니다1');
   }
 
   //3. sessionManager에 세션 추가
   let session;
+  console.log(packet);
   // 세션이 생성되었으므로, 더 이상 주체 판별이 필요하지 않음
-  if (packet.userData) {
-    session = sessionManager.addSession(packet.userData.id, socket);
+  if (packet.playerData) {
+    session = sessionManager.addSession(packet.playerData.position.uuid, socket);
   } else {
-    throw new CustomError(ErrorCodes.PACKET_DECODE_ERROR, '패킷 디코딩 중 오류가 발생했습니다');
+    throw new CustomError(ErrorCodes.PACKET_DECODE_ERROR, '패킷 디코딩 중 오류가 발생했습니다2');
   }
 
-  sessionManager.getSessionOrNull(packet.userData.id)?.setNickname(packet.userData.name);
+  sessionManager.getSessionOrNull(packet.playerData.position.uuid)?.setNickname(packet.playerData.nickname);
 
-  const player = new GamePlayer(session, packet.userData);
+  const player = new GamePlayer(session, packet.playerData);
   gameRoomManager.enterRoomHandler(packet.roomId, player);
 };
 

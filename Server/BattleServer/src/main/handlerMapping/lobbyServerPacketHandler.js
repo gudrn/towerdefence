@@ -1,5 +1,5 @@
 import { Socket } from 'node:net';
-import { gameRoomManager } from '../../contents/room/GameRoomManager.js';
+import { gameRoomManager } from '../../contents/room/gameRoomManager.js';
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
 
 /**---------------------------------------------
@@ -9,9 +9,7 @@ import { ePacketId } from 'ServerCore/src/network/packetId.js';
 const lobbyHandlerMappings = {
   [ePacketId.L2B_CreateGameRoomRequest]: (buffer, session) =>
     gameRoomManager.createGameRoomHandler(buffer, session),
-  [ePacketId.B2L_CreateGameRoomRespone]: (buffer, session) =>
-    gameRoomManager.createGameRoomHandler(buffer, session),
-  [ePacketId.S2C_Error]: (buffer, session) => {
+  [ePacketId.S2C_Error]: function (buffer, session) {
     console.log('에러 ㅇㅇ');
   },
 };

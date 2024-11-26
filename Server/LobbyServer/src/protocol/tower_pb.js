@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import { file_struct } from "./struct_pb";
+import { file_struct } from "./struct_pb.js";
 
 /**
  * Describes the file tower.proto.

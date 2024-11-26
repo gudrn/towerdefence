@@ -1,129 +1,114 @@
+import { create, toBinary } from '@bufbuild/protobuf';
+import { CharacterDataSchema, RoomDataSchema, UserDataSchema } from '../../protocol/struct_pb.js';
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
 import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
-import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
-import { LobbySession } from '../../main/session/lobbySession.js';
-import {
-  L2C_JoinRoomNotificationSchema,
-  L2C_JoinRoomResponseSchema,
-  L2C_LeaveRoomNotificationSchema,
-  L2C_LeaveRoomResponseSchema,
-} from '../../protocol/room_pb.js';
-import { create } from '@bufbuild/protobuf';
-import { CharacterDataSchema, RoomDataSchema, UserDataSchema } from '../../protocol/struct_pb.js';
-import { RoomStateType } from '../../protocol/enum_pb.js';
+import { L2C_JoinRoomNotificationSchema, L2C_JoinRoomResponseSchema, L2C_LeaveRoomNotificationSchema, L2C_LeaveRoomResponseSchema } from '../../protocol/room_pb.js';
+import { eRoomStateId } from '../../config/roomState.js';
 
 /**
- * @enum {number}
+ * Room 클래스
+ * 게임 방 관리
  */
-export const eRoomStateId = {
-  WAITING: 0,
-  IN_PROGRESS: 1,
-}
-
-
 export class Room {
-  /**---------------------------------------------
-   * [생성자]
-   * @param {number} id - 방의 고유 ID
-   * @param {string} roomName - 방 이름
-   * @param {number} [maxPlayerCount=4] - 최대 플레이어 수
-  ---------------------------------------------*/
-  constructor(id, roomName, maxPlayerCount = 4) {
+  /**
+   * @param {number} id 방 ID
+   * @param {string} roomName 방 이름
+   * @param {number} [maxPlayerCount=2] 최대 플레이어 수
+   */
+  constructor(id, roomName, maxPlayerCount = 2) {
     this.id = id;
     this.roomName = roomName;
     this.users = [];
-    this.state = eRoomStateId.WAITING;
+    this.state = eRoomStateId.WAITING; // 'waiting', 'inProgress'
     this.maxPlayerCount = maxPlayerCount;
   }
 
-  /**---------------------------------------------
-   *  [방 입장]
-   * @param {LobbySession} newUser - 새로운 유저 세션
-   * @returns {boolean} - 입장 성공 여부
-  
-  1. 방이 가득 찼는지 확인
-  2. 기존 플레이어 목록을 유저에게 보내기
-  3. 유저 추가
-  4. 새 유저 입장 정보를 다른 유저들에게 알리기
-  ---------------------------------------------*/
+  /**
+   * 방에 유저 입장
+   * @param {Object} newUser 새로운 유저 객체
+   * @returns {boolean} 성공 여부
+   */
   enterRoom(newUser) {
-    console.log('enterRoom 호출 됨');
+    console.log('Room::enterRoom');
+
     // 1. 방이 가득 찼는지 확인
-    if(this.users.length>=this.maxPlayerCount){
+    if (this.users.length >= this.maxPlayerCount) {
       console.log('풀방');
-      return false; //패킷으로 변경해야할듯
-    }
-    
-    // 2. 기존 플레이어 목록 및 룸 데이터를 유저에게 보내기 전송
-    const existingPlayers = [];
-    for (const user of this.users) {
-      existingPlayers.push(create(UserDataSchema, {
-        id: user.getId(),
-        name: user.getNickname(),
-        characterType: create(CharacterDataSchema, {
-          characterType: user.getCharacterType(),
-        })
-      }));
+      return false;
     }
 
-    const roomData = create(RoomDataSchema, {
-      id: this.id, // 방 ID
-      name: this.getRoomName(), // 방 이름
-      maxUserNum: this.maxPlayerCount, // 최대 유저 수
-      ownerId: "tmp",
-      state: RoomStateType.WAIT, // 방 상태
-      users: existingPlayers, // 유저, 캐릭터 반환
-    });
+    // 2. 기존 플레이어 목록을 유저에게 보내기
+    {
+      const existUsers = [];
+      for (const user of this.users) {
+        existUsers.push(
+          create(UserDataSchema, {
+            id: user.getId(),
+            name: user.getNickname(),
+            character: create(CharacterDataSchema, {
+              characterType: user.getCharacterType(),
+            }),
+          })
+        );
+      }
 
-    const JoinRoomResponsePacket = create(L2C_JoinRoomResponseSchema, {
-      roomInfo: roomData,
-    });
+      const packet = create(L2C_JoinRoomResponseSchema, {
+        roomInfo: create(RoomDataSchema, {
+          id: this.id,
+          name: this.roomName,
+          maxUserNum: this.maxPlayerCount,
+          ownerId: 'tmp',
+          state: eRoomStateId.WAITING,
+          users: existUsers,
+        }),
+      });
 
-    const JoinRoomResponseBuffer = PacketUtils.SerializePacket(
-      JoinRoomResponsePacket,
-      L2C_JoinRoomResponseSchema,
-      ePacketId.L2C_JoinRoomResponse,
-      newUser.getNextSequence(),
-    );
+      const sendBuffer = PacketUtils.SerializePacket(
+        packet,
+        L2C_JoinRoomResponseSchema,
+        ePacketId.L2C_JoinRoomResponse,
+        newUser.getNextSequence()
+      );
 
-    newUser.send(JoinRoomResponseBuffer);
+      console.log('Serialized packet size:', sendBuffer.length);
+      newUser.send(sendBuffer);
+    }
 
-    //3. 유저 추가
+    // 3. 유저 추가
     this.users.push(newUser);
-    
-    try {
-      //4. 새 유저 입장 정보를 다른 유저들에게 알리기
-      const joinNotificationPacket = create(L2C_JoinRoomNotificationSchema, {
+
+    // 4. 새 유저 입장 정보를 다른 유저들에게 알리기
+    {
+      console.log('아이디는 ', newUser.getId());
+
+      const packet = create(L2C_JoinRoomNotificationSchema, {
         joinUser: create(UserDataSchema, {
           id: newUser.getId(),
           name: newUser.getNickname(),
           character: create(CharacterDataSchema, {
-            characterType: newUser.getCharacterType()
-          })
+            characterType: newUser.getCharacterType(),
+          }),
         }),
       });
-      
-      const joinNotificationBuffer = PacketUtils.SerializePacket(
-        joinNotificationPacket,
+
+      const sendBuffer = PacketUtils.SerializePacket(
+        packet,
         L2C_JoinRoomNotificationSchema,
         ePacketId.L2C_JoinRoomNotification,
         0
       );
-      
-      this.broadcast(joinNotificationBuffer);
-    } catch (error) {
-      console.log(error);
+
+      this.broadcast(sendBuffer);
     }
-    
-    return true; // 입장 성공
+
+    return true;
   }
 
-  /**---------------------------------------------
-    [방 퇴장]
-
-    1. 퇴장하는 유저에게 결과 통보
-    2. 기존 유저에게 퇴장하는 유저 정보 전송
-  ---------------------------------------------*/
+  /**
+   * 방에서 유저 퇴장
+   * @param {Object} player 퇴장할 유저 객체
+   * @returns {boolean} 성공 여부
+   */
   leaveRoom(player) {
     console.log('leaveRoom 호출 됨');
     // 유저 제거, 최대 4명의 유저가 담겨서 filter로 충분
@@ -159,35 +144,53 @@ export class Room {
     return true; // 퇴장 성공
   }
 
-  /**---------------------------------------------
-    [broadcast]
----------------------------------------------*/
+  /**
+   * @param {string} userId 유저 ID
+   * @returns {Object|undefined} 해당 유저 객체
+   */
+  getUser(userId) {
+    return this.users.find((user) => user.getId() === userId);
+  }
+
+  /**
+   * 게임 시작
+   */
+  startGame() {
+    this.state = eRoomStateId.IN_PROGRESS;
+
+    // TODO: 게임 시작 로직 구현
+  }
+
+  /**
+   * 모든 유저에게 메시지 전송
+   * @param {Buffer} buffer 전송할 데이터
+   */
   broadcast(buffer) {
     for (const user of this.users) {
       user.send(buffer);
     }
   }
 
-  /**---------------------------------------------
-     * 현재 방 이름 반환
-     * @returns {string}
-   ---------------------------------------------*/
+  /**
+   * 방 이름 반환
+   * @returns {string} 방 이름
+   */
   getRoomName() {
     return this.roomName;
   }
 
-  /**---------------------------------------------
-     * 현재 유저 수 반환
-     * @returns {number}
-   ---------------------------------------------*/
+  /**
+   * 현재 유저 수 반환
+   * @returns {number} 현재 유저 수
+   */
   getCurrentUsersCount() {
     return this.users.length;
   }
 
-  /**---------------------------------------------
-     * 최대 유저 수 반환
-     * @returns {number}
-   ---------------------------------------------*/
+  /**
+   * 최대 유저 수 반환
+   * @returns {number} 최대 유저 수
+   */
   getMaxUsersCount() {
     return this.maxPlayerCount;
   }
