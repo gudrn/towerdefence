@@ -2,7 +2,7 @@ import { create, toBinary } from '@bufbuild/protobuf';
 import { CharacterDataSchema, RoomDataSchema, UserDataSchema } from '../../protocol/struct_pb.js';
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
 import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
-import { L2C_JoinRoomNotificationSchema, L2C_JoinRoomResponseSchema } from '../../protocol/room_pb.js';
+import { L2C_JoinRoomNotificationSchema, L2C_JoinRoomResponseSchema, L2C_LeaveRoomNotificationSchema, L2C_LeaveRoomResponseSchema } from '../../protocol/room_pb.js';
 import { eRoomStateId } from '../../config/roomState.js';
 
 /**
@@ -110,8 +110,38 @@ export class Room {
    * @returns {boolean} 성공 여부
    */
   leaveRoom(player) {
-    // TODO: 유저 퇴장 처리 구현
-    return true;
+    console.log('leaveRoom 호출 됨');
+    // 유저 제거, 최대 4명의 유저가 담겨서 filter로 충분
+    this.users = this.users.filter((user) => user !== player);
+
+    const leaveResponse = create(L2C_LeaveRoomResponseSchema, {
+      isSuccess: true,
+      failCode: 0,
+    });
+    const leaveResponseBuffer = PacketUtils.SerializePacket(
+      leaveResponse,
+      L2C_LeaveRoomResponseSchema,
+      ePacketId.L2C_LeaveRoomResponse,
+      player.getNextSequence(),
+    );
+    player.send(leaveResponseBuffer);
+
+    // 유저 퇴장 알림
+    const leaveNotificationPacket = create(L2C_LeaveRoomNotificationSchema, {
+      userId: player.getId(),
+    });
+
+    const leaveNotificationBuffer = PacketUtils.SerializePacket(
+      leaveNotificationPacket,
+      L2C_LeaveRoomNotificationSchema,
+      ePacketId.L2C_LeaveRoomNotification,
+      player.getNextSequence(),
+    );
+
+    // 나머지 유저들에게 유저 퇴장 알림 전송
+    this.broadcast(leaveNotificationBuffer);
+
+    return true; // 퇴장 성공
   }
 
   /**
