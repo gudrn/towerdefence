@@ -6,7 +6,7 @@ import "enum.proto";
 
 message BaseData {
 	int32 hp = 1; // 현재 체력
-    int32 maxHp = 2; // 최대 체력
+  int32 maxHp = 2; // 최대 체력
 }
 
 message TowerData {
@@ -52,8 +52,21 @@ message CharacterData {
 
 message PosInfo
 {
-	float x = 1;
-	float y = 2;
+  string uuid = 1;
+	float x = 2;
+	float y = 3;
+}
+
+message Vec2
+{
+  float x = 1;
+  float y = 2;
+}
+
+message GamePlayerData {
+  PosInfo position = 1;
+  string nickname = 2;
+  CharacterType characterType = 3;
 }
 
 message ErrorData

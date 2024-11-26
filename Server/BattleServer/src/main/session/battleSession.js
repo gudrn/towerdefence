@@ -1,6 +1,6 @@
 import { Socket } from "net";
 import { Session } from "ServerCore/src/network/session.js";
-import { handleError } from "../../utils/error/errorHandler.js";
+import { handleError } from "../../utils/errorHandler.js";
 import handlerMappings from "../handlerMapping/clientPacketHandler.js";
 import { CustomError } from "ServerCore/src/utils/error/customError.js";
 import { ErrorCodes } from "ServerCore/src/utils/error/errorCodes.js";
@@ -52,6 +52,8 @@ export class BattleSession extends Session {
       // 3. 핸들러 호출
       await handler(packet, this);
     } catch (error) {
+      console.log("핸들 에러 호출");
+      console.log(error);
       handleError(this, error);
     }
   }

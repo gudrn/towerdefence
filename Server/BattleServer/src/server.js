@@ -7,6 +7,7 @@ import { BattleSession } from './main/session/battleSession.js';
 
 import { battleConfig } from './config/config.js';
 import { SessionManager } from 'ServerCore/src/network/sessionManager.js';
+import { assetManager } from './utils/assetManager.js';
 
 
 const server = net.createServer(onConnection);
@@ -22,7 +23,7 @@ lobbySession.connectLobbyServer();
 
 const initServer = async () => {
   try {
-    //await testAllConnections(pools);
+    await assetManager.loadGameAssets();
     // 다음 작업
   } catch (error) {
     console.error(error.message);

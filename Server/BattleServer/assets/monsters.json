@@ -1,0 +1,46 @@
+{
+  "name": "monster",
+  "varsion": "1.0.0",
+  "data": [
+    {
+      "prefabId": "Robot1",
+      "maxHp": 100,
+      "attackRange": 1,
+      "attackDamage": 1,
+      "attackCoolDown": 2,
+      "moveSpeed": 2
+    },
+    {
+      "prefabId": "Robot2",
+      "maxHp": 100,
+      "attackRange": 1,
+      "attackDamage": 1,
+      "attackCoolDown": 2,
+      "moveSpeed": 2
+    },
+    {
+      "prefabId": "Robot3",
+      "maxHp": 100,
+      "attackRange": 1,
+      "attackDamage": 1,
+      "attackCoolDown": 2,
+      "moveSpeed": 2
+    },
+    {
+      "prefabId": "Robot4",
+      "maxHp": 100,
+      "attackRange": 1,
+      "attackDamage": 1,
+      "attackCoolDown": 2,
+      "moveSpeed": 2
+    },
+    {
+      "prefabId": "Robot5",
+      "maxHp": 100,
+      "attackRange": 1,
+      "attackDamage": 1,
+      "attackCoolDown": 2,
+      "moveSpeed": 2
+    }
+  ]
+}

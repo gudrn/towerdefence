@@ -35,7 +35,7 @@ export const ePacketId = {
   B2C_JoinRoomResponse: 117,
   C2B_SpawnMonsterRequest: 201,
   B2C_SpawnMonsterResponse: 202,
-  S2B_SpawnMonsterNotification: 203,
+  B2C_SpawnMonsterNotification: 203,
   B2S_MonsterAttackTowerRequest: 204,
   S2B_UpdateTowerHPNotification: 205,
   B2S_MonsterAttackBaseRequest: 206,

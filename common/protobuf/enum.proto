@@ -14,7 +14,8 @@ enum ObjectType {
 	TOWER = 0;
 	PLAYER = 1;
 	MONSTER = 2;
-	ENV = 3;
+  PROJECTILE = 3;
+	ENV = 4;
 }
 
 enum CardType {

@@ -1,0 +1,31 @@
+{
+  "name": "stage",
+  "version": "1.0.0",
+  "data": [
+    {
+      "stage": 1,
+      "stageMonsters": 5,
+      "spawnRate": 2000
+    },
+    {
+      "stage": 2,
+      "stageMonsters": 1,
+      "spawnRate": 3000
+    },
+    {
+      "stage": 3,
+      "stageMonsters": 30,
+      "spawnRate": 3000
+    },
+    {
+      "stage": 4,
+      "stageMonsters": 40,
+      "spawnRate": 3000
+    },
+    {
+      "stage": 5,
+      "stageMonsters": 50,
+      "spawnRate": 2500
+    }
+  ]
+}

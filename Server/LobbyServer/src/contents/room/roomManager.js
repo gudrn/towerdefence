@@ -20,6 +20,7 @@ import { Room } from './room.js';
 import { handleError } from '../../utils/errorHandler.js';
 import { LobbySession } from '../../main/session/lobbySession.js';
 import { lobbyConfig } from '../../config/config.js';
+import { RoomDataSchema } from '../../protocol/struct_pb.js';
 
 const MAX_ROOMS_SIZE = 10000;
 
@@ -28,6 +29,7 @@ class RoomManager {
     /** @private @type {Map<string, Room>} */
     this.rooms = new Map();
     this.availableRoomIds = Array.from({ length: MAX_ROOMS_SIZE }, (_, i) => i + 1);
+
     this.waitingQueue = [];
     let tmpRoomId = this.availableRoomIds.shift();
     if (!tmpRoomId) tmpRoomId = 0;
@@ -43,48 +45,31 @@ class RoomManager {
     );
     session.send(response);
   }
-
-  createRoomHandler(buffer, session) {
-    console.log('createRoomHandler');
-    // 클라이언트가 보낸 패킷 역직렬화
-    const packet = fromBinary(C2L_CreateRoomRequestSchema, buffer);
-    packet.maxUserNum += 1;
-    if (packet.maxUserNum < 4) {
-      const responsePacket = create(L2C_CreateRoomResponseSchema, {
-        isSuccess: false,
-        room: {},
-        failCode: ErrorCodes.CREATE_ROOM_FAILED,
-      });
-      this.sendResponse(
-        session,
-        responsePacket,
-        L2C_CreateRoomResponseSchema,
-        ePacketId.L2C_CreateRoomResponse,
-      );
-      throw new CustomError(
-        ErrorCodes.CREATE_ROOM_FAILED,
-        '방 인원수는 최대 4명 이상이어야 합니다.',
-      );
-    }
-    let tmpRoomId = this.availableRoomIds.shift() || 0;
-    const newRoom = new Room(tmpRoomId, packet.name, packet.maxUserNum);
-    this.rooms.set(tmpRoomId, newRoom);
-    console.log(newRoom);
-
-    // 응답 정보 생성
-    const responsePacket = create(L2C_CreateRoomResponseSchema, {
-      isSuccess: true,
-      room: newRoom,
-      failCode: ErrorCodes.NONE_FAILCODE,
-    });
-    this.sendResponse(
-      session,
-      responsePacket,
-      L2C_CreateRoomResponseSchema,
-      ePacketId.L2C_CreateRoomResponse,
-    );
+  /*---------------------------------------------
+    [방 생성]
+---------------------------------------------*/
+createRoomHandler(buffer, session) {
+  console.log('createRoomHandler');
+  //패킷 분해
+  const packet = fromBinary(C2L_CreateRoomRequestSchema, buffer);
+  let roomId = this.availableRoomIds.shift();
+  if(roomId == undefined){
+    handleError(session, new CustomError(ErrorCodes.SOCKET_ERROR, "방 id부족"));
+    return;
   }
+  this.rooms.set(roomId, new Room(roomId, packet.name, packet.maxUserNum));
 
+  const response = create(L2C_CreateRoomResponseSchema, {
+    isSuccess: true,
+    room: create(RoomDataSchema, {
+      id: roomId, 
+      name: packet.name,
+    })
+  });
+
+  const sendBuffer = PacketUtils.SerializePacket(response, L2C_CreateRoomResponseSchema, ePacketId.L2C_CreateRoomResponse, 0);
+  session.send(sendBuffer);
+}
   /**---------------------------------------------
     [방 입장]
     * @param {Buffer} buffer
@@ -130,11 +115,10 @@ class RoomManager {
 ---------------------------------------------*/
   getRoomsHandler(buffer, session) {
     console.log('getRoomsHandler');
-
-    // const packet = fromBinary(C2L_GetRoomListRequestSchema, buffer);
-
     // 방 목록 정보 생성
     const roomsData = [];
+
+    // 방 목록을 순회하면서 RoomInfo 메시지 생성
     this.rooms.forEach((room, roomId) => {
       const roomData = {
         id: roomId,
@@ -203,43 +187,38 @@ class RoomManager {
    * @param {Buffer} buffer
    * @param {LobbySession | BattleSession} session
    ---------------------------------------------*/
-  gameStartHandler(buffer, session) {
+  gameStartHandler(buffer, sesison) {
     console.log('gameStartHandler');
-
-    //로비서버와 배틀서버가 1개씩만 존재(임시)
-    const battleSession = battleSessionManager.getSessionOrNull('battleServerSession'); //임시. 로드 밸런서에서 배운 것처럼 여러 배틀세션에 나눠서 요청하기
+    const battleSession =
+      battleSessionManager.getSessionOrNull('battleServerSession');
 
     if (!battleSession) {
       console.log('!BattleServerSession을 찾을 수 없습니다.');
       throw new CustomError(ErrorCodes.SOCKET_ERROR, 'BattleServerSession을 찾을 수 없습니다.');
     }
 
-    //클라가 보낸 패킷 역직렬화(decoding)
     const packet = fromBinary(C2L_GameStartSchema, buffer);
-
-    //생성되어 있는 방들 중 roomId를 통해 해당 room을 가져오기
     const room = this.rooms.get(packet.roomId);
     if (room == undefined) {
       console.log('방을 찾을 수 없습니다.');
       throw new CustomError(ErrorCodes.SOCKET_ERROR, 'invalid roomId.');
     }
 
-    //배틀 서버에게 방 생성 요청하기
     const L2BPacket = create(L2B_CreateGameRoomRequestSchema, {
       roomId: packet.roomId,
       maxPlayers: room.getCurrentUsersCount(),
     });
 
-    //패킷 직렬화
     const sendBuffer = PacketUtils.SerializePacket(
       L2BPacket,
       L2B_CreateGameRoomRequestSchema,
       ePacketId.L2B_CreateGameRoomRequest,
-      session.getNextSequence(),
+      sesison.getNextSequence(),
     );
 
-    //배틀 서버에게 전송
+    console.log('내가 받은 roomId', packet.roomId);
     battleSession.send(sendBuffer);
+    console.log('보내기 직후');
   }
 
   /**---------------------------------------------
@@ -250,10 +229,11 @@ class RoomManager {
    * 
    * 
    ---------------------------------------------*/
-  onGameStartHandler(buffer, session) {
+  onGameStartHandler(buffer, sesison) {
+    console.log('------------------------------');
     console.log('onGameStartHandler');
+    console.log('------------------------------');
 
-    //B2L_CreateRoomSchema(수신받은  packetId)
     const packet = fromBinary(B2L_CreateGameRoomResponeSchema, buffer);
 
     if (packet.isCreated == false) {

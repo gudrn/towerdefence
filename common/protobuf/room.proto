@@ -49,8 +49,7 @@ message L2B_GameStartRequest
 
 message B2C_GameStartNotification  
 {
-    //UserData를 wrapping한 새로운 struct 필요할 듯
-    repeated UserData userDatas = 1;
+    repeated GamePlayerData playerDatas = 1;
 }
 
 message C2L_GetRoomListRequest 
@@ -79,7 +78,7 @@ message L2C_JoinRoomNotification
     UserData joinUser = 1;
 }
 
-message B2C_JoinRoomResponse
+message B2C_JoinRoomRequest
 {
     bool isSuccess = 1;
 }

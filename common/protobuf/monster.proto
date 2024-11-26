@@ -2,20 +2,18 @@ syntax = "proto3";
 
 package Protocol;
 
+import "struct.proto";
+
 message C2B_SpawnMonsterRequest {
 }
 
-message B2C_SpawnMonsterResponse {
-    int32 monsterId = 1; 
-    int32 monsterNumber = 2;
+
+message B2C_SpawnMonsterNotification {
+    PosInfo posInfos = 1;
+    string prefabId = 2;
 }
 
-message S2B_SpawnMonsterNotification {
-    int32 monsterId = 1;
-    int32 monsterNumber = 2;
-}
-
-message B2S_MonsterAttackTowerRequest {
+message C2B_MonsterAttackTowerRequest {
     int32 monsterId = 1;
     int32 towerId = 2;
 }
