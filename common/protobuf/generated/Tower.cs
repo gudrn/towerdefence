@@ -26,10 +26,10 @@ namespace Protocol {
           string.Concat(
             "Cgt0b3dlci5wcm90bxIIUHJvdG9jb2waDHN0cnVjdC5wcm90byJcChVDMkJf",
             "VG93ZXJCdWlsZFJlcXVlc3QSIgoFdG93ZXIYASABKAsyEy5Qcm90b2NvbC5U",
-            "b3dlckRhdGESDwoHb3duZXJJZBgCIAEoBRIOCgZyb29tSWQYAyABKAUiKwoW",
+            "b3dlckRhdGESDwoHb3duZXJJZBgCIAEoCRIOCgZyb29tSWQYAyABKAUiKwoW",
             "QjJDX1Rvd2VyQnVpbGRSZXNwb25zZRIRCglpc1N1Y2Nlc3MYASABKAgiUQoa",
             "QjJDX1Rvd2VyQnVpbGROb3RpZmljYXRpb24SIgoFdG93ZXIYASABKAsyEy5Q",
-            "cm90b2NvbC5Ub3dlckRhdGESDwoHb3duZXJJZBgCIAEoBSI7ChZCMkNfVG93",
+            "cm90b2NvbC5Ub3dlckRhdGESDwoHb3duZXJJZBgCIAEoCSI7ChZCMkNfVG93",
             "ZXJBdHRhY2tSZXF1ZXN0Eg8KB3Rvd2VySWQYASABKAUSEAoIdGFyZ2V0SWQY",
             "AiABKAUiVgobQjJDX1Rvd2VyQXR0YWNrTm90aWZpY2F0aW9uEhEKCWlzU3Vj",
             "Y2VzcxgBIAEoCBIOCgZkYW1hZ2UYAiABKAUSFAoMdGFyZ2V0SGVhbHRoGAMg",
@@ -120,16 +120,16 @@ namespace Protocol {
 
     /// <summary>Field number for the "ownerId" field.</summary>
     public const int OwnerIdFieldNumber = 2;
-    private int ownerId_;
+    private string ownerId_ = "";
     /// <summary>
     ///유저 ID
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int OwnerId {
+    public string OwnerId {
       get { return ownerId_; }
       set {
-        ownerId_ = value;
+        ownerId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -174,7 +174,7 @@ namespace Protocol {
     public override int GetHashCode() {
       int hash = 1;
       if (tower_ != null) hash ^= Tower.GetHashCode();
-      if (OwnerId != 0) hash ^= OwnerId.GetHashCode();
+      if (OwnerId.Length != 0) hash ^= OwnerId.GetHashCode();
       if (RoomId != 0) hash ^= RoomId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -198,9 +198,9 @@ namespace Protocol {
         output.WriteRawTag(10);
         output.WriteMessage(Tower);
       }
-      if (OwnerId != 0) {
-        output.WriteRawTag(16);
-        output.WriteInt32(OwnerId);
+      if (OwnerId.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(OwnerId);
       }
       if (RoomId != 0) {
         output.WriteRawTag(24);
@@ -220,9 +220,9 @@ namespace Protocol {
         output.WriteRawTag(10);
         output.WriteMessage(Tower);
       }
-      if (OwnerId != 0) {
-        output.WriteRawTag(16);
-        output.WriteInt32(OwnerId);
+      if (OwnerId.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(OwnerId);
       }
       if (RoomId != 0) {
         output.WriteRawTag(24);
@@ -241,8 +241,8 @@ namespace Protocol {
       if (tower_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Tower);
       }
-      if (OwnerId != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(OwnerId);
+      if (OwnerId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(OwnerId);
       }
       if (RoomId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(RoomId);
@@ -265,7 +265,7 @@ namespace Protocol {
         }
         Tower.MergeFrom(other.Tower);
       }
-      if (other.OwnerId != 0) {
+      if (other.OwnerId.Length != 0) {
         OwnerId = other.OwnerId;
       }
       if (other.RoomId != 0) {
@@ -293,8 +293,8 @@ namespace Protocol {
             input.ReadMessage(Tower);
             break;
           }
-          case 16: {
-            OwnerId = input.ReadInt32();
+          case 18: {
+            OwnerId = input.ReadString();
             break;
           }
           case 24: {
@@ -323,8 +323,8 @@ namespace Protocol {
             input.ReadMessage(Tower);
             break;
           }
-          case 16: {
-            OwnerId = input.ReadInt32();
+          case 18: {
+            OwnerId = input.ReadString();
             break;
           }
           case 24: {
@@ -595,16 +595,16 @@ namespace Protocol {
 
     /// <summary>Field number for the "ownerId" field.</summary>
     public const int OwnerIdFieldNumber = 2;
-    private int ownerId_;
+    private string ownerId_ = "";
     /// <summary>
     ///타워 생성자 ID
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int OwnerId {
+    public string OwnerId {
       get { return ownerId_; }
       set {
-        ownerId_ = value;
+        ownerId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -633,7 +633,7 @@ namespace Protocol {
     public override int GetHashCode() {
       int hash = 1;
       if (tower_ != null) hash ^= Tower.GetHashCode();
-      if (OwnerId != 0) hash ^= OwnerId.GetHashCode();
+      if (OwnerId.Length != 0) hash ^= OwnerId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -656,9 +656,9 @@ namespace Protocol {
         output.WriteRawTag(10);
         output.WriteMessage(Tower);
       }
-      if (OwnerId != 0) {
-        output.WriteRawTag(16);
-        output.WriteInt32(OwnerId);
+      if (OwnerId.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(OwnerId);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -674,9 +674,9 @@ namespace Protocol {
         output.WriteRawTag(10);
         output.WriteMessage(Tower);
       }
-      if (OwnerId != 0) {
-        output.WriteRawTag(16);
-        output.WriteInt32(OwnerId);
+      if (OwnerId.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(OwnerId);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -691,8 +691,8 @@ namespace Protocol {
       if (tower_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Tower);
       }
-      if (OwnerId != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(OwnerId);
+      if (OwnerId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(OwnerId);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -712,7 +712,7 @@ namespace Protocol {
         }
         Tower.MergeFrom(other.Tower);
       }
-      if (other.OwnerId != 0) {
+      if (other.OwnerId.Length != 0) {
         OwnerId = other.OwnerId;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -737,8 +737,8 @@ namespace Protocol {
             input.ReadMessage(Tower);
             break;
           }
-          case 16: {
-            OwnerId = input.ReadInt32();
+          case 18: {
+            OwnerId = input.ReadString();
             break;
           }
         }
@@ -763,8 +763,8 @@ namespace Protocol {
             input.ReadMessage(Tower);
             break;
           }
-          case 16: {
-            OwnerId = input.ReadInt32();
+          case 18: {
+            OwnerId = input.ReadString();
             break;
           }
         }

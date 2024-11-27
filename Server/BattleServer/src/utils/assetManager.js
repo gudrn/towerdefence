@@ -133,7 +133,9 @@ class AssetManager {
    * @returns {Object|null} 해당 타워 데이터 또는 null
    */
   getTowerData(towerId) {
-    return this.towers.find((tower) => tower.towerId === towerId) || null;
+    let tower = this.towers[towerId];
+    console.log(tower);
+    return this.towers[towerId];
   }
 
   /**

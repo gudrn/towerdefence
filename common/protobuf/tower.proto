@@ -8,7 +8,7 @@ import "struct.proto";
 message C2B_TowerBuildRequest 
 {
     TowerData tower = 1; //타워 정보
-    int32 ownerId = 2; //유저 ID
+    string ownerId = 2; //유저 ID
     int32 roomId = 3; // 룸 ID
 }
 
@@ -22,7 +22,7 @@ message B2C_TowerBuildResponse
 message B2C_TowerBuildNotification
 {
     TowerData tower = 1; //생성된 타워 정보
-    int32 ownerId = 2; //타워 생성자 ID
+    string ownerId = 2; //타워 생성자 ID
 }
 
 //타워 공격 요청

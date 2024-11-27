@@ -48,8 +48,8 @@ export class GameRoom {
 
   // 1. 방이 가득 찼는지 확인
   addplayer(player) {
-    if (this.users.length >= this.maxPlayerCount) {
-      console.log('this.users.length: ' + this.users.length);
+    if (this.users.size >= this.maxPlayerCount) {
+      console.log('this.users.length: ' + this.users.size);
       console.log('this.maxPlayerCount: ' + this.maxPlayerCount);
       return false; // 방이 가득 참
     }
@@ -58,7 +58,7 @@ export class GameRoom {
     }
     // 2. 유저 추가
     this.users.set(player.session.getId(), player);
-    console.log(`유저가 방에 입장했습니다. 현재 인원: ${this.users.length}/${this.maxPlayerCount}`);
+    console.log(`유저가 방에 입장했습니다. 현재 인원: ${this.users.size}/${this.maxPlayerCount}`);
     return true;
   }
 
@@ -201,7 +201,7 @@ export class GameRoom {
     const { tower, ownerId } = packet;
 
     // 1. 타워 데이터 존재 확인
-    const towerData = assetManager.getTowerData(tower.towerId);
+    const towerData = assetManager.getTowerData(tower.towerNumber);
     if (!towerData) {
       const failResponse = create(B2C_TowerBuildResponseSchema, {
         isSuccess: false,
@@ -245,7 +245,7 @@ export class GameRoom {
       prefabId: towerData.prefabId,
     };
 
-    this.towerList.set(tower.towerId, newTower);
+    this.towerList.set(tower.towerNumber, newTower);
     console.log(
       `타워생성 성공. towerId: ${tower.towerId}, prefabId: ${towerData.prefabId}, 위치: (${tower.towerPos}`,
     );
@@ -267,14 +267,18 @@ export class GameRoom {
 
     // 4. 모든 클라이언트에게 타워 추가 알림
     const notification = create(B2C_TowerBuildNotificationSchema, {
-      tower: tower,
-      ownerId: ownerId,
+      tower: packet.tower,
+      ownerId: packet.ownerId,
     });
 
+    console.log('-------------');
+    console.log(packet.tower);
+    console.log(packet.ownerId);
+    console.log('-------------');
     const notificationBuffer = PacketUtils.SerializePacket(
       notification,
       B2C_TowerBuildNotificationSchema,
-      ePacketId.B2C_AddTowerNotification,
+      ePacketId.B2C_TowerBuildNotification,
       session.getNextSequence(),
     );
 

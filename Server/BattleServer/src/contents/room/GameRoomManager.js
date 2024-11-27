@@ -130,8 +130,10 @@ class GameRoomManager {
     const packet = fromBinary(C2B_TowerBuildRequestSchema, buffer);
 
     // 2. 세션에서 roomId 가져오기
-    const roomId = session.roomId;
+    const roomId = packet.roomId;
     const room = this.rooms.get(roomId);
+
+    console.log('roomId', roomId);
 
     if (room == undefined) {
       console.log('유효하지 않은 roomId');
