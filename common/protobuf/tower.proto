@@ -9,13 +9,13 @@ message C2B_TowerBuildRequest
 {
     TowerData tower = 1; //타워 정보
     int32 ownerId = 2; //유저 ID
+    int32 roomId = 3; // 룸 ID
 }
 
 //타워 생성 응답
 message B2C_TowerBuildResponse
 {
     bool isSuccess = 1;
-    TowerData tower = 2; //생성된 타워 정보
 }
 
 //타워 생성 알림

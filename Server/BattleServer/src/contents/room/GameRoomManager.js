@@ -14,10 +14,11 @@ import {
   C2B_MonsterDeathRequestSchema,
 } from '../../protocol/monster_pb.js';
 import { C2B_PositionUpdateRequestSchema } from '../../protocol/character_pb.js';
-import { 
-  B2C_TowerAttackRequestSchema, 
-  C2B_TowerBuildRequestSchema, 
-  C2B_TowerDestroyRequestSchema } from '../../protocol/tower_pb.js';
+import {
+  B2C_TowerAttackRequestSchema,
+  C2B_TowerBuildRequestSchema,
+  C2B_TowerDestroyRequestSchema,
+} from '../../protocol/tower_pb.js';
 
 const MAX_ROOMS_SIZE = 10000;
 
@@ -53,6 +54,7 @@ class GameRoomManager {
    * @param {LobbySession} session - 요청한 세션
    ---------------------------------------------*/
   createGameRoomHandler(buffer, session) {
+    console.log('createGameRoomHandler');
     // 1. 로비 서버 요청 패킷 역직렬화
     const requestPacket = fromBinary(L2B_CreateGameRoomRequestSchema, buffer);
 
@@ -121,7 +123,7 @@ class GameRoomManager {
    * @param {Buffer} buffer - 타워 생성 패킷 데이터
    * @param {BattleSession} session - 타워 생성 요청을 보낸 세션
    ---------------------------------------------*/
-   towerBuildHandler(buffer, session) {
+  towerBuildHandler(buffer, session) {
     console.log('towerBuildHandler');
 
     // 1. 패킷 역직렬화
@@ -144,7 +146,7 @@ class GameRoomManager {
    * @param {Buffer} buffer - 타워 공격 패킷 데이터
    * @param {BattleSession} session - 타워 공격 요청을 보낸 세션
    ---------------------------------------------*/
-   towerAttackHandler(buffer, session) {
+  towerAttackHandler(buffer, session) {
     console.log('towerAttackHandler');
 
     // 1. 패킷 역직렬화
@@ -167,7 +169,7 @@ class GameRoomManager {
    * @param {Buffer} buffer - 타워 파괴 패킷 데이터
    * @param {BattleSession} session - 타워 파괴 요청을 보낸 세션
    ---------------------------------------------*/
-   towerDestroyHandler(buffer, session) {
+  towerDestroyHandler(buffer, session) {
     console.log('towerDestroyHandler');
 
     // 1. 패킷 역직렬화

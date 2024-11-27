@@ -1,9 +1,9 @@
-import { ParseUtils } from "./parseUtils.js";
+import { ParseUtils } from './parseUtils.js';
 
 /**
  * ---------------------------------------------
  * ServerAssetManager
- * 
+ *
  * - 목적: game asset을 중앙에서 관리하기 위함
  * - 장점: 유지 보수 용이
  * ---------------------------------------------
@@ -38,10 +38,10 @@ class AssetManager {
    */
   async loadGameAssets() {
     try {
-      const [monsters, stages] = await Promise.all([
-        ParseUtils.readFileAsync("monsters.json"),
-        ParseUtils.readFileAsync("stages.json"),
-        ParseUtils.readFileAsync("tower.json")
+      const [monsters, stages, towers] = await Promise.all([
+        ParseUtils.readFileAsync('monsters.json'),
+        ParseUtils.readFileAsync('stages.json'),
+        ParseUtils.readFileAsync('tower.json'),
       ]);
 
       // 몬스터 자원 로드
@@ -51,16 +51,15 @@ class AssetManager {
       // 타워 자원 로드
       this.towers = towers.data;
 
-      if(this.monsters == undefined || this.towers == undefined)
-        throw new Error("asset is null");
+      if (this.monsters == undefined || this.towers == undefined) throw new Error('asset is null');
 
-      return { 
+      return {
         monsters: this.monsters,
-        towers: this.towers 
+        towers: this.towers,
       };
     } catch (error) {
       console.log(error);
-      throw new Error("Failed to load game assets");
+      throw new Error('Failed to load game assets');
     }
   }
 
@@ -72,10 +71,10 @@ class AssetManager {
    * @returns {{monsters: Array<Object>, stages: Array<Object>}} 게임 에셋
    */
   getGameAssets() {
-    return { 
-      monsters: this.monsters, 
+    return {
+      monsters: this.monsters,
       stages: this.stages,
-      towers: this.towers 
+      towers: this.towers,
     };
   }
 
@@ -134,7 +133,7 @@ class AssetManager {
    * @returns {Object|null} 해당 타워 데이터 또는 null
    */
   getTowerData(towerId) {
-    return this.towers.find(tower => tower.towerId === towerId) || null;
+    return this.towers.find((tower) => tower.towerId === towerId) || null;
   }
 
   /**

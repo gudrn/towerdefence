@@ -286,7 +286,8 @@ export class GameRoom {
    * @param {C2B_TowerAttackRequest} packet - 타워 공격 패킷 데이터
    * @param {Session} session - 세션 정보
    ---------------------------------------------*/
-  handleTowerAttack(packet, session) {// 몬스터 길 찾기 완료 후 수정 예정
+  handleTowerAttack(packet, session) {
+    // 몬스터 길 찾기 완료 후 수정 예정
     console.log('handleTowerAttack');
     const { towerId, targetId } = packet;
 
@@ -336,7 +337,8 @@ export class GameRoom {
    * @param {C2B_TowerDestroyRequest} packet - 타워 파괴 패킷 데이터
    * @param {Session} session - 세션 정보
    ---------------------------------------------*/
-  handleTowerDestroy(packet, session) {// 몬스터 길 찾기 완료 후 수정 예정
+  handleTowerDestroy(packet, session) {
+    // 몬스터 길 찾기 완료 후 수정 예정
     console.log('handleTowerDestroy');
     const { towerId } = packet;
 
@@ -481,7 +483,7 @@ export class GameRoom {
    ---------------------------------------------*/
   validatePosition(position) {
     // 맵 범위 검증 (32x32 맵)
-    if (position.x < 0 || position.x >= 32 || position.y < 0 || position.y >= 32) {
+    if (position.x < -16 || position.x > 16 || position.y < -16 || position.y > 16) {
       console.log(`맵 범위 초과. 위치: ${position.x}, ${position.y}`);
       return false;
     }

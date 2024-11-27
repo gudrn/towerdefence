@@ -2,82 +2,75 @@
 // @generated from file struct.proto (package Protocol, syntax proto3)
 /* eslint-disable */
 
-import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import { file_enum } from "./enum_pb.js";
+import { fileDesc, messageDesc } from '@bufbuild/protobuf/codegenv1';
+import { file_enum } from './enum_pb.js';
 
 /**
  * Describes the file struct.proto.
  */
-export const file_struct = /*@__PURE__*/
-  fileDesc("CgxzdHJ1Y3QucHJvdG8SCFByb3RvY29sIiUKCEJhc2VEYXRhEgoKAmhwGAEgASgFEg0KBW1heEhwGAIgASgFIlYKCVRvd2VyRGF0YRIPCgd0b3dlcklkGAEgASgFEhMKC3Rvd2VyTnVtYmVyGAIgASgFEiMKCHRvd2VyUG9zGAMgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyJtCgtNb25zdGVyRGF0YRIRCgltb25zdGVySWQYASABKAUSFQoNbW9uc3Rlck51bWJlchgCIAEoBRINCgVsZXZlbBgDIAEoBRIlCgptb25zdGVyUG9zGAQgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyJQCghVc2VyRGF0YRIKCgJpZBgBIAEoCRIMCgRuYW1lGAIgASgJEioKCWNoYXJhY3RlchgDIAEoCzIXLlByb3RvY29sLkNoYXJhY3RlckRhdGEilAEKCFJvb21EYXRhEgoKAmlkGAEgASgFEg8KB293bmVySWQYAiABKAkSDAoEbmFtZRgDIAEoCRISCgptYXhVc2VyTnVtGAQgASgFEiYKBXN0YXRlGAUgASgOMhcuUHJvdG9jb2wuUm9vbVN0YXRlVHlwZRIhCgV1c2VycxgGIAMoCzISLlByb3RvY29sLlVzZXJEYXRhIj8KDUNoYXJhY3RlckRhdGESLgoNY2hhcmFjdGVyVHlwZRgBIAEoDjIXLlByb3RvY29sLkNoYXJhY3RlclR5cGUiLQoHUG9zSW5mbxIMCgR1dWlkGAEgASgJEgkKAXgYAiABKAISCQoBeRgDIAEoAiIcCgRWZWMyEgkKAXgYASABKAISCQoBeRgCIAEoAiJ3Cg5HYW1lUGxheWVyRGF0YRIjCghwb3NpdGlvbhgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SEAoIbmlja25hbWUYAiABKAkSLgoNY2hhcmFjdGVyVHlwZRgDIAEoDjIXLlByb3RvY29sLkNoYXJhY3RlclR5cGUiMgoJRXJyb3JEYXRhEhQKDHJlc3BvbnNlQ29kZRgBIAEoBRIPCgdtZXNzYWdlGAIgASgJYgZwcm90bzM", [file_enum]);
+export const file_struct =
+  /*@__PURE__*/
+  fileDesc(
+    'CgxzdHJ1Y3QucHJvdG8SCFByb3RvY29sIiUKCEJhc2VEYXRhEgoKAmhwGAEgASgFEg0KBW1heEhwGAIgASgFIlYKCVRvd2VyRGF0YRIPCgd0b3dlcklkGAEgASgFEhMKC3Rvd2VyTnVtYmVyGAIgASgFEiMKCHRvd2VyUG9zGAMgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyJtCgtNb25zdGVyRGF0YRIRCgltb25zdGVySWQYASABKAUSFQoNbW9uc3Rlck51bWJlchgCIAEoBRINCgVsZXZlbBgDIAEoBRIlCgptb25zdGVyUG9zGAQgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyJQCghVc2VyRGF0YRIKCgJpZBgBIAEoCRIMCgRuYW1lGAIgASgJEioKCWNoYXJhY3RlchgDIAEoCzIXLlByb3RvY29sLkNoYXJhY3RlckRhdGEilAEKCFJvb21EYXRhEgoKAmlkGAEgASgFEg8KB293bmVySWQYAiABKAkSDAoEbmFtZRgDIAEoCRISCgptYXhVc2VyTnVtGAQgASgFEiYKBXN0YXRlGAUgASgOMhcuUHJvdG9jb2wuUm9vbVN0YXRlVHlwZRIhCgV1c2VycxgGIAMoCzISLlByb3RvY29sLlVzZXJEYXRhIj8KDUNoYXJhY3RlckRhdGESLgoNY2hhcmFjdGVyVHlwZRgBIAEoDjIXLlByb3RvY29sLkNoYXJhY3RlclR5cGUiLQoHUG9zSW5mbxIMCgR1dWlkGAEgASgJEgkKAXgYAiABKAISCQoBeRgDIAEoAiIcCgRWZWMyEgkKAXgYASABKAISCQoBeRgCIAEoAiJ3Cg5HYW1lUGxheWVyRGF0YRIjCghwb3NpdGlvbhgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SEAoIbmlja25hbWUYAiABKAkSLgoNY2hhcmFjdGVyVHlwZRgDIAEoDjIXLlByb3RvY29sLkNoYXJhY3RlclR5cGUiMgoJRXJyb3JEYXRhEhQKDHJlc3BvbnNlQ29kZRgBIAEoBRIPCgdtZXNzYWdlGAIgASgJYgZwcm90bzM',
+    [file_enum],
+  );
 
 /**
  * Describes the message Protocol.BaseData.
  * Use `create(BaseDataSchema)` to create a new message.
  */
-export const BaseDataSchema = /*@__PURE__*/
-  messageDesc(file_struct, 0);
+export const BaseDataSchema = /*@__PURE__*/ messageDesc(file_struct, 0);
 
 /**
  * Describes the message Protocol.TowerData.
  * Use `create(TowerDataSchema)` to create a new message.
  */
-export const TowerDataSchema = /*@__PURE__*/
-  messageDesc(file_struct, 1);
+export const TowerDataSchema = /*@__PURE__*/ messageDesc(file_struct, 1);
 
 /**
  * Describes the message Protocol.MonsterData.
  * Use `create(MonsterDataSchema)` to create a new message.
  */
-export const MonsterDataSchema = /*@__PURE__*/
-  messageDesc(file_struct, 2);
+export const MonsterDataSchema = /*@__PURE__*/ messageDesc(file_struct, 2);
 
 /**
  * Describes the message Protocol.UserData.
  * Use `create(UserDataSchema)` to create a new message.
  */
-export const UserDataSchema = /*@__PURE__*/
-  messageDesc(file_struct, 3);
+export const UserDataSchema = /*@__PURE__*/ messageDesc(file_struct, 3);
 
 /**
  * Describes the message Protocol.RoomData.
  * Use `create(RoomDataSchema)` to create a new message.
  */
-export const RoomDataSchema = /*@__PURE__*/
-  messageDesc(file_struct, 4);
+export const RoomDataSchema = /*@__PURE__*/ messageDesc(file_struct, 4);
 
 /**
  * Describes the message Protocol.CharacterData.
  * Use `create(CharacterDataSchema)` to create a new message.
  */
-export const CharacterDataSchema = /*@__PURE__*/
-  messageDesc(file_struct, 5);
+export const CharacterDataSchema = /*@__PURE__*/ messageDesc(file_struct, 5);
 
 /**
  * Describes the message Protocol.PosInfo.
  * Use `create(PosInfoSchema)` to create a new message.
  */
-export const PosInfoSchema = /*@__PURE__*/
-  messageDesc(file_struct, 6);
+export const PosInfoSchema = /*@__PURE__*/ messageDesc(file_struct, 6);
 
 /**
  * Describes the message Protocol.Vec2.
  * Use `create(Vec2Schema)` to create a new message.
  */
-export const Vec2Schema = /*@__PURE__*/
-  messageDesc(file_struct, 7);
+export const Vec2Schema = /*@__PURE__*/ messageDesc(file_struct, 7);
 
 /**
  * Describes the message Protocol.GamePlayerData.
  * Use `create(GamePlayerDataSchema)` to create a new message.
  */
-export const GamePlayerDataSchema = /*@__PURE__*/
-  messageDesc(file_struct, 8);
+export const GamePlayerDataSchema = /*@__PURE__*/ messageDesc(file_struct, 8);
 
 /**
  * Describes the message Protocol.ErrorData.
  * Use `create(ErrorDataSchema)` to create a new message.
  */
-export const ErrorDataSchema = /*@__PURE__*/
-  messageDesc(file_struct, 9);
-
+export const ErrorDataSchema = /*@__PURE__*/ messageDesc(file_struct, 9);
