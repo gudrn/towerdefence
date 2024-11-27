@@ -1,0 +1,46 @@
+{
+    "name": "tower",
+    "version": "1.0.0",
+    "data": [
+      {
+        "towerId": 1,
+        "prefabId": "Tower1",
+        "damage": 10,
+        "attackRange": 3,
+        "attackSpeed": 1,
+        "Hp": 100
+      },
+      {
+        "towerId": 2,
+        "prefabId": "Tower2",
+        "damage": 10,
+        "attackRange": 3,
+        "attackSpeed": 1,
+        "Hp": 100
+      },
+      {
+        "towerId": 3,
+        "prefabId": "Tower3",
+        "damage": 10,
+        "attackRange": 3,
+        "attackSpeed": 1,
+        "Hp": 100
+      },
+      {
+        "towerId": 4,
+        "prefabId": "Tower4",
+        "damage": 10,
+        "attackRange": 3,
+        "attackSpeed": 1,
+        "Hp": 100
+      },
+      {
+        "towerId": 5,
+        "prefabId": "Tower5",
+        "damage": 10,
+        "attackRange": 3,
+        "attackSpeed": 1,
+        "Hp": 100
+      }
+    ]
+  }

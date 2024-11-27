@@ -19,9 +19,15 @@ class AssetManager {
    */
   stages;
 
+  /**
+   * @type {Array<Object>} 타워 데이터를 저장합니다.
+   */
+  towers;
+
   constructor() {
     this.monsters = [];
     this.stages = [];
+    this.towers = [];
   }
 
   /**
@@ -33,20 +39,25 @@ class AssetManager {
   async loadGameAssets() {
     try {
       const [monsters, stages] = await Promise.all([
-        //Utils.readFileAsync("tower.json"),
         ParseUtils.readFileAsync("monsters.json"),
         ParseUtils.readFileAsync("stages.json"),
+        ParseUtils.readFileAsync("tower.json")
       ]);
 
       // 몬스터 자원 로드
       this.monsters = monsters.data;
       // 스테이지 자원 로드
       this.stages = stages.data;
+      // 타워 자원 로드
+      this.towers = towers.data;
 
-      if(this.monsters == undefined)
+      if(this.monsters == undefined || this.towers == undefined)
         throw new Error("asset is null");
 
-      return { monsters: this.monsters };
+      return { 
+        monsters: this.monsters,
+        towers: this.towers 
+      };
     } catch (error) {
       console.log(error);
       throw new Error("Failed to load game assets");
@@ -61,7 +72,11 @@ class AssetManager {
    * @returns {{monsters: Array<Object>, stages: Array<Object>}} 게임 에셋
    */
   getGameAssets() {
-    return { monsters: this.monsters, stages: this.stages };
+    return { 
+      monsters: this.monsters, 
+      stages: this.stages,
+      towers: this.towers 
+    };
   }
 
   /**
@@ -108,6 +123,29 @@ class AssetManager {
   getRandomAssetMonster() {
     const monsterId = Math.floor(Math.random() * this.monsters.length);
     return this.monsters[monsterId];
+  }
+
+  /**
+   * ---------------------------------------------
+   * [getTowerData]
+   * - 특정 타워의 데이터를 가져옵니다.
+   * ---------------------------------------------
+   * @param {number} towerId 타워 ID
+   * @returns {Object|null} 해당 타워 데이터 또는 null
+   */
+  getTowerData(towerId) {
+    return this.towers.find(tower => tower.towerId === towerId) || null;
+  }
+
+  /**
+   * ---------------------------------------------
+   * [getAllTowers]
+   * - 모든 타워 데이터를 가져옵니다.
+   * ---------------------------------------------
+   * @returns {Array<Object>} 모든 타워 데이터 배열
+   */
+  getAllTowers() {
+    return this.towers;
   }
 }
 

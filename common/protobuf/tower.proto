@@ -32,6 +32,7 @@ message B2C_TowerAttackRequest
     int32 targetId = 2;
 }
 
+//타워 공격 알림
 message B2C_TowerAttackNotification
 {
     bool isSuccess = 1;
@@ -39,16 +40,19 @@ message B2C_TowerAttackNotification
     int32 targetHealth =3;
 }
 
+//타워 파괴 요청
 message C2B_TowerDestroyRequest
 {
     int32 towerId = 1;
 }
 
+//타워 파괴 응답
 message C2B_TowerDestroyResponse
 {
     int32 towerId = 1;
 }
 
+//타워 파괴 알림
 message C2B_TowerDestroyNotification
 {
     int32 towerId = 1;

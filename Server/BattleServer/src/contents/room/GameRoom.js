@@ -1,4 +1,5 @@
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
+import { assetManager } from '../../utils/assetManager.js';
 import {
   B2C_GameStartNotificationSchema,
   B2C_JoinRoomRequestSchema,
@@ -12,13 +13,20 @@ import { GamePlayerDataSchema, PosInfoSchema } from '../../protocol/struct_pb.js
 import { Monster } from '../game/monster.js';
 import { B2C_SpawnMonsterNotificationSchema } from '../../protocol/monster_pb.js';
 import { B2C_PositionUpdateNotificationSchema } from '../../protocol/character_pb.js';
+import {
+  B2C_AddTowerNotificationSchema,
+  B2C_TowerBuildResponseSchema,
+  B2C_TowerAttackNotificationSchema,
+  C2B_TowerDestroyNotificationSchema,
+  C2B_TowerDestroyResponseSchema,
+} from '../../protocol/tower_pb.js';
 
 export class GameRoom {
   static spawnCoordinates = [
     { x: 3, y: 4 },
     { x: 4, y: 4 },
     { x: 3, y: 3 },
-    { x: 4, y: 3 }
+    { x: 4, y: 3 },
   ];
 
   /**---------------------------------------------
@@ -35,14 +43,14 @@ export class GameRoom {
   }
 
   getMonsterList() {
-    return this.monsterList;
+    return this.monsters;
   }
 
   // 1. 방이 가득 찼는지 확인
   addplayer(player) {
     if (this.users.length >= this.maxPlayerCount) {
-      console.log("this.users.length: " + this.users.length);
-      console.log("this.maxPlayerCount: " + this.maxPlayerCount);
+      console.log('this.users.length: ' + this.users.length);
+      console.log('this.maxPlayerCount: ' + this.maxPlayerCount);
       return false; // 방이 가득 참
     }
     if (this.users.get(player.id) != undefined) {
@@ -74,10 +82,15 @@ export class GameRoom {
     }
     // 3. 해당 유저에게 B2C_JoinRoomResponse 패킷 전송
     const enterRoomPacket = create(B2C_JoinRoomRequestSchema, {
-      isSuccess: true
+      isSuccess: true,
     });
 
-    const enterRoomBuffer = PacketUtils.SerializePacket(enterRoomPacket, B2C_JoinRoomRequestSchema, ePacketId.B2C_JoinRoomResponse, player.session.getNextSequence());
+    const enterRoomBuffer = PacketUtils.SerializePacket(
+      enterRoomPacket,
+      B2C_JoinRoomRequestSchema,
+      ePacketId.B2C_JoinRoomResponse,
+      player.session.getNextSequence(),
+    );
     player.session.send(enterRoomBuffer);
 
     // 4. 모든 인원이 들어왔다면 B2C_GameStart 패킷 전송
@@ -96,13 +109,13 @@ export class GameRoom {
         const posInfo = create(PosInfoSchema, {
           uuid: user.session.getId(),
           x: spawnPoint.x,
-          y: spawnPoint.y
+          y: spawnPoint.y,
         });
 
         const gamePlayerData = create(GamePlayerDataSchema, {
           position: posInfo,
           nickname: user.playerData.nickname,
-          characterType: user.playerData.characterType
+          characterType: user.playerData.characterType,
         });
 
         playerDatas.push(gamePlayerData);
@@ -110,14 +123,14 @@ export class GameRoom {
 
       // B2C_GameStartNotification 패킷 생성
       const gameStartPacket = create(B2C_GameStartNotificationSchema, {
-        playerDatas
+        playerDatas,
       });
 
       const gameStartBuffer = PacketUtils.SerializePacket(
         gameStartPacket,
         B2C_GameStartNotificationSchema,
         ePacketId.B2C_GameStartNotification,
-        usersArray[0].session.getNextSequence() // 첫 번째 유저의 시퀀스
+        usersArray[0].session.getNextSequence(), // 첫 번째 유저의 시퀀스
       );
 
       // 모든 유저에게 전송
@@ -128,12 +141,12 @@ export class GameRoom {
     }
   }
 
-  OnGameStart(){
-    console.log("OnGameStart Called");
+  OnGameStart() {
+    console.log('OnGameStart Called');
     this.monsterSpawner.startSpawning(0);
   }
 
-  getMonsterCount(){
+  getMonsterCount() {
     return this.monsters.size;
   }
 
@@ -143,16 +156,27 @@ export class GameRoom {
    * @param {C2B_PositionUpdateRequest} clientPacket - 이동 패킷 데이터
    ---------------------------------------------*/
   handleMove(clientPacket, session) {
-    //[TODO] 해당 위치가 정상적인 위치인지 검증하기
+
+    // 위치 검증
+    if (!this.validatePosition(clientPacket.posInfos)) {
+      console.log(`유효하지 않은 위치. ${clientPacket.posInfos}`);
+      return;
+    }
+
     const packet = create(B2C_PositionUpdateNotificationSchema, {
       posInfos: create(PosInfoSchema, {
         uuid: session.getId(),
         x: clientPacket.posInfos?.x,
         y: clientPacket.posInfos?.y,
-      })
+      }),
     });
 
-    const sendBuffer = PacketUtils.SerializePacket(packet, B2C_PositionUpdateNotificationSchema, ePacketId.B2C_PositionUpdateNotification, 0);
+    const sendBuffer = PacketUtils.SerializePacket(
+      packet,
+      B2C_PositionUpdateNotificationSchema,
+      ePacketId.B2C_PositionUpdateNotification,
+      0,
+    );
     this.broadcast(sendBuffer);
   }
 
@@ -171,20 +195,201 @@ export class GameRoom {
   /**---------------------------------------------
    * [타워 생성 동기화]
    * @param {Buffer} buffer - 타워 생성 패킷 데이터
+   * @param {C2B_TowerBuildRequest} packet - 타워 생성 패킷 데이터
    ---------------------------------------------*/
-  handleTowerBuild(buffer) {}
+  handleTowerBuild(packet, session) {
+    console.log('handleTowerBuild')
+    const { tower, ownerId } = packet;
+
+    // 1. 타워 데이터 존재 확인
+    const towerData = assetManager.getTowerData(tower.towerId);
+    if (!towerData) {
+      const failResponse = create(B2C_TowerBuildResponseSchema, {
+        isSuccess: false,
+        tower: null,
+      });
+
+      const failBuffer = PacketUtils.SerializePacket(
+        failResponse,
+        B2C_TowerBuildResponseSchema,
+        ePacketId.B2C_TowerBuildResponse,
+        session.getNextSequence(),
+      );
+
+      session.send(failBuffer);
+      return;
+    }
+
+    // 1. 타워 생성 가능 여부 검증 (범위, 위치)
+    // if (!this.validateTowerBuild(tower.towerPos)) {
+    //   // 실패 응답
+    //   const failResponse = create(B2C_TowerBuildResponseSchema, {
+    //     isSuccess: false,
+    //     tower: null,
+    //   });
+
+    //   const failBuffer = PacketUtils.SerializePacket(
+    //     failResponse,
+    //     B2C_TowerBuildResponseSchema,
+    //     ePacketId.B2C_TowerBuildResponse,
+    //     session.getNextSequence(),
+    //   );
+
+    //   session.send(failBuffer);
+    //   return;
+    // }
+
+    // 2. 타워 정보 저장
+    const newTower = {
+      towerPos: tower.towerPos,
+      ownerId: ownerId,
+      prefabId: towerData.prefabId,
+    };
+
+    this.towerList.set(tower.towerId, newTower);
+    console.log(`타워생성 성공. towerId: ${tower.towerId}, prefabId: ${towerData.prefabId}, 위치: (${tower.towerPos}`);
+
+    // 3. 타워 생성 성공 응답
+    const successResponse = create(B2C_TowerBuildResponseSchema, {
+      isSuccess: true,
+      tower: tower,
+    });
+
+    const responseBuffer = PacketUtils.SerializePacket(
+      successResponse,
+      B2C_TowerBuildResponseSchema,
+      ePacketId.B2C_TowerBuildResponse,
+      session.getNextSequence(),
+    );
+
+    session.send(responseBuffer);
+
+    // 4. 모든 클라이언트에게 타워 추가 알림
+    const notification = create(B2C_AddTowerNotificationSchema, {
+      tower: tower,
+      ownerId: ownerId,
+    });
+
+    const notificationBuffer = PacketUtils.SerializePacket(
+      notification,
+      B2C_AddTowerNotificationSchema,
+      ePacketId.B2C_AddTowerNotification,
+      session.getNextSequence(),
+    );
+
+    this.broadcast(notificationBuffer);
+  }
 
   /**---------------------------------------------
    * [타워 공격 동기화]
-   * @param {Buffer} buffer - 타워 공격 패킷 데이터
+   * @param {C2B_TowerAttackRequest} packet - 타워 공격 패킷 데이터
+   * @param {Session} session - 세션 정보
    ---------------------------------------------*/
-  handleTowerAttack(buffer) {}
+  handleTowerAttack(packet, session) {
+    console.log('handleTowerAttack')
+    const { towerId, targetId } = packet;
+
+    // 1. 타워와 타겟 존재 확인
+    const tower = this.towerList.get(towerId);
+    const target = this.monsters.get(targetId);
+
+    // 타워나 타겟이 존재하지 않으면
+    if (!tower || !target) {
+      console.log(`타워 or 타겟이 존재하지 않음. towerId: ${towerId}, targetId: ${targetId}`);
+      const failNotification = create(B2C_TowerAttackNotificationSchema, {
+        isSuccess: false,
+        damage: 0,
+        targetHealth: 0,
+      });
+
+      const failBuffer = PacketUtils.SerializePacket(
+        failNotification,
+        B2C_TowerAttackNotificationSchema,
+        ePacketId.B2C_TowerAttackNotification,
+        session.getNextSequence(),
+      );
+
+      session.send(failBuffer);
+      return;
+    }
+
+    // 2. B2C_TowerAttackNotification 패킷 생성
+    const notification = create(B2C_TowerAttackNotificationSchema, {
+      isSuccess: true,
+      damage: 0,
+      targetHealth: 0,
+    });
+
+    const notificationBuffer = PacketUtils.SerializePacket(
+      notification,
+      B2C_TowerAttackNotificationSchema,
+      ePacketId.B2C_TowerAttackNotification,
+      session.getNextSequence(),
+    );
+
+    this.broadcast(notificationBuffer);
+  }
 
   /**---------------------------------------------
    * [타워 파괴 동기화]
-   * @param {Buffer} buffer - 타워 파괴 패킷 데이터
+   * @param {C2B_TowerDestroyRequest} packet - 타워 파괴 패킷 데이터
+   * @param {Session} session - 세션 정보
    ---------------------------------------------*/
-  handleTowerDestroy(buffer) {}
+  handleTowerDestroy(packet, session) {
+    console.log('handleTowerDestroy')
+    const { towerId } = packet;
+
+    // 1. 타워가 있는지 확인
+    const tower = this.towerList.get(towerId);
+    if (!tower) {
+      console.log(`타워가 존재하지 않음. towerId: ${towerId}`);
+      const failResponse = create(C2B_TowerDestroyResponseSchema, {
+        towerId: -1, // 실패
+      });
+
+      const failBuffer = PacketUtils.SerializePacket(
+        failResponse,
+        C2B_TowerDestroyResponseSchema,
+        ePacketId.C2B_TowerDestroyResponse,
+        session.getNextSequence(),
+      );
+
+      session.send(failBuffer);
+      return;
+    }
+
+    // 2. 타워 제거
+    this.towerList.delete(towerId);
+    console.log(`[타워] 파괴 성공. towerId: ${towerId}`);
+
+    // 3. 요청한 클라이언트에게 응답
+    const response = create(C2B_TowerDestroyResponseSchema, {
+      towerId: towerId,
+    });
+
+    const responseBuffer = PacketUtils.SerializePacket(
+      response,
+      C2B_TowerDestroyResponseSchema,
+      ePacketId.C2B_TowerDestroyResponse,
+      session.getNextSequence(),
+    );
+
+    session.send(responseBuffer);
+
+    // 4. 모든 클라이언트에게 타워 파괴 알림
+    const notification = create(C2B_TowerDestroyNotificationSchema, {
+      towerId: towerId,
+    });
+
+    const notificationBuffer = PacketUtils.SerializePacket(
+      notification,
+      C2B_TowerDestroyNotificationSchema,
+      ePacketId.C2B_TowerDestroyNotification,
+      session.getNextSequence(),
+    );
+
+    this.broadcast(notificationBuffer);
+  }
 
   /**---------------------------------------------
    * [몬스터 생성]
@@ -196,15 +401,15 @@ export class GameRoom {
    * @param {Buffer} buffer - 몬스터 타워 공격 패킷 데이터
    ---------------------------------------------*/
   handleMonsterAttackTower(buffer) {
-    const moster = this.monsterList.find((m)=>m.id === buffer.id);//걍 막 하는중
-    if(!moster){
+    const moster = this.monsterList.find((m) => m.id === buffer.id); //걍 막 하는중
+    if (!moster) {
       //오류
     }
     const target = this.towerList.get(buffer.towerid);
 
     moster.attackTarget(target);
 
-    if(target.hp<=0){
+    if (target.hp <= 0) {
       this.towerList.delete(buffer.towerid);
     }
 
@@ -250,6 +455,42 @@ export class GameRoom {
       name: player.name,
     }));
   }
+  /**---------------------------------------------
+   * 타워 생성 가능 여부 검증
+   * @param {PosInfo} position - 타워 생성 위치
+   * @returns {boolean} - 생성 가능 여부
+   ---------------------------------------------*/
+  // validateTowerBuild(position) {
+  //   // 1. 32x32 맵 범위 확인
+  //   if (position.x < 0 || position.x >= 32 || position.y < 0 || position.y >= 32) {
+  //     return false;
+  //   }
+
+  //   // 2. 타워 중복 확인
+  //   for (const [_, tower] of this.towerList) {
+  //     if (position.x === tower.towerPos.x && position.y === tower.towerPos.y) {
+  //       return false;
+  //     }
+  //   }
+
+  //   return true;
+  // }
+
+    /**---------------------------------------------
+   * 이동 위치 검증
+   * @param {PosInfo} position - 검증할 위치 정보
+   * @returns {boolean} - 유효한 위치인지 여부
+   ---------------------------------------------*/
+   validatePosition(position) {
+
+    // 맵 범위 검증 (32x32 맵)
+    if (position.x < 0 || position.x >= 32 || position.y < 0 || position.y >= 32) {
+      console.log(`맵 범위 초과. 위치: ${position.x}, ${position.y}`);
+      return false;
+    }
+
+    return true;
+  }
 
   /**---------------------------------------------
    * 오브젝트 추가
@@ -258,34 +499,38 @@ export class GameRoom {
    * @param {Monster | Tower | Projectile} object - 생성할 오브젝트
    * @returns {void}
    ---------------------------------------------*/
- addObject(object){
-  if(object instanceof Monster){
-    this.monsters.set(object.getId(), object);
-    console.log("몬스터 생성");
+  addObject(object) {
+    if (object instanceof Monster) {
+      this.monsters.set(object.getId(), object);
+      console.log('몬스터 생성');
 
-    const packet = create(B2C_SpawnMonsterNotificationSchema, {
-      posInfos: object.getPos(),
-      prefabId: object.getPrefabId()
-    });
+      const packet = create(B2C_SpawnMonsterNotificationSchema, {
+        posInfos: object.getPos(),
+        prefabId: object.getPrefabId(),
+      });
 
-    /**
-     * @type {Buffer} sendBuffer
-     */
-    const sendBuffer = PacketUtils.SerializePacket(packet, B2C_SpawnMonsterNotificationSchema, ePacketId.B2C_SpawnMonsterNotification, 0);
-    this.broadcast(sendBuffer);
+      /**
+       * @type {Buffer} sendBuffer
+       */
+      const sendBuffer = PacketUtils.SerializePacket(
+        packet,
+        B2C_SpawnMonsterNotificationSchema,
+        ePacketId.B2C_SpawnMonsterNotification,
+        0,
+      );
+      this.broadcast(sendBuffer);
+    }
   }
-}
 
   /**---------------------------------------------
    * 오브젝트 제거
    ---------------------------------------------*/
-  removeObject(uuid){
+  removeObject(uuid) {
     const object = this.findObject(uuid);
 
-    if(object instanceof GamePlayer){
+    if (object instanceof GamePlayer) {
       this.users.delete(uuid);
-    }
-    else if(object instanceof Monster){
+    } else if (object instanceof Monster) {
       this.monsters.delete(uuid);
     }
   }

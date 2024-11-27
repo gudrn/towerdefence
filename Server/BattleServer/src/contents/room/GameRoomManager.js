@@ -1,7 +1,7 @@
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
 import { CustomError } from 'ServerCore/src/utils/error/customError.js';
 import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
-import { GameRoom } from './gameRoom.js';
+import { GameRoom } from './GameRoom.js';
 import { fromBinary, create } from '@bufbuild/protobuf';
 import {
   B2L_CreateGameRoomResponeSchema,
@@ -14,6 +14,10 @@ import {
   C2B_MonsterDeathRequestSchema,
 } from '../../protocol/monster_pb.js';
 import { C2B_PositionUpdateRequestSchema } from '../../protocol/character_pb.js';
+import { 
+  B2C_TowerAttackRequestSchema, 
+  C2B_TowerBuildRequestSchema, 
+  C2B_TowerDestroyRequestSchema } from '../../protocol/tower_pb.js';
 
 const MAX_ROOMS_SIZE = 10000;
 
@@ -117,21 +121,69 @@ class GameRoomManager {
    * @param {Buffer} buffer - 타워 생성 패킷 데이터
    * @param {BattleSession} session - 타워 생성 요청을 보낸 세션
    ---------------------------------------------*/
-  towerBuildHandler(buffer, session) {}
+   towerBuildHandler(buffer, session) {
+    console.log('towerBuildHandler');
+
+    // 1. 패킷 역직렬화
+    const packet = fromBinary(C2B_TowerBuildRequestSchema, buffer);
+
+    // 2. 세션에서 roomId 가져오기
+    const roomId = session.roomId;
+    const room = this.rooms.get(roomId);
+
+    if (room == undefined) {
+      console.log('유효하지 않은 roomId');
+      throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
+    }
+
+    room.handleTowerBuild(packet, session);
+  }
 
   /**---------------------------------------------
    * [타워 공격 동기화]
    * @param {Buffer} buffer - 타워 공격 패킷 데이터
    * @param {BattleSession} session - 타워 공격 요청을 보낸 세션
    ---------------------------------------------*/
-  towerAttackHandler(buffer, session) {}
+   towerAttackHandler(buffer, session) {
+    console.log('towerAttackHandler');
+
+    // 1. 패킷 역직렬화
+    const packet = fromBinary(B2C_TowerAttackRequestSchema, buffer);
+
+    // 2. 세션에서 roomId 가져오기
+    const roomId = session.roomId;
+    const room = this.rooms.get(roomId);
+
+    if (room == undefined) {
+      console.log('유효하지 않은 roomId');
+      throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
+    }
+
+    room.handleTowerAttack(packet, session);
+  }
 
   /**---------------------------------------------
    * [타워 파괴 동기화]
    * @param {Buffer} buffer - 타워 파괴 패킷 데이터
    * @param {BattleSession} session - 타워 파괴 요청을 보낸 세션
    ---------------------------------------------*/
-  towerDestroyHandler(buffer, session) {}
+   towerDestroyHandler(buffer, session) {
+    console.log('towerDestroyHandler');
+
+    // 1. 패킷 역직렬화
+    const packet = fromBinary(C2B_TowerDestroyRequestSchema, buffer);
+
+    // 2. 세션에서 roomId 가져오기
+    const roomId = session.roomId;
+    const room = this.rooms.get(roomId);
+
+    if (room == undefined) {
+      console.log('유효하지 않은 roomId');
+      throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
+    }
+
+    room.handleTowerDestroy(packet, session);
+  }
 
   /**---------------------------------------------
    * [몬스터 타워 공격 동기화]
