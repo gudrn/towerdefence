@@ -19,7 +19,7 @@ message B2C_TowerBuildResponse
 }
 
 //타워 생성 알림
-message B2C_AddTowerNotification
+message B2C_TowerBuildNotification
 {
     TowerData tower = 1; //생성된 타워 정보
     int32 ownerId = 2; //타워 생성자 ID
