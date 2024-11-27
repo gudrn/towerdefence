@@ -3,21 +3,21 @@
     "version": "1.0.0",
     "data": [
       {
-        "prefabId": "Tower1",
+        "prefabId": "BasicTower",
         "damage": 10,
         "attackRange": 3,
         "attackSpeed": 1,
         "Hp": 100
       },
       {
-        "prefabId": "Tower2",
+        "prefabId": "BuffTower",
         "damage": 10,
         "attackRange": 3,
         "attackSpeed": 1,
         "Hp": 100
       },
       {
-        "prefabId": "Tower3",
+        "prefabId": "IceTower",
         "damage": 10,
         "attackRange": 3,
         "attackSpeed": 1,

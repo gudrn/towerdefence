@@ -9,7 +9,7 @@ import { CustomError } from 'ServerCore/src/utils/error/customError.js';
 import { fromBinary, create } from '@bufbuild/protobuf';
 import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
 import { MonsterSpawner } from './monsterSpanwner.js';
-import { GamePlayerDataSchema, PosInfoSchema } from '../../protocol/struct_pb.js';
+import { GamePlayerDataSchema, PosInfoSchema, TowerDataSchema } from '../../protocol/struct_pb.js';
 import { Monster } from '../game/monster.js';
 import { B2C_SpawnMonsterNotificationSchema } from '../../protocol/monster_pb.js';
 import { B2C_PositionUpdateNotificationSchema } from '../../protocol/character_pb.js';
@@ -20,6 +20,7 @@ import {
   C2B_TowerDestroyNotificationSchema,
   C2B_TowerDestroyResponseSchema,
 } from '../../protocol/tower_pb.js';
+import { v4 as uuidv4 } from 'uuid';
 
 export class GameRoom {
   static spawnCoordinates = [
@@ -201,11 +202,10 @@ export class GameRoom {
     const { tower, ownerId } = packet;
 
     // 1. 타워 데이터 존재 확인
-    const towerData = assetManager.getTowerData(tower.towerNumber);
+    const towerData = assetManager.getTowerData(tower.prefabId);
     if (!towerData) {
       const failResponse = create(B2C_TowerBuildResponseSchema, {
         isSuccess: false,
-        tower: null,
       });
 
       const failBuffer = PacketUtils.SerializePacket(
@@ -239,7 +239,9 @@ export class GameRoom {
     // }
 
     // 2. 타워 정보 저장
+    // 클래스로 변경하기
     const newTower = {
+      //uuid생성하기
       towerPos: tower.towerPos,
       ownerId: ownerId,
       prefabId: towerData.prefabId,
@@ -253,7 +255,11 @@ export class GameRoom {
     // 3. 타워 생성 성공 응답
     const successResponse = create(B2C_TowerBuildResponseSchema, {
       isSuccess: true,
-      tower: tower,
+      tower: create(TowerDataSchema, {
+        towerId: uuidv4(),
+        prefabId: packet.tower.prefabId,
+        towerPos: packet.tower.towerPos,
+      }),
     });
 
     const responseBuffer = PacketUtils.SerializePacket(

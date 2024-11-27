@@ -2,57 +2,61 @@
 // @generated from file monster.proto (package Protocol, syntax proto3)
 /* eslint-disable */
 
-import { fileDesc, messageDesc } from '@bufbuild/protobuf/codegenv1';
-import { file_struct } from './struct_pb.js';
+import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
+import { file_struct } from "./struct_pb.js";
 
 /**
  * Describes the file monster.proto.
  */
-export const file_monster =
-  /*@__PURE__*/
-  fileDesc(
-    'Cg1tb25zdGVyLnByb3RvEghQcm90b2NvbCIZChdDMkJfU3Bhd25Nb25zdGVyUmVxdWVzdCJVChxCMkNfU3Bhd25Nb25zdGVyTm90aWZpY2F0aW9uEiMKCHBvc0luZm9zGAEgASgLMhEuUHJvdG9jb2wuUG9zSW5mbxIQCghwcmVmYWJJZBgCIAEoCSJDCh1DMkJfTW9uc3RlckF0dGFja1Rvd2VyUmVxdWVzdBIRCgltb25zdGVySWQYASABKAUSDwoHdG93ZXJJZBgCIAEoBSJICh1TMkJfVXBkYXRlVG93ZXJIUE5vdGlmaWNhdGlvbhIPCgd0b3dlcklkGAEgASgFEhYKDnVwZGF0ZWRUb3dlckhQGAIgASgFIi4KHEIyU19Nb25zdGVyQXR0YWNrQmFzZVJlcXVlc3QSDgoGZGFtYWdlGAEgASgFIiwKF0MyQl9Nb25zdGVyRGVhdGhSZXF1ZXN0EhEKCW1vbnN0ZXJJZBgBIAEoBSIxChxCMkNfTW9uc3RlckRlYXRoTm90aWZpY2F0aW9uEhEKCW1vbnN0ZXJJZBgBIAEoBWIGcHJvdG8z',
-    [file_struct],
-  );
+export const file_monster = /*@__PURE__*/
+  fileDesc("Cg1tb25zdGVyLnByb3RvEghQcm90b2NvbCIZChdDMkJfU3Bhd25Nb25zdGVyUmVxdWVzdCJVChxCMkNfU3Bhd25Nb25zdGVyTm90aWZpY2F0aW9uEiMKCHBvc0luZm9zGAEgASgLMhEuUHJvdG9jb2wuUG9zSW5mbxIQCghwcmVmYWJJZBgCIAEoCSJDCh1DMkJfTW9uc3RlckF0dGFja1Rvd2VyUmVxdWVzdBIRCgltb25zdGVySWQYASABKAUSDwoHdG93ZXJJZBgCIAEoBSJICh1TMkJfVXBkYXRlVG93ZXJIUE5vdGlmaWNhdGlvbhIPCgd0b3dlcklkGAEgASgFEhYKDnVwZGF0ZWRUb3dlckhQGAIgASgFIi4KHEIyU19Nb25zdGVyQXR0YWNrQmFzZVJlcXVlc3QSDgoGZGFtYWdlGAEgASgFIiwKF0MyQl9Nb25zdGVyRGVhdGhSZXF1ZXN0EhEKCW1vbnN0ZXJJZBgBIAEoBSIxChxCMkNfTW9uc3RlckRlYXRoTm90aWZpY2F0aW9uEhEKCW1vbnN0ZXJJZBgBIAEoBWIGcHJvdG8z", [file_struct]);
 
 /**
  * Describes the message Protocol.C2B_SpawnMonsterRequest.
  * Use `create(C2B_SpawnMonsterRequestSchema)` to create a new message.
  */
-export const C2B_SpawnMonsterRequestSchema = /*@__PURE__*/ messageDesc(file_monster, 0);
+export const C2B_SpawnMonsterRequestSchema = /*@__PURE__*/
+  messageDesc(file_monster, 0);
 
 /**
  * Describes the message Protocol.B2C_SpawnMonsterNotification.
  * Use `create(B2C_SpawnMonsterNotificationSchema)` to create a new message.
  */
-export const B2C_SpawnMonsterNotificationSchema = /*@__PURE__*/ messageDesc(file_monster, 1);
+export const B2C_SpawnMonsterNotificationSchema = /*@__PURE__*/
+  messageDesc(file_monster, 1);
 
 /**
  * Describes the message Protocol.C2B_MonsterAttackTowerRequest.
  * Use `create(C2B_MonsterAttackTowerRequestSchema)` to create a new message.
  */
-export const C2B_MonsterAttackTowerRequestSchema = /*@__PURE__*/ messageDesc(file_monster, 2);
+export const C2B_MonsterAttackTowerRequestSchema = /*@__PURE__*/
+  messageDesc(file_monster, 2);
 
 /**
  * Describes the message Protocol.S2B_UpdateTowerHPNotification.
  * Use `create(S2B_UpdateTowerHPNotificationSchema)` to create a new message.
  */
-export const S2B_UpdateTowerHPNotificationSchema = /*@__PURE__*/ messageDesc(file_monster, 3);
+export const S2B_UpdateTowerHPNotificationSchema = /*@__PURE__*/
+  messageDesc(file_monster, 3);
 
 /**
  * Describes the message Protocol.B2S_MonsterAttackBaseRequest.
  * Use `create(B2S_MonsterAttackBaseRequestSchema)` to create a new message.
  */
-export const B2S_MonsterAttackBaseRequestSchema = /*@__PURE__*/ messageDesc(file_monster, 4);
+export const B2S_MonsterAttackBaseRequestSchema = /*@__PURE__*/
+  messageDesc(file_monster, 4);
 
 /**
  * Describes the message Protocol.C2B_MonsterDeathRequest.
  * Use `create(C2B_MonsterDeathRequestSchema)` to create a new message.
  */
-export const C2B_MonsterDeathRequestSchema = /*@__PURE__*/ messageDesc(file_monster, 5);
+export const C2B_MonsterDeathRequestSchema = /*@__PURE__*/
+  messageDesc(file_monster, 5);
 
 /**
  * Describes the message Protocol.B2C_MonsterDeathNotification.
  * Use `create(B2C_MonsterDeathNotificationSchema)` to create a new message.
  */
-export const B2C_MonsterDeathNotificationSchema = /*@__PURE__*/ messageDesc(file_monster, 6);
+export const B2C_MonsterDeathNotificationSchema = /*@__PURE__*/
+  messageDesc(file_monster, 6);
+

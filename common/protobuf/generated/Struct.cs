@@ -25,29 +25,29 @@ namespace Protocol {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CgxzdHJ1Y3QucHJvdG8SCFByb3RvY29sGgplbnVtLnByb3RvIiUKCEJhc2VE",
-            "YXRhEgoKAmhwGAEgASgFEg0KBW1heEhwGAIgASgFIlYKCVRvd2VyRGF0YRIP",
-            "Cgd0b3dlcklkGAEgASgFEhMKC3Rvd2VyTnVtYmVyGAIgASgFEiMKCHRvd2Vy",
-            "UG9zGAMgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyJtCgtNb25zdGVyRGF0YRIR",
-            "Cgltb25zdGVySWQYASABKAUSFQoNbW9uc3Rlck51bWJlchgCIAEoBRINCgVs",
-            "ZXZlbBgDIAEoBRIlCgptb25zdGVyUG9zGAQgASgLMhEuUHJvdG9jb2wuUG9z",
-            "SW5mbyJQCghVc2VyRGF0YRIKCgJpZBgBIAEoCRIMCgRuYW1lGAIgASgJEioK",
-            "CWNoYXJhY3RlchgDIAEoCzIXLlByb3RvY29sLkNoYXJhY3RlckRhdGEilAEK",
-            "CFJvb21EYXRhEgoKAmlkGAEgASgFEg8KB293bmVySWQYAiABKAkSDAoEbmFt",
-            "ZRgDIAEoCRISCgptYXhVc2VyTnVtGAQgASgFEiYKBXN0YXRlGAUgASgOMhcu",
-            "UHJvdG9jb2wuUm9vbVN0YXRlVHlwZRIhCgV1c2VycxgGIAMoCzISLlByb3Rv",
-            "Y29sLlVzZXJEYXRhIj8KDUNoYXJhY3RlckRhdGESLgoNY2hhcmFjdGVyVHlw",
-            "ZRgBIAEoDjIXLlByb3RvY29sLkNoYXJhY3RlclR5cGUiLQoHUG9zSW5mbxIM",
-            "CgR1dWlkGAEgASgJEgkKAXgYAiABKAISCQoBeRgDIAEoAiIcCgRWZWMyEgkK",
-            "AXgYASABKAISCQoBeRgCIAEoAiJ3Cg5HYW1lUGxheWVyRGF0YRIjCghwb3Np",
-            "dGlvbhgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SEAoIbmlja25hbWUYAiAB",
-            "KAkSLgoNY2hhcmFjdGVyVHlwZRgDIAEoDjIXLlByb3RvY29sLkNoYXJhY3Rl",
-            "clR5cGUiMgoJRXJyb3JEYXRhEhQKDHJlc3BvbnNlQ29kZRgBIAEoBRIPCgdt",
-            "ZXNzYWdlGAIgASgJYgZwcm90bzM="));
+            "YXRhEgoKAmhwGAEgASgFEg0KBW1heEhwGAIgASgFIlMKCVRvd2VyRGF0YRIP",
+            "Cgd0b3dlcklkGAEgASgFEhAKCHByZWZhYklkGAIgASgJEiMKCHRvd2VyUG9z",
+            "GAMgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyJtCgtNb25zdGVyRGF0YRIRCglt",
+            "b25zdGVySWQYASABKAUSFQoNbW9uc3Rlck51bWJlchgCIAEoBRINCgVsZXZl",
+            "bBgDIAEoBRIlCgptb25zdGVyUG9zGAQgASgLMhEuUHJvdG9jb2wuUG9zSW5m",
+            "byJQCghVc2VyRGF0YRIKCgJpZBgBIAEoCRIMCgRuYW1lGAIgASgJEioKCWNo",
+            "YXJhY3RlchgDIAEoCzIXLlByb3RvY29sLkNoYXJhY3RlckRhdGEilAEKCFJv",
+            "b21EYXRhEgoKAmlkGAEgASgFEg8KB293bmVySWQYAiABKAkSDAoEbmFtZRgD",
+            "IAEoCRISCgptYXhVc2VyTnVtGAQgASgFEiYKBXN0YXRlGAUgASgOMhcuUHJv",
+            "dG9jb2wuUm9vbVN0YXRlVHlwZRIhCgV1c2VycxgGIAMoCzISLlByb3RvY29s",
+            "LlVzZXJEYXRhIj8KDUNoYXJhY3RlckRhdGESLgoNY2hhcmFjdGVyVHlwZRgB",
+            "IAEoDjIXLlByb3RvY29sLkNoYXJhY3RlclR5cGUiLQoHUG9zSW5mbxIMCgR1",
+            "dWlkGAEgASgJEgkKAXgYAiABKAISCQoBeRgDIAEoAiIcCgRWZWMyEgkKAXgY",
+            "ASABKAISCQoBeRgCIAEoAiJ3Cg5HYW1lUGxheWVyRGF0YRIjCghwb3NpdGlv",
+            "bhgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SEAoIbmlja25hbWUYAiABKAkS",
+            "LgoNY2hhcmFjdGVyVHlwZRgDIAEoDjIXLlByb3RvY29sLkNoYXJhY3RlclR5",
+            "cGUiMgoJRXJyb3JEYXRhEhQKDHJlc3BvbnNlQ29kZRgBIAEoBRIPCgdtZXNz",
+            "YWdlGAIgASgJYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Protocol.EnumReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.BaseData), global::Protocol.BaseData.Parser, new[]{ "Hp", "MaxHp" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.TowerData), global::Protocol.TowerData.Parser, new[]{ "TowerId", "TowerNumber", "TowerPos" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.TowerData), global::Protocol.TowerData.Parser, new[]{ "TowerId", "PrefabId", "TowerPos" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.MonsterData), global::Protocol.MonsterData.Parser, new[]{ "MonsterId", "MonsterNumber", "Level", "MonsterPos" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.UserData), global::Protocol.UserData.Parser, new[]{ "Id", "Name", "Character" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.RoomData), global::Protocol.RoomData.Parser, new[]{ "Id", "OwnerId", "Name", "MaxUserNum", "State", "Users" }, null, null, null, null),
@@ -329,7 +329,7 @@ namespace Protocol {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TowerData(TowerData other) : this() {
       towerId_ = other.towerId_;
-      towerNumber_ = other.towerNumber_;
+      prefabId_ = other.prefabId_;
       towerPos_ = other.towerPos_ != null ? other.towerPos_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -355,18 +355,18 @@ namespace Protocol {
       }
     }
 
-    /// <summary>Field number for the "towerNumber" field.</summary>
-    public const int TowerNumberFieldNumber = 2;
-    private int towerNumber_;
+    /// <summary>Field number for the "prefabId" field.</summary>
+    public const int PrefabIdFieldNumber = 2;
+    private string prefabId_ = "";
     /// <summary>
     /// 타워 종류 구분하는 번호
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int TowerNumber {
-      get { return towerNumber_; }
+    public string PrefabId {
+      get { return prefabId_; }
       set {
-        towerNumber_ = value;
+        prefabId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -398,7 +398,7 @@ namespace Protocol {
         return true;
       }
       if (TowerId != other.TowerId) return false;
-      if (TowerNumber != other.TowerNumber) return false;
+      if (PrefabId != other.PrefabId) return false;
       if (!object.Equals(TowerPos, other.TowerPos)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -408,7 +408,7 @@ namespace Protocol {
     public override int GetHashCode() {
       int hash = 1;
       if (TowerId != 0) hash ^= TowerId.GetHashCode();
-      if (TowerNumber != 0) hash ^= TowerNumber.GetHashCode();
+      if (PrefabId.Length != 0) hash ^= PrefabId.GetHashCode();
       if (towerPos_ != null) hash ^= TowerPos.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -432,9 +432,9 @@ namespace Protocol {
         output.WriteRawTag(8);
         output.WriteInt32(TowerId);
       }
-      if (TowerNumber != 0) {
-        output.WriteRawTag(16);
-        output.WriteInt32(TowerNumber);
+      if (PrefabId.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(PrefabId);
       }
       if (towerPos_ != null) {
         output.WriteRawTag(26);
@@ -454,9 +454,9 @@ namespace Protocol {
         output.WriteRawTag(8);
         output.WriteInt32(TowerId);
       }
-      if (TowerNumber != 0) {
-        output.WriteRawTag(16);
-        output.WriteInt32(TowerNumber);
+      if (PrefabId.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(PrefabId);
       }
       if (towerPos_ != null) {
         output.WriteRawTag(26);
@@ -475,8 +475,8 @@ namespace Protocol {
       if (TowerId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(TowerId);
       }
-      if (TowerNumber != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(TowerNumber);
+      if (PrefabId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(PrefabId);
       }
       if (towerPos_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(TowerPos);
@@ -496,8 +496,8 @@ namespace Protocol {
       if (other.TowerId != 0) {
         TowerId = other.TowerId;
       }
-      if (other.TowerNumber != 0) {
-        TowerNumber = other.TowerNumber;
+      if (other.PrefabId.Length != 0) {
+        PrefabId = other.PrefabId;
       }
       if (other.towerPos_ != null) {
         if (towerPos_ == null) {
@@ -524,8 +524,8 @@ namespace Protocol {
             TowerId = input.ReadInt32();
             break;
           }
-          case 16: {
-            TowerNumber = input.ReadInt32();
+          case 18: {
+            PrefabId = input.ReadString();
             break;
           }
           case 26: {
@@ -554,8 +554,8 @@ namespace Protocol {
             TowerId = input.ReadInt32();
             break;
           }
-          case 16: {
-            TowerNumber = input.ReadInt32();
+          case 18: {
+            PrefabId = input.ReadString();
             break;
           }
           case 26: {

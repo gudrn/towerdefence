@@ -27,7 +27,7 @@ class AssetManager {
   constructor() {
     this.monsters = [];
     this.stages = [];
-    this.towers = [];
+    this.towers = new Map;
   }
 
   /**
@@ -48,14 +48,17 @@ class AssetManager {
       this.monsters = monsters.data;
       // 스테이지 자원 로드
       this.stages = stages.data;
-      // 타워 자원 로드
-      this.towers = towers.data;
 
-      if (this.monsters == undefined || this.towers == undefined) throw new Error('asset is null');
+      // 타워 자원 로드 (prefabId를 키로 설정)
+      this.towers = new Map(
+        towers.data.map((tower) => [tower.prefabId, tower]) // prefabId를 키로 사용
+      );
+
+      if (!this.monsters || this.towers.size === 0) throw new Error('asset is null');
 
       return {
         monsters: this.monsters,
-        towers: this.towers,
+        towers: Array.from(this.towers.values()), // Map 데이터를 배열로 변환
       };
     } catch (error) {
       console.log(error);
@@ -132,10 +135,11 @@ class AssetManager {
    * @param {number} towerId 타워 ID
    * @returns {Object|null} 해당 타워 데이터 또는 null
    */
-  getTowerData(towerId) {
-    let tower = this.towers[towerId];
+  getTowerData(prefabId) {
+    let tower = this.towers.get(prefabId) || null; // Map의 get() 메서드 사용
+    console.log("tower정보");
     console.log(tower);
-    return this.towers[towerId];
+    return tower
   }
 
   /**
