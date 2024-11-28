@@ -1,17 +1,111 @@
+import { assetManager } from "src/utils/assetManager.js";
 import { GameObject } from "./gameObject.js";
 
 export class Monster extends GameObject
 {
-    //range는 Vector2
-    //클라 연결 테스트 후 나중에
-    //constructor(pos, maxHp, prefabId, attackDamage, attackCoolDown, range, moveSpeed) {
-    constructor(pos, maxHp, prefabId) {
-        //super(pos, maxHp, prefabId, attackDamage, attackCoolDown, range);
-        super(pos, maxHp, prefabId);
-        //this.score = score;
-        //this.moveSpeed = moveSpeed;
-        //this.lastAttackTime = Date.now();
-        //this.attackCoolDown = 3000;
+/*---------------------------------------------
+    [멤버 변수]
+---------------------------------------------*/
+    target = null;
+    hp = 0; //현재 체력
+    maxHp = 0; //최대 체력
+    attackDamage = 0; //공격력
+    attackRange = 0; //공격 사거리
+    attackCoolDown = 0; //공격 속도
+    moveSpeed = 0; //이동 속도
+
+    waitUntil = 0; //동작 간 딜레이 시간
+
+/*---------------------------------------------
+    [생성자]
+---------------------------------------------*/
+    constructor(prefabId, pos, room) {
+        super(prefabId, pos, room);
+
+        const monsterData = assetManager.getMonsterData(prefabId);
+        if(monsterData == null) {
+            console.log("[Monster constructor] 유효하지 않은 prefabId");
+            return;
+        }
+
+        this.attackDamage = monsterData?.attackDamage;
+        this.attackRange = monsterData?.attackRange;
+        this.attackCoolDown = monsterData?.attackCoolDown;
+        this.moveSpeed = monsterData.moveSpeed;
+        this.hp = this.maxHp = monsterData?.maxHp;
+    }
+
+    Update() {
+        switch (this.state)
+        {
+            case OBJECT_STATE_TYPE.IDLE:
+                this.UpdateIdle();
+                break;
+            case OBJECT_STATE_TYPE.MOVE:
+                this.UpdateMove();
+                break;
+            case OBJECT_STATE_TYPE.SKILL:
+                this.UpdateSkill();
+                break;
+        }
+    }
+
+    /*---------------------------------------------
+    [UpdateIdle]
+    1. target이 없으면 room.findClosetTarget을 호출하여 가장 가까운 타겟을 찾는다.
+    2. target이 공격 범위 안에 있으면 상태를 SKILL로 설정한다.
+    3. target이 공격 범위 밖에 있으면 계산한 경로의 다음 위치로 이동한다.
+    3-1. 상태를 MOVE로 설정한다.
+---------------------------------------------*/
+	UpdateIdle() {
+        if(this.room == undefined){
+            return;
+        }
+
+        //타겟 찾기
+        if(this.target == null){
+            this.target = this.room.findCloseBuilding(this.getPos());
+        }
+
+        if(this.target)
+        {
+            let pos = BattleUtils.calcPosDiff(this.target.getPos(), this.getPos());
+            let dist = Math.abs(pos.x)+Math.abs(pos.y);
+            if(dist == this.attackRange){
+                //몬스터 상태 설정
+                this.setState(SKILL, true);
+            }
+            else {
+                let path = this.room.findPath(this.pos, this.target.getPos());
+                if(path) {
+                    if(path.length > 1) {
+                        let nextPos = path[1];
+                        if(this.room.canGo(nextPos)){
+                            this.setPos(nextPos);
+                            _waitUntil = this.moveSpeed * 1000 + Date.now();
+                            this.setState(MOVE, true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+	UpdateMove() {
+        let now = Date.now();
+        if(this.waitUntil > now) {
+            return;
+        }
+
+        setState(IDLE);
+    }
+    
+	UpdateSkill() {
+        let now = Date.now();
+        if(this.waitUntil > now) {
+            return;
+        }    
+        setState(IDLE);
     }
     
     /*
@@ -37,35 +131,4 @@ export class Monster extends GameObject
     onDeath() {
         throw new Error("onDeath() must be implemented in a subclass");
     }
-
-//       /**
-//    * 고유 monsterId ID를 제거하는 함수
-//    * @returns {string} 생성된 monsterId
-//    */
-//   removeMonster(monsterId = undefined) {
-//     if (monsterId === undefined && this.monsterList.length > 0) {
-//       this.monsterList.shift();
-//     } else if (this.monsterList.length > 0) {
-//       const index = this.monsterList.findIndex((monster) => monster.monsterId === monsterId);
-//       if (index !== -1) {
-//         const monster = this.monsterList.splice(index, 1)[0];
-//         if (monster) this.getMonsterSearchAndReward(monster); // 죽인 몬스터가 진짜 있을 경우
-//       }
-//     }
-//   }
-
-//   getMonsterSearchAndReward = (monster) => {
-//     const reward = monsterInfo.monsterInfo[monster.monsterNumber - 1];
-//     this.score += reward.score;
-//   };
-
-//   /**
-//    * monster 처치 시 보상주는 함수
-//    * @returns {string} 생성된 monster
-//    */
-//   generateUniqueMonsterId() {
-//     // roomId를 만드는데 UUID를 쓸건지는 자유
-//     return `room-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-//   }
-
 }

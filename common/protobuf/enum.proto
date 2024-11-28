@@ -18,6 +18,13 @@ enum ObjectType {
 	ENV = 4;
 }
 
+enum OBJECT_STATE_TYPE
+{
+	IDLE = 0;
+	MOVE = 1;
+	SKILL = 2;
+}
+
 enum CardType {
 	ATTACK_TOWER = 0;
 	STR_ATTACK_TOWER = 1;

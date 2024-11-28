@@ -10,7 +10,7 @@ import { ParseUtils } from './parseUtils.js';
  */
 class AssetManager {
   /**
-   * @type {Array<Object>} 몬스터 데이터를 저장합니다.
+   * @type {Map<Object>} 몬스터 데이터를 저장합니다.
    */
   monsters;
 
@@ -20,12 +20,12 @@ class AssetManager {
   stages;
 
   /**
-   * @type {Array<Object>} 타워 데이터를 저장합니다.
+   * @type {Map<Object>} 타워 데이터를 저장합니다.
    */
   towers;
 
   constructor() {
-    this.monsters = [];
+    this.monsters = new Map;
     this.stages = [];
     this.towers = new Map;
   }
@@ -45,7 +45,9 @@ class AssetManager {
       ]);
 
       // 몬스터 자원 로드
-      this.monsters = monsters.data;
+      this.monsters = new Map(
+        monsters.data.map((monster) => [monster.prefabId, monster])
+      );
       // 스테이지 자원 로드
       this.stages = stages.data;
 
@@ -57,7 +59,7 @@ class AssetManager {
       if (!this.monsters || this.towers.size === 0) throw new Error('asset is null');
 
       return {
-        monsters: this.monsters,
+        monsters: Array.from(this.monsters.values()),
         towers: Array.from(this.towers.values()), // Map 데이터를 배열로 변환
       };
     } catch (error) {
@@ -114,7 +116,21 @@ class AssetManager {
   getStageMonsters(stageId) {
     return this.stages[stageId]?.stageMonsters || null;
   }
-
+    /**
+   * ---------------------------------------------
+   * [getMonsterData]
+   * - 특정 몬스터의 데이터를 가져옵니다.
+   * ---------------------------------------------
+   * @param {string} prefabId 몬스터 prefabId
+   * @returns {Object|null} 해당 몬스터 데이터 또는 null
+   */
+  getMonsterData(prefabId) {
+    let monster = this.monsters.get(prefabId) || null
+    console.log("monster 정보")
+    console.log(monster)
+    return monster
+  }
+  
   /**
    * ---------------------------------------------
    * [getRandomAssetMonster]
@@ -123,8 +139,9 @@ class AssetManager {
    * @returns {Object} 랜덤 몬스터 데이터
    */
   getRandomAssetMonster() {
-    const monsterId = Math.floor(Math.random() * this.monsters.length);
-    return this.monsters[monsterId];
+    const monstersArray = Array.from(this.monsters.values())
+    const random = Math.floor(Math.random() * monstersArray.length);
+    return monstersArray[random];
   }
 
   /**
@@ -132,7 +149,7 @@ class AssetManager {
    * [getTowerData]
    * - 특정 타워의 데이터를 가져옵니다.
    * ---------------------------------------------
-   * @param {number} towerId 타워 ID
+   * @param {string} prefabId 타워 prefabId
    * @returns {Object|null} 해당 타워 데이터 또는 null
    */
   getTowerData(prefabId) {

@@ -2,18 +2,15 @@ import { MathUtils } from "../../utils/mathUtils.js";
 
 //abstract
 export class GameObject {
-    constructor(pos, maxHp, prefabId) {
+    /*---------------------------------------------
+    [생성자]
+---------------------------------------------*/
+    constructor(prefabId, pos, room) {
+        this.prefabId = prefabId;
         this.pos = pos;
-        this.hp = maxHp;
-        this.maxHp = maxHp;
-        this.prefabId = prefabId; // 엔티티 유형의 식별자 - 예: minecraft:skeleton
-    }
+        this.room = room;
 
-    onDamaged(amount) {
-        this.hp = MathUtils.clamp(this.hp - amount, 0, this.hp);
-        if (this.hp === 0) {
-            this.onDeath();
-        }
+        this.state = OBJECT_STATE_TYPE.IDLE;
     }
 
     /*---------------------------------------------
@@ -34,5 +31,11 @@ export class GameObject {
 
     getPrefabId() {
         return this.prefabId;
+    }
+
+    setState(state) {
+        this.state = state;
+        //broadcast
+        this.room.broadcast();
     }
 }
