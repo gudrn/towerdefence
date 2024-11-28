@@ -26,7 +26,7 @@ message MonsterData {
 message UserData {
   string id = 1; // 유저 식별 id
   string name = 2; // 닉네임
-  CharacterData character = 3;
+  string prefabId = 3;
 }
 
 // 변경 주의(클라 의존성)
@@ -37,17 +37,6 @@ message RoomData {
   int32 maxUserNum = 4;        // 최대 사용자 수
   RoomStateType state = 5;     // 방 상태
   repeated UserData users = 6; // 방에 참여하는 사용자 목록
-}
-
-// 캐릭터 데이터, 변경 주의(클라 의존성)
-message CharacterData {
-  // 필드 정의
-  CharacterType characterType = 1;  // 캐릭터 타입
-//  CharacterStateInfoData stateInfo = 5;  // 상태 정보
-
-//  repeated int32 equips = 6;        // 장착된 아이템
-//  repeated int32 debuffs = 7;       // 디버프 ID
-//  repeated CardData handCards = 8;  // 손에 든 카드
 }
 
 message PosInfo
@@ -66,7 +55,7 @@ message Vec2
 message GamePlayerData {
   PosInfo position = 1;
   string nickname = 2;
-  CharacterType characterType = 3;
+  string prefabId = 3;
 }
 
 message ErrorData

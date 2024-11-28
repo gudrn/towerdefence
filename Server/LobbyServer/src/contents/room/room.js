@@ -1,5 +1,5 @@
 import { create, toBinary } from '@bufbuild/protobuf';
-import { CharacterDataSchema, RoomDataSchema, UserDataSchema } from '../../protocol/struct_pb.js';
+import { RoomDataSchema, UserDataSchema } from '../../protocol/struct_pb.js';
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
 import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
 import { L2C_JoinRoomNotificationSchema, L2C_JoinRoomResponseSchema, L2C_LeaveRoomNotificationSchema, L2C_LeaveRoomResponseSchema } from '../../protocol/room_pb.js';
@@ -45,9 +45,7 @@ export class Room {
           create(UserDataSchema, {
             id: user.getId(),
             name: user.getNickname(),
-            character: create(CharacterDataSchema, {
-              characterType: user.getCharacterType(),
-            }),
+            prefabId: user.getPrefabId()
           })
         );
       }
@@ -85,9 +83,7 @@ export class Room {
         joinUser: create(UserDataSchema, {
           id: newUser.getId(),
           name: newUser.getNickname(),
-          character: create(CharacterDataSchema, {
-            characterType: newUser.getCharacterType(),
-          }),
+          prefabId: newUser.getPrefabId()
         }),
       });
 

@@ -28,13 +28,10 @@ namespace Protocol {
             "SVQQABILCgdQUkVQQVJFEAESCwoHSU5BR0FNRRACKkkKCk9iamVjdFR5cGUS",
             "CQoFVE9XRVIQABIKCgZQTEFZRVIQARILCgdNT05TVEVSEAISDgoKUFJPSkVD",
             "VElMRRADEgcKA0VOVhAEKjIKCENhcmRUeXBlEhAKDEFUVEFDS19UT1dFUhAA",
-            "EhQKEFNUUl9BVFRBQ0tfVE9XRVIQASqAAQoNQ2hhcmFjdGVyVHlwZRIRCg1O",
-            "b25lQ2hhcmFjdGVyEAASBwoDUmVkEAESCQoFU2hhcmsQAxIKCgZNYWxhbmcQ",
-            "BRIKCgZGcm9nZ3kQBxILCgdCb21iTWFuEAgSCwoHU2xvd01hbhAJEggKBE1h",
-            "c2sQChIMCghEaW5vc291chAMYgZwcm90bzM="));
+            "EhQKEFNUUl9BVFRBQ0tfVE9XRVIQAWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Protocol.RoomStateType), typeof(global::Protocol.ObjectType), typeof(global::Protocol.CardType), typeof(global::Protocol.CharacterType), }, null, null));
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Protocol.RoomStateType), typeof(global::Protocol.ObjectType), typeof(global::Protocol.CardType), }, null, null));
     }
     #endregion
 
@@ -63,21 +60,6 @@ namespace Protocol {
     /// 추가해야됨
     /// </summary>
     [pbr::OriginalName("STR_ATTACK_TOWER")] StrAttackTower = 1,
-  }
-
-  /// <summary>
-  /// 캐릭터 타입, 변경 주의(클라 의존성)
-  /// </summary>
-  public enum CharacterType {
-    [pbr::OriginalName("NoneCharacter")] NoneCharacter = 0,
-    [pbr::OriginalName("Red")] Red = 1,
-    [pbr::OriginalName("Shark")] Shark = 3,
-    [pbr::OriginalName("Malang")] Malang = 5,
-    [pbr::OriginalName("Froggy")] Froggy = 7,
-    [pbr::OriginalName("BombMan")] BombMan = 8,
-    [pbr::OriginalName("SlowMan")] SlowMan = 9,
-    [pbr::OriginalName("Mask")] Mask = 10,
-    [pbr::OriginalName("Dinosour")] Dinosour = 12,
   }
 
   #endregion

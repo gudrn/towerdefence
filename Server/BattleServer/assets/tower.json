@@ -4,38 +4,38 @@
     "data": [
       {
         "prefabId": "BasicTower",
-        "damage": 10,
+        "attackDamage": 10,
         "attackRange": 3,
-        "attackSpeed": 1,
-        "Hp": 100
+        "attackCoolDown": 1,
+        "maxHp": 100
       },
       {
         "prefabId": "BuffTower",
-        "damage": 10,
+        "attackDamage": 10,
         "attackRange": 3,
-        "attackSpeed": 1,
-        "Hp": 100
+        "attackCoolDown": 1,
+        "maxHp": 100
       },
       {
         "prefabId": "IceTower",
-        "damage": 10,
+        "attackDamage": 10,
         "attackRange": 3,
-        "attackSpeed": 1,
-        "Hp": 100
+        "attackCoolDown": 1,
+        "maxHp": 100
       },
       {
         "prefabId": "Tower4",
-        "damage": 10,
+        "attackDamage": 10,
         "attackRange": 3,
-        "attackSpeed": 1,
-        "Hp": 100
+        "attackCoolDown": 1,
+        "maxHp": 100
       },
       {
         "prefabId": "Tower5",
-        "damage": 10,
+        "attackDamage": 10,
         "attackRange": 3,
-        "attackSpeed": 1,
-        "Hp": 100
+        "attackCoolDown": 1,
+        "maxHp": 100
       }
     ]
   }

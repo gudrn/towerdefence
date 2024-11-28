@@ -4,14 +4,13 @@ import { lobbySessionManager } from '../../server.js';
 import { handleError } from '../../utils/errorHandler.js';
 import { CustomError } from 'ServerCore/src/utils/error/customError.js';
 import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
-import { CharacterType } from '../../protocol/enum_pb.js';
 import { roomManager } from '../../contents/room/roomManager.js'; // 방 관리자를 임포트합니다.
 
 export class LobbySession extends Session {
   constructor(socket) {
     super(socket);
     this.nickname = 'tmpName';
-    this.characterType = CharacterType.Dinosour;
+    this.prefabId = "Red";
   }
 
   /*---------------------------------------------
@@ -95,7 +94,7 @@ export class LobbySession extends Session {
   /*---------------------------------------------
     [getter]
   ---------------------------------------------*/
-  getCharacterType() {
-    return this.characterType;
+  getPrefabId() {
+    return this.prefabId;
   }
 }
