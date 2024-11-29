@@ -1,7 +1,7 @@
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
 import { CustomError } from 'ServerCore/src/utils/error/customError.js';
 import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
-import { GameRoom } from './GameRoom.js';
+import { GameRoom } from './gameRoom.js';
 import { fromBinary, create } from '@bufbuild/protobuf';
 import {
   B2L_CreateGameRoomResponeSchema,
@@ -9,16 +9,8 @@ import {
 } from '../../protocol/room_pb.js';
 import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
 import { BattleSession } from '../../main/session/battleSession.js';
-import {
-  B2C_MonsterDeathNotificationSchema,
-  C2B_MonsterDeathRequestSchema,
-} from '../../protocol/monster_pb.js';
 import { C2B_PlayerPositionUpdateRequestSchema } from '../../protocol/character_pb.js';
-import {
-  B2C_TowerAttackRequestSchema,
-  C2B_TowerBuildRequestSchema,
-  C2B_TowerDestroyRequestSchema,
-} from '../../protocol/tower_pb.js';
+import { C2B_TowerBuildRequestSchema } from '../../protocol/tower_pb.js';
 
 const MAX_ROOMS_SIZE = 10000;
 
@@ -143,51 +135,51 @@ class GameRoomManager {
     room.handleTowerBuild(packet, session);
   }
 
-  /**---------------------------------------------
-   * [타워 공격 동기화]
-   * @param {Buffer} buffer - 타워 공격 패킷 데이터
-   * @param {BattleSession} session - 타워 공격 요청을 보낸 세션
-   ---------------------------------------------*/
-  towerAttackHandler(buffer, session) {
-    console.log('towerAttackHandler');
+  // /**---------------------------------------------
+  //  * [타워 공격 동기화]
+  //  * @param {Buffer} buffer - 타워 공격 패킷 데이터
+  //  * @param {BattleSession} session - 타워 공격 요청을 보낸 세션
+  //  ---------------------------------------------*/
+  // towerAttackHandler(buffer, session) {
+  //   console.log('towerAttackHandler');
 
-    // 1. 패킷 역직렬화
-    const packet = fromBinary(B2C_TowerAttackRequestSchema, buffer);
+  //   // 1. 패킷 역직렬화
+  //   const packet = fromBinary(B2C_TowerAttackRequestSchema, buffer);
 
-    // 2. 세션에서 roomId 가져오기
-    const roomId = session.roomId;
-    const room = this.rooms.get(roomId);
+  //   // 2. 세션에서 roomId 가져오기
+  //   const roomId = session.roomId;
+  //   const room = this.rooms.get(roomId);
 
-    if (room == undefined) {
-      console.log('유효하지 않은 roomId');
-      throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
-    }
+  //   if (room == undefined) {
+  //     console.log('유효하지 않은 roomId');
+  //     throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
+  //   }
 
-    room.handleTowerAttack(packet, session);
-  }
+  //   room.handleTowerAttack(packet, session);
+  // }
 
-  /**---------------------------------------------
-   * [타워 파괴 동기화]
-   * @param {Buffer} buffer - 타워 파괴 패킷 데이터
-   * @param {BattleSession} session - 타워 파괴 요청을 보낸 세션
-   ---------------------------------------------*/
-  towerDestroyHandler(buffer, session) {
-    console.log('towerDestroyHandler');
+  // /**---------------------------------------------
+  //  * [타워 파괴 동기화]
+  //  * @param {Buffer} buffer - 타워 파괴 패킷 데이터
+  //  * @param {BattleSession} session - 타워 파괴 요청을 보낸 세션
+  //  ---------------------------------------------*/
+  // towerDestroyHandler(buffer, session) {
+  //   console.log('towerDestroyHandler');
 
-    // 1. 패킷 역직렬화
-    const packet = fromBinary(C2B_TowerDestroyRequestSchema, buffer);
+  //   // 1. 패킷 역직렬화
+  //   const packet = fromBinary(C2B_TowerDestroyRequestSchema, buffer);
 
-    // 2. 세션에서 roomId 가져오기
-    const roomId = session.roomId;
-    const room = this.rooms.get(roomId);
+  //   // 2. 세션에서 roomId 가져오기
+  //   const roomId = session.roomId;
+  //   const room = this.rooms.get(roomId);
 
-    if (room == undefined) {
-      console.log('유효하지 않은 roomId');
-      throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
-    }
+  //   if (room == undefined) {
+  //     console.log('유효하지 않은 roomId');
+  //     throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
+  //   }
 
-    room.handleTowerDestroy(packet, session);
-  }
+  //   room.handleTowerDestroy(packet, session);
+  // }
 
   /**---------------------------------------------
    * [몬스터 타워 공격 동기화]
@@ -210,30 +202,30 @@ class GameRoomManager {
    ---------------------------------------------*/
   monsterAttackBaseHandler(buffer, session) {}
 
-  /**---------------------------------------------
-   * [몬스터 사망 동기화]
-   * @param {Buffer} buffer - 몬스터 사망 패킷 데이터
-   * @param {BattleSession} session - 몬스터 사망 요청을 보낸 세션
-   ---------------------------------------------*/
-  monsterDeathHandler(buffer, session) {
-    fromBinary(C2B_MonsterDeathRequestSchema, buffer);
-    const { monsterId } = buffer;
+  // /**---------------------------------------------
+  //  * [몬스터 사망 동기화]
+  //  * @param {Buffer} buffer - 몬스터 사망 패킷 데이터
+  //  * @param {BattleSession} session - 몬스터 사망 요청을 보낸 세션
+  //  ---------------------------------------------*/
+  // monsterDeathHandler(buffer, session) {
+  //   fromBinary(C2B_MonsterDeathRequestSchema, buffer);
+  //   const { monsterId } = buffer;
 
-    session.removeMonster(monsterId);
+  //   session.removeMonster(monsterId);
 
-    // 3. 클라이언트에 전송할 데이터 생성
-    const notificationPacket = create(B2C_MonsterDeathNotificationSchema, {
-      monsterId: monsterId,
-    });
+  //   // 3. 클라이언트에 전송할 데이터 생성
+  //   const notificationPacket = create(B2C_MonsterDeathNotificationSchema, {
+  //     monsterId: monsterId,
+  //   });
 
-    // 4. 패킷 직렬화
-    const notificationBuffer = PacketUtils.SerializePacket(
-      notificationPacket,
-      B2C_MonsterDeathNotificationSchema,
-      ePacketId.B2C_MonsterDeathNotification,
-      session.getNextSequence(),
-    );
-    this.broadcast(notificationBuffer);
-  }
+  //   // 4. 패킷 직렬화
+  //   const notificationBuffer = PacketUtils.SerializePacket(
+  //     notificationPacket,
+  //     B2C_MonsterDeathNotificationSchema,
+  //     ePacketId.B2C_MonsterDeathNotification,
+  //     session.getNextSequence(),
+  //   );
+  //   this.broadcast(notificationBuffer);
+  // }
 }
 export const gameRoomManager = new GameRoomManager();

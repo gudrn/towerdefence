@@ -16,9 +16,6 @@ import { C2B_PlayerPositionUpdateRequestSchema } from '../../protocol/character_
 import {
   B2C_TowerBuildNotificationSchema,
   B2C_TowerBuildResponseSchema,
-  B2C_TowerAttackNotificationSchema,
-  C2B_TowerDestroyNotificationSchema,
-  C2B_TowerDestroyResponseSchema,
   B2C_ObstacleSpawnNotificationSchemaSchema,
 } from '../../protocol/tower_pb.js';
 import { v4 as uuidv4 } from 'uuid';
@@ -334,118 +331,118 @@ export class GameRoom {
     this.broadcast(notificationBuffer);
   }
 
-  /**---------------------------------------------
-   * [타워 공격 동기화]
-   * @param {C2B_TowerAttackRequest} packet - 타워 공격 패킷 데이터
-   * @param {Session} session - 세션 정보
-   ---------------------------------------------*/
-  handleTowerAttack(packet, session) {
-    // 몬스터 길 찾기 완료 후 수정 예정
-    console.log('handleTowerAttack');
-    const { towerId, targetId } = packet;
+  // /**---------------------------------------------
+  //  * [타워 공격 동기화]
+  //  * @param {C2B_TowerAttackRequest} packet - 타워 공격 패킷 데이터
+  //  * @param {Session} session - 세션 정보
+  //  ---------------------------------------------*/
+  // handleTowerAttack(packet, session) {
+  //   // 몬스터 길 찾기 완료 후 수정 예정
+  //   console.log('handleTowerAttack');
+  //   const { towerId, targetId } = packet;
 
-    // 1. 타워와 타겟 존재 확인
-    const tower = this.towerList.get(towerId);
-    const target = this.monsters.get(targetId);
+  //   // 1. 타워와 타겟 존재 확인
+  //   const tower = this.towerList.get(towerId);
+  //   const target = this.monsters.get(targetId);
 
-    // 타워나 타겟이 존재하지 않으면
-    if (!tower || !target) {
-      console.log(`타워 or 타겟이 존재하지 않음. towerId: ${towerId}, targetId: ${targetId}`);
-      const failNotification = create(B2C_TowerAttackNotificationSchema, {
-        isSuccess: false,
-        damage: 0,
-        targetHealth: 0,
-      });
+  //   // 타워나 타겟이 존재하지 않으면
+  //   if (!tower || !target) {
+  //     console.log(`타워 or 타겟이 존재하지 않음. towerId: ${towerId}, targetId: ${targetId}`);
+  //     const failNotification = create(B2C_TowerAttackNotificationSchema, {
+  //       isSuccess: false,
+  //       damage: 0,
+  //       targetHealth: 0,
+  //     });
 
-      const failBuffer = PacketUtils.SerializePacket(
-        failNotification,
-        B2C_TowerAttackNotificationSchema,
-        ePacketId.B2C_TowerAttackNotification,
-        session.getNextSequence(),
-      );
+  //     const failBuffer = PacketUtils.SerializePacket(
+  //       failNotification,
+  //       B2C_TowerAttackNotificationSchema,
+  //       ePacketId.B2C_TowerAttackNotification,
+  //       session.getNextSequence(),
+  //     );
 
-      session.send(failBuffer);
-      return;
-    }
+  //     session.send(failBuffer);
+  //     return;
+  //   }
 
-    // 2. B2C_TowerAttackNotification 패킷 생성
-    const notification = create(B2C_TowerAttackNotificationSchema, {
-      isSuccess: true,
-      damage: 0,
-      targetHealth: 0,
-    });
+  //   // 2. B2C_TowerAttackNotification 패킷 생성
+  //   const notification = create(B2C_TowerAttackNotificationSchema, {
+  //     isSuccess: true,
+  //     damage: 0,
+  //     targetHealth: 0,
+  //   });
 
-    const notificationBuffer = PacketUtils.SerializePacket(
-      notification,
-      B2C_TowerAttackNotificationSchema,
-      ePacketId.B2C_TowerAttackNotification,
-      session.getNextSequence(),
-    );
+  //   const notificationBuffer = PacketUtils.SerializePacket(
+  //     notification,
+  //     B2C_TowerAttackNotificationSchema,
+  //     ePacketId.B2C_TowerAttackNotification,
+  //     session.getNextSequence(),
+  //   );
 
-    this.broadcast(notificationBuffer);
-  }
+  //   this.broadcast(notificationBuffer);
+  // }
 
-  /**---------------------------------------------
-   * [타워 파괴 동기화]
-   * @param {C2B_TowerDestroyRequest} packet - 타워 파괴 패킷 데이터
-   * @param {Session} session - 세션 정보
-   ---------------------------------------------*/
-  handleTowerDestroy(packet, session) {
-    // 몬스터 길 찾기 완료 후 수정 예정
-    console.log('handleTowerDestroy');
-    const { towerId } = packet;
+  // /**---------------------------------------------
+  //  * [타워 파괴 동기화]
+  //  * @param {C2B_TowerDestroyRequest} packet - 타워 파괴 패킷 데이터
+  //  * @param {Session} session - 세션 정보
+  //  ---------------------------------------------*/
+  // handleTowerDestroy(packet, session) {
+  //   // 몬스터 길 찾기 완료 후 수정 예정
+  //   console.log('handleTowerDestroy');
+  //   const { towerId } = packet;
 
-    // 1. 타워가 있는지 확인
-    const tower = this.towerList.get(towerId);
-    if (!tower) {
-      console.log(`타워가 존재하지 않음. towerId: ${towerId}`);
-      const failResponse = create(C2B_TowerDestroyResponseSchema, {
-        towerId: -1, // 실패
-      });
+  //   // 1. 타워가 있는지 확인
+  //   const tower = this.towerList.get(towerId);
+  //   if (!tower) {
+  //     console.log(`타워가 존재하지 않음. towerId: ${towerId}`);
+  //     const failResponse = create(C2B_TowerDestroyResponseSchema, {
+  //       towerId: -1, // 실패
+  //     });
 
-      const failBuffer = PacketUtils.SerializePacket(
-        failResponse,
-        C2B_TowerDestroyResponseSchema,
-        ePacketId.C2B_TowerDestroyResponse,
-        session.getNextSequence(),
-      );
+  //     const failBuffer = PacketUtils.SerializePacket(
+  //       failResponse,
+  //       C2B_TowerDestroyResponseSchema,
+  //       ePacketId.C2B_TowerDestroyResponse,
+  //       session.getNextSequence(),
+  //     );
 
-      session.send(failBuffer);
-      return;
-    }
+  //     session.send(failBuffer);
+  //     return;
+  //   }
 
-    // 2. 타워 제거
-    this.towerList.delete(towerId);
-    console.log(`[타워] 파괴 성공. towerId: ${towerId}`);
+  //   // 2. 타워 제거
+  //   this.towerList.delete(towerId);
+  //   console.log(`[타워] 파괴 성공. towerId: ${towerId}`);
 
-    // 3. 요청한 클라이언트에게 응답
-    const response = create(C2B_TowerDestroyResponseSchema, {
-      towerId: towerId,
-    });
+  //   // 3. 요청한 클라이언트에게 응답
+  //   const response = create(C2B_TowerDestroyResponseSchema, {
+  //     towerId: towerId,
+  //   });
 
-    const responseBuffer = PacketUtils.SerializePacket(
-      response,
-      C2B_TowerDestroyResponseSchema,
-      ePacketId.C2B_TowerDestroyResponse,
-      session.getNextSequence(),
-    );
+  //   const responseBuffer = PacketUtils.SerializePacket(
+  //     response,
+  //     C2B_TowerDestroyResponseSchema,
+  //     ePacketId.C2B_TowerDestroyResponse,
+  //     session.getNextSequence(),
+  //   );
 
-    session.send(responseBuffer);
+  //   session.send(responseBuffer);
 
-    // 4. 모든 클라이언트에게 타워 파괴 알림
-    const notification = create(C2B_TowerDestroyNotificationSchema, {
-      towerId: towerId,
-    });
+  //   // 4. 모든 클라이언트에게 타워 파괴 알림
+  //   const notification = create(C2B_TowerDestroyNotificationSchema, {
+  //     towerId: towerId,
+  //   });
 
-    const notificationBuffer = PacketUtils.SerializePacket(
-      notification,
-      C2B_TowerDestroyNotificationSchema,
-      ePacketId.C2B_TowerDestroyNotification,
-      session.getNextSequence(),
-    );
+  //   const notificationBuffer = PacketUtils.SerializePacket(
+  //     notification,
+  //     C2B_TowerDestroyNotificationSchema,
+  //     ePacketId.C2B_TowerDestroyNotification,
+  //     session.getNextSequence(),
+  //   );
 
-    this.broadcast(notificationBuffer);
-  }
+  //   this.broadcast(notificationBuffer);
+  // }
 
   /**---------------------------------------------
    * [몬스터 타워 공격 동기화]

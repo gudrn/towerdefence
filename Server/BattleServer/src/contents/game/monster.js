@@ -1,5 +1,5 @@
 import { GameObject } from './gameObject.js';
-import { GameRoom } from '../room/gameRoom.js/index.js';
+import { GameRoom } from '../room/gameRoom.js';
 import { aStar } from './aStar.js';
 import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
@@ -8,11 +8,11 @@ import {
   B2C_MonsterAttackBaseNotificationSchema,
   B2C_MonsterAttackTowerNotificationSchema,
   B2C_MonsterPositionUpdateNotificationSchema,
-} from 'src/protocol/monster_pb.js';
+} from '../../protocol/monster_pb.js';
 import {
   B2C_BaseDestroyNotificationSchema,
   B2C_TowerDestroyNotificationSchema,
-} from 'src/protocol/tower_pb.js';
+} from '../../protocol/tower_pb.js';
 
 export class Monster extends GameObject {
   constructor(prefabId, pos, room) {
