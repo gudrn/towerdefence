@@ -542,7 +542,7 @@ export class GameRoom {
       console.log('몬스터 생성');
 
       const packet = create(B2C_SpawnMonsterNotificationSchema, {
-        posInfos: object.getPos(),
+        posInfo: object.getPos(),
         prefabId: object.getPrefabId(),
       });
 

@@ -21,7 +21,8 @@ lobbySession.connectLobbyServer();
 
 const initServer = async () => {
   try {
-    await assetManager.loadGameAssets();
+    const asset = await assetManager.loadGameAssets();
+    console.log(asset.monsters);
     // 다음 작업
   } catch (error) {
     console.error(error.message);

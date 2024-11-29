@@ -8,8 +8,7 @@
       "attackRange": 1,
       "attackDamage": 1,
       "attackCoolDown": 2,
-      "moveSpeed": 2,
-      "score": 1
+      "moveSpeed": 2
     },
     {
       "prefabId": "Robot2",
@@ -17,8 +16,7 @@
       "attackRange": 1,
       "attackDamage": 1,
       "attackCoolDown": 2,
-      "moveSpeed": 2,
-      "score": 1
+      "moveSpeed": 2
     },
     {
       "prefabId": "Robot3",
@@ -26,8 +24,7 @@
       "attackRange": 1,
       "attackDamage": 1,
       "attackCoolDown": 2,
-      "moveSpeed": 2,
-      "score": 1
+      "moveSpeed": 2
     },
     {
       "prefabId": "Robot4",
@@ -35,8 +32,7 @@
       "attackRange": 1,
       "attackDamage": 1,
       "attackCoolDown": 2,
-      "moveSpeed": 2,
-      "score": 1
+      "moveSpeed": 2
     },
     {
       "prefabId": "Robot5",
@@ -44,8 +40,7 @@
       "attackRange": 1,
       "attackDamage": 1,
       "attackCoolDown": 2,
-      "moveSpeed": 2,
-      "score": 1
+      "moveSpeed": 2
     }
   ]
 }

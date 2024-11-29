@@ -27,11 +27,12 @@ namespace Protocol {
             "CgplbnVtLnByb3RvEghQcm90b2NvbCozCg1Sb29tU3RhdGVUeXBlEggKBFdB",
             "SVQQABILCgdQUkVQQVJFEAESCwoHSU5BR0FNRRACKkkKCk9iamVjdFR5cGUS",
             "CQoFVE9XRVIQABIKCgZQTEFZRVIQARILCgdNT05TVEVSEAISDgoKUFJPSkVD",
-            "VElMRRADEgcKA0VOVhAEKjIKCENhcmRUeXBlEhAKDEFUVEFDS19UT1dFUhAA",
-            "EhQKEFNUUl9BVFRBQ0tfVE9XRVIQAWIGcHJvdG8z"));
+            "VElMRRADEgcKA0VOVhAEKjIKEU9CSkVDVF9TVEFURV9UWVBFEggKBElETEUQ",
+            "ABIICgRNT1ZFEAESCQoFU0tJTEwQAioyCghDYXJkVHlwZRIQCgxBVFRBQ0tf",
+            "VE9XRVIQABIUChBTVFJfQVRUQUNLX1RPV0VSEAFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Protocol.RoomStateType), typeof(global::Protocol.ObjectType), typeof(global::Protocol.CardType), }, null, null));
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Protocol.RoomStateType), typeof(global::Protocol.ObjectType), typeof(global::Protocol.OBJECT_STATE_TYPE), typeof(global::Protocol.CardType), }, null, null));
     }
     #endregion
 
@@ -52,6 +53,12 @@ namespace Protocol {
     [pbr::OriginalName("MONSTER")] Monster = 2,
     [pbr::OriginalName("PROJECTILE")] Projectile = 3,
     [pbr::OriginalName("ENV")] Env = 4,
+  }
+
+  public enum OBJECT_STATE_TYPE {
+    [pbr::OriginalName("IDLE")] Idle = 0,
+    [pbr::OriginalName("MOVE")] Move = 1,
+    [pbr::OriginalName("SKILL")] Skill = 2,
   }
 
   public enum CardType {

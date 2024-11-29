@@ -45,7 +45,9 @@ class AssetManager {
       ]);
 
       // 몬스터 자원 로드
-      this.monsters = new Map(monsters.data.map((monster) => [monster.prefabId, monster]));
+      this.monsters = new Map(
+        monsters.data.map((monster) => [monster.prefabId, monster])
+    );
       // 스테이지 자원 로드
       this.stages = stages.data;
 
@@ -138,6 +140,9 @@ class AssetManager {
    */
   getRandomAssetMonster() {
     const monstersArray = Array.from(this.monsters.values());
+    console.log("----------");
+    console.log(this.monsters.get("Robot1"));
+    console.log("----------");
     const random = Math.floor(Math.random() * monstersArray.length);
     return monstersArray[random];
   }

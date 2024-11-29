@@ -40,13 +40,15 @@ export class MonsterSpawner {
    * @type {Array<{x: number, y: number}>} - 몬스터 스폰 위치 목록
    * @static
    */
-  static spawnPositions() {
-    return [
-      { x: 15, y: Math.round(Math.random() * 32) - 16 },
-      { x: Math.round(Math.random() * 32) - 16, y: 15 },
-      { x: Math.round(Math.random() * 32) - 16, y: -16 },
-      { x: -16, y: Math.round(Math.random() * 32) - 16 },
+  getRandomSpawnPosition() {
+    const positions = [
+      { x: 15, y: Math.round(Math.random() * 32) - 16 },  // Top
+      { x: Math.round(Math.random() * 32) - 16, y: 15 },  // Right
+      { x: Math.round(Math.random() * 32) - 16, y: -16 }, // Bottom
+      { x: -16, y: Math.round(Math.random() * 32) - 16 }, // Left
     ];
+    // 배열에서 랜덤하게 하나 선택
+    return positions[Math.floor(Math.random() * positions.length)];
   }
 
   /**
@@ -92,8 +94,7 @@ export class MonsterSpawner {
       return;
     }
 
-    const randomIndex = Math.floor(Math.random() * 4);
-    const randomSpawnPos = MonsterSpawner.spawnPositions()[randomIndex];
+    const randomSpawnPos = this.getRandomSpawnPosition();
     console.log(randomSpawnPos);
 
     const newUuid = uuidv4();
@@ -105,24 +106,8 @@ export class MonsterSpawner {
       y: randomSpawnPos.y,
     });
 
-    console.log(posInfo.uuid);
-    const randomAssetMonster = assetManager.getRandomAssetMonster();
-    const monster = new Monster(
-      posInfo,
-      randomAssetMonster.maxHp,
-      randomAssetMonster.prefabId,
-      randomAssetMonster.attackPower,
-      randomAssetMonster.range,
-      this.gameRoom, // GameRoom 참조 전달
-    );
-
-    // // 초기 환경 정보 전달
-    // monster.updateEnvironment(
-    //   this.gameRoom.obstacles,
-    //   Array.from(this.gameRoom.towers.values()),
-    // );
-
-    console.log(monster);
+    let randomAssetMonster = assetManager.getRandomAssetMonster();
+    const monster = new Monster(randomAssetMonster.prefabId, posInfo, this.gameRoom);
     this.gameRoom.addObject(monster);
   }
 
