@@ -18,31 +18,68 @@ export class GameRoom {
     { x: 3, y: 4 },
     { x: 4, y: 4 },
     { x: 3, y: 3 },
-    { x: 4, y: 3 }
+    { x: 4, y: 3 },
   ];
 
   /**---------------------------------------------
    * @param {number} id - 방의 고유 ID
    * @param {number} maxPlayerCount - 최대 플레이어 수
+   * @param {string} towerList - 타워 저장
    ---------------------------------------------*/
   constructor(id, maxPlayerCount) {
     this.users = new Map();
     this.id = id;
     this.monsters = new Map();
     this.towerList = new Map();
+    this.grid = { width: 32, height: 32 };
+    this.base = this.baseSize(5, 3); // 기지의 좌표
+    this.obstacles = []; // 장애물 좌표 배열
+    this.excludedCoordinates = [...this.base]; // 장애물이 생성되지 않도록 할 좌표 목록
+
     this.maxPlayerCount = maxPlayerCount;
     this.monsterSpawner = new MonsterSpawner(this);
+
+    this.generateObstacles(); // 장애물 랜덤 배치
+    this.updateInterval = 200; // 200ms 간격으로 업데이트
+  }
+
+  /**
+   * Base 좌표 생성 함수
+   * @param {number} width - 가로 크기
+   * @param {number} height - 세로 크기
+   * @returns {Array} 좌표 배열
+   */
+  baseSize(width, height) {
+    const base = [];
+    const halfWidth = Math.floor(width / 2);
+    const halfHeight = Math.floor(height / 2);
+
+    for (let y = -halfHeight; y <= halfHeight; y++) {
+      for (let x = -halfWidth; x <= halfWidth; x++) {
+        base.push({ x: x, y: y }); // 음수-양수 좌표 생성
+      }
+    }
+
+    return base;
   }
 
   getMonsterList() {
-    return this.monsterList;
+    return this.monsters;
+  }
+
+  getTowerList() {
+    return this.monsters;
+  }
+
+  getobstacles() {
+    return this.obstacles;
   }
 
   // 1. 방이 가득 찼는지 확인
   addplayer(player) {
     if (this.users.length >= this.maxPlayerCount) {
-      console.log("this.users.length: " + this.users.length);
-      console.log("this.maxPlayerCount: " + this.maxPlayerCount);
+      console.log('this.users.length: ' + this.users.length);
+      console.log('this.maxPlayerCount: ' + this.maxPlayerCount);
       return false; // 방이 가득 참
     }
     if (this.users.get(player.id) != undefined) {
@@ -74,10 +111,15 @@ export class GameRoom {
     }
     // 3. 해당 유저에게 B2C_JoinRoomResponse 패킷 전송
     const enterRoomPacket = create(B2C_JoinRoomRequestSchema, {
-      isSuccess: true
+      isSuccess: true,
     });
 
-    const enterRoomBuffer = PacketUtils.SerializePacket(enterRoomPacket, B2C_JoinRoomRequestSchema, ePacketId.B2C_JoinRoomResponse, player.session.getNextSequence());
+    const enterRoomBuffer = PacketUtils.SerializePacket(
+      enterRoomPacket,
+      B2C_JoinRoomRequestSchema,
+      ePacketId.B2C_JoinRoomResponse,
+      player.session.getNextSequence(),
+    );
     player.session.send(enterRoomBuffer);
 
     // 4. 모든 인원이 들어왔다면 B2C_GameStart 패킷 전송
@@ -96,13 +138,13 @@ export class GameRoom {
         const posInfo = create(PosInfoSchema, {
           uuid: user.session.getId(),
           x: spawnPoint.x,
-          y: spawnPoint.y
+          y: spawnPoint.y,
         });
 
         const gamePlayerData = create(GamePlayerDataSchema, {
           position: posInfo,
           nickname: user.playerData.nickname,
-          characterType: user.playerData.characterType
+          characterType: user.playerData.characterType,
         });
 
         playerDatas.push(gamePlayerData);
@@ -110,14 +152,14 @@ export class GameRoom {
 
       // B2C_GameStartNotification 패킷 생성
       const gameStartPacket = create(B2C_GameStartNotificationSchema, {
-        playerDatas
+        playerDatas,
       });
 
       const gameStartBuffer = PacketUtils.SerializePacket(
         gameStartPacket,
         B2C_GameStartNotificationSchema,
         ePacketId.B2C_GameStartNotification,
-        usersArray[0].session.getNextSequence() // 첫 번째 유저의 시퀀스
+        usersArray[0].session.getNextSequence(), // 첫 번째 유저의 시퀀스
       );
 
       // 모든 유저에게 전송
@@ -128,12 +170,12 @@ export class GameRoom {
     }
   }
 
-  OnGameStart(){
-    console.log("OnGameStart Called");
+  OnGameStart() {
+    console.log('OnGameStart Called');
     this.monsterSpawner.startSpawning(0);
   }
 
-  getMonsterCount(){
+  getMonsterCount() {
     return this.monsters.size;
   }
 
@@ -149,10 +191,15 @@ export class GameRoom {
         uuid: session.getId(),
         x: clientPacket.posInfos?.x,
         y: clientPacket.posInfos?.y,
-      })
+      }),
     });
 
-    const sendBuffer = PacketUtils.SerializePacket(packet, B2C_PositionUpdateNotificationSchema, ePacketId.B2C_PositionUpdateNotification, 0);
+    const sendBuffer = PacketUtils.SerializePacket(
+      packet,
+      B2C_PositionUpdateNotificationSchema,
+      ePacketId.B2C_PositionUpdateNotification,
+      0,
+    );
     this.broadcast(sendBuffer);
   }
 
@@ -196,15 +243,15 @@ export class GameRoom {
    * @param {Buffer} buffer - 몬스터 타워 공격 패킷 데이터
    ---------------------------------------------*/
   handleMonsterAttackTower(buffer) {
-    const moster = this.monsterList.find((m)=>m.id === buffer.id);//걍 막 하는중
-    if(!moster){
+    const moster = this.monsters.find((m) => m.id === buffer.id); //걍 막 하는중
+    if (!moster) {
       //오류
     }
     const target = this.towerList.get(buffer.towerid);
 
     moster.attackTarget(target);
 
-    if(target.hp<=0){
+    if (target.hp <= 0) {
       this.towerList.delete(buffer.towerid);
     }
 
@@ -251,6 +298,17 @@ export class GameRoom {
     }));
   }
 
+  /**
+   * 게임 루프 시작
+   */
+  monsterActionLoop(session) {
+    setInterval(() => {
+      for (const monster of this.monsters.values()) {
+        monster.monsterAction(session); // 몬스터 이동 및 주기적 동기화
+      }
+    }, this.updateInterval);
+  }
+
   /**---------------------------------------------
    * 오브젝트 추가
    * 대상: 몬스터, 타워, 투사체
@@ -258,40 +316,101 @@ export class GameRoom {
    * @param {Monster | Tower | Projectile} object - 생성할 오브젝트
    * @returns {void}
    ---------------------------------------------*/
- addObject(object){
-  if(object instanceof Monster){
-    this.monsters.set(object.getId(), object);
-    console.log("몬스터 생성");
+  addObject(object) {
+    if (object instanceof Monster) {
+      this.monsters.set(object.getId(), object);
+      console.log('몬스터 생성');
 
-    const packet = create(B2C_SpawnMonsterNotificationSchema, {
-      posInfos: object.getPos(),
-      prefabId: object.getPrefabId()
-    });
+      const packet = create(B2C_SpawnMonsterNotificationSchema, {
+        posInfos: object.getPos(),
+        prefabId: object.getPrefabId(),
+      });
 
-    /**
-     * @type {Buffer} sendBuffer
-     */
-    const sendBuffer = PacketUtils.SerializePacket(packet, B2C_SpawnMonsterNotificationSchema, ePacketId.B2C_SpawnMonsterNotification, 0);
-    this.broadcast(sendBuffer);
+      /**
+       * @type {Buffer} sendBuffer
+       */
+      const sendBuffer = PacketUtils.SerializePacket(
+        packet,
+        B2C_SpawnMonsterNotificationSchema,
+        ePacketId.B2C_SpawnMonsterNotification,
+        0,
+      );
+      this.broadcast(sendBuffer);
+    }
   }
-}
 
   /**---------------------------------------------
    * 오브젝트 제거
    ---------------------------------------------*/
-  removeObject(uuid){
+  removeObject(uuid) {
     const object = this.findObject(uuid);
 
-    if(object instanceof GamePlayer){
+    if (object instanceof GamePlayer) {
       this.users.delete(uuid);
-    }
-    else if(object instanceof Monster){
+    } else if (object instanceof Monster) {
       this.monsters.delete(uuid);
     }
+
+    this.monsters.forEach((monster) => {
+      monster.updateEnvironment(this.obstacles, this.towerList);
+    });
   }
 
   getMonsterSearchAndReward = (monster) => {
     const reward = monsterInfo.monsterInfo[monster.monsterNumber - 1];
     this.score += reward.score;
   };
+
+  /**
+   * 장애물과 타워 정보를 갱신
+   * @param {Array<object>} obstacles - 장애물 좌표 배열
+   * @param {Map<string, object>} towers - 타워 좌표 Map
+   */
+  updateEnvironment(obstacles, towers) {
+    this.obstacles = obstacles;
+    this.towers = towers;
+  }
+
+  /**
+   * 장애물 랜덤 배치
+   */
+  generateObstacles() {
+    const totalCells = this.grid.width * this.grid.height; // 전체 셀 개수
+    const obstacleCount = Math.floor(totalCells * 0.1); // 장애물 개수 조절 (10%)
+    const obstacleSet = new Set();
+
+    // "생성 금지 좌표"를 문자열로 변환하여 비교에 사용
+    const excludedSet = new Set(this.excludedCoordinates.map(({ x, y }) => `${x},${y}`));
+
+    while (obstacleSet.size < obstacleCount) {
+      const randomX = Math.floor(Math.random() * 22) - 11;
+      const randomY = Math.floor(Math.random() * 28) - 14;
+      const coordinate = `${randomX},${randomY}`;
+
+      // 생성 금지 좌표가 아니라면 추가
+      if (!excludedSet.has(coordinate)) {
+        obstacleSet.add(coordinate);
+      }
+    }
+
+    this.obstacles = Array.from(obstacleSet).map((coordinate) => {
+      const [x, y] = coordinate.split(',').map(Number);
+      return { x, y };
+    });
+
+    console.log('장애물 배치 완료:', this.obstacles);
+
+    const obstacleSpawnPacket = create(B2C_ObstacleSpawnNotificationSchema, {
+      obstacles: this.obstacles,
+    });
+
+    const obstacleBuffer = PacketUtils.SerializePacket(
+      obstacleSpawnPacket,
+      B2C_ObstacleSpawnNotificationSchema,
+      ePacketId.B2C_ObstacleSpawnNotification,
+      session.getNextSequence(),
+    );
+
+    this.broadcast(obstacleBuffer);
+  }
 }
