@@ -301,10 +301,10 @@ export class GameRoom {
   /**
    * 게임 루프 시작
    */
-  monsterActionLoop(session) {
+  gameLoop() {
     setInterval(() => {
       for (const monster of this.monsters.values()) {
-        monster.monsterAction(session); // 몬스터 이동 및 주기적 동기화
+        monster.monsterAction(); // 몬스터 이동 및 주기적 동기화
       }
     }, this.updateInterval);
   }

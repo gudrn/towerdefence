@@ -115,11 +115,11 @@ export class MonsterSpawner {
       this.gameRoom, // GameRoom 참조 전달
     );
 
-    // 초기 환경 정보 전달
-    monster.updateEnvironment(
-      this.gameRoom.obstacles,
-      Array.from(this.gameRoom.towerList.values()),
-    );
+    // // 초기 환경 정보 전달
+    // monster.updateEnvironment(
+    //   this.gameRoom.obstacles,
+    //   Array.from(this.gameRoom.towerList.values()),
+    // );
 
     console.log(monster);
     this.gameRoom.addObject(monster);
