@@ -33,24 +33,62 @@ export class GameRoom {
   /**---------------------------------------------
    * @param {number} id - 방의 고유 ID
    * @param {number} maxPlayerCount - 최대 플레이어 수
+   * @param {string} towerList - 타워 저장
    ---------------------------------------------*/
   constructor(id, maxPlayerCount) {
     this.users = new Map();
     this.id = id;
     this.monsters = new Map();
     this.towerList = new Map();
+    this.grid = { width: 32, height: 32 };
+    this.base = this.baseSize(5, 3); // 기지의 좌표
+    this.obstacles = []; // 장애물 좌표 배열
+    this.excludedCoordinates = [...this.base]; // 장애물이 생성되지 않도록 할 좌표 목록
+
     this.maxPlayerCount = maxPlayerCount;
     this.monsterSpawner = new MonsterSpawner(this);
+
+    this.generateObstacles(); // 장애물 랜덤 배치
+    this.updateInterval = 200; // 200ms 간격으로 업데이트
+  }
+
+  /**
+   * Base 좌표 생성 함수
+   * @param {number} width - 가로 크기
+   * @param {number} height - 세로 크기
+   * @returns {Array} 좌표 배열
+   */
+  baseSize(width, height) {
+    const base = [];
+    const halfWidth = Math.floor(width / 2);
+    const halfHeight = Math.floor(height / 2);
+
+    for (let y = -halfHeight; y <= halfHeight; y++) {
+      for (let x = -halfWidth; x <= halfWidth; x++) {
+        base.push({ x: x, y: y }); // 음수-양수 좌표 생성
+      }
+    }
+
+    return base;
   }
 
   getMonsterList() {
     return this.monsters;
   }
 
+  getTowerList() {
+    return this.monsters;
+  }
+
+  getobstacles() {
+    return this.obstacles;
+  }
+
   // 1. 방이 가득 찼는지 확인
   addplayer(player) {
-    if (this.users.size >= this.maxPlayerCount) {
-      console.log('this.users.length: ' + this.users.size);
+    if (this.users.length >= this.maxPlayerCount) {
+      console.log('this.users.length: ' + this.users.length);
+
       console.log('this.maxPlayerCount: ' + this.maxPlayerCount);
       return false; // 방이 가득 참
     }
@@ -414,7 +452,7 @@ export class GameRoom {
    * @param {Buffer} buffer - 몬스터 타워 공격 패킷 데이터
    ---------------------------------------------*/
   handleMonsterAttackTower(buffer) {
-    const moster = this.monsterList.find((m) => m.id === buffer.id); //걍 막 하는중
+    const moster = this.monsters.find((m) => m.id === buffer.id); //걍 막 하는중
     if (!moster) {
       //오류
     }
@@ -501,6 +539,17 @@ export class GameRoom {
     return true;
   }
 
+  /**
+   * 게임 루프 시작
+   */
+  gameLoop() {
+    setInterval(() => {
+      for (const monster of this.monsters.values()) {
+        monster.monsterAction(); // 몬스터 이동 및 주기적 동기화
+      }
+    }, this.updateInterval);
+  }
+
   /**---------------------------------------------
    * 오브젝트 추가
    * 대상: 몬스터, 타워, 투사체
@@ -542,10 +591,67 @@ export class GameRoom {
     } else if (object instanceof Monster) {
       this.monsters.delete(uuid);
     }
+
+    this.monsters.forEach((monster) => {
+      monster.updateEnvironment(this.obstacles, this.towerList);
+    });
   }
 
   getMonsterSearchAndReward = (monster) => {
     const reward = monsterInfo.monsterInfo[monster.monsterNumber - 1];
     this.score += reward.score;
   };
+
+  /**
+   * 장애물과 타워 정보를 갱신
+   * @param {Array<object>} obstacles - 장애물 좌표 배열
+   * @param {Map<string, object>} towers - 타워 좌표 Map
+   */
+  updateEnvironment(obstacles, towers) {
+    this.obstacles = obstacles;
+    this.towers = towers;
+  }
+
+  /**
+   * 장애물 랜덤 배치
+   */
+  generateObstacles() {
+    const totalCells = this.grid.width * this.grid.height; // 전체 셀 개수
+    const obstacleCount = Math.floor(totalCells * 0.1); // 장애물 개수 조절 (10%)
+    const obstacleSet = new Set();
+
+    // "생성 금지 좌표"를 문자열로 변환하여 비교에 사용
+    const excludedSet = new Set(this.excludedCoordinates.map(({ x, y }) => `${x},${y}`));
+
+    while (obstacleSet.size < obstacleCount) {
+      const randomX = Math.floor(Math.random() * 22) - 11;
+      const randomY = Math.floor(Math.random() * 28) - 14;
+      const coordinate = `${randomX},${randomY}`;
+
+      // 생성 금지 좌표가 아니라면 추가
+      if (!excludedSet.has(coordinate)) {
+        obstacleSet.add(coordinate);
+      }
+    }
+
+    this.obstacles = Array.from(obstacleSet).map((coordinate) => {
+      const [x, y] = coordinate.split(',').map(Number);
+      return { x, y };
+    });
+
+    console.log('장애물 배치 완료:', this.obstacles);
+
+    const obstacleSpawnPacket = create(B2C_ObstacleSpawnNotificationSchema, {
+      obstacles: this.obstacles,
+    });
+
+    const obstacleBuffer = PacketUtils.SerializePacket(
+      obstacleSpawnPacket,
+      B2C_ObstacleSpawnNotificationSchema,
+      ePacketId.B2C_ObstacleSpawnNotification,
+      session.getNextSequence(),
+    );
+
+    this.broadcast(obstacleBuffer);
+  }
 }

@@ -40,12 +40,14 @@ export class MonsterSpawner {
    * @type {Array<{x: number, y: number}>} - 몬스터 스폰 위치 목록
    * @static
    */
-  static spawnPositions = [
-    { x: 15.5, y: 0 },
-    { x: 0, y: 15.5 },
-    { x: 0, y: -15.5 },
-    { x: -15.5, y: 0 },
-  ];
+  static getSpawnPositions() {
+    return [
+      { x: 15, y: Math.round(Math.random() * 32) - 16 },
+      { x: Math.round(Math.random() * 32) - 16, y: 15 },
+      { x: Math.round(Math.random() * 32) - 16, y: -16 },
+      { x: -16, y: Math.round(Math.random() * 32) - 16 },
+    ];
+  }
 
   /**
    * MonsterSpawner 생성자
@@ -70,7 +72,7 @@ export class MonsterSpawner {
     this.spawnRate = stageInfo.spawnRate; // 몬스터 생성 간격(ms)
 
     this.spawnTimer = setInterval(() => {
-      // console.log("monsterLog: ", this.spawnedMonster, this.stageMonsters);
+      console.log('monsterLog: ', this.spawnedMonster, this.stageMonsters);
       if (this.spawnedMonster < this.stageMonsters) {
         this.spawnMonster(); // 몬스터 생성
         this.spawnedMonster += 1;
@@ -94,7 +96,7 @@ export class MonsterSpawner {
     const randomSpawnPos = MonsterSpawner.spawnPositions[randomIndex];
 
     const newUuid = uuidv4();
-    // console.log("Generated UUID:", newUuid);
+    console.log('Generated UUID:', newUuid);
 
     const posInfo = create(PosInfoSchema, {
       uuid: newUuid,
@@ -104,8 +106,22 @@ export class MonsterSpawner {
 
     console.log(posInfo.uuid);
     const randomAssetMonster = assetManager.getRandomAssetMonster();
-    const monster = new Monster(posInfo, randomAssetMonster.maxHp, randomAssetMonster.prefabId);
-    // console.log(monster);
+    const monster = new Monster(
+      posInfo,
+      randomAssetMonster.maxHp,
+      randomAssetMonster.prefabId,
+      randomAssetMonster.attackPower,
+      randomAssetMonster.range,
+      this.gameRoom, // GameRoom 참조 전달
+    );
+
+    // // 초기 환경 정보 전달
+    // monster.updateEnvironment(
+    //   this.gameRoom.obstacles,
+    //   Array.from(this.gameRoom.towerList.values()),
+    // );
+
+    console.log(monster);
     this.gameRoom.addObject(monster);
   }
 
