@@ -49,7 +49,7 @@ export const ePacketId = {
   C2B_SkillResponse: 402,
   C2B_SkillNotify: 403,
   C2B_PositionUpdateRequest: 501,
-  B2C_PositionUpdateNotification: 502,
+  B2C_PlayerPositionUpdateNotification: 502,
   C2B_UseCardRequest: 503,
   B2C_UseCardNotification: 504,
 };

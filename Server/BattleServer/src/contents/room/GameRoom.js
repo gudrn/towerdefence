@@ -204,7 +204,7 @@ export class GameRoom {
     }
 
     const packet = create(C2B_PlayerPositionUpdateRequestSchema, {
-      posInfos: create(PosInfoSchema, {
+      posInfo: create(PosInfoSchema, {
         uuid: session.getId(),
         x: clientPacket.posInfos?.x,
         y: clientPacket.posInfos?.y,
@@ -510,7 +510,7 @@ export class GameRoom {
    ---------------------------------------------*/
   validatePosition(position) {
     // 맵 범위 검증 (32x32 맵)
-    if (position.x < -16 || position.x > 16 || position.y < -16 || position.y > 16) {
+    if (position.x < -16 || position.x > 15 || position.y < -16 || position.y > 15) {
       console.log(`맵 범위 초과. 위치: ${position.x}, ${position.y}`);
       return false;
     }
