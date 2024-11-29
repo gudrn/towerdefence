@@ -31,13 +31,13 @@ export class GameRoom {
   /**---------------------------------------------
    * @param {number} id - 방의 고유 ID
    * @param {number} maxPlayerCount - 최대 플레이어 수
-   * @param {string} towerList - 타워 저장
+   * @param {string} towers - 타워 저장
    ---------------------------------------------*/
   constructor(id, maxPlayerCount) {
     this.users = new Map();
     this.id = id;
     this.monsters = new Map();
-    this.towerList = new Map();
+    this.towers = new Map();
     this.grid = { width: 32, height: 32 };
     this.base = this.baseSize(5, 3); // 기지의 좌표
     this.obstacles = []; // 장애물 좌표 배열
@@ -70,12 +70,12 @@ export class GameRoom {
     return base;
   }
 
-  getMonsterList() {
+  getMonsters() {
     return this.monsters;
   }
 
-  getTowerList() {
-    return this.monsters;
+  getTowers() {
+    return this.towers;
   }
 
   getobstacles() {
@@ -287,7 +287,7 @@ export class GameRoom {
       prefabId: towerData.prefabId,
     };
 
-    this.towerList.set(tower.towerNumber, newTower);
+    this.towers.set(tower.towerNumber, newTower);
     console.log(
       `타워생성 성공. towerId: ${tower.towerId}, prefabId: ${towerData.prefabId}, 위치: (${tower.towerPos}`,
     );
@@ -342,7 +342,7 @@ export class GameRoom {
   //   const { towerId, targetId } = packet;
 
   //   // 1. 타워와 타겟 존재 확인
-  //   const tower = this.towerList.get(towerId);
+  //   const tower = this.towers.get(towerId);
   //   const target = this.monsters.get(targetId);
 
   //   // 타워나 타겟이 존재하지 않으면
@@ -393,7 +393,7 @@ export class GameRoom {
   //   const { towerId } = packet;
 
   //   // 1. 타워가 있는지 확인
-  //   const tower = this.towerList.get(towerId);
+  //   const tower = this.towers.get(towerId);
   //   if (!tower) {
   //     console.log(`타워가 존재하지 않음. towerId: ${towerId}`);
   //     const failResponse = create(C2B_TowerDestroyResponseSchema, {
@@ -412,7 +412,7 @@ export class GameRoom {
   //   }
 
   //   // 2. 타워 제거
-  //   this.towerList.delete(towerId);
+  //   this.towers.delete(towerId);
   //   console.log(`[타워] 파괴 성공. towerId: ${towerId}`);
 
   //   // 3. 요청한 클라이언트에게 응답
@@ -453,12 +453,12 @@ export class GameRoom {
     if (!moster) {
       //오류
     }
-    const target = this.towerList.get(buffer.towerid);
+    const target = this.towers.get(buffer.towerid);
 
     moster.attackTarget(target);
 
     if (target.hp <= 0) {
-      this.towerList.delete(buffer.towerid);
+      this.towers.delete(buffer.towerid);
     }
   }
 
@@ -494,7 +494,7 @@ export class GameRoom {
   //   }
 
   //   // 2. 타워 중복 확인
-  //   for (const [_, tower] of this.towerList) {
+  //   for (const [_, tower] of this.towers) {
   //     if (position.x === tower.towerPos.x && position.y === tower.towerPos.y) {
   //       return false;
   //     }
@@ -576,7 +576,7 @@ export class GameRoom {
     }
 
     this.monsters.forEach((monster) => {
-      monster.updateEnvironment(this.obstacles, this.towerList);
+      monster.updateEnvironment(this.obstacles, this.towers);
     });
   }
 

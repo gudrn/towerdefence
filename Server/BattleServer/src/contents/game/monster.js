@@ -178,7 +178,7 @@ export class Monster extends GameObject {
     let closestTower = null;
     let minDistance = Infinity;
 
-    for (const [id, towerPos] of this.room.towerList.entries()) {
+    for (const [id, towerPos] of this.room.towers.entries()) {
       const distance =
         (this.pos.x - towerPos.x) * (this.pos.x - towerPos.x) +
         (this.pos.y - towerPos.y) * (this.pos.y - towerPos.y);
