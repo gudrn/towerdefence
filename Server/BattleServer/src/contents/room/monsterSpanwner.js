@@ -40,7 +40,7 @@ export class MonsterSpawner {
    * @type {Array<{x: number, y: number}>} - 몬스터 스폰 위치 목록
    * @static
    */
-  static getSpawnPositions() {
+  static spawnPositions() {
     return [
       { x: 15, y: Math.round(Math.random() * 32) - 16 },
       { x: Math.round(Math.random() * 32) - 16, y: 15 },

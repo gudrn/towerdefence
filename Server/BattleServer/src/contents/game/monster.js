@@ -4,14 +4,23 @@ import { aStar } from './aStar.js';
 import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
 import { create } from '@bufbuild/protobuf';
+import {
+  B2C_MonsterAttackBaseNotificationSchema,
+  B2C_MonsterAttackTowerNotificationSchema,
+  B2C_MonsterPositionUpdateNotificationSchema,
+} from 'src/protocol/monster_pb.js';
+import {
+  B2C_BaseDestroyNotificationSchema,
+  B2C_TowerDestroyNotificationSchema,
+} from 'src/protocol/tower_pb.js';
 
 export class Monster extends GameObject {
   constructor(prefabId, pos, room) {
     super(prefabId, pos, room);
     const monsterData = assetManager.getMonsterData(prefabId);
-    if(monsterData == null) {
-        console.log("[Monster constructor] 유효하지 않은 prefabId");
-        return;
+    if (monsterData == null) {
+      console.log('[Monster constructor] 유효하지 않은 prefabId');
+      return;
     }
 
     this.attackDamage = monsterData?.attackDamage;
@@ -22,13 +31,13 @@ export class Monster extends GameObject {
     /**
      * @type {GameRoom} gameRoom - 몬스터가 생성될 게임 방
      */
-    this.currentSpeed = monsterData.moveSpeed;; // 현재 이동 속도 (디버프 적용 후)
+    this.currentSpeed = monsterData.moveSpeed; // 현재 이동 속도 (디버프 적용 후)
     this.lastAttackTime = 0;
     this.lastUpdateTime = Date.now(); // 마지막 위치 업데이트 시간
     this.slowEffects = []; // 슬로우 효과 리스트
     this.currentPath = []; // 현재 경로
     this.currentNodeIndex = 0; // 현재 경로의 진행 상태
-    this.setState("move") // 기본 상태는 move.
+    this.setState('move'); // 기본 상태는 move.
     this.attackTarget = null; // 타워나 기지를 목표
   }
 
@@ -38,10 +47,10 @@ export class Monster extends GameObject {
   */
   update() {
     switch (this.state) {
-      case "move":
+      case 'move':
         this.monsterMove();
         break;
-      case "attack":
+      case 'attack':
         this.monsterAttack();
         break;
       default:
@@ -63,13 +72,7 @@ export class Monster extends GameObject {
      * 경로가 없거나 장애물이 업데이트된 경우 새 경로 계산
      * */
     if (this.currentPath.length === 0 || this.room.isObstacleUpdated) {
-      this.currentPath = aStar(
-        this.pos,
-        this.room.base,
-        this.room.grid,
-        this.room.obstacles,
-        1,
-      );
+      this.currentPath = aStar(this.pos, this.room.base, this.room.grid, this.room.obstacles, 1);
       this.currentNodeIndex = 0; // 경로 초기화
     }
 
@@ -97,9 +100,9 @@ export class Monster extends GameObject {
     console.log(`${this.name} 이동 중... 현재 위치: (${this.pos.x}, ${this.pos.y})`);
 
     // 기지에 도달했는지 확인
-   if (this.isAtBase()) {
+    if (this.isAtBase()) {
       this.target = this.room.base;
-      this.setState("attack")
+      this.setState('attack');
       return;
     }
 
@@ -107,7 +110,7 @@ export class Monster extends GameObject {
     const towerInRange = this.getTowerInRange();
     if (towerInRange) {
       this.target = towerInRange;
-      this.setState("attack")
+      this.setState('attack');
       return;
     }
 
@@ -121,7 +124,7 @@ export class Monster extends GameObject {
 
   monsterAttack() {
     if (this.target) {
-      if(this.target.isTower) {
+      if (this.target.isTower) {
         this.attackTarget(this.target);
       } else if (this.target.isBase) {
         this.attackBase(this.target);
@@ -129,7 +132,7 @@ export class Monster extends GameObject {
     }
 
     if (!this.target || this.target.isDestroyed) {
-      this.setState("move");
+      this.setState('move');
     }
   }
   /**
@@ -201,12 +204,28 @@ export class Monster extends GameObject {
    * @param {object} tower - 타워 객체 { id, x, y }
    * @param {object} session - 현재 세션
    */
+
   attackTarget(tower, session) {
     const currentTime = Date.now();
     if (currentTime - this.lastAttackTime > this.attackCoolDown) {
       this.lastAttackTime = currentTime;
 
-      // 타워 데미지 처리 
+      // 2. 클라이언트에 공격 패킷 전송
+      const attackPacket = create(B2C_MonsterAttackTowerNotificationSchema, {
+        monsterId: this.getId(),
+        targetId: tower.id,
+        damage: this.attackDamage,
+      });
+
+      const attackBuffer = PacketUtils.SerializePacket(
+        attackPacket,
+        B2C_MonsterAttackTowerNotificationSchema,
+        ePacketId.B2C_MonsterAttackTowerNotification,
+        session.getNextSequence(),
+      );
+      session.broadcast(attackBuffer);
+
+      // 타워 데미지 처리
       const isDestroyed = tower.onDamaged(this.attackDamage);
 
       // 3. 타워 파괴 처리
@@ -223,7 +242,7 @@ export class Monster extends GameObject {
           towerDestroyedPacket,
           B2C_TowerDestroyNotificationSchema,
           ePacketId.B2C_TowerDestroyNotification,
-          0,//수정 부분
+          0, //수정 부분
         );
 
         this.room.broadcast(towerDestroyedBuffer);
@@ -240,16 +259,16 @@ export class Monster extends GameObject {
     if (currentTime - this.lastAttackTime > this.attackCoolDown) {
       this.lastAttackTime = currentTime;
 
-      const baseAttackPacket = create(B2C_BaseAttackNotificationSchema, {
+      const baseAttackPacket = create(B2C_MonsterAttackBaseNotificationSchema, {
         monsterId: this.getId(),
         damage: this.attackDamage,
       });
 
       const baseAttackBuffer = PacketUtils.SerializePacket(
         baseAttackPacket,
-        B2C_BaseAttackNotificationSchema,
-        ePacketId.B2C_BaseAttackNotification,
-        0,//수정 부분
+        B2C_MonsterAttackBaseNotificationSchema,
+        ePacketId.B2C_MonsterAttackBaseNotification,
+        0, //수정 부분
       );
       session.broadcast(baseAttackBuffer);
 
@@ -272,7 +291,7 @@ export class Monster extends GameObject {
           baseDestroyedPacket,
           B2C_BaseDestroyNotificationSchema,
           ePacketId.B2C_BaseDestroyNotification,
-          0,//수정 부분
+          0, //수정 부분
         );
 
         this.room.broadcast(baseDestroyedBuffer);
@@ -298,5 +317,3 @@ export class Monster extends GameObject {
     this.room.broadcast(positionBuffer);
   }
 }
-
-

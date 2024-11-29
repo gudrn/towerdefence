@@ -19,6 +19,7 @@ import {
   B2C_TowerAttackNotificationSchema,
   C2B_TowerDestroyNotificationSchema,
   C2B_TowerDestroyResponseSchema,
+  B2C_ObstacleSpawnNotificationSchemaSchema,
 } from '../../protocol/tower_pb.js';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -184,7 +185,9 @@ export class GameRoom {
     console.log('OnGameStart Called');
     this.monsterSpawner.startSpawning(0);
 
-    setInterval(() => { this.gameLoop();}, 200);
+    setInterval(() => {
+      this.gameLoop();
+    }, 200);
   }
 
   getMonsterCount() {
@@ -444,7 +447,6 @@ export class GameRoom {
     this.broadcast(notificationBuffer);
   }
 
-
   /**---------------------------------------------
    * [몬스터 타워 공격 동기화]
    * @param {Buffer} buffer - 몬스터 타워 공격 패킷 데이터
@@ -530,7 +532,7 @@ export class GameRoom {
 
     // 타워(Tower) 업데이트
     for (const [uuid, tower] of this.towers) {
-        tower.update();
+      tower.update();
     }
   }
 
@@ -625,14 +627,13 @@ export class GameRoom {
 
     console.log('장애물 배치 완료:', this.obstacles);
 
-    const obstacleSpawnPacket = create(B2C_ObstacleSpawnNotificationSchema, {
+    const obstacleSpawnPacket = create(B2C_ObstacleSpawnNotificationSchemaSchema, {
       obstacles: this.obstacles,
     });
 
-    
     const obstacleBuffer = PacketUtils.SerializePacket(
       obstacleSpawnPacket,
-      B2C_ObstacleSpawnNotificationSchema,
+      B2C_ObstacleSpawnNotificationSchemaSchema,
       ePacketId.B2C_ObstacleSpawnNotification,
       session.getNextSequence(),
     );
