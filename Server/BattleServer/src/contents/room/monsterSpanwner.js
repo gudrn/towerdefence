@@ -92,8 +92,9 @@ export class MonsterSpawner {
       return;
     }
 
-    const randomIndex = Math.floor(Math.random() * MonsterSpawner.spawnPositions.length);
-    const randomSpawnPos = MonsterSpawner.spawnPositions[randomIndex];
+    const randomIndex = Math.floor(Math.random() * 4);
+    const randomSpawnPos = MonsterSpawner.spawnPositions()[randomIndex];
+    console.log(randomSpawnPos);
 
     const newUuid = uuidv4();
     console.log('Generated UUID:', newUuid);

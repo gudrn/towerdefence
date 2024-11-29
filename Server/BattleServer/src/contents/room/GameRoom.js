@@ -295,11 +295,6 @@ export class GameRoom {
     // 3. 타워 생성 성공 응답
     const successResponse = create(B2C_TowerBuildResponseSchema, {
       isSuccess: true,
-      tower: create(TowerDataSchema, {
-        towerId: uuidv4(),
-        prefabId: packet.tower.prefabId,
-        towerPos: packet.tower.towerPos,
-      }),
     });
 
     const responseBuffer = PacketUtils.SerializePacket(
