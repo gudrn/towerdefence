@@ -43,7 +43,7 @@ export const ePacketId = {
   B2C_MonsterDeathNotification: 208,
   C2B_TowerBuildRequest: 301,
   B2C_TowerBuildResponse: 302,
-  B2C_AddTowerNotification: 303,
+  B2C_TowerBuildNotification: 303,
   B2C_TowerAttackRequest: 304,
   B2C_TowerAttackNotification: 305,
   C2B_TowerDestroyRequest: 306,

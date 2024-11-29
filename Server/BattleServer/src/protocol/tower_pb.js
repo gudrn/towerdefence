@@ -9,7 +9,7 @@ import { file_struct } from "./struct_pb.js";
  * Describes the file tower.proto.
  */
 export const file_tower = /*@__PURE__*/
-  fileDesc("Cgt0b3dlci5wcm90bxIIUHJvdG9jb2wiTAoVQzJCX1Rvd2VyQnVpbGRSZXF1ZXN0EiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAUiTwoWQjJDX1Rvd2VyQnVpbGRSZXNwb25zZRIRCglpc1N1Y2Nlc3MYASABKAgSIgoFdG93ZXIYAiABKAsyEy5Qcm90b2NvbC5Ub3dlckRhdGEiTwoYQjJDX0FkZFRvd2VyTm90aWZpY2F0aW9uEiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAUiOwoWQjJDX1Rvd2VyQXR0YWNrUmVxdWVzdBIPCgd0b3dlcklkGAEgASgFEhAKCHRhcmdldElkGAIgASgFIlYKG0IyQ19Ub3dlckF0dGFja05vdGlmaWNhdGlvbhIRCglpc1N1Y2Nlc3MYASABKAgSDgoGZGFtYWdlGAIgASgFEhQKDHRhcmdldEhlYWx0aBgDIAEoBSIqChdDMkJfVG93ZXJEZXN0cm95UmVxdWVzdBIPCgd0b3dlcklkGAEgASgFIisKGEMyQl9Ub3dlckRlc3Ryb3lSZXNwb25zZRIPCgd0b3dlcklkGAEgASgFIi8KHEMyQl9Ub3dlckRlc3Ryb3lOb3RpZmljYXRpb24SDwoHdG93ZXJJZBgBIAEoBWIGcHJvdG8z", [file_struct]);
+  fileDesc("Cgt0b3dlci5wcm90bxIIUHJvdG9jb2wiXAoVQzJCX1Rvd2VyQnVpbGRSZXF1ZXN0EiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAkSDgoGcm9vbUlkGAMgASgFIisKFkIyQ19Ub3dlckJ1aWxkUmVzcG9uc2USEQoJaXNTdWNjZXNzGAEgASgIIlEKGkIyQ19Ub3dlckJ1aWxkTm90aWZpY2F0aW9uEiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAkiOwoWQjJDX1Rvd2VyQXR0YWNrUmVxdWVzdBIPCgd0b3dlcklkGAEgASgFEhAKCHRhcmdldElkGAIgASgFIlYKG0IyQ19Ub3dlckF0dGFja05vdGlmaWNhdGlvbhIRCglpc1N1Y2Nlc3MYASABKAgSDgoGZGFtYWdlGAIgASgFEhQKDHRhcmdldEhlYWx0aBgDIAEoBSIqChdDMkJfVG93ZXJEZXN0cm95UmVxdWVzdBIPCgd0b3dlcklkGAEgASgFIisKGEMyQl9Ub3dlckRlc3Ryb3lSZXNwb25zZRIPCgd0b3dlcklkGAEgASgFIi8KHEMyQl9Ub3dlckRlc3Ryb3lOb3RpZmljYXRpb24SDwoHdG93ZXJJZBgBIAEoBWIGcHJvdG8z", [file_struct]);
 
 /**
  * Describes the message Protocol.C2B_TowerBuildRequest.
@@ -26,10 +26,10 @@ export const B2C_TowerBuildResponseSchema = /*@__PURE__*/
   messageDesc(file_tower, 1);
 
 /**
- * Describes the message Protocol.B2C_AddTowerNotification.
- * Use `create(B2C_AddTowerNotificationSchema)` to create a new message.
+ * Describes the message Protocol.B2C_TowerBuildNotification.
+ * Use `create(B2C_TowerBuildNotificationSchema)` to create a new message.
  */
-export const B2C_AddTowerNotificationSchema = /*@__PURE__*/
+export const B2C_TowerBuildNotificationSchema = /*@__PURE__*/
   messageDesc(file_tower, 2);
 
 /**

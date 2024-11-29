@@ -1,5 +1,5 @@
 import { GameRoom } from './GameRoom.js';
-import { Monster } from '../game/Monster.1.js';
+import { Monster } from '../game/monster.js';
 import { PosInfoSchema } from '../../protocol/struct_pb.js';
 import { create } from '@bufbuild/protobuf';
 import { v4 as uuidv4 } from 'uuid';
