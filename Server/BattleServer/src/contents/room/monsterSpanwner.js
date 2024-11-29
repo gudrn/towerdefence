@@ -40,12 +40,14 @@ export class MonsterSpawner {
    * @type {Array<{x: number, y: number}>} - 몬스터 스폰 위치 목록
    * @static
    */
-  static spawnPositions = [
-    { x: 15, y: Math.round(Math.random() * 32) - 16 },
-    { x: Math.round(Math.random() * 32) - 16, y: 15 },
-    { x: Math.round(Math.random() * 32) - 16, y: -16 },
-    { x: -16, y: Math.round(Math.random() * 32) - 16 },
-  ];
+  static getSpawnPositions() {
+    return [
+      { x: 15, y: Math.round(Math.random() * 32) - 16 },
+      { x: Math.round(Math.random() * 32) - 16, y: 15 },
+      { x: Math.round(Math.random() * 32) - 16, y: -16 },
+      { x: -16, y: Math.round(Math.random() * 32) - 16 },
+    ];
+  }
 
   /**
    * MonsterSpawner 생성자
