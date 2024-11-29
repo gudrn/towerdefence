@@ -2,61 +2,57 @@
 // @generated from file tower.proto (package Protocol, syntax proto3)
 /* eslint-disable */
 
-import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import { file_struct } from "./struct_pb.js";
+import { fileDesc, messageDesc } from '@bufbuild/protobuf/codegenv1';
+import { file_struct } from './struct_pb.js';
 
 /**
  * Describes the file tower.proto.
  */
-export const file_tower = /*@__PURE__*/
-  fileDesc("Cgt0b3dlci5wcm90bxIIUHJvdG9jb2wiXAoVQzJCX1Rvd2VyQnVpbGRSZXF1ZXN0EiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAkSDgoGcm9vbUlkGAMgASgFIisKFkIyQ19Ub3dlckJ1aWxkUmVzcG9uc2USEQoJaXNTdWNjZXNzGAEgASgIIlEKGkIyQ19Ub3dlckJ1aWxkTm90aWZpY2F0aW9uEiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAkiYgohQjJDX1Rvd2VyQXR0YWNrTW9uc3RyTm90aWZpY2F0aW9uEhEKCWlzU3VjY2VzcxgBIAEoCBIUCgxhdHRhY2tEYW1hZ2UYAiABKAUSFAoMdGFyZ2V0SGVhbHRoGAMgASgFIkIKHEIyQ19Ub3dlckRlc3Ryb3lOb3RpZmljYXRpb24SEQoJaXNTdWNjZXNzGAEgASgIEg8KB3Rvd2VySWQYAiABKAUiSgojQjJDX09ic3RhY2xlU3Bhd25Ob3RpZmljYXRpb25TY2hlbWESIwoIcG9zSW5mb3MYASADKAsyES5Qcm90b2NvbC5Qb3NJbmZvIjIKG0IyQ19CYXNlRGVzdHJveU5vdGlmaWNhdGlvbhITCgtpc0Rlc3Ryb2llZBgBIAEoCGIGcHJvdG8z", [file_struct]);
+export const file_tower =
+  /*@__PURE__*/
+  fileDesc(
+    'Cgt0b3dlci5wcm90bxIIUHJvdG9jb2wiXAoVQzJCX1Rvd2VyQnVpbGRSZXF1ZXN0EiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAkSDgoGcm9vbUlkGAMgASgFIisKFkIyQ19Ub3dlckJ1aWxkUmVzcG9uc2USEQoJaXNTdWNjZXNzGAEgASgIIlEKGkIyQ19Ub3dlckJ1aWxkTm90aWZpY2F0aW9uEiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAkiYgohQjJDX1Rvd2VyQXR0YWNrTW9uc3RyTm90aWZpY2F0aW9uEhEKCWlzU3VjY2VzcxgBIAEoCBIUCgxhdHRhY2tEYW1hZ2UYAiABKAUSFAoMdGFyZ2V0SGVhbHRoGAMgASgFIkIKHEIyQ19Ub3dlckRlc3Ryb3lOb3RpZmljYXRpb24SEQoJaXNTdWNjZXNzGAEgASgIEg8KB3Rvd2VySWQYAiABKAUiSgojQjJDX09ic3RhY2xlU3Bhd25Ob3RpZmljYXRpb25TY2hlbWESIwoIcG9zSW5mb3MYASADKAsyES5Qcm90b2NvbC5Qb3NJbmZvIjIKG0IyQ19CYXNlRGVzdHJveU5vdGlmaWNhdGlvbhITCgtpc0Rlc3Ryb2llZBgBIAEoCGIGcHJvdG8z',
+    [file_struct],
+  );
 
 /**
  * Describes the message Protocol.C2B_TowerBuildRequest.
  * Use `create(C2B_TowerBuildRequestSchema)` to create a new message.
  */
-export const C2B_TowerBuildRequestSchema = /*@__PURE__*/
-  messageDesc(file_tower, 0);
+export const C2B_TowerBuildRequestSchema = /*@__PURE__*/ messageDesc(file_tower, 0);
 
 /**
  * Describes the message Protocol.B2C_TowerBuildResponse.
  * Use `create(B2C_TowerBuildResponseSchema)` to create a new message.
  */
-export const B2C_TowerBuildResponseSchema = /*@__PURE__*/
-  messageDesc(file_tower, 1);
+export const B2C_TowerBuildResponseSchema = /*@__PURE__*/ messageDesc(file_tower, 1);
 
 /**
  * Describes the message Protocol.B2C_TowerBuildNotification.
  * Use `create(B2C_TowerBuildNotificationSchema)` to create a new message.
  */
-export const B2C_TowerBuildNotificationSchema = /*@__PURE__*/
-  messageDesc(file_tower, 2);
+export const B2C_TowerBuildNotificationSchema = /*@__PURE__*/ messageDesc(file_tower, 2);
 
 /**
  * Describes the message Protocol.B2C_TowerAttackMonstrNotification.
  * Use `create(B2C_TowerAttackMonstrNotificationSchema)` to create a new message.
  */
-export const B2C_TowerAttackMonstrNotificationSchema = /*@__PURE__*/
-  messageDesc(file_tower, 3);
+export const B2C_TowerAttackMonstrNotificationSchema = /*@__PURE__*/ messageDesc(file_tower, 3);
 
 /**
  * Describes the message Protocol.B2C_TowerDestroyNotification.
  * Use `create(B2C_TowerDestroyNotificationSchema)` to create a new message.
  */
-export const B2C_TowerDestroyNotificationSchema = /*@__PURE__*/
-  messageDesc(file_tower, 4);
+export const B2C_TowerDestroyNotificationSchema = /*@__PURE__*/ messageDesc(file_tower, 4);
 
 /**
  * Describes the message Protocol.B2C_ObstacleSpawnNotificationSchema.
  * Use `create(B2C_ObstacleSpawnNotificationSchemaSchema)` to create a new message.
  */
-export const B2C_ObstacleSpawnNotificationSchemaSchema = /*@__PURE__*/
-  messageDesc(file_tower, 5);
+export const B2C_ObstacleSpawnNotificationSchemaSchema = /*@__PURE__*/ messageDesc(file_tower, 5);
 
 /**
  * Describes the message Protocol.B2C_BaseDestroyNotification.
  * Use `create(B2C_BaseDestroyNotificationSchema)` to create a new message.
  */
-export const B2C_BaseDestroyNotificationSchema = /*@__PURE__*/
-  messageDesc(file_tower, 6);
-
+export const B2C_BaseDestroyNotificationSchema = /*@__PURE__*/ messageDesc(file_tower, 6);

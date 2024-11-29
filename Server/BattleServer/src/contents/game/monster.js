@@ -202,10 +202,9 @@ export class Monster extends GameObject {
   /**
    * 타워 공격
    * @param {object} tower - 타워 객체 { id, x, y }
-   * @param {object} session - 현재 세션
    */
 
-  attackTarget(tower, session) {
+  attackTarget(tower) {
     const currentTime = Date.now();
     if (currentTime - this.lastAttackTime > this.attackCoolDown) {
       this.lastAttackTime = currentTime;
@@ -214,16 +213,16 @@ export class Monster extends GameObject {
       const attackPacket = create(B2C_MonsterAttackTowerNotificationSchema, {
         monsterId: this.getId(),
         targetId: tower.id,
-        damage: this.attackDamage,
+        attackDamage: this.attackDamage,
       });
 
       const attackBuffer = PacketUtils.SerializePacket(
         attackPacket,
         B2C_MonsterAttackTowerNotificationSchema,
         ePacketId.B2C_MonsterAttackTowerNotification,
-        session.getNextSequence(),
+        0,
       );
-      session.broadcast(attackBuffer);
+      this.room.broadcast(attackBuffer);
 
       // 타워 데미지 처리
       const isDestroyed = tower.onDamaged(this.attackDamage);
@@ -252,7 +251,6 @@ export class Monster extends GameObject {
 
   /**
    * 기지 공격
-   * @param {object} session - 현재 세션
    */
   attackBase(base) {
     const currentTime = Date.now();
@@ -261,7 +259,7 @@ export class Monster extends GameObject {
 
       const baseAttackPacket = create(B2C_MonsterAttackBaseNotificationSchema, {
         monsterId: this.getId(),
-        damage: this.attackDamage,
+        attackDamage: this.attackDamage,
       });
 
       const baseAttackBuffer = PacketUtils.SerializePacket(
@@ -270,12 +268,10 @@ export class Monster extends GameObject {
         ePacketId.B2C_MonsterAttackBaseNotification,
         0, //수정 부분
       );
-      session.broadcast(baseAttackBuffer);
+      this.room.broadcast(baseAttackBuffer);
 
       // 기지 데미지 처리
       const isDestroyed = base.onDamaged(this.attackDamage);
-
-      session.broadcast(baseHpBuffer);
 
       // 3. 기지 파괴 처리
       if (isDestroyed) {

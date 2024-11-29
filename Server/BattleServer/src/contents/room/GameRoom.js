@@ -632,7 +632,7 @@ export class GameRoom {
       obstacleSpawnPacket,
       B2C_ObstacleSpawnNotificationSchemaSchema,
       ePacketId.B2C_ObstacleSpawnNotification,
-      session.getNextSequence(),
+      0,
     );
 
     this.broadcast(obstacleBuffer);
