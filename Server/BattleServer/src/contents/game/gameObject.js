@@ -1,3 +1,4 @@
+import { OBJECT_STATE_TYPE } from "../../protocol/enum_pb.js";
 import { MathUtils } from "../../utils/mathUtils.js";
 
 //abstract
@@ -36,6 +37,6 @@ export class GameObject {
     setState(state) {
         this.state = state;
         //broadcast
-        this.room.broadcast();
+        //this.room.broadcast();
     }
 }

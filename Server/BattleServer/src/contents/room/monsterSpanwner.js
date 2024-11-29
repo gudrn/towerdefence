@@ -1,4 +1,4 @@
-import { GameRoom } from './gameRoom.js';
+import { GameRoom } from './GameRoom.js';
 import { Monster } from '../game/monster.js';
 import { PosInfoSchema } from '../../protocol/struct_pb.js';
 import { create } from '@bufbuild/protobuf';
@@ -16,7 +16,7 @@ export class MonsterSpawner {
    */
   gameRoom;
 
-  /**
+  /**+
    * @type {number} - 현재까지 생성된 몬스터 수
    */
   spawnedMonster = 0;

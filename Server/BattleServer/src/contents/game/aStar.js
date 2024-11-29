@@ -1,3 +1,5 @@
+import { Vec2 } from "ServerCore/src/utils/vec2.js";
+
 class PriorityQueue {
   // PriorityQueue는 우선순위 큐로 우선순위따라 좌표 처리를 함
   constructor() {
@@ -19,8 +21,8 @@ class PriorityQueue {
 } // PriorityQueue를 통하여 전체적인 탐색 효율 향상.
 
 /**
- @param {string} start - 시작 지점 (객체 {x, y} 형태)
- @param {string} goal - 목표 지점 (객체 {x, y} 형태)
+ @param {Vec2} start - 시작 지점 (객체 {x, y} 형태)
+ @param {Vec2} goal - 목표 지점 (객체 {x, y} 형태)
  @param {string} grid - 탐색할 전체 맵의 크기 ({width, height} 형태)
  @param {Array} obstacles - 장애물 목록 (객체 배열 [ {x, y}, ... ])
  @param {number} size - 오브젝트 크기 (이번 프로젝트에서는 몬스터)
@@ -72,6 +74,11 @@ export function aStar(start, goal, grid, obstacles, size) {
   return []; // 탐색이 완료될 때까지 목표를 찾지 못하면 빈 배열 반환.
 }
 
+
+  /**
+    @param {Vec2} node - 시작 지점 (객체 {x, y} 형태)
+    @param {Vec2} goal - 목표 지점 (객체 {x, y} 형태)
+    **/
 function heuristic(node, goal) {
   // 대각선 이동을 반영하기 위한 휴리스틱 (Chebyshev distance - 체비쇼프 거리 = 체스판 거리)
   const dx = Math.abs(node.x - goal.x);

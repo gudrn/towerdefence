@@ -1,7 +1,7 @@
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
 import { CustomError } from 'ServerCore/src/utils/error/customError.js';
 import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
-import { GameRoom } from './gameRoom.js';
+import { GameRoom } from './GameRoom.js';
 import { fromBinary, create } from '@bufbuild/protobuf';
 import {
   B2L_CreateGameRoomResponeSchema,
@@ -85,7 +85,7 @@ class GameRoomManager {
    * @param {BattleSession} session - 이동 요청을 보낸 세션
    ---------------------------------------------*/
   moveHandler(buffer, session) {
-    const packet = fromBinary(C2B_PositionUpdateRequestSchema, buffer);
+    const packet = fromBinary(C2B_PlayerPositionUpdateRequestSchema, buffer);
 
     const room = this.rooms.get(packet.roomId);
     if (room == undefined) {

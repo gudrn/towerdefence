@@ -12,13 +12,14 @@ import { MonsterSpawner } from './monsterSpanwner.js';
 import { GamePlayerDataSchema, PosInfoSchema, TowerDataSchema } from '../../protocol/struct_pb.js';
 import { Monster } from '../game/monster.js';
 import { B2C_SpawnMonsterNotificationSchema } from '../../protocol/monster_pb.js';
-import { C2B_PlayerPositionUpdateRequestSchema } from '../../protocol/character_pb.js';
+import { B2C_PlayerPositionUpdateNotificationSchema, C2B_PlayerPositionUpdateRequestSchema } from '../../protocol/character_pb.js';
 import {
   B2C_TowerBuildNotificationSchema,
   B2C_TowerBuildResponseSchema,
   B2C_ObstacleSpawnNotificationSchemaSchema,
 } from '../../protocol/tower_pb.js';
 import { v4 as uuidv4 } from 'uuid';
+import { Vec2 } from 'ServerCore/src/utils/vec2.js';
 
 export class GameRoom {
   static spawnCoordinates = [
@@ -39,14 +40,14 @@ export class GameRoom {
     this.monsters = new Map();
     this.towers = new Map();
     this.grid = { width: 32, height: 32 };
-    this.base = this.baseSize(5, 3); // 기지의 좌표
+    this.base = new Vec2(0, 0); // 기지의 좌표
     this.obstacles = []; // 장애물 좌표 배열
-    this.excludedCoordinates = [...this.base]; // 장애물이 생성되지 않도록 할 좌표 목록
+    //this.excludedCoordinates = [...this.base]; // 장애물이 생성되지 않도록 할 좌표 목록
 
     this.maxPlayerCount = maxPlayerCount;
     this.monsterSpawner = new MonsterSpawner(this);
 
-    this.generateObstacles(); // 장애물 랜덤 배치
+    //this.generateObstacles(); // 장애물 랜덤 배치
     this.updateInterval = 200; // 200ms 간격으로 업데이트
   }
 
@@ -182,9 +183,9 @@ export class GameRoom {
     console.log('OnGameStart Called');
     this.monsterSpawner.startSpawning(0);
 
-    setInterval(() => {
-      this.gameLoop();
-    }, 200);
+    // setInterval(() => {
+    //   this.gameLoop();
+    // }, 200);
   }
 
   getMonsterCount() {
@@ -198,12 +199,12 @@ export class GameRoom {
    ---------------------------------------------*/
   handleMove(clientPacket, session) {
     // 위치 검증
-    if (!this.validatePosition(clientPacket.posInfos)) {
+    if (!this.validatePosition(clientPacket.posInfo)) {
       console.log(`유효하지 않은 위치. ${clientPacket.posInfos}`);
       return;
     }
 
-    const packet = create(C2B_PlayerPositionUpdateRequestSchema, {
+    const packet = create(B2C_PlayerPositionUpdateNotificationSchema, {
       posInfo: create(PosInfoSchema, {
         uuid: session.getId(),
         x: clientPacket.posInfos?.x,
@@ -213,8 +214,8 @@ export class GameRoom {
 
     const sendBuffer = PacketUtils.SerializePacket(
       packet,
-      B2C_PositionUpdateNotificationSchema,
-      ePacketId.B2C_PositionUpdateNotification,
+      B2C_PlayerPositionUpdateNotificationSchema,
+      ePacketId.B2C_PlayerPositionUpdateNotification,
       0,
     );
     this.broadcast(sendBuffer);

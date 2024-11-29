@@ -1,5 +1,5 @@
 import { GameObject } from './gameObject.js';
-import { GameRoom } from '../room/gameRoom.js';
+import { GameRoom } from '../room/GameRoom.js';
 import { aStar } from './aStar.js';
 import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
@@ -13,10 +13,14 @@ import {
   B2C_BaseDestroyNotificationSchema,
   B2C_TowerDestroyNotificationSchema,
 } from '../../protocol/tower_pb.js';
+import { assetManager } from '../../utils/assetManager.js';
+import { OBJECT_STATE_TYPE } from '../../protocol/enum_pb.js';
 
 export class Monster extends GameObject {
   constructor(prefabId, pos, room) {
     super(prefabId, pos, room);
+    this.setState(OBJECT_STATE_TYPE.MOVE);
+
     const monsterData = assetManager.getMonsterData(prefabId);
     if (monsterData == null) {
       console.log('[Monster constructor] 유효하지 않은 prefabId');
@@ -35,7 +39,7 @@ export class Monster extends GameObject {
     this.lastAttackTime = 0;
     this.lastUpdateTime = Date.now(); // 마지막 위치 업데이트 시간
     this.slowEffects = []; // 슬로우 효과 리스트
-    this.currentPath = []; // 현재 경로
+//    this.currentPath = new Array(); // 현재 경로
     this.currentNodeIndex = 0; // 현재 경로의 진행 상태
     this.setState('move'); // 기본 상태는 move.
     this.attackTarget = null; // 타워나 기지를 목표
@@ -47,10 +51,10 @@ export class Monster extends GameObject {
   */
   update() {
     switch (this.state) {
-      case 'move':
+      case OBJECT_STATE_TYPE.MOVE:
         this.monsterMove();
         break;
-      case 'attack':
+      case OBJECT_STATE_TYPE.SKILL:
         this.monsterAttack();
         break;
       default:
@@ -65,20 +69,23 @@ export class Monster extends GameObject {
   2. target의 위치를 기반으로 A*알고리즘을 통해 이동 경로 계산 
    */
   monsterMove() {
-    this.updateSlowEffects(); // 슬로우 효과 갱신
+    //this.updateSlowEffects(); // 슬로우 효과 갱신
 
+    console.log("monsterMove");
     /**
      *  A* 알고리즘을 통해 이동 경로 계산
      * 경로가 없거나 장애물이 업데이트된 경우 새 경로 계산
      * */
-    if (this.currentPath.length === 0 || this.room.isObstacleUpdated) {
-      this.currentPath = aStar(this.pos, this.room.base, this.room.grid, this.room.obstacles, 1);
-      this.currentNodeIndex = 0; // 경로 초기화
-    }
+    let path = currentPath = aStar(this.pos, this.room.base, this.room.grid, this.room.obstacles, 1);
+    // if (this.currentPath.length == 0 || this.room.isObstacleUpdated) {
+    //   this.currentPath = aStar(this.pos, this.room.base, this.room.grid, this.room.obstacles, 1);
+    //   this.currentNodeIndex = 0; // 경로 초기화
+    // }
 
     // 경로 진행
-    if (this.currentPath.length > 1 && this.currentNodeIndex < this.currentPath.length - 1) {
-      const nextPos = this.currentPath[this.currentNodeIndex + 1];
+    //if (this.currentPath.length > 1 && this.currentNodeIndex < this.currentPath.length - 1) {
+    if (path.length > 1 && this.currentNodeIndex < path.length - 1) {
+      const nextPos = path[this.currentNodeIndex + 1];
       const distanceToNext = Math.sqrt(
         Math.pow(this.pos.x - nextPos.x, 2) + Math.pow(this.pos.y - nextPos.y, 2),
       );
@@ -140,35 +147,35 @@ export class Monster extends GameObject {
    * - 슬로우 효과가 지속 시간에 따라 제거.
    * - 현재 이동 속도를 업데이트.
    */
-  updateSlowEffects() {
-    const currentTime = Date.now();
+  // updateSlowEffects() {
+  //   const currentTime = Date.now();
 
-    // 슬로우 효과 갱신 및 만료된 효과 제거
-    this.slowEffects = this.slowEffects.filter((effect) => {
-      if (currentTime >= effect.endTime) {
-        return false; // 효과 만료
-      }
-      return true;
-    });
+  //   // 슬로우 효과 갱신 및 만료된 효과 제거
+  //   this.slowEffects = this.slowEffects.filter((effect) => {
+  //     if (currentTime >= effect.endTime) {
+  //       return false; // 효과 만료
+  //     }
+  //     return true;
+  //   });
 
-    // 현재 속도 계산 (기본 속도에 모든 디버프 적용)
-    const slowFactor = this.slowEffects.reduce((factor, effect) => {
-      return factor * (1 - effect.slowRate);
-    }, 1);
+  //   // 현재 속도 계산 (기본 속도에 모든 디버프 적용)
+  //   const slowFactor = this.slowEffects.reduce((factor, effect) => {
+  //     return factor * (1 - effect.slowRate);
+  //   }, 1);
 
-    this.currentSpeed = Math.max(this.moveSpeed * slowFactor, 0.1); // 최소 속도 제한
-  }
+  //   this.currentSpeed = Math.max(this.moveSpeed * slowFactor, 0.1); // 최소 속도 제한
+  // }
 
   /**
    * 슬로우 효과 추가
    * @param {number} slowRate - 감속 비율 (0.3 = 30% 감소)
    * @param {number} duration - 지속 시간 (ms)
    */
-  addSlowEffect(slowRate, duration) {
-    const endTime = Date.now() + duration;
-    this.slowEffects.push({ slowRate, endTime });
-    console.log(`슬로우 효과 적용: ${slowRate * 100}% 감소, ${duration}ms 지속`);
-  }
+  // addSlowEffect(slowRate, duration) {
+  //   const endTime = Date.now() + duration;
+  //   this.slowEffects.push({ slowRate, endTime });
+  //   console.log(`슬로우 효과 적용: ${slowRate * 100}% 감소, ${duration}ms 지속`);
+  // }
 
   /**
    * 타워 범위 내 확인
