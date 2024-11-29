@@ -8,7 +8,7 @@ import { enumDesc, fileDesc, tsEnum } from "@bufbuild/protobuf/codegenv1";
  * Describes the file enum.proto.
  */
 export const file_enum = /*@__PURE__*/
-  fileDesc("CgplbnVtLnByb3RvEghQcm90b2NvbCozCg1Sb29tU3RhdGVUeXBlEggKBFdBSVQQABILCgdQUkVQQVJFEAESCwoHSU5BR0FNRRACKkkKCk9iamVjdFR5cGUSCQoFVE9XRVIQABIKCgZQTEFZRVIQARILCgdNT05TVEVSEAISDgoKUFJPSkVDVElMRRADEgcKA0VOVhAEKjIKCENhcmRUeXBlEhAKDEFUVEFDS19UT1dFUhAAEhQKEFNUUl9BVFRBQ0tfVE9XRVIQAWIGcHJvdG8z");
+  fileDesc("CgplbnVtLnByb3RvEghQcm90b2NvbCozCg1Sb29tU3RhdGVUeXBlEggKBFdBSVQQABILCgdQUkVQQVJFEAESCwoHSU5BR0FNRRACKkkKCk9iamVjdFR5cGUSCQoFVE9XRVIQABIKCgZQTEFZRVIQARILCgdNT05TVEVSEAISDgoKUFJPSkVDVElMRRADEgcKA0VOVhAEKjIKEU9CSkVDVF9TVEFURV9UWVBFEggKBElETEUQABIICgRNT1ZFEAESCQoFU0tJTEwQAioyCghDYXJkVHlwZRIQCgxBVFRBQ0tfVE9XRVIQABIUChBTVFJfQVRUQUNLX1RPV0VSEAFiBnByb3RvMw");
 
 /**
  * Describes the enum Protocol.RoomStateType.
@@ -37,10 +37,22 @@ export const ObjectType = /*@__PURE__*/
   tsEnum(ObjectTypeSchema);
 
 /**
+ * Describes the enum Protocol.OBJECT_STATE_TYPE.
+ */
+export const OBJECT_STATE_TYPESchema = /*@__PURE__*/
+  enumDesc(file_enum, 2);
+
+/**
+ * @generated from enum Protocol.OBJECT_STATE_TYPE
+ */
+export const OBJECT_STATE_TYPE = /*@__PURE__*/
+  tsEnum(OBJECT_STATE_TYPESchema);
+
+/**
  * Describes the enum Protocol.CardType.
  */
 export const CardTypeSchema = /*@__PURE__*/
-  enumDesc(file_enum, 2);
+  enumDesc(file_enum, 3);
 
 /**
  * @generated from enum Protocol.CardType

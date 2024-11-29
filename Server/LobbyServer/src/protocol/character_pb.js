@@ -3,27 +3,27 @@
 /* eslint-disable */
 
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import { file_struct } from "./struct_pb";
-import { file_enum } from "./enum_pb";
+import { file_struct } from "./struct_pb.js";
+import { file_enum } from "./enum_pb.js";
 
 /**
  * Describes the file character.proto.
  */
 export const file_character = /*@__PURE__*/
-  fileDesc("Cg9jaGFyYWN0ZXIucHJvdG8SCFByb3RvY29sIlAKGUMyQl9Qb3NpdGlvblVwZGF0ZVJlcXVlc3QSIwoIcG9zSW5mb3MYASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEg4KBnJvb21JZBgCIAEoBSJFCh5CMkNfUG9zaXRpb25VcGRhdGVOb3RpZmljYXRpb24SIwoIcG9zSW5mb3MYASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvIjoKEkMyQl9Vc2VDYXJkUmVxdWVzdBIkCghjYXJkVHlwZRgBIAEoDjISLlByb3RvY29sLkNhcmRUeXBlIiwKF0IyQ19Vc2VDYXJkTm90aWZpY2F0aW9uEhEKCWlzU3VjY2VzcxgBIAEoCGIGcHJvdG8z", [file_struct, file_enum]);
+  fileDesc("Cg9jaGFyYWN0ZXIucHJvdG8SCFByb3RvY29sIlUKH0MyQl9QbGF5ZXJQb3NpdGlvblVwZGF0ZVJlcXVlc3QSIgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SDgoGcm9vbUlkGAIgASgFIkoKJEIyQ19QbGF5ZXJQb3NpdGlvblVwZGF0ZU5vdGlmaWNhdGlvbhIiCgdwb3NJbmZvGAEgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyI6ChJDMkJfVXNlQ2FyZFJlcXVlc3QSJAoIY2FyZFR5cGUYASABKA4yEi5Qcm90b2NvbC5DYXJkVHlwZSIsChdCMkNfVXNlQ2FyZE5vdGlmaWNhdGlvbhIRCglpc1N1Y2Nlc3MYASABKAhiBnByb3RvMw", [file_struct, file_enum]);
 
 /**
- * Describes the message Protocol.C2B_PositionUpdateRequest.
- * Use `create(C2B_PositionUpdateRequestSchema)` to create a new message.
+ * Describes the message Protocol.C2B_PlayerPositionUpdateRequest.
+ * Use `create(C2B_PlayerPositionUpdateRequestSchema)` to create a new message.
  */
-export const C2B_PositionUpdateRequestSchema = /*@__PURE__*/
+export const C2B_PlayerPositionUpdateRequestSchema = /*@__PURE__*/
   messageDesc(file_character, 0);
 
 /**
- * Describes the message Protocol.B2C_PositionUpdateNotification.
- * Use `create(B2C_PositionUpdateNotificationSchema)` to create a new message.
+ * Describes the message Protocol.B2C_PlayerPositionUpdateNotification.
+ * Use `create(B2C_PlayerPositionUpdateNotificationSchema)` to create a new message.
  */
-export const B2C_PositionUpdateNotificationSchema = /*@__PURE__*/
+export const B2C_PlayerPositionUpdateNotificationSchema = /*@__PURE__*/
   messageDesc(file_character, 1);
 
 /**

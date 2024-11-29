@@ -39,4 +39,6 @@ export class Tower extends GameObject {
         this.attackCoolDown = towerData?.attackCoolDown;
         this.hp = this.maxHp = towerData?.maxHp;
     }
+
+    
 }

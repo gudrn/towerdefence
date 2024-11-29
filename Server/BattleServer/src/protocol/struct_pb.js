@@ -9,7 +9,7 @@ import { file_enum } from "./enum_pb.js";
  * Describes the file struct.proto.
  */
 export const file_struct = /*@__PURE__*/
-  fileDesc("CgxzdHJ1Y3QucHJvdG8SCFByb3RvY29sIiUKCEJhc2VEYXRhEgoKAmhwGAEgASgFEg0KBW1heEhwGAIgASgFIlMKCVRvd2VyRGF0YRIPCgd0b3dlcklkGAEgASgFEhAKCHByZWZhYklkGAIgASgJEiMKCHRvd2VyUG9zGAMgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyJtCgtNb25zdGVyRGF0YRIRCgltb25zdGVySWQYASABKAUSFQoNbW9uc3Rlck51bWJlchgCIAEoBRINCgVsZXZlbBgDIAEoBRIlCgptb25zdGVyUG9zGAQgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyI2CghVc2VyRGF0YRIKCgJpZBgBIAEoCRIMCgRuYW1lGAIgASgJEhAKCHByZWZhYklkGAMgASgJIpQBCghSb29tRGF0YRIKCgJpZBgBIAEoBRIPCgdvd25lcklkGAIgASgJEgwKBG5hbWUYAyABKAkSEgoKbWF4VXNlck51bRgEIAEoBRImCgVzdGF0ZRgFIAEoDjIXLlByb3RvY29sLlJvb21TdGF0ZVR5cGUSIQoFdXNlcnMYBiADKAsyEi5Qcm90b2NvbC5Vc2VyRGF0YSItCgdQb3NJbmZvEgwKBHV1aWQYASABKAkSCQoBeBgCIAEoAhIJCgF5GAMgASgCIhwKBFZlYzISCQoBeBgBIAEoAhIJCgF5GAIgASgCIlkKDkdhbWVQbGF5ZXJEYXRhEiMKCHBvc2l0aW9uGAEgASgLMhEuUHJvdG9jb2wuUG9zSW5mbxIQCghuaWNrbmFtZRgCIAEoCRIQCghwcmVmYWJJZBgDIAEoCSIyCglFcnJvckRhdGESFAoMcmVzcG9uc2VDb2RlGAEgASgFEg8KB21lc3NhZ2UYAiABKAliBnByb3RvMw", [file_enum]);
+  fileDesc("CgxzdHJ1Y3QucHJvdG8SCFByb3RvY29sIiUKCEJhc2VEYXRhEgoKAmhwGAEgASgFEg0KBW1heEhwGAIgASgFIlMKCVRvd2VyRGF0YRIPCgd0b3dlcklkGAEgASgFEhAKCHByZWZhYklkGAIgASgJEiMKCHRvd2VyUG9zGAMgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyJtCgtNb25zdGVyRGF0YRIRCgltb25zdGVySWQYASABKAUSFQoNbW9uc3Rlck51bWJlchgCIAEoBRINCgVsZXZlbBgDIAEoBRIlCgptb25zdGVyUG9zGAQgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyI2CghVc2VyRGF0YRIKCgJpZBgBIAEoCRIMCgRuYW1lGAIgASgJEhAKCHByZWZhYklkGAMgASgJIpQBCghSb29tRGF0YRIKCgJpZBgBIAEoBRIPCgdvd25lcklkGAIgASgJEgwKBG5hbWUYAyABKAkSEgoKbWF4VXNlck51bRgEIAEoBRImCgVzdGF0ZRgFIAEoDjIXLlByb3RvY29sLlJvb21TdGF0ZVR5cGUSIQoFdXNlcnMYBiADKAsyEi5Qcm90b2NvbC5Vc2VyRGF0YSItCgdQb3NJbmZvEgwKBHV1aWQYASABKAkSCQoBeBgCIAEoAhIJCgF5GAMgASgCIlkKDkdhbWVQbGF5ZXJEYXRhEiMKCHBvc2l0aW9uGAEgASgLMhEuUHJvdG9jb2wuUG9zSW5mbxIQCghuaWNrbmFtZRgCIAEoCRIQCghwcmVmYWJJZBgDIAEoCSIyCglFcnJvckRhdGESFAoMcmVzcG9uc2VDb2RlGAEgASgFEg8KB21lc3NhZ2UYAiABKAliBnByb3RvMw", [file_enum]);
 
 /**
  * Describes the message Protocol.BaseData.
@@ -54,23 +54,16 @@ export const PosInfoSchema = /*@__PURE__*/
   messageDesc(file_struct, 5);
 
 /**
- * Describes the message Protocol.Vec2.
- * Use `create(Vec2Schema)` to create a new message.
- */
-export const Vec2Schema = /*@__PURE__*/
-  messageDesc(file_struct, 6);
-
-/**
  * Describes the message Protocol.GamePlayerData.
  * Use `create(GamePlayerDataSchema)` to create a new message.
  */
 export const GamePlayerDataSchema = /*@__PURE__*/
-  messageDesc(file_struct, 7);
+  messageDesc(file_struct, 6);
 
 /**
  * Describes the message Protocol.ErrorData.
  * Use `create(ErrorDataSchema)` to create a new message.
  */
 export const ErrorDataSchema = /*@__PURE__*/
-  messageDesc(file_struct, 8);
+  messageDesc(file_struct, 7);
 

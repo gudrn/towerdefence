@@ -21,6 +21,7 @@ export class Room {
     this.users = [];
     this.state = eRoomStateId.WAITING; // 'waiting', 'inProgress'
     this.maxPlayerCount = maxPlayerCount;
+    this.score = 0; 
   }
 
   /**

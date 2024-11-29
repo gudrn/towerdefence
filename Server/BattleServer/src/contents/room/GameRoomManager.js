@@ -1,7 +1,7 @@
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
 import { CustomError } from 'ServerCore/src/utils/error/customError.js';
 import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
-import { GameRoom } from './GameRoom.js';
+import { GameRoom } from './gameRoom.js/index.js';
 import { fromBinary, create } from '@bufbuild/protobuf';
 import {
   B2L_CreateGameRoomResponeSchema,
@@ -13,7 +13,7 @@ import {
   B2C_MonsterDeathNotificationSchema,
   C2B_MonsterDeathRequestSchema,
 } from '../../protocol/monster_pb.js';
-import { C2B_PositionUpdateRequestSchema } from '../../protocol/character_pb.js';
+import { C2B_PlayerPositionUpdateRequestSchema } from '../../protocol/character_pb.js';
 import {
   B2C_TowerAttackRequestSchema,
   C2B_TowerBuildRequestSchema,

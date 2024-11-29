@@ -1,4 +1,4 @@
-import { GameRoom } from './GameRoom.js';
+import { GameRoom } from './gameRoom.js/index.js';
 import { Monster } from '../game/monster.js';
 import { PosInfoSchema } from '../../protocol/struct_pb.js';
 import { create } from '@bufbuild/protobuf';

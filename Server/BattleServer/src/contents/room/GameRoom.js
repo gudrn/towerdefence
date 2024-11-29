@@ -12,7 +12,7 @@ import { MonsterSpawner } from './monsterSpanwner.js';
 import { GamePlayerDataSchema, PosInfoSchema, TowerDataSchema } from '../../protocol/struct_pb.js';
 import { Monster } from '../game/monster.js';
 import { B2C_SpawnMonsterNotificationSchema } from '../../protocol/monster_pb.js';
-import { B2C_PositionUpdateNotificationSchema } from '../../protocol/character_pb.js';
+import { C2B_PlayerPositionUpdateRequestSchema } from '../../protocol/character_pb.js';
 import {
   B2C_TowerBuildNotificationSchema,
   B2C_TowerBuildResponseSchema,
@@ -183,6 +183,8 @@ export class GameRoom {
   OnGameStart() {
     console.log('OnGameStart Called');
     this.monsterSpawner.startSpawning(0);
+
+    setInterval(() => { this.gameLoop();}, 200);
   }
 
   getMonsterCount() {
@@ -192,7 +194,7 @@ export class GameRoom {
   /**---------------------------------------------
    * [이동 동기화]
    * @param {Buffer} buffer - 이동 패킷 데이터
-   * @param {C2B_PositionUpdateRequest} clientPacket - 이동 패킷 데이터
+   * @param {C2B_PlayerPositionUpdateRequest} clientPacket - 이동 패킷 데이터
    ---------------------------------------------*/
   handleMove(clientPacket, session) {
     // 위치 검증
@@ -201,7 +203,7 @@ export class GameRoom {
       return;
     }
 
-    const packet = create(B2C_PositionUpdateNotificationSchema, {
+    const packet = create(C2B_PlayerPositionUpdateRequestSchema, {
       posInfos: create(PosInfoSchema, {
         uuid: session.getId(),
         x: clientPacket.posInfos?.x,
@@ -442,10 +444,6 @@ export class GameRoom {
     this.broadcast(notificationBuffer);
   }
 
-  /**---------------------------------------------
-   * [몬스터 생성]
-   ---------------------------------------------*/
-  handleSpawnMonster(session) {}
 
   /**---------------------------------------------
    * [몬스터 타워 공격 동기화]
@@ -464,24 +462,6 @@ export class GameRoom {
       this.towerList.delete(buffer.towerid);
     }
   }
-
-  /**---------------------------------------------
-   * [타워 HP 동기화]
-   * @param {Buffer} buffer - 타워 HP 패킷 데이터
-   ---------------------------------------------*/
-  handleUpdateTowerHP(buffer) {}
-
-  /**---------------------------------------------
-   * [몬스터 기지 공격 동기화]
-   * @param {Buffer} buffer - 몬스터 기지 공격 패킷 데이터
-   ---------------------------------------------*/
-  handleMonsterAttackBase(buffer) {}
-
-  /**---------------------------------------------
-   * [몬스터 사망 동기화]
-   * @param {Buffer} buffer - 몬스터 사망 패킷 데이터
-   ---------------------------------------------*/
-  handleMonsterDeath(buffer) {}
 
   /**---------------------------------------------
    * [broadcast] - 모든 유저에게 패킷 전송
@@ -543,11 +523,15 @@ export class GameRoom {
    * 게임 루프 시작
    */
   gameLoop() {
-    setInterval(() => {
-      for (const monster of this.monsters.values()) {
-        monster.monsterAction(); // 몬스터 이동 및 주기적 동기화
-      }
-    }, this.updateInterval);
+    //몬스터(Monster) 업데이트
+    for (const [uuid, monster] of this.monsters) {
+      monster.update();
+    }
+
+    // 타워(Tower) 업데이트
+    for (const [uuid, tower] of this.towers) {
+        tower.update();
+    }
   }
 
   /**---------------------------------------------
@@ -645,6 +629,7 @@ export class GameRoom {
       obstacles: this.obstacles,
     });
 
+    
     const obstacleBuffer = PacketUtils.SerializePacket(
       obstacleSpawnPacket,
       B2C_ObstacleSpawnNotificationSchema,
