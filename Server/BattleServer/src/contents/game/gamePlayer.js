@@ -3,8 +3,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
 import { assetManager } from '../../utils/assetManager.js';
-import { B2C_InitCardDataSchema, B2C_AddCardSchema, C2B_SkillResponseSchema } from '../../protocol/skill_pb.js';
+import {
+  B2C_InitCardDataSchema,
+  B2C_UseSkillNotificationSchema,
+  B2C_AddCardSchema,
+} from '../../protocol/skill_pb.js';
 import { create } from '@bufbuild/protobuf';
+import { CardDataSchema } from '../../protocol/struct_pb.js';
 
 export class GamePlayer {
   /**
@@ -29,18 +34,21 @@ export class GamePlayer {
     const randomTurretCard = turretCards[Math.floor(Math.random() * turretCards.length)];
     const turretUuid = uuidv4();
     this.cardList.set(turretUuid, randomTurretCard.prefabId);
+    const cards = Array.from(assetManager.cards.values());
 
-    for (let i = 0; i < 3; i++) { // 나머지 3개의 카드를 랜덤으로 추가
-      const cardId = Math.floor(Math.random() * assetManager.cards.size) + 1;
-      const card = assetManager.getCardData(cardId).name;
+    for (let i = 0; i < 3; i++) {
+      // 나머지 3개의 카드를 랜덤으로 추가
+      const randomCard = cards[Math.floor(Math.random() * cards.length)];
       const uuid = uuidv4();
-      this.cardList.set(uuid, card);
+      this.cardList.set(uuid, randomCard.prefabId);
     }
-
-    const cardDatas = Array.from(this.cardList.entries()).map(([uuid, prefabId]) => create(CardDataSchema, {
-      cardId: uuid,
-      prefabId: prefabId,
-    }));
+    console.log('cardList: ', this.cardList);
+    const cardDatas = Array.from(this.cardList.entries()).map(([uuid, prefabId]) =>
+      create(CardDataSchema, {
+        cardId: uuid,
+        prefabId: prefabId,
+      }),
+    );
 
     const packet = create(B2C_InitCardDataSchema, {
       cardData: cardDatas,
@@ -63,6 +71,9 @@ export class GamePlayer {
    * ---------------------------------------------
    */
   addRandomCard() {
+    if (this.cardList.size >= 7) {
+      return;
+    }
     const cards = Array.from(assetManager.cards.values());
     const turretCards = Array.from(assetManager.towers.values());
     const combinedCards = cards.concat(turretCards);
@@ -70,15 +81,15 @@ export class GamePlayer {
     const uuid = uuidv4();
     this.cardList.set(uuid, randomCard.prefabId);
 
-    const packet = create(B2C_AddCardNotificationSchema, {
+    const packet = create(B2C_AddCardSchema, {
       cardId: uuid,
       prefabId: randomCard.prefabId,
     });
 
     const sendBuffer = PacketUtils.SerializePacket(
       packet,
-      B2C_AddCardNotificationSchema,
-      ePacketId.B2C_AddCardNotification,
+      B2C_AddCardSchema,
+      ePacketId.B2C_AddCard,
       this.session.getNextSequence(),
     );
 
@@ -96,28 +107,28 @@ export class GamePlayer {
     const uuid = uuidv4();
     this.cardList.set(uuid, card.prefabId);
 
-    const packet = create(B2C_AddCardNotificationSchema, {
+    const packet = create(B2C_AddCardSchema, {
       cardId: uuid,
       prefabId: card.prefabId,
     });
 
     const sendBuffer = PacketUtils.SerializePacket(
       packet,
-      B2C_AddCardNotificationSchema,
-      ePacketId.B2C_AddCardNotification,
+      B2C_AddCardSchema,
+      ePacketId.B2C_AddCard,
       this.session.getNextSequence(),
     );
 
     this.session.send(sendBuffer);
   }
 
-   /*
-  * 1. 카드 사용시 카드 삭제
-  * 2. 타워 일 경우 tower관련 함수를 통해 타워 설치
-  * 2-1. 실패시 reAddCardOnFailure를 통해 다시 유저에게 보내기 
-  * 3. 스킬 카드시 skill관련 함수를 통해 스킬 사용
-  * 3-1. 스킬 사용 실패시, reAddCardOnFailure를 통해 카드 다시 추가
-  */
+  /*
+   * 1. 카드 사용시 카드 삭제
+   * 2. 타워 일 경우 tower관련 함수를 통해 타워 설치
+   * 2-1. 실패시 reAddCardOnFailure를 통해 다시 유저에게 보내기
+   * 3. 스킬 카드시 skill관련 함수를 통해 스킬 사용
+   * 3-1. 스킬 사용 실패시, reAddCardOnFailure를 통해 카드 다시 추가
+   */
   /**
    * ---------------------------------------------
    * [useCard]
@@ -130,14 +141,13 @@ export class GamePlayer {
     const card = this.cardList.get(cardId);
     if (!card) return;
     this.cardList.delete(cardId);
-
-    const responsePacket = create(C2B_SkillResponseSchema, {
+    const responsePacket = create(B2C_UseSkillNotificationSchema, {
       isSuccess: true,
     });
 
     const sendBuffer = PacketUtils.SerializePacket(
       responsePacket,
-      C2B_SkillResponseSchema,
+      B2C_UseSkillNotificationSchema,
       ePacketId.B2C_SkillResponse,
       this.session.getNextSequence(),
     );

@@ -47,9 +47,7 @@ class AssetManager {
       ]);
 
       // 몬스터 자원 로드
-      this.monsters = new Map(
-        monsters.data.map((monster) => [monster.prefabId, monster])
-    );
+      this.monsters = new Map(monsters.data.map((monster) => [monster.prefabId, monster]));
       // 스테이지 자원 로드
       this.stages = stages.data;
 
@@ -60,9 +58,7 @@ class AssetManager {
 
       if (!this.monsters || this.towers.size === 0) throw new Error('asset is null');
       // 카드 자원 로드
-      this.cards = new Map(
-        cards.data.map((card) => [card.prefabId, card])
-      );
+      this.cards = new Map(cards.data.map((card) => [card.prefabId, card]));
 
       return {
         monsters: Array.from(this.monsters.values()),
@@ -148,9 +144,9 @@ class AssetManager {
    */
   getRandomAssetMonster() {
     const monstersArray = Array.from(this.monsters.values());
-    console.log("----------");
-    console.log(this.monsters.get("Robot1"));
-    console.log("----------");
+    console.log('----------');
+    console.log(this.monsters.get('Robot1'));
+    console.log('----------');
     const random = Math.floor(Math.random() * monstersArray.length);
     return monstersArray[random];
   }
@@ -178,10 +174,6 @@ class AssetManager {
    * @param {string} cardPrefabId 카드 prefabId
    * @returns {Object|null} 해당 카드 데이터 또는 null
    */
-  getCardDataByPrefabId(cardPrefabId) {
-    let card = this.cards.get(cardPrefabId) || null;
-    return card;
-  }
   getCardDataByPrefabId(cardPrefabId) {
     let card = this.cards.get(cardPrefabId) || null;
     return card;

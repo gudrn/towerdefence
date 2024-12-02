@@ -11,6 +11,7 @@ import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
 import { BattleSession } from '../../main/session/battleSession.js';
 import { C2B_PlayerPositionUpdateRequestSchema } from '../../protocol/character_pb.js';
 import { C2B_TowerBuildRequestSchema } from '../../protocol/tower_pb.js';
+import { C2B_SkillRequestSchema } from '../../protocol/skill_pb.js';
 
 const MAX_ROOMS_SIZE = 10000;
 
@@ -202,21 +203,21 @@ class GameRoomManager {
    * @param {Buffer} buffer - 몬스터 타워 공격 패킷 데이터
    * @param {BattleSession} session - 몬스터 타워 공격 요청을 보낸 세션
    ---------------------------------------------*/
-  monsterAttackTowerHandler(buffer, session) { }
+  monsterAttackTowerHandler(buffer, session) {}
 
   /**---------------------------------------------
    * [타워 HP 동기화]
    * @param {Buffer} buffer - 타워 HP 패킷 데이터
    * @param {BattleSession} session - 타워 HP 요청을 보낸 세션
    ---------------------------------------------*/
-  updateTowerHPHandler(buffer, session) { }
+  updateTowerHPHandler(buffer, session) {}
 
   /**---------------------------------------------
    * [몬스터 기지 공격 동기화]
    * @param {Buffer} buffer - 몬스터 기지 공격 패킷 데이터
    * @param {BattleSession} session - 몬스터 기지 공격 요청을 보낸 세션
    ---------------------------------------------*/
-  monsterAttackBaseHandler(buffer, session) { }
+  monsterAttackBaseHandler(buffer, session) {}
 
   // /**---------------------------------------------
   //  * [몬스터 사망 동기화]

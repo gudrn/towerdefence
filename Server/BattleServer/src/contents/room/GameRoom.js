@@ -12,7 +12,10 @@ import { MonsterSpawner } from './monsterSpanwner.js';
 import { GamePlayerDataSchema, PosInfoSchema, TowerDataSchema } from '../../protocol/struct_pb.js';
 import { Monster } from '../game/monster2.js';
 import { B2C_SpawnMonsterNotificationSchema } from '../../protocol/monster_pb.js';
-import { B2C_PlayerPositionUpdateNotificationSchema, C2B_PlayerPositionUpdateRequestSchema } from '../../protocol/character_pb.js';
+import {
+  B2C_PlayerPositionUpdateNotificationSchema,
+  C2B_PlayerPositionUpdateRequestSchema,
+} from '../../protocol/character_pb.js';
 import {
   B2C_TowerBuildNotificationSchema,
   B2C_TowerBuildResponseSchema,
@@ -25,6 +28,7 @@ import { MathUtils } from '../../utils/mathUtils.js';
 import { Tower } from '../game/tower.js';
 import { MonsterHealthUpdateSchema } from '../../protocol/struct_pb.js';
 import { B2C_MonsterHealthUpdateNotificationSchema } from '../../protocol/monster_pb.js';
+import { B2C_UseSkillNotificationSchema } from '../../protocol/skill_pb.js';
 
 export class GameRoom {
   static spawnCoordinates = [
@@ -173,7 +177,7 @@ export class GameRoom {
       // B2C_GameStartNotification 패킷 생성
       const gameStartPacket = create(B2C_GameStartNotificationSchema, {
         playerDatas,
-        obstaclePosInfos
+        obstaclePosInfos,
       });
 
       const gameStartBuffer = PacketUtils.SerializePacket(
@@ -185,7 +189,7 @@ export class GameRoom {
 
       // 모든 유저에게 전송
       this.broadcast(gameStartBuffer);
-      //player.initCard();
+      player.initCard();
       //몬스터 생성
       this.OnGameStart();
     }
@@ -195,12 +199,12 @@ export class GameRoom {
    * [장애물 생성]
    * @param {number} [obstacleCount=20]
    * @returns {PosInfo[]}
-  *///---------------------------------------------
+   */ //---------------------------------------------
   generateObstacles(obstacleCount = 20) {
     /** @type {Map<Vec2, PosInfo>} */
     let usedPositions = new Map();
 
-    for (let i = 0; i < obstacleCount;) {
+    for (let i = 0; i < obstacleCount; ) {
       // 랜덤 좌표 생성
       const randomVec2 = { x: MathUtils.randomRangeInt(5, 26), y: MathUtils.randomRangeInt(2, 30) };
       const posInfo = create(PosInfoSchema, { x: randomVec2.x, y: randomVec2.y });
@@ -333,7 +337,7 @@ export class GameRoom {
         const dirX = pos.x - tower[1].getPos().x;
         const dirY = pos.y - tower[1].getPos().y;
         /** @type {number} */
-        const dist = (dirX * dirX) + (dirY * dirY); // 유클리드 거리 계산
+        const dist = dirX * dirX + dirY * dirY; // 유클리드 거리 계산
 
         if (dist < best) {
           best = dist;
@@ -347,13 +351,17 @@ export class GameRoom {
     const baseSize = 3; // Base의 크기
 
     for (let offsetX = -Math.floor(baseSize / 2); offsetX <= Math.floor(baseSize / 2); offsetX++) {
-      for (let offsetY = -Math.floor(baseSize / 2); offsetY <= Math.floor(baseSize / 2); offsetY++) {
+      for (
+        let offsetY = -Math.floor(baseSize / 2);
+        offsetY <= Math.floor(baseSize / 2);
+        offsetY++
+      ) {
         const tileX = baseCenter.x + offsetX;
         const tileY = baseCenter.y + offsetY;
         const dirX = pos.x - tileX;
         const dirY = pos.y - tileY;
         /** @type {number} */
-        const dist = (dirX * dirX) + (dirY * dirY);
+        const dist = dirX * dirX + dirY * dirY;
 
         if (dist < best) {
           best = dist;
@@ -365,9 +373,8 @@ export class GameRoom {
     return ret;
   }
 
-
   parseKey(key) {
-    const [x, y] = key.split(",").map(Number);
+    const [x, y] = key.split(',').map(Number);
     return { x, y };
   }
 
@@ -377,10 +384,12 @@ export class GameRoom {
   }
 
   OnGameStart() {
-    console.log("OnGameStart Called");
+    console.log('OnGameStart Called');
     this.monsterSpawner.startSpawning(0);
 
-    setInterval(() => { this.gameLoop(); }, this.updateInterval);
+    setInterval(() => {
+      this.gameLoop();
+    }, this.updateInterval);
   }
 
   getMonsterCount() {
@@ -421,58 +430,51 @@ export class GameRoom {
    * @param {Buffer} buffer - 스킬 사용 패킷 데이터
    ---------------------------------------------*/
   handleSkill(payload, session) {
-    const { prefabId, skillPos, cardId } = payload.skill;
+    const { prefabId, skillPos } = payload.skill;
     const user = this.users.get(session.getId());
-    user.useCard(cardId);
+    user.useCard(payload.cardId);
+    console.log(user.cardList);
+    console.log('skill: ', prefabId);
+    console.log('skillPos: ', skillPos);
 
-    const card = assetManager.getCardData(prefabId);
-    if (skillPos.x < 0 || skillPos.y < 0 || skillPos.x > this.grid.width || skillPos.y > this.grid.height) {
-      const user = this.users.get(session.getId());
-      user.reAddCardOnFailure(prefabId);
-      return;
-    }
+    const card = assetManager.getCardDataByPrefabId(prefabId);
     switch (card.prefabId) {
-      case "ORBITAL_BOMBARDMENT": //궤도 폭격
-        const monstersInRangeForOrbital = this.monsters.filter(monster => {
-          return (
-            monster.position.x >= skillPos.x - 1.5 &&
-            monster.position.x <= skillPos.x + 1.5 &&
-            monster.position.y >= skillPos.y - 1.5 &&
-            monster.position.y <= skillPos.y + 1.5
-          );
-        });
-
-        monstersInRangeForOrbital.forEach(monster => {
-          monster.hp -= card.damage;
-          if (monster.hp <= 0) {
-            this.handleMonsterDeath(monster);
-          }
-        });
+      case 'OrbitalBeam': //궤도 폭격
+        console.log('skillPos: ', skillPos);
+        console.log('skill: ', prefabId);
         break;
-      case "CARPET_BOMBING": // 융단 폭격
-        const monstersInLineRange = this.monsters.filter(monster => {
+      case 'CARPET_BOMBING': // 융단 폭격(구현예정)
+        const monstersInLineRange = this.monsters.filter((monster) => {
           // 점과 직선 사이의 거리를 구하는 공식
           // |Ax + By + C| / sqrt(A^2 + B^2)
           // 여기서 A = posInfo.y - 0, B = -(posInfo.x - 0), C = 0
-          const distance = Math.abs((skillPos.y - 0) * monster.pos.x - (skillPos.x - 0) * monster.pos.y + (skillPos.x * 0 - skillPos.y * 0)) / Math.sqrt(Math.pow(skillPos.y - 0, 2) + Math.pow(skillPos.x - 0, 2));
+          const distance =
+            Math.abs(
+              (skillPos.y - 0) * monster.pos.x -
+                (skillPos.x - 0) * monster.pos.y +
+                (skillPos.x * 0 - skillPos.y * 0),
+            ) / Math.sqrt(Math.pow(skillPos.y - 0, 2) + Math.pow(skillPos.x - 0, 2));
           return distance <= card.range;
         });
 
-        monstersInLineRange.forEach(monster => {
+        monstersInLineRange.forEach((monster) => {
           monster.hp -= card.damage;
           if (monster.hp <= 0) {
             this.handleMonsterDeath(monster);
           }
         });
         break;
-      case "TOWER_HEAL": // 타워 힐
-        const towerToHeal = Array.from(this.towerList.values()).find(tower => tower.posInfo.x === skillPos.x && tower.posInfo.y === skillPos.y);
+      case 'TowerRepair': // 타워 힐
+        const towerToHeal = Array.from(this.towerList).find(
+          ([key, tower]) => tower.posInfo.x === skillPos.x && tower.posInfo.y === skillPos.y,
+        )[1];
         if (towerToHeal) {
           towerToHeal.hp += card.heal;
           if (towerToHeal.hp > towerToHeal.maxHp) {
             towerToHeal.hp = towerToHeal.maxHp;
           }
         }
+        console.log('skill: ', prefabId);
         break;
       default:
         return;
@@ -494,12 +496,15 @@ export class GameRoom {
     );
 
     this.broadcast(notificationBuffer);
+    /*
     //moster hp 동기화
-    const monsterHealthUpdates = monstersInLineRange.map((monster, index) => create(MonsterHealthUpdateSchema, {
-      monsterId: index,
-      currentHp: monster.hp,
-      maxHp: monster.maxHp,
-    }));
+    const monsterHealthUpdates = monstersInLineRange.map((monster, index) =>
+      create(MonsterHealthUpdateSchema, {
+        monsterId: index,
+        currentHp: monster.hp,
+        maxHp: monster.maxHp,
+      }),
+    );
 
     const monsterHealthUpdateNotification = create(B2C_MonsterHealthUpdateNotificationSchema, {
       healthUpdates: monsterHealthUpdates,
@@ -513,6 +518,7 @@ export class GameRoom {
     );
 
     this.broadcast(monsterHealthUpdateBuffer);
+    */
   }
 
   /**---------------------------------------------
@@ -522,10 +528,10 @@ export class GameRoom {
    ---------------------------------------------*/
   handleTowerBuild(packet, session) {
     console.log('handleTowerBuild');
-    const { tower, ownerId } = packet;
+    const { tower, ownerId, cardId } = packet;
     const user = this.users.get(session.getId());
-    user.useCard(tower.towerId);
-    
+    user.useCard(cardId);
+
     // 1. 타워 데이터 존재 확인
     const towerData = assetManager.getTowerData(tower.prefabId);
     if (!towerData) {
@@ -563,14 +569,13 @@ export class GameRoom {
     //   return;
     // }
 
-
     // 2. 타워 정보 저장
     const towerPosInfo = create(PosInfoSchema, {
       //uuid: uu,
       uuid: packet.tower.towerId,
       x: packet.tower.towerPos.x,
-      y: packet.tower.towerPos.y
-    })
+      y: packet.tower.towerPos.y,
+    });
     const newTower = new Tower(packet.tower.prefabId, towerPosInfo, this);
     this.addObject(newTower);
     this.towers.set(newTower.getId(), newTower);
@@ -791,7 +796,7 @@ export class GameRoom {
    ---------------------------------------------*/
   validatePosition(position) {
     // 맵 범위 검증 (32x32 맵)
-    if (position.x < -16 || position.x > 15 || position.y < -16 || position.y > 15) {
+    if (position.x < 0 || position.x > 32 || position.y < 0 || position.y > 32) {
       console.log(`맵 범위 초과. 위치: ${position.x}, ${position.y}`);
       return false;
     }
@@ -852,11 +857,9 @@ export class GameRoom {
 
     if (object instanceof GamePlayer) {
       this.users.delete(uuid);
-    }
-    else if (object instanceof Monster) {
+    } else if (object instanceof Monster) {
       this.monsters.delete(uuid);
-    }
-    else if (object instanceof Tower) {
+    } else if (object instanceof Tower) {
       this.towers.delete(uuid);
     }
   }
@@ -865,7 +868,6 @@ export class GameRoom {
     const reward = monsterInfo.monsterInfo[monster.monsterNumber - 1];
     this.score += reward.score;
   };
-
 
   /**
    * 장애물 랜덤 배치
