@@ -57,3 +57,8 @@ message ErrorData
   int32 responseCode = 1; // 에러코드
   string message = 2; //에러 내용
 }
+
+message CardData {
+  string cardId = 1;
+  string prefabId = 2;
+}

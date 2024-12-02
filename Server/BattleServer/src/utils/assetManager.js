@@ -38,10 +38,11 @@ class AssetManager {
    */
   async loadGameAssets() {
     try {
-      const [monsters, stages, towers] = await Promise.all([
+      const [monsters, stages, towers, cards] = await Promise.all([
         ParseUtils.readFileAsync('monsters.json'),
         ParseUtils.readFileAsync('stages.json'),
         ParseUtils.readFileAsync('towers.json'),
+        ParseUtils.readFileAsync('cards.json'),
       ]);
 
       // 몬스터 자원 로드
@@ -57,10 +58,15 @@ class AssetManager {
       );
 
       if (!this.monsters || this.towers.size === 0) throw new Error('asset is null');
+      // 카드 자원 로드
+      this.cards = new Map(
+        cards.data.map((card) => [card.id, card])
+      );
 
       return {
         monsters: Array.from(this.monsters.values()),
         towers: Array.from(this.towers.values()), // Map 데이터를 배열로 변환
+        cards: Array.from(this.cards.values()), // Map 데이터를 배열로 변환
       };
     } catch (error) {
       console.log(error);
@@ -80,6 +86,7 @@ class AssetManager {
       monsters: this.monsters,
       stages: this.stages,
       towers: this.towers,
+      cards: this.cards,
     };
   }
 
@@ -129,6 +136,13 @@ class AssetManager {
     console.log('monster 정보');
     console.log(monster);
     return monster;
+  }
+
+  getCardData(cardId) {
+    let card = this.cards.get(cardId) || null
+    console.log("card 정보")
+    console.log(card)
+    return card
   }
 
   /**

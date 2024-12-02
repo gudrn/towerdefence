@@ -37,13 +37,7 @@ message B2C_TowerAttackMonstrNotification
 message B2C_TowerDestroyNotification
 {
     bool isSuccess = 1;
-    int32 towerId = 2;
-}
-
-// 장애물 설치 알림
-message B2C_ObstacleSpawnNotificationSchema
-{
-    repeated PosInfo posInfos = 1;
+    string towerId = 2;
 }
 
 // 베이스 파괴 알림

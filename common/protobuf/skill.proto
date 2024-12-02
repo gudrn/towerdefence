@@ -6,7 +6,7 @@ import "enum.proto";
 
 //스킬 카드 사용 요청
 message C2B_SkillRequest {
-    CardType cardType = 1;
+    string prefebId = 1;
 }
 
 //스킬 카드 사용 응답
@@ -15,7 +15,18 @@ message C2B_SkillResponse {
 }
 
 //스킬 카드 사용 알림
-message C2B_SkillNotify {
-    CardType cardType = 1;
-    int32 userId = 2;
+message B2C_UseCardNotification {
+    string prefabId = 1;
+    PosInfo posInfo = 2;
+}    
+
+//카드 추가 알림
+message B2C_AddCard {
+    string cardId = 1;
+    string prefabId = 2;
+}
+
+//초기 카드 데이터 알림
+message B2C_InitCardData {
+    repeated CardData cardData = 1;
 }

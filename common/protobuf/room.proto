@@ -50,6 +50,7 @@ message L2B_GameStartRequest
 message B2C_GameStartNotification  
 {
     repeated GamePlayerData playerDatas = 1;
+    repeated PosInfo obstaclePosInfos = 2;
 }
 
 message C2L_GetRoomListRequest 
