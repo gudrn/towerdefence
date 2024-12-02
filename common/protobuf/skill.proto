@@ -8,9 +8,11 @@ import "struct.proto";
 message C2B_SkillRequest {
     SkillData skill = 1;
     int32 roomId = 2; // 룸 ID
+    string cardId = 3;
 }
+
 //스킬 카드 사용 응답
-message C2B_SkillResponse {
+message B2C_SkillResponse {
     bool isSuccess = 1;
     string cardId = 2; //카드 사용 요청 -> 서버로부터 응답을 받으면: 패에서 카드 제거거거
 }

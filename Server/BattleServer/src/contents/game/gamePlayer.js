@@ -39,7 +39,7 @@ export class GamePlayer {
 
     const cardDatas = Array.from(this.cardList.entries()).map(([uuid, prefabId]) => create(CardDataSchema, {
       cardId: uuid,
-      cardType: prefabId,
+      prefabId: prefabId,
     }));
 
     const packet = create(B2C_InitCardDataSchema, {

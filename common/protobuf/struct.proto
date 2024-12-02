@@ -9,12 +9,6 @@ message BaseData {
   int32 maxHp = 2; // 최대 체력
 }
 
-message TowerData {
-    int32 towerId = 1; // 타워 식별 id
-    string prefabId = 2; // 타워 종류 구분하는 번호
-    PosInfo towerPos = 3;
-}
-
 message MonsterData {
     int32 monsterId = 1; // 몬스터 식별 id
     int32 monsterNumber = 2; // 몬스터 종류 구분하는 번호
@@ -58,14 +52,20 @@ message ErrorData
   string message = 2; //에러 내용
 }
 
-message CardData {
-  string cardId = 1;
-  string prefabId = 2;
+message TowerData {
+  string towerId = 1; // 타워 uuid
+  string prefabId = 2; // 타워 종류 구분하는 번호
+  PosInfo towerPos = 3;
 }
 
 message SkillData {
   string prefabId = 1;
   PosInfo skillPos = 2;
+}
+
+message CardData {
+  string cardId = 1;
+  string prefabId = 2;
 }
 
 message MonsterHealthUpdate {

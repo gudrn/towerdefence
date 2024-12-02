@@ -10,7 +10,7 @@ import { file_struct } from "./struct_pb.js";
  * Describes the file skill.proto.
  */
 export const file_skill = /*@__PURE__*/
-  fileDesc("Cgtza2lsbC5wcm90bxIIUHJvdG9jb2wiQwoQQzJCX1NraWxsUmVxdWVzdBIOCgZjYXJkSWQYASABKAkSDwoHb3duZXJJZBgCIAEoCRIOCgZyb29tSWQYAyABKAUiJgoRQzJCX1NraWxsUmVzcG9uc2USEQoJaXNTdWNjZXNzGAEgASgIIk8KF0IyQ19Vc2VDYXJkTm90aWZpY2F0aW9uEhAKCHByZWZhYklkGAEgASgJEiIKB3Bvc0luZm8YAiABKAsyES5Qcm90b2NvbC5Qb3NJbmZvIjMKC0IyQ19BZGRDYXJkEiQKCGNhcmREYXRhGAEgASgLMhIuUHJvdG9jb2wuQ2FyZERhdGEiOAoQQjJDX0luaXRDYXJkRGF0YRIkCghjYXJkRGF0YRgBIAMoCzISLlByb3RvY29sLkNhcmREYXRhYgZwcm90bzM", [file_enum, file_struct]);
+  fileDesc("Cgtza2lsbC5wcm90bxIIUHJvdG9jb2wiVgoQQzJCX1NraWxsUmVxdWVzdBIiCgVza2lsbBgBIAEoCzITLlByb3RvY29sLlNraWxsRGF0YRIOCgZyb29tSWQYAiABKAUSDgoGY2FyZElkGAMgASgJIjYKEUIyQ19Ta2lsbFJlc3BvbnNlEhEKCWlzU3VjY2VzcxgBIAEoCBIOCgZjYXJkSWQYAiABKAkiPgoYQjJDX1VzZVNraWxsTm90aWZpY2F0aW9uEiIKBXNraWxsGAEgASgLMhMuUHJvdG9jb2wuU2tpbGxEYXRhIjMKC0IyQ19BZGRDYXJkEiQKCGNhcmREYXRhGAEgASgLMhIuUHJvdG9jb2wuQ2FyZERhdGEiOAoQQjJDX0luaXRDYXJkRGF0YRIkCghjYXJkRGF0YRgBIAMoCzISLlByb3RvY29sLkNhcmREYXRhYgZwcm90bzM", [file_enum, file_struct]);
 
 /**
  * Describes the message Protocol.C2B_SkillRequest.
@@ -20,17 +20,17 @@ export const C2B_SkillRequestSchema = /*@__PURE__*/
   messageDesc(file_skill, 0);
 
 /**
- * Describes the message Protocol.C2B_SkillResponse.
- * Use `create(C2B_SkillResponseSchema)` to create a new message.
+ * Describes the message Protocol.B2C_SkillResponse.
+ * Use `create(B2C_SkillResponseSchema)` to create a new message.
  */
-export const C2B_SkillResponseSchema = /*@__PURE__*/
+export const B2C_SkillResponseSchema = /*@__PURE__*/
   messageDesc(file_skill, 1);
 
 /**
- * Describes the message Protocol.B2C_UseCardNotification.
- * Use `create(B2C_UseCardNotificationSchema)` to create a new message.
+ * Describes the message Protocol.B2C_UseSkillNotification.
+ * Use `create(B2C_UseSkillNotificationSchema)` to create a new message.
  */
-export const B2C_UseCardNotificationSchema = /*@__PURE__*/
+export const B2C_UseSkillNotificationSchema = /*@__PURE__*/
   messageDesc(file_skill, 2);
 
 /**

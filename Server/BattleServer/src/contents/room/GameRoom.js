@@ -417,23 +417,13 @@ export class GameRoom {
   }
 
   /**---------------------------------------------
-   * [카드 사용 동기화]
-   * @param {Buffer} buffer - 카드 사용 패킷 데이터
-   ---------------------------------------------*/
-  handleUseCard(payload, session) {
-    const { cardId } = payload;
-    const user = this.users.get(session.getId());
-    user.useCard(cardId);
-  }
-
-
-  /**---------------------------------------------
    * [스킬 사용 동기화]
    * @param {Buffer} buffer - 스킬 사용 패킷 데이터
    ---------------------------------------------*/
   handleSkill(payload, session) {
-    const { prefabId, skillPos } = payload.skill;
+    const { prefabId, skillPos, cardId } = payload.skill;
     const user = this.users.get(session.getId());
+    user.useCard(cardId);
 
     const card = assetManager.getCardData(prefabId);
     if (skillPos.x < 0 || skillPos.y < 0 || skillPos.x > this.grid.width || skillPos.y > this.grid.height) {
@@ -533,7 +523,9 @@ export class GameRoom {
   handleTowerBuild(packet, session) {
     console.log('handleTowerBuild');
     const { tower, ownerId } = packet;
-
+    const user = this.users.get(session.getId());
+    user.useCard(tower.towerId);
+    
     // 1. 타워 데이터 존재 확인
     const towerData = assetManager.getTowerData(tower.prefabId);
     if (!towerData) {
@@ -574,7 +566,8 @@ export class GameRoom {
 
     // 2. 타워 정보 저장
     const towerPosInfo = create(PosInfoSchema, {
-      uuid: uuidv4(),
+      //uuid: uu,
+      uuid: packet.tower.towerId,
       x: packet.tower.towerPos.x,
       y: packet.tower.towerPos.y
     })

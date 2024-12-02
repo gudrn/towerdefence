@@ -26,7 +26,6 @@ enum OBJECT_STATE_TYPE
 }
 
 enum CardType {
-	ATTACK_TOWER = 0;
-	STR_ATTACK_TOWER = 1;
-	// 추가해야됨
+	CARD_TYPE_TOWER = 0;
+	CARD_TYPE_SKILL = 1;
 }
