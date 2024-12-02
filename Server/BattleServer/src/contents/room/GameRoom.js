@@ -433,6 +433,8 @@ export class GameRoom {
    ---------------------------------------------*/
   handleSkill(payload, session) {
     const { prefabId, skillPos } = payload.skill;
+    const user = this.users.get(session.getId());
+
     const card = assetManager.getCardData(prefabId);
     if (skillPos.x < 0 || skillPos.y < 0 || skillPos.x > this.grid.width || skillPos.y > this.grid.height) {
       const user = this.users.get(session.getId());

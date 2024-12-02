@@ -123,7 +123,7 @@ class GameRoomManager {
       console.log('유효하지 않은 roomId');
       throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
     }
-    room.handleSkill(payload.skill, session);
+    room.handleSkill(payload, session);
   }
 
   /**---------------------------------------------
