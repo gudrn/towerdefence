@@ -10,6 +10,7 @@ message C2B_TowerBuildRequest
     TowerData tower = 1; //타워 정보
     string ownerId = 2; //유저 ID
     int32 roomId = 3; // 룸 ID
+    string cardId = 4;
 }
 
 // 타워 생성 응답

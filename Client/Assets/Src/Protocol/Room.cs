@@ -34,9 +34,10 @@ namespace Protocol {
             "U3RhcnQSDgoGdXNlcklkGAEgASgJEg4KBnJvb21JZBgCIAEoBSI7Cg1MMkNf",
             "R2FtZVN0YXJ0EgwKBGhvc3QYASABKAkSDAoEcG9ydBgCIAEoBRIOCgZyb29t",
             "SWQYAyABKAUiOAoUTDJCX0dhbWVTdGFydFJlcXVlc3QSDAoEbmFtZRgBIAEo",
-            "CRISCgptYXhVc2VyTnVtGAIgASgFIkoKGUIyQ19HYW1lU3RhcnROb3RpZmlj",
+            "CRISCgptYXhVc2VyTnVtGAIgASgFIncKGUIyQ19HYW1lU3RhcnROb3RpZmlj",
             "YXRpb24SLQoLcGxheWVyRGF0YXMYASADKAsyGC5Qcm90b2NvbC5HYW1lUGxh",
-            "eWVyRGF0YSIYChZDMkxfR2V0Um9vbUxpc3RSZXF1ZXN0IjwKF0wyQ19HZXRS",
+            "eWVyRGF0YRIrChBvYnN0YWNsZVBvc0luZm9zGAIgAygLMhEuUHJvdG9jb2wu",
+            "UG9zSW5mbyIYChZDMkxfR2V0Um9vbUxpc3RSZXF1ZXN0IjwKF0wyQ19HZXRS",
             "b29tTGlzdFJlc3BvbnNlEiEKBXJvb21zGAEgAygLMhIuUHJvdG9jb2wuUm9v",
             "bURhdGEiJQoTQzJMX0pvaW5Sb29tUmVxdWVzdBIOCgZyb29tSWQYASABKAUi",
             "TwoUTDJDX0pvaW5Sb29tUmVzcG9uc2USEQoJaXNTdWNjZXNzGAEgASgIEiQK",
@@ -57,7 +58,7 @@ namespace Protocol {
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.C2L_GameStart), global::Protocol.C2L_GameStart.Parser, new[]{ "UserId", "RoomId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.L2C_GameStart), global::Protocol.L2C_GameStart.Parser, new[]{ "Host", "Port", "RoomId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.L2B_GameStartRequest), global::Protocol.L2B_GameStartRequest.Parser, new[]{ "Name", "MaxUserNum" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_GameStartNotification), global::Protocol.B2C_GameStartNotification.Parser, new[]{ "PlayerDatas" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_GameStartNotification), global::Protocol.B2C_GameStartNotification.Parser, new[]{ "PlayerDatas", "ObstaclePosInfos" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.C2L_GetRoomListRequest), global::Protocol.C2L_GetRoomListRequest.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.L2C_GetRoomListResponse), global::Protocol.L2C_GetRoomListResponse.Parser, new[]{ "Rooms" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.C2L_JoinRoomRequest), global::Protocol.C2L_JoinRoomRequest.Parser, new[]{ "RoomId" }, null, null, null, null),
@@ -1038,7 +1039,7 @@ namespace Protocol {
     public const int UserIdFieldNumber = 1;
     private string userId_ = "";
     /// <summary>
-    ///방장(보내는 사람의 )의 I
+    /// 방장(보내는 사람)의 ID
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1751,6 +1752,7 @@ namespace Protocol {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public B2C_GameStartNotification(B2C_GameStartNotification other) : this() {
       playerDatas_ = other.playerDatas_.Clone();
+      obstaclePosInfos_ = other.obstaclePosInfos_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1771,6 +1773,17 @@ namespace Protocol {
       get { return playerDatas_; }
     }
 
+    /// <summary>Field number for the "obstaclePosInfos" field.</summary>
+    public const int ObstaclePosInfosFieldNumber = 2;
+    private static readonly pb::FieldCodec<global::Protocol.PosInfo> _repeated_obstaclePosInfos_codec
+        = pb::FieldCodec.ForMessage(18, global::Protocol.PosInfo.Parser);
+    private readonly pbc::RepeatedField<global::Protocol.PosInfo> obstaclePosInfos_ = new pbc::RepeatedField<global::Protocol.PosInfo>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<global::Protocol.PosInfo> ObstaclePosInfos {
+      get { return obstaclePosInfos_; }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -1787,6 +1800,7 @@ namespace Protocol {
         return true;
       }
       if(!playerDatas_.Equals(other.playerDatas_)) return false;
+      if(!obstaclePosInfos_.Equals(other.obstaclePosInfos_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1795,6 +1809,7 @@ namespace Protocol {
     public override int GetHashCode() {
       int hash = 1;
       hash ^= playerDatas_.GetHashCode();
+      hash ^= obstaclePosInfos_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1814,6 +1829,7 @@ namespace Protocol {
       output.WriteRawMessage(this);
     #else
       playerDatas_.WriteTo(output, _repeated_playerDatas_codec);
+      obstaclePosInfos_.WriteTo(output, _repeated_obstaclePosInfos_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1825,6 +1841,7 @@ namespace Protocol {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
       playerDatas_.WriteTo(ref output, _repeated_playerDatas_codec);
+      obstaclePosInfos_.WriteTo(ref output, _repeated_obstaclePosInfos_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1836,6 +1853,7 @@ namespace Protocol {
     public int CalculateSize() {
       int size = 0;
       size += playerDatas_.CalculateSize(_repeated_playerDatas_codec);
+      size += obstaclePosInfos_.CalculateSize(_repeated_obstaclePosInfos_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -1849,6 +1867,7 @@ namespace Protocol {
         return;
       }
       playerDatas_.Add(other.playerDatas_);
+      obstaclePosInfos_.Add(other.obstaclePosInfos_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -1868,6 +1887,10 @@ namespace Protocol {
             playerDatas_.AddEntriesFrom(input, _repeated_playerDatas_codec);
             break;
           }
+          case 18: {
+            obstaclePosInfos_.AddEntriesFrom(input, _repeated_obstaclePosInfos_codec);
+            break;
+          }
         }
       }
     #endif
@@ -1885,6 +1908,10 @@ namespace Protocol {
             break;
           case 10: {
             playerDatas_.AddEntriesFrom(ref input, _repeated_playerDatas_codec);
+            break;
+          }
+          case 18: {
+            obstaclePosInfos_.AddEntriesFrom(ref input, _repeated_obstaclePosInfos_codec);
             break;
           }
         }

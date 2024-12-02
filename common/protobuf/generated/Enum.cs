@@ -28,8 +28,8 @@ namespace Protocol {
             "SVQQABILCgdQUkVQQVJFEAESCwoHSU5BR0FNRRACKkkKCk9iamVjdFR5cGUS",
             "CQoFVE9XRVIQABIKCgZQTEFZRVIQARILCgdNT05TVEVSEAISDgoKUFJPSkVD",
             "VElMRRADEgcKA0VOVhAEKjIKEU9CSkVDVF9TVEFURV9UWVBFEggKBElETEUQ",
-            "ABIICgRNT1ZFEAESCQoFU0tJTEwQAioyCghDYXJkVHlwZRIQCgxBVFRBQ0tf",
-            "VE9XRVIQABIUChBTVFJfQVRUQUNLX1RPV0VSEAFiBnByb3RvMw=="));
+            "ABIICgRNT1ZFEAESCQoFU0tJTEwQAio0CghDYXJkVHlwZRITCg9DQVJEX1RZ",
+            "UEVfVE9XRVIQABITCg9DQVJEX1RZUEVfU0tJTEwQAWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Protocol.RoomStateType), typeof(global::Protocol.ObjectType), typeof(global::Protocol.OBJECT_STATE_TYPE), typeof(global::Protocol.CardType), }, null, null));
@@ -62,11 +62,8 @@ namespace Protocol {
   }
 
   public enum CardType {
-    [pbr::OriginalName("ATTACK_TOWER")] AttackTower = 0,
-    /// <summary>
-    /// 추가해야됨
-    /// </summary>
-    [pbr::OriginalName("STR_ATTACK_TOWER")] StrAttackTower = 1,
+    [pbr::OriginalName("CARD_TYPE_TOWER")] Tower = 0,
+    [pbr::OriginalName("CARD_TYPE_SKILL")] Skill = 1,
   }
 
   #endregion
