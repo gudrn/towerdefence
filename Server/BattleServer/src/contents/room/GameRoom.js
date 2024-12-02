@@ -10,16 +10,19 @@ import { fromBinary, create } from '@bufbuild/protobuf';
 import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
 import { MonsterSpawner } from './monsterSpanwner.js';
 import { GamePlayerDataSchema, PosInfoSchema, TowerDataSchema } from '../../protocol/struct_pb.js';
-import { Monster } from '../game/monster.js';
+import { Monster } from '../game/monster2.js';
 import { B2C_SpawnMonsterNotificationSchema } from '../../protocol/monster_pb.js';
 import { B2C_PlayerPositionUpdateNotificationSchema, C2B_PlayerPositionUpdateRequestSchema } from '../../protocol/character_pb.js';
 import {
   B2C_TowerBuildNotificationSchema,
   B2C_TowerBuildResponseSchema,
-  B2C_ObstacleSpawnNotificationSchemaSchema,
 } from '../../protocol/tower_pb.js';
 import { v4 as uuidv4 } from 'uuid';
 import { Vec2 } from 'ServerCore/src/utils/vec2.js';
+import { Tile, Tilemap } from './tilemap.js';
+import { Base } from '../game/base.js';
+import { MathUtils } from '../../utils/mathUtils.js';
+import { Tower } from '../game/tower.js';
 
 export class GameRoom {
   static spawnCoordinates = [
@@ -39,9 +42,14 @@ export class GameRoom {
     this.id = id;
     this.monsters = new Map();
     this.towers = new Map();
-    this.grid = { width: 32, height: 32 };
-    this.base = new Vec2(0, 0); // 기지의 좌표
-    this.obstacles = []; // 장애물 좌표 배열
+
+    //this.grid = { width: 32, height: 32 };
+    this.tilemap = new Tilemap({x: 15, y: 15});
+
+    //this.base = new Vec2(0, 0); // 기지의 좌표
+    this.base = new Base(300, create(PosInfoSchema, {x: 15, y: 15}));
+
+    //this.obstacles = []; // 장애물 좌표 배열
     //this.excludedCoordinates = [...this.base]; // 장애물이 생성되지 않도록 할 좌표 목록
 
     this.maxPlayerCount = maxPlayerCount;
@@ -57,19 +65,19 @@ export class GameRoom {
    * @param {number} height - 세로 크기
    * @returns {Array} 좌표 배열
    */
-  baseSize(width, height) {
-    const base = [];
-    const halfWidth = Math.floor(width / 2);
-    const halfHeight = Math.floor(height / 2);
+  // baseSize(width, height) {
+  //   const base = [];
+  //   const halfWidth = Math.floor(width / 2);
+  //   const halfHeight = Math.floor(height / 2);
 
-    for (let y = -halfHeight; y <= halfHeight; y++) {
-      for (let x = -halfWidth; x <= halfWidth; x++) {
-        base.push({ x: x, y: y }); // 음수-양수 좌표 생성
-      }
-    }
+  //   for (let y = -halfHeight; y <= halfHeight; y++) {
+  //     for (let x = -halfWidth; x <= halfWidth; x++) {
+  //       base.push({ x: x, y: y }); // 음수-양수 좌표 생성
+  //     }
+  //   }
 
-    return base;
-  }
+  //   return base;
+  // }
 
   getMonsters() {
     return this.monsters;
@@ -95,7 +103,7 @@ export class GameRoom {
       return false; // 중복 플레이어
     }
     // 2. 유저 추가
-    this.users.set(player.session.getId(), player);
+    this.users.set(player.session.getId(), player, this);
     console.log(`유저가 방에 입장했습니다. 현재 인원: ${this.users.size}/${this.maxPlayerCount}`);
     return true;
   }
@@ -159,33 +167,218 @@ export class GameRoom {
         playerDatas.push(gamePlayerData);
       }
 
+      const obstaclePosInfos = this.generateObstacles(20);
       // B2C_GameStartNotification 패킷 생성
       const gameStartPacket = create(B2C_GameStartNotificationSchema, {
         playerDatas,
+        obstaclePosInfos
       });
 
       const gameStartBuffer = PacketUtils.SerializePacket(
         gameStartPacket,
         B2C_GameStartNotificationSchema,
         ePacketId.B2C_GameStartNotification,
-        usersArray[0].session.getNextSequence(), // 첫 번째 유저의 시퀀스
+        0,
       );
 
       // 모든 유저에게 전송
       this.broadcast(gameStartBuffer);
-
+      //player.initCard();
       //몬스터 생성
       this.OnGameStart();
     }
   }
 
-  OnGameStart() {
-    console.log('OnGameStart Called');
+/**---------------------------------------------
+ * [장애물 생성]
+ * @param {number} [obstacleCount=20]
+ * @returns {PosInfo[]}
+*///---------------------------------------------
+  generateObstacles(obstacleCount = 20) {
+    /** @type {Map<Vec2, PosInfo>} */
+    let usedPositions = new Map();
+
+    for (let i = 0; i < obstacleCount;) {
+      // 랜덤 좌표 생성
+      const randomVec2 = { x: MathUtils.randomRangeInt(5, 26), y: MathUtils.randomRangeInt(2, 30) };
+      const posInfo = create(PosInfoSchema, {x: randomVec2.x, y: randomVec2.y});
+
+      // 타일이 있는 위치인지 확인
+      if (this.tilemap.getTile(randomVec2) == Tile.None && !usedPositions.get(randomVec2)) {
+        // 위치 기록
+        usedPositions.set(randomVec2, posInfo);
+        i+=1;
+      }
+    }
+
+    const arr = Array.from(usedPositions.values());
+    console.log(arr);
+    console.log(arr.length);
+    return arr;
+  }
+
+    /*---------------------------------------------
+    [길찾기]
+---------------------------------------------*/
+  findPath(src, dest) {
+    const path = [];
+
+    const pq = [];
+    const best = new Map();
+    const parent = new Map();
+
+    const key = (vec) => `${vec.x},${vec.y}`;
+    // 초기값 설정
+    {
+        const cost = Math.abs(dest.y - src.y) + Math.abs(dest.x - src.x);
+        pq.push({ cost, pos: src });
+        best.set(key(src), cost);
+        parent.set(key(src), src);
+    }
+    const directions = [
+        { x: 0, y: -1 },
+        { x: 0, y: 1 },
+        { x: -1, y: 0 },
+        { x: 1, y: 0 },
+    ];
+
+    let found = false;
+
+    while (pq.length > 0) {
+        // 우선순위 큐에서 최소 비용 노드 선택
+        pq.sort((a, b) => a.cost - b.cost);
+        const node = pq.shift();
+
+        const nodeKey = key(node.pos);
+
+        // 더 짧은 경로를 뒤늦게 찾았다면 스킵
+        if ((best.get(nodeKey) ?? Infinity) < node.cost) continue;
+
+        // 목적지에 도착했으면 종료
+        if (node.pos.x === dest.x && node.pos.y === dest.y) {
+            found = true;
+            break;
+        }
+
+        // 방문
+        for (const dir of directions) {
+            const nextPos = {
+                x: node.pos.x + dir.x,
+                y: node.pos.y + dir.y,
+            };
+
+            const nextKey = key(nextPos);
+
+            if (!this.canGo(nextPos)) continue;
+
+            const cost = Math.abs(dest.y - nextPos.y) + Math.abs(dest.x - nextPos.x);
+            const bestValue = best.get(nextKey);
+
+            if (bestValue !== undefined && bestValue <= cost) continue;
+
+            // 예약 진행
+            best.set(nextKey, cost);
+            pq.push({ cost, pos: nextPos });
+            parent.set(nextKey, node.pos);
+        }
+    }
+
+    if (!found) {
+        let bestScore = Number.MAX_VALUE;
+
+        for (const [posKey, score] of best.entries()) {
+            const pos = this.parseKey(posKey);
+
+            // 동점이라면 최초 위치에서 가장 덜 이동하는 쪽으로
+            if (bestScore === score) {
+                const dist1 = Math.abs(dest.x - src.x) + Math.abs(dest.y - src.y);
+                const dist2 = Math.abs(pos.x - src.x) + Math.abs(pos.y - src.y);
+                if (dist1 > dist2) dest = pos;
+            } else if (bestScore > score) {
+                dest = pos;
+                bestScore = score;
+            }
+        }
+    }
+
+    let pos = dest;
+    while (true) {
+        path.push(pos);
+
+        const parentPos = parent.get(key(pos));
+        if (!parentPos || (pos.x === parentPos.x && pos.y === parentPos.y)) break;
+
+        pos = parentPos;
+    }
+
+    path.reverse();
+    return path;
+  }
+
+  /**
+   * @param {Object} pos - 현재 위치 {x, y}.
+   * @returns {Object|null} - 가장 가까운 Tower 또는 Base 객체, 없으면 null.
+   */
+  findCloseBuilding(pos) {
+    /** @type {Object|null} */
+    let ret = null;
+    /** @type {number} */
+    let best = Number.MAX_VALUE;
+
+    // 타워 거리 계산
+    for (const tower of this.towers) {
+        if (tower[1]) {
+            const dirX = pos.x - tower[1].getPos().x;
+            const dirY = pos.y - tower[1].getPos().y;
+            /** @type {number} */
+            const dist = (dirX * dirX) + (dirY * dirY); // 유클리드 거리 계산
+
+            if (dist < best) {
+                best = dist;
+                ret = tower[1];
+            }
+        }
+    }
+
+    // Base 거리 계산 (3x3 크기 고려)
+    const baseCenter = this.base.getPos(); // Base 중앙 위치
+    const baseSize = 3; // Base의 크기
+
+    for (let offsetX = -Math.floor(baseSize / 2); offsetX <= Math.floor(baseSize / 2); offsetX++) {
+        for (let offsetY = -Math.floor(baseSize / 2); offsetY <= Math.floor(baseSize / 2); offsetY++) {
+            const tileX = baseCenter.x + offsetX;
+            const tileY = baseCenter.y + offsetY;
+            const dirX = pos.x - tileX;
+            const dirY = pos.y - tileY;
+            /** @type {number} */
+            const dist = (dirX * dirX) + (dirY * dirY);
+
+            if (dist < best) {
+                best = dist;
+                ret = this.base; // Base 객체를 반환
+            }
+        }
+    }
+
+    return ret;
+  }
+
+
+  parseKey(key) {
+    const [x, y] = key.split(",").map(Number);
+    return { x, y };
+  }
+
+  canGo(pos) {
+    const tile = this.tilemap.getTile(pos);
+    return tile !== null;
+  }
+
+  OnGameStart(){
+    console.log("OnGameStart Called");
     this.monsterSpawner.startSpawning(0);
 
-    // setInterval(() => {
-    //   this.gameLoop();
-    // }, 200);
+    setInterval(() => { this.gameLoop();}, this.updateInterval);
   }
 
   getMonsterCount() {
@@ -200,15 +393,15 @@ export class GameRoom {
   handleMove(clientPacket, session) {
     // 위치 검증
     if (!this.validatePosition(clientPacket.posInfo)) {
-      console.log(`유효하지 않은 위치. ${clientPacket.posInfos}`);
+      console.log(`유효하지 않은 위치. ${clientPacket.posInfo}`);
       return;
     }
 
     const packet = create(B2C_PlayerPositionUpdateNotificationSchema, {
       posInfo: create(PosInfoSchema, {
         uuid: session.getId(),
-        x: clientPacket.posInfos?.x,
-        y: clientPacket.posInfos?.y,
+        x: clientPacket.posInfo?.x,
+        y: clientPacket.posInfo?.y,
       }),
     });
 
@@ -236,9 +429,15 @@ export class GameRoom {
    * [스킬 사용 동기화]
    * @param {Buffer} buffer - 스킬 사용 패킷 데이터
    ---------------------------------------------*/
-   handleSkill(playerId, cardId, posInfo) {
-    const card = assetManager.getCardData(cardId);
-    switch (card.name) {
+   handleSkill(payload, session) {
+    const { prefabId, posInfo } = payload;
+    const card = assetManager.getCardData(prefabId);
+    if (posInfo.x < 0 || posInfo.y < 0 || posInfo.x > this.grid.width || posInfo.y > this.grid.height) {
+      const user = this.users.get(session.getId());
+      user.reAddCardOnFailure(prefabId);
+      return;
+    }
+    switch (card.prefabId) {
       case "ORBITAL_BOMBARDMENT": //궤도 폭격
         const monstersInRangeForOrbital = this.monsters.filter(monster => {
           const distance = Math.sqrt(
@@ -328,16 +527,16 @@ export class GameRoom {
     //   return;
     // }
 
+    
     // 2. 타워 정보 저장
-    // 클래스로 변경하기
-    const newTower = {
-      //uuid생성하기
-      towerPos: tower.towerPos,
-      ownerId: ownerId,
-      prefabId: towerData.prefabId,
-    };
-
-    this.towers.set(tower.towerNumber, newTower);
+    const towerPosInfo = create(PosInfoSchema, {
+      uuid: uuidv4(),
+      x: packet.tower.towerPos.x,
+      y: packet.tower.towerPos.y
+    })
+    const newTower = new Tower(packet.tower.prefabId, towerPosInfo, this);
+    this.addObject(newTower);
+    this.towers.set(newTower.getId(), newTower);
     console.log(
       `타워생성 성공. towerId: ${tower.towerId}, prefabId: ${towerData.prefabId}, 위치: (${tower.towerPos}`,
     );
@@ -616,13 +815,13 @@ export class GameRoom {
 
     if (object instanceof GamePlayer) {
       this.users.delete(uuid);
-    } else if (object instanceof Monster) {
+    }
+    else if (object instanceof Monster) {
       this.monsters.delete(uuid);
     }
-
-    this.monsters.forEach((monster) => {
-      monster.updateEnvironment(this.obstacles, this.towers);
-    });
+    else if (object instanceof Tower) {
+      this.towers.delete(uuid);
+    }
   }
 
   getMonsterSearchAndReward = (monster) => {
@@ -630,56 +829,47 @@ export class GameRoom {
     this.score += reward.score;
   };
 
-  /**
-   * 장애물과 타워 정보를 갱신
-   * @param {Array<object>} obstacles - 장애물 좌표 배열
-   * @param {Map<string, object>} towers - 타워 좌표 Map
-   */
-  updateEnvironment(obstacles, towers) {
-    this.obstacles = obstacles;
-    this.towers = towers;
-  }
 
   /**
    * 장애물 랜덤 배치
    */
-  generateObstacles() {
-    const totalCells = this.grid.width * this.grid.height; // 전체 셀 개수
-    const obstacleCount = Math.floor(totalCells * 0.1); // 장애물 개수 조절 (10%)
-    const obstacleSet = new Set();
+  // generateObstacles() {
+  //   const totalCells = this.grid.width * this.grid.height; // 전체 셀 개수
+  //   const obstacleCount = Math.floor(totalCells * 0.1); // 장애물 개수 조절 (10%)
+  //   const obstacleSet = new Set();
 
-    // "생성 금지 좌표"를 문자열로 변환하여 비교에 사용
-    const excludedSet = new Set(this.excludedCoordinates.map(({ x, y }) => `${x},${y}`));
+  //   // "생성 금지 좌표"를 문자열로 변환하여 비교에 사용
+  //   const excludedSet = new Set(this.excludedCoordinates.map(({ x, y }) => `${x},${y}`));
 
-    while (obstacleSet.size < obstacleCount) {
-      const randomX = Math.floor(Math.random() * 22) - 11;
-      const randomY = Math.floor(Math.random() * 28) - 14;
-      const coordinate = `${randomX},${randomY}`;
+  //   while (obstacleSet.size < obstacleCount) {
+  //     const randomX = Math.floor(Math.random() * 22) - 11;
+  //     const randomY = Math.floor(Math.random() * 28) - 14;
+  //     const coordinate = `${randomX},${randomY}`;
 
-      // 생성 금지 좌표가 아니라면 추가
-      if (!excludedSet.has(coordinate)) {
-        obstacleSet.add(coordinate);
-      }
-    }
+  //     // 생성 금지 좌표가 아니라면 추가
+  //     if (!excludedSet.has(coordinate)) {
+  //       obstacleSet.add(coordinate);
+  //     }
+  //   }
 
-    this.obstacles = Array.from(obstacleSet).map((coordinate) => {
-      const [x, y] = coordinate.split(',').map(Number);
-      return { x, y };
-    });
+  //   this.obstacles = Array.from(obstacleSet).map((coordinate) => {
+  //     const [x, y] = coordinate.split(',').map(Number);
+  //     return { x, y };
+  //   });
 
-    console.log('장애물 배치 완료:', this.obstacles);
+  //   console.log('장애물 배치 완료:', this.obstacles);
 
-    const obstacleSpawnPacket = create(B2C_ObstacleSpawnNotificationSchemaSchema, {
-      obstacles: this.obstacles,
-    });
+  //   const obstacleSpawnPacket = create(B2C_ObstacleSpawnNotificationSchemaSchema, {
+  //     obstacles: this.obstacles,
+  //   });
 
-    const obstacleBuffer = PacketUtils.SerializePacket(
-      obstacleSpawnPacket,
-      B2C_ObstacleSpawnNotificationSchemaSchema,
-      ePacketId.B2C_ObstacleSpawnNotification,
-      0,
-    );
+  //   const obstacleBuffer = PacketUtils.SerializePacket(
+  //     obstacleSpawnPacket,
+  //     B2C_ObstacleSpawnNotificationSchemaSchema,
+  //     ePacketId.B2C_ObstacleSpawnNotification,
+  //     0,
+  //   );
 
-    this.broadcast(obstacleBuffer);
-  }
+  //   this.broadcast(obstacleBuffer);
+  // }
 }

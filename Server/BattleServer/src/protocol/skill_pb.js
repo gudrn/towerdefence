@@ -3,13 +3,14 @@
 /* eslint-disable */
 
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import { file_enum } from "./enum_pb";
+import { file_enum } from "./enum_pb.js";
+import { file_struct } from "./struct_pb.js";
 
 /**
  * Describes the file skill.proto.
  */
 export const file_skill = /*@__PURE__*/
-  fileDesc("Cgtza2lsbC5wcm90bxIIUHJvdG9jb2wiOAoQQzJCX1NraWxsUmVxdWVzdBIkCghjYXJkVHlwZRgBIAEoDjISLlByb3RvY29sLkNhcmRUeXBlIiYKEUMyQl9Ta2lsbFJlc3BvbnNlEhEKCWlzU3VjY2VzcxgBIAEoCCJHCg9DMkJfU2tpbGxOb3RpZnkSJAoIY2FyZFR5cGUYASABKA4yEi5Qcm90b2NvbC5DYXJkVHlwZRIOCgZ1c2VySWQYAiABKAViBnByb3RvMw", [file_enum]);
+  fileDesc("Cgtza2lsbC5wcm90bxIIUHJvdG9jb2wiQwoQQzJCX1NraWxsUmVxdWVzdBIOCgZjYXJkSWQYASABKAkSDwoHb3duZXJJZBgCIAEoCRIOCgZyb29tSWQYAyABKAUiJgoRQzJCX1NraWxsUmVzcG9uc2USEQoJaXNTdWNjZXNzGAEgASgIIk8KF0IyQ19Vc2VDYXJkTm90aWZpY2F0aW9uEhAKCHByZWZhYklkGAEgASgJEiIKB3Bvc0luZm8YAiABKAsyES5Qcm90b2NvbC5Qb3NJbmZvIjMKC0IyQ19BZGRDYXJkEiQKCGNhcmREYXRhGAEgASgLMhIuUHJvdG9jb2wuQ2FyZERhdGEiOAoQQjJDX0luaXRDYXJkRGF0YRIkCghjYXJkRGF0YRgBIAMoCzISLlByb3RvY29sLkNhcmREYXRhYgZwcm90bzM", [file_enum, file_struct]);
 
 /**
  * Describes the message Protocol.C2B_SkillRequest.
@@ -26,9 +27,23 @@ export const C2B_SkillResponseSchema = /*@__PURE__*/
   messageDesc(file_skill, 1);
 
 /**
- * Describes the message Protocol.C2B_SkillNotify.
- * Use `create(C2B_SkillNotifySchema)` to create a new message.
+ * Describes the message Protocol.B2C_UseCardNotification.
+ * Use `create(B2C_UseCardNotificationSchema)` to create a new message.
  */
-export const C2B_SkillNotifySchema = /*@__PURE__*/
+export const B2C_UseCardNotificationSchema = /*@__PURE__*/
   messageDesc(file_skill, 2);
+
+/**
+ * Describes the message Protocol.B2C_AddCard.
+ * Use `create(B2C_AddCardSchema)` to create a new message.
+ */
+export const B2C_AddCardSchema = /*@__PURE__*/
+  messageDesc(file_skill, 3);
+
+/**
+ * Describes the message Protocol.B2C_InitCardData.
+ * Use `create(B2C_InitCardDataSchema)` to create a new message.
+ */
+export const B2C_InitCardDataSchema = /*@__PURE__*/
+  messageDesc(file_skill, 4);
 

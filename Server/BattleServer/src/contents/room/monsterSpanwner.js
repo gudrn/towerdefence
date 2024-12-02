@@ -1,5 +1,5 @@
 import { GameRoom } from './GameRoom.js';
-import { Monster } from '../game/monster.js';
+import { Monster } from '../game/monster2.js';
 import { PosInfoSchema } from '../../protocol/struct_pb.js';
 import { create } from '@bufbuild/protobuf';
 import { v4 as uuidv4 } from 'uuid';
@@ -42,10 +42,10 @@ export class MonsterSpawner {
    */
   getRandomSpawnPosition() {
     const positions = [
-      { x: 15, y: Math.round(Math.random() * 32) - 16 },  // Top
-      { x: Math.round(Math.random() * 32) - 16, y: 15 },  // Right
-      { x: Math.round(Math.random() * 32) - 16, y: -16 }, // Bottom
-      { x: -16, y: Math.round(Math.random() * 32) - 16 }, // Left
+      { x: 15, y: Math.round(Math.random() * 31) },  // Top
+      { x: Math.round(Math.random() * 32), y: 15 },  // Right
+      { x: Math.round(Math.random() * 32), y: 0 }, // Bottom
+      { x: 0, y: Math.round(Math.random() * 31) }, // Left
     ];
     // 배열에서 랜덤하게 하나 선택
     return positions[Math.floor(Math.random() * positions.length)];

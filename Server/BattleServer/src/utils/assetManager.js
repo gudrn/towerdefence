@@ -28,6 +28,7 @@ class AssetManager {
     this.monsters = new Map();
     this.stages = [];
     this.towers = new Map();
+    this.cards = new Map();
   }
 
   /**
@@ -60,7 +61,7 @@ class AssetManager {
       if (!this.monsters || this.towers.size === 0) throw new Error('asset is null');
       // 카드 자원 로드
       this.cards = new Map(
-        cards.data.map((card) => [card.id, card])
+        cards.data.map((card) => [card.prefabId, card])
       );
 
       return {
@@ -138,13 +139,6 @@ class AssetManager {
     return monster;
   }
 
-  getCardData(cardId) {
-    let card = this.cards.get(cardId) || null
-    console.log("card 정보")
-    console.log(card)
-    return card
-  }
-
   /**
    * ---------------------------------------------
    * [getRandomAssetMonster]
@@ -174,6 +168,23 @@ class AssetManager {
     console.log('tower정보');
     console.log(tower);
     return tower;
+  }
+
+  /**
+   * ---------------------------------------------
+   * [getCardDataByPrefabId]
+   * - 특정 카드의 데이터를 가져옵니다.
+   * ---------------------------------------------
+   * @param {string} cardPrefabId 카드 prefabId
+   * @returns {Object|null} 해당 카드 데이터 또는 null
+   */
+  getCardDataByPrefabId(cardPrefabId) {
+    let card = this.cards.get(cardPrefabId) || null;
+    return card;
+  }
+  getCardDataByPrefabId(cardPrefabId) {
+    let card = this.cards.get(cardPrefabId) || null;
+    return card;
   }
 
   /**

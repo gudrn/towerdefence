@@ -20,11 +20,7 @@ message B2C_PlayerPositionUpdateNotification
 
 // 카드 사용
 message C2B_UseCardRequest { 
-    CardType cardType = 1; 
-}
-
-// 카드 사용 알림
-message B2C_UseCardNotification {
-    bool isSuccess = 1;
+    int32 roomId = 1;
+    string cardId = 2; 
 }
 

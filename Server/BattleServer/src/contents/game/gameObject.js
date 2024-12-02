@@ -39,4 +39,9 @@ export class GameObject {
         //broadcast
         //this.room.broadcast();
     }
+
+    setPos(pos){
+        this.pos.x = pos.x;
+        this.pos.y = pos.y;
+    }
 }

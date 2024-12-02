@@ -30,7 +30,7 @@ message B2L_CreateGameRoomRespone
 
 message C2L_GameStart
 {
-    string userId = 1; //방장(보내는 사람의 )의 I
+    string userId = 1;      // 방장(보내는 사람)의 ID
     int32 roomId = 2;       // 입장하려는 Room ID
 }
 

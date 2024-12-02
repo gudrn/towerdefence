@@ -26,11 +26,11 @@ export class Room {
 
   /**
    * 방에 유저 입장
-   * @param {Object} newUser 새로운 유저 객체
+   * @param {GamePlayer} newUser 새로운 유저 객체
    * @returns {boolean} 성공 여부
    */
   enterRoom(newUser) {
-    console.log('Room::enterRoom');
+    //console.log('Room::enterRoom');
 
     // 1. 방이 가득 찼는지 확인
     if (this.users.length >= this.maxPlayerCount) {

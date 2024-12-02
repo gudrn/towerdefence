@@ -17,12 +17,11 @@ const server = net.createServer(onConnection);
 export const sessionManager = new SessionManager(BattleSession);
 
 export let lobbySession = new LobbySession(new net.Socket());
-lobbySession.connectLobbyServer();
 
 const initServer = async () => {
   try {
+    lobbySession.connectLobbyServer();
     const asset = await assetManager.loadGameAssets();
-    console.log(asset.monsters);
     // 다음 작업
   } catch (error) {
     console.error(error.message);

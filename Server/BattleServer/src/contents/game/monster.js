@@ -16,7 +16,7 @@ import {
 import { assetManager } from '../../utils/assetManager.js';
 import { OBJECT_STATE_TYPE } from '../../protocol/enum_pb.js';
 
-export class Monster extends GameObject {
+export class _Monster extends GameObject {
   constructor(prefabId, pos, room) {
     super(prefabId, pos, room);
     this.setState(OBJECT_STATE_TYPE.MOVE);
@@ -41,7 +41,7 @@ export class Monster extends GameObject {
     this.slowEffects = []; // 슬로우 효과 리스트
 //    this.currentPath = new Array(); // 현재 경로
     this.currentNodeIndex = 0; // 현재 경로의 진행 상태
-    this.setState('move'); // 기본 상태는 move.
+    this.setState(OBJECT_STATE_TYPE.MOVE); // 기본 상태는 move.
     this.attackTarget = null; // 타워나 기지를 목표
   }
 
@@ -68,66 +68,66 @@ export class Monster extends GameObject {
   1. target이 없으면 room.findCloseTarget을 호출하여 가장 가까운 타겟을 찾는다.
   2. target의 위치를 기반으로 A*알고리즘을 통해 이동 경로 계산 
    */
-  monsterMove() {
-    //this.updateSlowEffects(); // 슬로우 효과 갱신
+  // monsterMove() {
+  //   //this.updateSlowEffects(); // 슬로우 효과 갱신
 
-    console.log("monsterMove");
-    /**
-     *  A* 알고리즘을 통해 이동 경로 계산
-     * 경로가 없거나 장애물이 업데이트된 경우 새 경로 계산
-     * */
-    let path = currentPath = aStar(this.pos, this.room.base, this.room.grid, this.room.obstacles, 1);
-    // if (this.currentPath.length == 0 || this.room.isObstacleUpdated) {
-    //   this.currentPath = aStar(this.pos, this.room.base, this.room.grid, this.room.obstacles, 1);
-    //   this.currentNodeIndex = 0; // 경로 초기화
-    // }
+  //   console.log("monsterMove");
+  //   /**
+  //    *  A* 알고리즘을 통해 이동 경로 계산
+  //    * 경로가 없거나 장애물이 업데이트된 경우 새 경로 계산
+  //    * */
+  //   let path = currentPath = aStar(this.pos, this.room.base, this.room.grid, this.room.obstacles, 1);
+  //   // if (this.currentPath.length == 0 || this.room.isObstacleUpdated) {
+  //   //   this.currentPath = aStar(this.pos, this.room.base, this.room.grid, this.room.obstacles, 1);
+  //   //   this.currentNodeIndex = 0; // 경로 초기화
+  //   // }
 
-    // 경로 진행
-    //if (this.currentPath.length > 1 && this.currentNodeIndex < this.currentPath.length - 1) {
-    if (path.length > 1 && this.currentNodeIndex < path.length - 1) {
-      const nextPos = path[this.currentNodeIndex + 1];
-      const distanceToNext = Math.sqrt(
-        Math.pow(this.pos.x - nextPos.x, 2) + Math.pow(this.pos.y - nextPos.y, 2),
-      );
+  //   // 경로 진행
+  //   //if (this.currentPath.length > 1 && this.currentNodeIndex < this.currentPath.length - 1) {
+  //   if (path.length > 1 && this.currentNodeIndex < path.length - 1) {
+  //     const nextPos = path[this.currentNodeIndex + 1];
+  //     const distanceToNext = Math.sqrt(
+  //       Math.pow(this.pos.x - nextPos.x, 2) + Math.pow(this.pos.y - nextPos.y, 2),
+  //     );
 
-      // 이동 속도 확인
-      const elapsedTime = Date.now() - this.lastUpdateTime;
-      const actualSpeed = distanceToNext / elapsedTime;
+  //     // 이동 속도 확인
+  //     const elapsedTime = Date.now() - this.lastUpdateTime;
+  //     const actualSpeed = distanceToNext / elapsedTime;
 
-      if (distanceToNext > expectedTravelDistance) {
-        console.warn(`이동 속도 저하 감지: 예상 ${this.expectedSpeed}, 실제 ${actualSpeed}`);
-        this.pos = nextPos; // 강제 위치 업데이트
-      } else {
-        this.pos = nextPos; // 정상 이동
-      }
+  //     if (distanceToNext > expectedTravelDistance) {
+  //       console.warn(`이동 속도 저하 감지: 예상 ${this.expectedSpeed}, 실제 ${actualSpeed}`);
+  //       this.pos = nextPos; // 강제 위치 업데이트
+  //     } else {
+  //       this.pos = nextPos; // 정상 이동
+  //     }
 
-      this.currentNodeIndex++;
-    }
+  //     this.currentNodeIndex++;
+  //   }
 
-    console.log(`${this.name} 이동 중... 현재 위치: (${this.pos.x}, ${this.pos.y})`);
+  //   console.log(`${this.name} 이동 중... 현재 위치: (${this.pos.x}, ${this.pos.y})`);
 
-    // 기지에 도달했는지 확인
-    if (this.isAtBase()) {
-      this.target = this.room.base;
-      this.setState('attack');
-      return;
-    }
+  //   // 기지에 도달했는지 확인
+  //   if (this.isAtBase()) {
+  //     this.target = this.room.base;
+  //     this.setState(OBJECT_STATE_TYPE.SKILL);
+  //     return;
+  //   }
 
-    // 타워가 범위 내에 있으면 공격
-    const towerInRange = this.getTowerInRange();
-    if (towerInRange) {
-      this.target = towerInRange;
-      this.setState('attack');
-      return;
-    }
+  //   // 타워가 범위 내에 있으면 공격
+  //   const towerInRange = this.getTowerInRange();
+  //   if (towerInRange) {
+  //     this.target = towerInRange;
+  //     this.setState(OBJECT_STATE_TYPE.SKILL);
+  //     return;
+  //   }
 
-    // 주기적으로 위치 동기화
-    const currentTime = Date.now();
-    if (currentTime - this.lastUpdateTime >= this.room.updateInterval) {
-      this.monsterPositionUpdate(); // 패킷 전송
-      this.lastUpdateTime = currentTime; // 타이머 갱신
-    }
-  }
+  //   // 주기적으로 위치 동기화
+  //   const currentTime = Date.now();
+  //   if (currentTime - this.lastUpdateTime >= this.room.updateInterval) {
+  //     this.monsterPositionUpdate(); // 패킷 전송
+  //     this.lastUpdateTime = currentTime; // 타이머 갱신
+  //   }
+  // }
 
   monsterAttack() {
     if (this.target) {
@@ -139,7 +139,7 @@ export class Monster extends GameObject {
     }
 
     if (!this.target || this.target.isDestroyed) {
-      this.setState('move');
+      this.setState(OBJECT_STATE_TYPE.MOVE);
     }
   }
   /**

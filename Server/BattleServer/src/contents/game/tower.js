@@ -1,5 +1,5 @@
 import { assetManager } from "../../utils/assetManager.js";
-import { GameObject } from "./gameObject";
+import { GameObject } from "./gameObject.js";
 
 export class Tower extends GameObject {
     /*---------------------------------------------
@@ -40,5 +40,14 @@ export class Tower extends GameObject {
         this.hp = this.maxHp = towerData?.maxHp;
     }
 
+    onDamaged(amount) {
+        throw new Error("Method not implemented.");
+    }
+    onDeath(){
+        throw new Error("Method not implemented.");
+    }
     
+    update(){
+        
+    }
 }
