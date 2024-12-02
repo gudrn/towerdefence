@@ -225,13 +225,62 @@ export class GameRoom {
    * [카드 사용 동기화]
    * @param {Buffer} buffer - 카드 사용 패킷 데이터
    ---------------------------------------------*/
-  handleUseCard(buffer) {}
+   handleUseCard(payload, session) {
+    const { cardId } = payload;
+    const user = this.users.get(session.getId());
+    user.useCard(cardId);
+  }
+
 
   /**---------------------------------------------
    * [스킬 사용 동기화]
    * @param {Buffer} buffer - 스킬 사용 패킷 데이터
    ---------------------------------------------*/
-  handleSkill(buffer) {}
+   handleSkill(playerId, cardId, posInfo) {
+    const card = assetManager.getCardData(cardId);
+    switch (card.name) {
+      case "ORBITAL_BOMBARDMENT": //궤도 폭격
+        const monstersInRangeForOrbital = this.monsters.filter(monster => {
+          const distance = Math.sqrt(
+            Math.pow(monster.position.x - posInfo.x, 2) + Math.pow(monster.position.y - posInfo.y, 2)
+          );
+          return distance <= card.range;
+        });
+
+        monstersInRangeForOrbital.forEach(monster => {
+          monster.hp -= card.damage;
+          if (monster.hp <= 0) {
+            this.handleMonsterDeath(monster);
+          }
+        });
+        break;
+      case "CARPET_BOMBING": // 융단 폭격
+        const monstersInLineRange = this.monsters.filter(monster => {
+          // 점과 직선 사이의 거리를 구하는 공식
+          // |Ax + By + C| / sqrt(A^2 + B^2)
+          // 여기서 A = posInfo.y - 0, B = -(posInfo.x - 0), C = 0
+          const distance = Math.abs((posInfo.y - 0) * monster.pos.x - (posInfo.x - 0) * monster.pos.y + (posInfo.x * 0 - posInfo.y * 0)) / Math.sqrt(Math.pow(posInfo.y - 0, 2) + Math.pow(posInfo.x - 0, 2));
+          return distance <= card.range;
+        });
+
+        monstersInLineRange.forEach(monster => {
+          monster.hp -= card.damage;
+          if (monster.hp <= 0) {
+            this.handleMonsterDeath(monster);
+          }
+        });
+        break;
+      case "TOWER_HEAL": // 타워 힐
+        const towerToHeal = Array.from(this.towerList.values()).find(tower => tower.posInfo.x === posInfo.x && tower.posInfo.y === posInfo.y);
+        if (towerToHeal) {
+          towerToHeal.hp += card.heal;
+          if (towerToHeal.hp > towerToHeal.maxHp) {
+            towerToHeal.hp = towerToHeal.maxHp;
+          }
+        }
+        break;
+    }
+  }
 
   /**---------------------------------------------
    * [타워 생성 동기화]

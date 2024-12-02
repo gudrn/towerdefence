@@ -101,14 +101,30 @@ class GameRoomManager {
    * @param {Buffer} buffer - 카드 사용 패킷 데이터
    * @param {BattleSession} session - 카드 사용 요청을 보낸 세션
    ---------------------------------------------*/
-  useCardHandler(buffer, session) {}
+   useCardHandler(buffer, session) {
+    const payload = fromBinary(C2B_UseCardRequestSchema, buffer);
+    const room = this.rooms.get(payload.roomId);
+    if (room == undefined) {
+      console.log('유효하지 않은 roomId');
+      throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
+    }
+    room.handleUseCard(payload, session);
+  }
 
   /**---------------------------------------------
    * [스킬 사용 동기화]
    * @param {Buffer} buffer - 스킬 사용 패킷 데이터
    * @param {BattleSession} session - 스킬 사용 요청을 보낸 세션
    ---------------------------------------------*/
-  skillHandler(buffer, session) {}
+   skillHandler(buffer, session) {
+    const payload = fromBinary(C2B_SkillRequestSchema, buffer);
+    const room = this.rooms.get(payload.roomId);
+    if (room == undefined) {
+      console.log('유효하지 않은 roomId');
+      throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
+    }
+    room.handleSkill(payload, session);
+  }
 
   /**---------------------------------------------
    * [타워 생성 동기화]
