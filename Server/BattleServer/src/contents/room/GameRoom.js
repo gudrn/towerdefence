@@ -23,6 +23,8 @@ import { Tile, Tilemap } from './tilemap.js';
 import { Base } from '../game/base.js';
 import { MathUtils } from '../../utils/mathUtils.js';
 import { Tower } from '../game/tower.js';
+import { MonsterHealthUpdateSchema } from '../../protocol/struct_pb.js';
+import { B2C_MonsterHealthUpdateNotificationSchema } from '../../protocol/monster_pb.js';
 
 export class GameRoom {
   static spawnCoordinates = [
