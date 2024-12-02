@@ -1,0 +1,18 @@
+{
+  "cards": [
+    {
+      "prefabId": "ORBITAL_BOMBARDMENT",
+      "damage": 100,
+      "range": 10
+    },
+    {
+      "prefabId": "CARPET_BOMBING",
+      "damage": 75,
+      "range": 5
+    },
+    {
+      "prefabId": "TOWER_HEAL",
+      "heal": 50
+    }
+  ]
+}
