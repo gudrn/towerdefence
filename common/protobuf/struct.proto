@@ -62,3 +62,14 @@ message CardData {
   string cardId = 1;
   string prefabId = 2;
 }
+
+message SkillData {
+  string prefabId = 1;
+  PosInfo skillPos = 2;
+}
+
+message MonsterHealthUpdate {
+  string monsterId = 1;
+  int32 currentHp = 2;
+  int32 maxHp = 3;
+}

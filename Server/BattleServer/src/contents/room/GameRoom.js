@@ -44,10 +44,10 @@ export class GameRoom {
     this.towers = new Map();
 
     //this.grid = { width: 32, height: 32 };
-    this.tilemap = new Tilemap({x: 15, y: 15});
+    this.tilemap = new Tilemap({ x: 15, y: 15 });
 
     //this.base = new Vec2(0, 0); // 기지의 좌표
-    this.base = new Base(300, create(PosInfoSchema, {x: 15, y: 15}));
+    this.base = new Base(300, create(PosInfoSchema, { x: 15, y: 15 }));
 
     //this.obstacles = []; // 장애물 좌표 배열
     //this.excludedCoordinates = [...this.base]; // 장애물이 생성되지 않도록 할 좌표 목록
@@ -189,11 +189,11 @@ export class GameRoom {
     }
   }
 
-/**---------------------------------------------
- * [장애물 생성]
- * @param {number} [obstacleCount=20]
- * @returns {PosInfo[]}
-*///---------------------------------------------
+  /**---------------------------------------------
+   * [장애물 생성]
+   * @param {number} [obstacleCount=20]
+   * @returns {PosInfo[]}
+  *///---------------------------------------------
   generateObstacles(obstacleCount = 20) {
     /** @type {Map<Vec2, PosInfo>} */
     let usedPositions = new Map();
@@ -201,13 +201,13 @@ export class GameRoom {
     for (let i = 0; i < obstacleCount;) {
       // 랜덤 좌표 생성
       const randomVec2 = { x: MathUtils.randomRangeInt(5, 26), y: MathUtils.randomRangeInt(2, 30) };
-      const posInfo = create(PosInfoSchema, {x: randomVec2.x, y: randomVec2.y});
+      const posInfo = create(PosInfoSchema, { x: randomVec2.x, y: randomVec2.y });
 
       // 타일이 있는 위치인지 확인
       if (this.tilemap.getTile(randomVec2) == Tile.None && !usedPositions.get(randomVec2)) {
         // 위치 기록
         usedPositions.set(randomVec2, posInfo);
-        i+=1;
+        i += 1;
       }
     }
 
@@ -217,8 +217,8 @@ export class GameRoom {
     return arr;
   }
 
-    /*---------------------------------------------
-    [길찾기]
+  /*---------------------------------------------
+  [길찾기]
 ---------------------------------------------*/
   findPath(src, dest) {
     const path = [];
@@ -230,85 +230,85 @@ export class GameRoom {
     const key = (vec) => `${vec.x},${vec.y}`;
     // 초기값 설정
     {
-        const cost = Math.abs(dest.y - src.y) + Math.abs(dest.x - src.x);
-        pq.push({ cost, pos: src });
-        best.set(key(src), cost);
-        parent.set(key(src), src);
+      const cost = Math.abs(dest.y - src.y) + Math.abs(dest.x - src.x);
+      pq.push({ cost, pos: src });
+      best.set(key(src), cost);
+      parent.set(key(src), src);
     }
     const directions = [
-        { x: 0, y: -1 },
-        { x: 0, y: 1 },
-        { x: -1, y: 0 },
-        { x: 1, y: 0 },
+      { x: 0, y: -1 },
+      { x: 0, y: 1 },
+      { x: -1, y: 0 },
+      { x: 1, y: 0 },
     ];
 
     let found = false;
 
     while (pq.length > 0) {
-        // 우선순위 큐에서 최소 비용 노드 선택
-        pq.sort((a, b) => a.cost - b.cost);
-        const node = pq.shift();
+      // 우선순위 큐에서 최소 비용 노드 선택
+      pq.sort((a, b) => a.cost - b.cost);
+      const node = pq.shift();
 
-        const nodeKey = key(node.pos);
+      const nodeKey = key(node.pos);
 
-        // 더 짧은 경로를 뒤늦게 찾았다면 스킵
-        if ((best.get(nodeKey) ?? Infinity) < node.cost) continue;
+      // 더 짧은 경로를 뒤늦게 찾았다면 스킵
+      if ((best.get(nodeKey) ?? Infinity) < node.cost) continue;
 
-        // 목적지에 도착했으면 종료
-        if (node.pos.x === dest.x && node.pos.y === dest.y) {
-            found = true;
-            break;
-        }
+      // 목적지에 도착했으면 종료
+      if (node.pos.x === dest.x && node.pos.y === dest.y) {
+        found = true;
+        break;
+      }
 
-        // 방문
-        for (const dir of directions) {
-            const nextPos = {
-                x: node.pos.x + dir.x,
-                y: node.pos.y + dir.y,
-            };
+      // 방문
+      for (const dir of directions) {
+        const nextPos = {
+          x: node.pos.x + dir.x,
+          y: node.pos.y + dir.y,
+        };
 
-            const nextKey = key(nextPos);
+        const nextKey = key(nextPos);
 
-            if (!this.canGo(nextPos)) continue;
+        if (!this.canGo(nextPos)) continue;
 
-            const cost = Math.abs(dest.y - nextPos.y) + Math.abs(dest.x - nextPos.x);
-            const bestValue = best.get(nextKey);
+        const cost = Math.abs(dest.y - nextPos.y) + Math.abs(dest.x - nextPos.x);
+        const bestValue = best.get(nextKey);
 
-            if (bestValue !== undefined && bestValue <= cost) continue;
+        if (bestValue !== undefined && bestValue <= cost) continue;
 
-            // 예약 진행
-            best.set(nextKey, cost);
-            pq.push({ cost, pos: nextPos });
-            parent.set(nextKey, node.pos);
-        }
+        // 예약 진행
+        best.set(nextKey, cost);
+        pq.push({ cost, pos: nextPos });
+        parent.set(nextKey, node.pos);
+      }
     }
 
     if (!found) {
-        let bestScore = Number.MAX_VALUE;
+      let bestScore = Number.MAX_VALUE;
 
-        for (const [posKey, score] of best.entries()) {
-            const pos = this.parseKey(posKey);
+      for (const [posKey, score] of best.entries()) {
+        const pos = this.parseKey(posKey);
 
-            // 동점이라면 최초 위치에서 가장 덜 이동하는 쪽으로
-            if (bestScore === score) {
-                const dist1 = Math.abs(dest.x - src.x) + Math.abs(dest.y - src.y);
-                const dist2 = Math.abs(pos.x - src.x) + Math.abs(pos.y - src.y);
-                if (dist1 > dist2) dest = pos;
-            } else if (bestScore > score) {
-                dest = pos;
-                bestScore = score;
-            }
+        // 동점이라면 최초 위치에서 가장 덜 이동하는 쪽으로
+        if (bestScore === score) {
+          const dist1 = Math.abs(dest.x - src.x) + Math.abs(dest.y - src.y);
+          const dist2 = Math.abs(pos.x - src.x) + Math.abs(pos.y - src.y);
+          if (dist1 > dist2) dest = pos;
+        } else if (bestScore > score) {
+          dest = pos;
+          bestScore = score;
         }
+      }
     }
 
     let pos = dest;
     while (true) {
-        path.push(pos);
+      path.push(pos);
 
-        const parentPos = parent.get(key(pos));
-        if (!parentPos || (pos.x === parentPos.x && pos.y === parentPos.y)) break;
+      const parentPos = parent.get(key(pos));
+      if (!parentPos || (pos.x === parentPos.x && pos.y === parentPos.y)) break;
 
-        pos = parentPos;
+      pos = parentPos;
     }
 
     path.reverse();
@@ -327,17 +327,17 @@ export class GameRoom {
 
     // 타워 거리 계산
     for (const tower of this.towers) {
-        if (tower[1]) {
-            const dirX = pos.x - tower[1].getPos().x;
-            const dirY = pos.y - tower[1].getPos().y;
-            /** @type {number} */
-            const dist = (dirX * dirX) + (dirY * dirY); // 유클리드 거리 계산
+      if (tower[1]) {
+        const dirX = pos.x - tower[1].getPos().x;
+        const dirY = pos.y - tower[1].getPos().y;
+        /** @type {number} */
+        const dist = (dirX * dirX) + (dirY * dirY); // 유클리드 거리 계산
 
-            if (dist < best) {
-                best = dist;
-                ret = tower[1];
-            }
+        if (dist < best) {
+          best = dist;
+          ret = tower[1];
         }
+      }
     }
 
     // Base 거리 계산 (3x3 크기 고려)
@@ -345,19 +345,19 @@ export class GameRoom {
     const baseSize = 3; // Base의 크기
 
     for (let offsetX = -Math.floor(baseSize / 2); offsetX <= Math.floor(baseSize / 2); offsetX++) {
-        for (let offsetY = -Math.floor(baseSize / 2); offsetY <= Math.floor(baseSize / 2); offsetY++) {
-            const tileX = baseCenter.x + offsetX;
-            const tileY = baseCenter.y + offsetY;
-            const dirX = pos.x - tileX;
-            const dirY = pos.y - tileY;
-            /** @type {number} */
-            const dist = (dirX * dirX) + (dirY * dirY);
+      for (let offsetY = -Math.floor(baseSize / 2); offsetY <= Math.floor(baseSize / 2); offsetY++) {
+        const tileX = baseCenter.x + offsetX;
+        const tileY = baseCenter.y + offsetY;
+        const dirX = pos.x - tileX;
+        const dirY = pos.y - tileY;
+        /** @type {number} */
+        const dist = (dirX * dirX) + (dirY * dirY);
 
-            if (dist < best) {
-                best = dist;
-                ret = this.base; // Base 객체를 반환
-            }
+        if (dist < best) {
+          best = dist;
+          ret = this.base; // Base 객체를 반환
         }
+      }
     }
 
     return ret;
@@ -374,11 +374,11 @@ export class GameRoom {
     return tile !== null;
   }
 
-  OnGameStart(){
+  OnGameStart() {
     console.log("OnGameStart Called");
     this.monsterSpawner.startSpawning(0);
 
-    setInterval(() => { this.gameLoop();}, this.updateInterval);
+    setInterval(() => { this.gameLoop(); }, this.updateInterval);
   }
 
   getMonsterCount() {
@@ -418,7 +418,7 @@ export class GameRoom {
    * [카드 사용 동기화]
    * @param {Buffer} buffer - 카드 사용 패킷 데이터
    ---------------------------------------------*/
-   handleUseCard(payload, session) {
+  handleUseCard(payload, session) {
     const { cardId } = payload;
     const user = this.users.get(session.getId());
     user.useCard(cardId);
@@ -429,10 +429,10 @@ export class GameRoom {
    * [스킬 사용 동기화]
    * @param {Buffer} buffer - 스킬 사용 패킷 데이터
    ---------------------------------------------*/
-   handleSkill(payload, session) {
-    const { prefabId, posInfo } = payload;
+  handleSkill(payload, session) {
+    const { prefabId, skillPos } = payload.skill;
     const card = assetManager.getCardData(prefabId);
-    if (posInfo.x < 0 || posInfo.y < 0 || posInfo.x > this.grid.width || posInfo.y > this.grid.height) {
+    if (skillPos.x < 0 || skillPos.y < 0 || skillPos.x > this.grid.width || skillPos.y > this.grid.height) {
       const user = this.users.get(session.getId());
       user.reAddCardOnFailure(prefabId);
       return;
@@ -440,10 +440,12 @@ export class GameRoom {
     switch (card.prefabId) {
       case "ORBITAL_BOMBARDMENT": //궤도 폭격
         const monstersInRangeForOrbital = this.monsters.filter(monster => {
-          const distance = Math.sqrt(
-            Math.pow(monster.position.x - posInfo.x, 2) + Math.pow(monster.position.y - posInfo.y, 2)
+          return (
+            monster.position.x >= skillPos.x - 1.5 &&
+            monster.position.x <= skillPos.x + 1.5 &&
+            monster.position.y >= skillPos.y - 1.5 &&
+            monster.position.y <= skillPos.y + 1.5
           );
-          return distance <= card.range;
         });
 
         monstersInRangeForOrbital.forEach(monster => {
@@ -458,7 +460,7 @@ export class GameRoom {
           // 점과 직선 사이의 거리를 구하는 공식
           // |Ax + By + C| / sqrt(A^2 + B^2)
           // 여기서 A = posInfo.y - 0, B = -(posInfo.x - 0), C = 0
-          const distance = Math.abs((posInfo.y - 0) * monster.pos.x - (posInfo.x - 0) * monster.pos.y + (posInfo.x * 0 - posInfo.y * 0)) / Math.sqrt(Math.pow(posInfo.y - 0, 2) + Math.pow(posInfo.x - 0, 2));
+          const distance = Math.abs((skillPos.y - 0) * monster.pos.x - (skillPos.x - 0) * monster.pos.y + (skillPos.x * 0 - skillPos.y * 0)) / Math.sqrt(Math.pow(skillPos.y - 0, 2) + Math.pow(skillPos.x - 0, 2));
           return distance <= card.range;
         });
 
@@ -470,7 +472,7 @@ export class GameRoom {
         });
         break;
       case "TOWER_HEAL": // 타워 힐
-        const towerToHeal = Array.from(this.towerList.values()).find(tower => tower.posInfo.x === posInfo.x && tower.posInfo.y === posInfo.y);
+        const towerToHeal = Array.from(this.towerList.values()).find(tower => tower.posInfo.x === skillPos.x && tower.posInfo.y === skillPos.y);
         if (towerToHeal) {
           towerToHeal.hp += card.heal;
           if (towerToHeal.hp > towerToHeal.maxHp) {
@@ -478,7 +480,45 @@ export class GameRoom {
           }
         }
         break;
+      default:
+        return;
     }
+    //스킬 공격 알림
+    const notification = create(B2C_UseSkillNotificationSchema, {
+      prefabId: prefabId,
+      posInfo: create(PosInfoSchema, {
+        x: skillPos.x,
+        y: skillPos.y,
+      }),
+    });
+
+    const notificationBuffer = PacketUtils.SerializePacket(
+      notification,
+      B2C_UseSkillNotificationSchema,
+      ePacketId.B2C_UseSkillNotification,
+      0,
+    );
+
+    this.broadcast(notificationBuffer);
+    //moster hp 동기화
+    const monsterHealthUpdates = monstersInLineRange.map((monster, index) => create(MonsterHealthUpdateSchema, {
+      monsterId: index,
+      currentHp: monster.hp,
+      maxHp: monster.maxHp,
+    }));
+
+    const monsterHealthUpdateNotification = create(B2C_MonsterHealthUpdateNotificationSchema, {
+      healthUpdates: monsterHealthUpdates,
+    });
+
+    const monsterHealthUpdateBuffer = PacketUtils.SerializePacket(
+      monsterHealthUpdateNotification,
+      B2C_MonsterHealthUpdateNotificationSchema,
+      ePacketId.B2C_MonsterHealthUpdateNotification,
+      0,
+    );
+
+    this.broadcast(monsterHealthUpdateBuffer);
   }
 
   /**---------------------------------------------
@@ -527,7 +567,7 @@ export class GameRoom {
     //   return;
     // }
 
-    
+
     // 2. 타워 정보 저장
     const towerPosInfo = create(PosInfoSchema, {
       uuid: uuidv4(),

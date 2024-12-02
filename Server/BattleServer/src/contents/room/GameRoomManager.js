@@ -101,29 +101,29 @@ class GameRoomManager {
    * @param {Buffer} buffer - 카드 사용 패킷 데이터
    * @param {BattleSession} session - 카드 사용 요청을 보낸 세션
    ---------------------------------------------*/
-   useCardHandler(buffer, session) {
-    const payload = fromBinary(C2B_UseCardRequestSchema, buffer);
-    const room = this.rooms.get(payload.roomId);
-    if (room == undefined) {
-      console.log('유효하지 않은 roomId');
-      throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
-    }
-    room.handleUseCard(payload, session);
-  }
+  /*useCardHandler(buffer, session) {
+   const payload = fromBinary(C2B_UseCardRequestSchema, buffer);
+   const room = this.rooms.get(payload.roomId);
+   if (room == undefined) {
+     console.log('유효하지 않은 roomId');
+     throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
+   }
+   room.handleUseCard(payload, session);
+ }*/
 
   /**---------------------------------------------
    * [스킬 사용 동기화]
    * @param {Buffer} buffer - 스킬 사용 패킷 데이터
    * @param {BattleSession} session - 스킬 사용 요청을 보낸 세션
    ---------------------------------------------*/
-   skillHandler(buffer, session) {
+  skillHandler(buffer, session) {
     const payload = fromBinary(C2B_SkillRequestSchema, buffer);
     const room = this.rooms.get(payload.roomId);
     if (room == undefined) {
       console.log('유효하지 않은 roomId');
       throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
     }
-    room.handleSkill(payload, session);
+    room.handleSkill(payload.skill, session);
   }
 
   /**---------------------------------------------
@@ -202,21 +202,21 @@ class GameRoomManager {
    * @param {Buffer} buffer - 몬스터 타워 공격 패킷 데이터
    * @param {BattleSession} session - 몬스터 타워 공격 요청을 보낸 세션
    ---------------------------------------------*/
-  monsterAttackTowerHandler(buffer, session) {}
+  monsterAttackTowerHandler(buffer, session) { }
 
   /**---------------------------------------------
    * [타워 HP 동기화]
    * @param {Buffer} buffer - 타워 HP 패킷 데이터
    * @param {BattleSession} session - 타워 HP 요청을 보낸 세션
    ---------------------------------------------*/
-  updateTowerHPHandler(buffer, session) {}
+  updateTowerHPHandler(buffer, session) { }
 
   /**---------------------------------------------
    * [몬스터 기지 공격 동기화]
    * @param {Buffer} buffer - 몬스터 기지 공격 패킷 데이터
    * @param {BattleSession} session - 몬스터 기지 공격 요청을 보낸 세션
    ---------------------------------------------*/
-  monsterAttackBaseHandler(buffer, session) {}
+  monsterAttackBaseHandler(buffer, session) { }
 
   // /**---------------------------------------------
   //  * [몬스터 사망 동기화]

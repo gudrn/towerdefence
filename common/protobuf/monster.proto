@@ -34,3 +34,11 @@ message B2C_MonsterAttackBaseNotification
     string monsterId = 1;
     int32 attackDamage = 2;
 }
+
+// 몬스터 체력 업데이트
+message B2C_MonsterHealthUpdateNotification {
+    repeated MonsterHealthUpdate healthUpdates = 1;
+}
+
+
+

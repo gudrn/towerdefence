@@ -5,13 +5,10 @@ package Protocol;
 import "enum.proto";
 import "struct.proto";
 
-//스킬 카드 사용 요청
 message C2B_SkillRequest {
-    string prefabId = 1;
-    string ownerId = 2; //유저 ID
-    int32 roomId = 3; // 룸 ID
+    SkillData skill = 1;
+    int32 roomId = 2; // 룸 ID
 }
-
 //스킬 카드 사용 응답
 message C2B_SkillResponse {
     bool isSuccess = 1;
@@ -19,10 +16,9 @@ message C2B_SkillResponse {
 }
 
 //스킬 카드 사용 알림
-message B2C_UseCardNotification {
-    string prefabId = 1;
-    PosInfo posInfo = 2;
-}    
+message B2C_UseSkillNotification {
+    SkillData skill = 1;
+}
 
 //카드 추가 알림
 message B2C_AddCard {
