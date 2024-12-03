@@ -39,7 +39,7 @@ export class _Monster extends GameObject {
     this.lastAttackTime = 0;
     this.lastUpdateTime = Date.now(); // 마지막 위치 업데이트 시간
     this.slowEffects = []; // 슬로우 효과 리스트
-//    this.currentPath = new Array(); // 현재 경로
+    //    this.currentPath = new Array(); // 현재 경로
     this.currentNodeIndex = 0; // 현재 경로의 진행 상태
     this.setState(OBJECT_STATE_TYPE.MOVE); // 기본 상태는 move.
     this.attackTarget = null; // 타워나 기지를 목표
@@ -318,5 +318,13 @@ export class _Monster extends GameObject {
     );
 
     this.room.broadcast(positionBuffer);
+  }
+
+  /**
+   * 생존 여부 반환
+   * @returns {boolean} - 체력이 0보다 크면 true, 그렇지 않으면 false
+   */
+  isAlive() {
+    return this.hp > 0;
   }
 }
