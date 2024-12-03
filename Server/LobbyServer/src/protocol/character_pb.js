@@ -2,36 +2,34 @@
 // @generated from file character.proto (package Protocol, syntax proto3)
 /* eslint-disable */
 
-import { fileDesc, messageDesc } from '@bufbuild/protobuf/codegenv1';
-import { file_struct } from './struct_pb.js';
-import { file_enum } from './enum_pb.js';
+import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
+import { file_struct } from "./struct_pb";
+import { file_enum } from "./enum_pb";
 
 /**
  * Describes the file character.proto.
  */
-export const file_character =
-  /*@__PURE__*/
-  fileDesc(
-    'Cg9jaGFyYWN0ZXIucHJvdG8SCFByb3RvY29sIlUKH0MyQl9QbGF5ZXJQb3NpdGlvblVwZGF0ZVJlcXVlc3QSIgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SDgoGcm9vbUlkGAIgASgFIkoKJEIyQ19QbGF5ZXJQb3NpdGlvblVwZGF0ZU5vdGlmaWNhdGlvbhIiCgdwb3NJbmZvGAEgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyI0ChJDMkJfVXNlQ2FyZFJlcXVlc3QSDgoGcm9vbUlkGAEgASgFEg4KBmNhcmRJZBgCIAEoCWIGcHJvdG8z',
-    [file_struct, file_enum],
-  );
+export const file_character = /*@__PURE__*/
+  fileDesc("Cg9jaGFyYWN0ZXIucHJvdG8SCFByb3RvY29sIlUKH0MyQl9QbGF5ZXJQb3NpdGlvblVwZGF0ZVJlcXVlc3QSIgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SDgoGcm9vbUlkGAIgASgFIkoKJEIyQ19QbGF5ZXJQb3NpdGlvblVwZGF0ZU5vdGlmaWNhdGlvbhIiCgdwb3NJbmZvGAEgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyI0ChJDMkJfVXNlQ2FyZFJlcXVlc3QSDgoGcm9vbUlkGAEgASgFEg4KBmNhcmRJZBgCIAEoCWIGcHJvdG8z", [file_struct, file_enum]);
 
 /**
  * Describes the message Protocol.C2B_PlayerPositionUpdateRequest.
  * Use `create(C2B_PlayerPositionUpdateRequestSchema)` to create a new message.
  */
-export const C2B_PlayerPositionUpdateRequestSchema = /*@__PURE__*/ messageDesc(file_character, 0);
+export const C2B_PlayerPositionUpdateRequestSchema = /*@__PURE__*/
+  messageDesc(file_character, 0);
 
 /**
  * Describes the message Protocol.B2C_PlayerPositionUpdateNotification.
  * Use `create(B2C_PlayerPositionUpdateNotificationSchema)` to create a new message.
  */
-export const B2C_PlayerPositionUpdateNotificationSchema =
-  /*@__PURE__*/
+export const B2C_PlayerPositionUpdateNotificationSchema = /*@__PURE__*/
   messageDesc(file_character, 1);
 
 /**
  * Describes the message Protocol.C2B_UseCardRequest.
  * Use `create(C2B_UseCardRequestSchema)` to create a new message.
  */
-export const C2B_UseCardRequestSchema = /*@__PURE__*/ messageDesc(file_character, 2);
+export const C2B_UseCardRequestSchema = /*@__PURE__*/
+  messageDesc(file_character, 2);
+

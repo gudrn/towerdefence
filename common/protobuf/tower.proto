@@ -29,9 +29,10 @@ message B2C_TowerBuildNotification
 // 타워 -> 몬스터 공격 알림
 message B2C_TowerAttackMonsterNotification
 {
-    bool isSuccess = 1;
-    int32 attackDamage = 2;
-    int32 targetHealth = 3;
+    string towerId = 1;
+    PosInfo posInfo = 2;
+    int32 hp = 3;
+    int32 maxHp = 4;
 }
 
 //타워 파괴 알림
