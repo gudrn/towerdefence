@@ -26,25 +26,25 @@ namespace Protocol {
           string.Concat(
             "Cg1tb25zdGVyLnByb3RvEghQcm90b2NvbBoMc3RydWN0LnByb3RvIlQKHEIy",
             "Q19TcGF3bk1vbnN0ZXJOb3RpZmljYXRpb24SIgoHcG9zSW5mbxgBIAEoCzIR",
-            "LlByb3RvY29sLlBvc0luZm8SEAoIcHJlZmFiSWQYAiABKAkiMQocQjJDX01v",
-            "bnN0ZXJEZWF0aE5vdGlmaWNhdGlvbhIRCgltb25zdGVySWQYASABKAkiSwol",
-            "QjJDX01vbnN0ZXJQb3NpdGlvblVwZGF0ZU5vdGlmaWNhdGlvbhIiCgdwb3NJ",
-            "bmZvGAEgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyJfCiJCMkNfTW9uc3RlckF0",
-            "dGFja1Rvd2VyTm90aWZpY2F0aW9uEhEKCW1vbnN0ZXJJZBgBIAEoCRIQCgh0",
-            "YXJnZXRJZBgCIAEoCRIUCgxhdHRhY2tEYW1hZ2UYAyABKAUiTAohQjJDX01v",
-            "bnN0ZXJBdHRhY2tCYXNlTm90aWZpY2F0aW9uEhEKCW1vbnN0ZXJJZBgBIAEo",
-            "CRIUCgxhdHRhY2tEYW1hZ2UYAiABKAUiWwojQjJDX01vbnN0ZXJIZWFsdGhV",
-            "cGRhdGVOb3RpZmljYXRpb24SNAoNaGVhbHRoVXBkYXRlcxgBIAMoCzIdLlBy",
-            "b3RvY29sLk1vbnN0ZXJIZWFsdGhVcGRhdGViBnByb3RvMw=="));
+            "LlByb3RvY29sLlBvc0luZm8SEAoIcHJlZmFiSWQYAiABKAkiQAocQjJDX01v",
+            "bnN0ZXJEZWF0aE5vdGlmaWNhdGlvbhIRCgltb25zdGVySWQYASABKAkSDQoF",
+            "c2NvcmUYAiABKAUiSwolQjJDX01vbnN0ZXJQb3NpdGlvblVwZGF0ZU5vdGlm",
+            "aWNhdGlvbhIiCgdwb3NJbmZvGAEgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyJf",
+            "CiJCMkNfTW9uc3RlckF0dGFja1Rvd2VyTm90aWZpY2F0aW9uEhEKCW1vbnN0",
+            "ZXJJZBgBIAEoCRIQCgh0YXJnZXRJZBgCIAEoCRIUCgxhdHRhY2tEYW1hZ2UY",
+            "AyABKAUiTAohQjJDX01vbnN0ZXJBdHRhY2tCYXNlTm90aWZpY2F0aW9uEhEK",
+            "CW1vbnN0ZXJJZBgBIAEoCRIUCgxhdHRhY2tEYW1hZ2UYAiABKAUiUwojQjJD",
+            "X01vbnN0ZXJIZWFsdGhVcGRhdGVOb3RpZmljYXRpb24SEQoJbW9uc3Rlcklk",
+            "GAEgASgJEgoKAmhwGAIgASgFEg0KBW1heEhwGAMgASgFYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Protocol.StructReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_SpawnMonsterNotification), global::Protocol.B2C_SpawnMonsterNotification.Parser, new[]{ "PosInfo", "PrefabId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_MonsterDeathNotification), global::Protocol.B2C_MonsterDeathNotification.Parser, new[]{ "MonsterId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_MonsterDeathNotification), global::Protocol.B2C_MonsterDeathNotification.Parser, new[]{ "MonsterId", "Score" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_MonsterPositionUpdateNotification), global::Protocol.B2C_MonsterPositionUpdateNotification.Parser, new[]{ "PosInfo" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_MonsterAttackTowerNotification), global::Protocol.B2C_MonsterAttackTowerNotification.Parser, new[]{ "MonsterId", "TargetId", "AttackDamage" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_MonsterAttackBaseNotification), global::Protocol.B2C_MonsterAttackBaseNotification.Parser, new[]{ "MonsterId", "AttackDamage" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_MonsterHealthUpdateNotification), global::Protocol.B2C_MonsterHealthUpdateNotification.Parser, new[]{ "HealthUpdates" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_MonsterHealthUpdateNotification), global::Protocol.B2C_MonsterHealthUpdateNotification.Parser, new[]{ "MonsterId", "Hp", "MaxHp" }, null, null, null, null)
           }));
     }
     #endregion
@@ -327,6 +327,7 @@ namespace Protocol {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public B2C_MonsterDeathNotification(B2C_MonsterDeathNotification other) : this() {
       monsterId_ = other.monsterId_;
+      score_ = other.score_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -348,6 +349,18 @@ namespace Protocol {
       }
     }
 
+    /// <summary>Field number for the "score" field.</summary>
+    public const int ScoreFieldNumber = 2;
+    private int score_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Score {
+      get { return score_; }
+      set {
+        score_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -364,6 +377,7 @@ namespace Protocol {
         return true;
       }
       if (MonsterId != other.MonsterId) return false;
+      if (Score != other.Score) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -372,6 +386,7 @@ namespace Protocol {
     public override int GetHashCode() {
       int hash = 1;
       if (MonsterId.Length != 0) hash ^= MonsterId.GetHashCode();
+      if (Score != 0) hash ^= Score.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -394,6 +409,10 @@ namespace Protocol {
         output.WriteRawTag(10);
         output.WriteString(MonsterId);
       }
+      if (Score != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(Score);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -408,6 +427,10 @@ namespace Protocol {
         output.WriteRawTag(10);
         output.WriteString(MonsterId);
       }
+      if (Score != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(Score);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -420,6 +443,9 @@ namespace Protocol {
       int size = 0;
       if (MonsterId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(MonsterId);
+      }
+      if (Score != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Score);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -435,6 +461,9 @@ namespace Protocol {
       }
       if (other.MonsterId.Length != 0) {
         MonsterId = other.MonsterId;
+      }
+      if (other.Score != 0) {
+        Score = other.Score;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -455,6 +484,10 @@ namespace Protocol {
             MonsterId = input.ReadString();
             break;
           }
+          case 16: {
+            Score = input.ReadInt32();
+            break;
+          }
         }
       }
     #endif
@@ -472,6 +505,10 @@ namespace Protocol {
             break;
           case 10: {
             MonsterId = input.ReadString();
+            break;
+          }
+          case 16: {
+            Score = input.ReadInt32();
             break;
           }
         }
@@ -683,7 +720,7 @@ namespace Protocol {
   }
 
   /// <summary>
-  /// 몬스터 -> 타워 공격
+  /// 몬스터 -> 타워 공격 알림
   /// </summary>
   public sealed partial class B2C_MonsterAttackTowerNotification : pb::IMessage<B2C_MonsterAttackTowerNotification>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
@@ -1214,7 +1251,9 @@ namespace Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public B2C_MonsterHealthUpdateNotification(B2C_MonsterHealthUpdateNotification other) : this() {
-      healthUpdates_ = other.healthUpdates_.Clone();
+      monsterId_ = other.monsterId_;
+      hp_ = other.hp_;
+      maxHp_ = other.maxHp_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1224,15 +1263,40 @@ namespace Protocol {
       return new B2C_MonsterHealthUpdateNotification(this);
     }
 
-    /// <summary>Field number for the "healthUpdates" field.</summary>
-    public const int HealthUpdatesFieldNumber = 1;
-    private static readonly pb::FieldCodec<global::Protocol.MonsterHealthUpdate> _repeated_healthUpdates_codec
-        = pb::FieldCodec.ForMessage(10, global::Protocol.MonsterHealthUpdate.Parser);
-    private readonly pbc::RepeatedField<global::Protocol.MonsterHealthUpdate> healthUpdates_ = new pbc::RepeatedField<global::Protocol.MonsterHealthUpdate>();
+    /// <summary>Field number for the "monsterId" field.</summary>
+    public const int MonsterIdFieldNumber = 1;
+    private string monsterId_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Protocol.MonsterHealthUpdate> HealthUpdates {
-      get { return healthUpdates_; }
+    public string MonsterId {
+      get { return monsterId_; }
+      set {
+        monsterId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "hp" field.</summary>
+    public const int HpFieldNumber = 2;
+    private int hp_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Hp {
+      get { return hp_; }
+      set {
+        hp_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "maxHp" field.</summary>
+    public const int MaxHpFieldNumber = 3;
+    private int maxHp_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int MaxHp {
+      get { return maxHp_; }
+      set {
+        maxHp_ = value;
+      }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1250,7 +1314,9 @@ namespace Protocol {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if(!healthUpdates_.Equals(other.healthUpdates_)) return false;
+      if (MonsterId != other.MonsterId) return false;
+      if (Hp != other.Hp) return false;
+      if (MaxHp != other.MaxHp) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1258,7 +1324,9 @@ namespace Protocol {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      hash ^= healthUpdates_.GetHashCode();
+      if (MonsterId.Length != 0) hash ^= MonsterId.GetHashCode();
+      if (Hp != 0) hash ^= Hp.GetHashCode();
+      if (MaxHp != 0) hash ^= MaxHp.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1277,7 +1345,18 @@ namespace Protocol {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      healthUpdates_.WriteTo(output, _repeated_healthUpdates_codec);
+      if (MonsterId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(MonsterId);
+      }
+      if (Hp != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(Hp);
+      }
+      if (MaxHp != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(MaxHp);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1288,7 +1367,18 @@ namespace Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      healthUpdates_.WriteTo(ref output, _repeated_healthUpdates_codec);
+      if (MonsterId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(MonsterId);
+      }
+      if (Hp != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(Hp);
+      }
+      if (MaxHp != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(MaxHp);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1299,7 +1389,15 @@ namespace Protocol {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      size += healthUpdates_.CalculateSize(_repeated_healthUpdates_codec);
+      if (MonsterId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(MonsterId);
+      }
+      if (Hp != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Hp);
+      }
+      if (MaxHp != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MaxHp);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -1312,7 +1410,15 @@ namespace Protocol {
       if (other == null) {
         return;
       }
-      healthUpdates_.Add(other.healthUpdates_);
+      if (other.MonsterId.Length != 0) {
+        MonsterId = other.MonsterId;
+      }
+      if (other.Hp != 0) {
+        Hp = other.Hp;
+      }
+      if (other.MaxHp != 0) {
+        MaxHp = other.MaxHp;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -1329,7 +1435,15 @@ namespace Protocol {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            healthUpdates_.AddEntriesFrom(input, _repeated_healthUpdates_codec);
+            MonsterId = input.ReadString();
+            break;
+          }
+          case 16: {
+            Hp = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            MaxHp = input.ReadInt32();
             break;
           }
         }
@@ -1348,7 +1462,15 @@ namespace Protocol {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            healthUpdates_.AddEntriesFrom(ref input, _repeated_healthUpdates_codec);
+            MonsterId = input.ReadString();
+            break;
+          }
+          case 16: {
+            Hp = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            MaxHp = input.ReadInt32();
             break;
           }
         }

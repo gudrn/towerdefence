@@ -244,5 +244,29 @@ class GameRoomManager {
   //   );
   //   this.broadcast(notificationBuffer);
   // }
+
+  onSocketDisconnected(playerId) {
+    console.log('onSocketDisconnected');
+    for (const room of this.rooms.values()) {
+      const player = Array.from(room.users.values()).find((user) => user.getId() === playerId);
+      if (player) {
+        room.leaveRoom(player);
+        if (room.getCurrentUsersCount() <= 0) {
+          this.freeRoomId(room.id);
+        }
+        break;
+      }
+    }
+  }
+
+  freeRoomId(roomId) {
+    if (!this.rooms.has(roomId)) {
+      console.log('유효하지 않은 roomID');
+      throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomID');
+    }
+
+    this.rooms.delete(roomId);
+    this.availableRoomIds.push(roomId);
+  }
 }
 export const gameRoomManager = new GameRoomManager();

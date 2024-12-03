@@ -38,10 +38,10 @@ import { B2C_UseSkillNotificationSchema } from '../../protocol/skill_pb.js';
 
 export class GameRoom {
   static spawnCoordinates = [
-    { x: 3, y: 4 },
-    { x: 4, y: 4 },
-    { x: 3, y: 3 },
-    { x: 4, y: 3 },
+    { x: 14, y: 14 },
+    { x: 18, y: 14 },
+    { x: 18, y: 18 },
+    { x: 14, y: 18 },
   ];
 
   /**---------------------------------------------
@@ -839,23 +839,42 @@ export class GameRoom {
   /**
    * 게임 루프 시작
    */
+  /**
+   * 게임 루프 시작
+   */
   gameLoop() {
-    setInterval(() => {
-      //몬스터(Monster) 업데이트
-      for (const [uuid, monster] of this.monsters) {
-        monster.update();
-      }
+    //몬스터(Monster) 업데이트
+    for (const [uuid, monster] of this.monsters) {
+      monster.update();
+    }
 
-      // // 타워(Tower) 업데이트
-      // for (const [uuid, tower] of this.towers) {
-      //   tower.update();
-      // }
+    // 타워(Tower) 업데이트
+    // for (const [uuid, tower] of this.towers) {
+    //   tower.update();
+    // }
 
-      // 모든 타워에서 공격 처리
-      for (const [uuid, tower] of this.towers) {
-        tower.attackTarget(Array.from(this.monsters.values()));
-      }
-    }, this.updateInterval);
+    //베이스캠프 체력 0 일시 게임 종료
+    if (this.checkBaseHealth()) {
+      //게임 종료 알림(false 시 패배)
+      const endNotification = create(B2C_GameEndNotificationSchema, {
+        isSuccess: false,
+      });
+      //패킷 직렬화
+      const endBuffer = PacketUtils.SerializePacket(
+        endNotification,
+        B2C_GameEndNotificationSchema,
+        ePacketId.B2C_GameEndNotification,
+        0,
+      );
+
+      this.broadcast(endBuffer);
+      //게임 종료 후 방 삭제
+      gameRoomManager.freeRoomId(this.id);
+    }
+    //유저가 0명이 되는 순간 게임 종료
+    if (this.users.size === 0) {
+      gameRoomManager.freeRoomId(this.id);
+    }
   }
 
   /**---------------------------------------------
@@ -868,7 +887,7 @@ export class GameRoom {
   addObject(object) {
     if (object instanceof Monster) {
       this.monsters.set(object.getId(), object);
-      console.log('몬스터 생성');
+      console.log('몬스터 생성', object.getId());
 
       const packet = create(B2C_SpawnMonsterNotificationSchema, {
         posInfo: object.getPos(),
@@ -901,6 +920,19 @@ export class GameRoom {
     } else if (object instanceof Tower) {
       this.towers.delete(uuid);
     }
+  }
+
+  findObject(uuid) {
+    if (this.users.has(uuid)) {
+      return this.users.get(uuid);
+    }
+    if (this.monsters.has(uuid)) {
+      return this.monsters.get(uuid);
+    }
+    if (this.towers.has(uuid)) {
+      return this.towers.get(uuid);
+    }
+    return null;
   }
 
   getMonsterSearchAndReward = (monster) => {

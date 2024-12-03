@@ -30,19 +30,19 @@ namespace Protocol {
             "Y2FyZElkGAQgASgJIisKFkIyQ19Ub3dlckJ1aWxkUmVzcG9uc2USEQoJaXNT",
             "dWNjZXNzGAEgASgIIlEKGkIyQ19Ub3dlckJ1aWxkTm90aWZpY2F0aW9uEiIK",
             "BXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQY",
-            "AiABKAkidwoiQjJDX1Rvd2VyQXR0YWNrTW9uc3Rlck5vdGlmaWNhdGlvbhIP",
+            "AiABKAkicAoiQjJDX1Rvd2VyQXR0YWNrTW9uc3Rlck5vdGlmaWNhdGlvbhIP",
             "Cgd0b3dlcklkGAEgASgJEiUKCm1vbnN0ZXJQb3MYAiABKAsyES5Qcm90b2Nv",
-            "bC5Qb3NJbmZvEgoKAmhwGAMgASgFEg0KBW1heEhwGAQgASgFIkIKHEIyQ19U",
-            "b3dlckRlc3Ryb3lOb3RpZmljYXRpb24SEQoJaXNTdWNjZXNzGAEgASgIEg8K",
-            "B3Rvd2VySWQYAiABKAkiMgobQjJDX0Jhc2VEZXN0cm95Tm90aWZpY2F0aW9u",
-            "EhMKC2lzRGVzdHJvaWVkGAEgASgIYgZwcm90bzM="));
+            "bC5Qb3NJbmZvEhIKCnRyYXZlbFRpbWUYAyABKAIiQgocQjJDX1Rvd2VyRGVz",
+            "dHJveU5vdGlmaWNhdGlvbhIRCglpc1N1Y2Nlc3MYASABKAgSDwoHdG93ZXJJ",
+            "ZBgCIAEoCSIyChtCMkNfQmFzZURlc3Ryb3lOb3RpZmljYXRpb24SEwoLaXNE",
+            "ZXN0cm9pZWQYASABKAhiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Protocol.StructReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.C2B_TowerBuildRequest), global::Protocol.C2B_TowerBuildRequest.Parser, new[]{ "Tower", "OwnerId", "RoomId", "CardId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_TowerBuildResponse), global::Protocol.B2C_TowerBuildResponse.Parser, new[]{ "IsSuccess" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_TowerBuildNotification), global::Protocol.B2C_TowerBuildNotification.Parser, new[]{ "Tower", "OwnerId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_TowerAttackMonsterNotification), global::Protocol.B2C_TowerAttackMonsterNotification.Parser, new[]{ "TowerId", "MonsterPos", "Hp", "MaxHp" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_TowerAttackMonsterNotification), global::Protocol.B2C_TowerAttackMonsterNotification.Parser, new[]{ "TowerId", "MonsterPos", "TravelTime" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_TowerDestroyNotification), global::Protocol.B2C_TowerDestroyNotification.Parser, new[]{ "IsSuccess", "TowerId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_BaseDestroyNotification), global::Protocol.B2C_BaseDestroyNotification.Parser, new[]{ "IsDestroied" }, null, null, null, null)
           }));
@@ -847,8 +847,7 @@ namespace Protocol {
     public B2C_TowerAttackMonsterNotification(B2C_TowerAttackMonsterNotification other) : this() {
       towerId_ = other.towerId_;
       monsterPos_ = other.monsterPos_ != null ? other.monsterPos_.Clone() : null;
-      hp_ = other.hp_;
-      maxHp_ = other.maxHp_;
+      travelTime_ = other.travelTime_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -882,27 +881,15 @@ namespace Protocol {
       }
     }
 
-    /// <summary>Field number for the "hp" field.</summary>
-    public const int HpFieldNumber = 3;
-    private int hp_;
+    /// <summary>Field number for the "travelTime" field.</summary>
+    public const int TravelTimeFieldNumber = 3;
+    private float travelTime_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int Hp {
-      get { return hp_; }
+    public float TravelTime {
+      get { return travelTime_; }
       set {
-        hp_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "maxHp" field.</summary>
-    public const int MaxHpFieldNumber = 4;
-    private int maxHp_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int MaxHp {
-      get { return maxHp_; }
-      set {
-        maxHp_ = value;
+        travelTime_ = value;
       }
     }
 
@@ -923,8 +910,7 @@ namespace Protocol {
       }
       if (TowerId != other.TowerId) return false;
       if (!object.Equals(MonsterPos, other.MonsterPos)) return false;
-      if (Hp != other.Hp) return false;
-      if (MaxHp != other.MaxHp) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(TravelTime, other.TravelTime)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -934,8 +920,7 @@ namespace Protocol {
       int hash = 1;
       if (TowerId.Length != 0) hash ^= TowerId.GetHashCode();
       if (monsterPos_ != null) hash ^= MonsterPos.GetHashCode();
-      if (Hp != 0) hash ^= Hp.GetHashCode();
-      if (MaxHp != 0) hash ^= MaxHp.GetHashCode();
+      if (TravelTime != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(TravelTime);
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -962,13 +947,9 @@ namespace Protocol {
         output.WriteRawTag(18);
         output.WriteMessage(MonsterPos);
       }
-      if (Hp != 0) {
-        output.WriteRawTag(24);
-        output.WriteInt32(Hp);
-      }
-      if (MaxHp != 0) {
-        output.WriteRawTag(32);
-        output.WriteInt32(MaxHp);
+      if (TravelTime != 0F) {
+        output.WriteRawTag(29);
+        output.WriteFloat(TravelTime);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -988,13 +969,9 @@ namespace Protocol {
         output.WriteRawTag(18);
         output.WriteMessage(MonsterPos);
       }
-      if (Hp != 0) {
-        output.WriteRawTag(24);
-        output.WriteInt32(Hp);
-      }
-      if (MaxHp != 0) {
-        output.WriteRawTag(32);
-        output.WriteInt32(MaxHp);
+      if (TravelTime != 0F) {
+        output.WriteRawTag(29);
+        output.WriteFloat(TravelTime);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -1012,11 +989,8 @@ namespace Protocol {
       if (monsterPos_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(MonsterPos);
       }
-      if (Hp != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Hp);
-      }
-      if (MaxHp != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MaxHp);
+      if (TravelTime != 0F) {
+        size += 1 + 4;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1039,11 +1013,8 @@ namespace Protocol {
         }
         MonsterPos.MergeFrom(other.MonsterPos);
       }
-      if (other.Hp != 0) {
-        Hp = other.Hp;
-      }
-      if (other.MaxHp != 0) {
-        MaxHp = other.MaxHp;
+      if (other.TravelTime != 0F) {
+        TravelTime = other.TravelTime;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1071,12 +1042,8 @@ namespace Protocol {
             input.ReadMessage(MonsterPos);
             break;
           }
-          case 24: {
-            Hp = input.ReadInt32();
-            break;
-          }
-          case 32: {
-            MaxHp = input.ReadInt32();
+          case 29: {
+            TravelTime = input.ReadFloat();
             break;
           }
         }
@@ -1105,12 +1072,8 @@ namespace Protocol {
             input.ReadMessage(MonsterPos);
             break;
           }
-          case 24: {
-            Hp = input.ReadInt32();
-            break;
-          }
-          case 32: {
-            MaxHp = input.ReadInt32();
+          case 29: {
+            TravelTime = input.ReadFloat();
             break;
           }
         }

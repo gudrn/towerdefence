@@ -32,6 +32,7 @@ export class _Monster extends GameObject {
     this.attackCoolDown = monsterData?.attackCoolDown;
     this.moveSpeed = monsterData.moveSpeed;
     this.hp = this.maxHp = monsterData?.maxHp;
+    this.score = monsterData.score;
     /**
      * @type {GameRoom} gameRoom - 몬스터가 생성될 게임 방
      */

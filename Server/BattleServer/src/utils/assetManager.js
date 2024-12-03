@@ -189,6 +189,9 @@ class AssetManager {
   getAllTowers() {
     return this.towers;
   }
+  getStageCount() {
+    return this.stages.length;
+  }
 }
 
 export const assetManager = new AssetManager();
