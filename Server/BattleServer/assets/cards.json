@@ -5,11 +5,14 @@
     {
       "prefabId": "OrbitalBeam",
       "attackDamage": 100,
-      "attackRange": 10
+      "attackRange": 10,
+      "range": 2,
+      "type": "Attack"
     },
     {
       "prefabId": "TowerRepair",
-      "heal": 50
+      "heal": 50,
+      "type": "heal"
     }
   ]
 }

@@ -1,5 +1,6 @@
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
 import { assetManager } from '../../utils/assetManager.js';
+import { GamePlayer } from '../../contents/game/gamePlayer.js';
 import {
   B2C_GameStartNotificationSchema,
   B2C_JoinRoomRequestSchema,
@@ -9,7 +10,12 @@ import { CustomError } from 'ServerCore/src/utils/error/customError.js';
 import { fromBinary, create } from '@bufbuild/protobuf';
 import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
 import { MonsterSpawner } from './monsterSpanwner.js';
-import { GamePlayerDataSchema, PosInfoSchema, TowerDataSchema } from '../../protocol/struct_pb.js';
+import {
+  GamePlayerDataSchema,
+  PosInfoSchema,
+  SkillDataSchema,
+  TowerDataSchema,
+} from '../../protocol/struct_pb.js';
 import { Monster } from '../game/monster2.js';
 import { B2C_SpawnMonsterNotificationSchema } from '../../protocol/monster_pb.js';
 import {
@@ -432,16 +438,35 @@ export class GameRoom {
   handleSkill(payload, session) {
     const { prefabId, skillPos } = payload.skill;
     const user = this.users.get(session.getId());
+    // 카드사용
     user.useCard(payload.cardId);
     console.log(user.cardList);
     console.log('skill: ', prefabId);
     console.log('skillPos: ', skillPos);
-
+    // 카드 데이터 가져옴
     const card = assetManager.getCardDataByPrefabId(prefabId);
+
+    const applyDamageToMonsters = (monsters, damage) => {
+      monsters.forEach((monster) => {
+        monster.hp -= damage;
+        if (monster.hp <= 0) {
+          this.handleMonsterDeath(monster);
+        }
+      });
+    };
+
     switch (card.prefabId) {
-      case 'OrbitalBeam': //궤도 폭격
-        console.log('skillPos: ', skillPos);
-        console.log('skill: ', prefabId);
+      case 'OrbitalBeam': // 궤도 폭격
+        const monstersInRangeForOrbital = [];
+        for (const [key, monster] of this.monsters) {
+          const distance = Math.sqrt(
+            Math.pow(monster.pos.x - skillPos.x, 2) + Math.pow(monster.pos.y - skillPos.y, 2),
+          );
+          if (distance <= card.range) {
+            monstersInRangeForOrbital.push(monster);
+          }
+        }
+        applyDamageToMonsters(monstersInRangeForOrbital, card.damage);
         break;
       case 'CARPET_BOMBING': // 융단 폭격(구현예정)
         const monstersInLineRange = this.monsters.filter((monster) => {
@@ -456,36 +481,42 @@ export class GameRoom {
             ) / Math.sqrt(Math.pow(skillPos.y - 0, 2) + Math.pow(skillPos.x - 0, 2));
           return distance <= card.range;
         });
-
-        monstersInLineRange.forEach((monster) => {
-          monster.hp -= card.damage;
-          if (monster.hp <= 0) {
-            this.handleMonsterDeath(monster);
-          }
-        });
+        applyDamageToMonsters(monstersInLineRange, card.damage);
         break;
       case 'TowerRepair': // 타워 힐
-        const towerToHeal = Array.from(this.towerList).find(
-          ([key, tower]) => tower.posInfo.x === skillPos.x && tower.posInfo.y === skillPos.y,
-        )[1];
+        let towerToHeal = null;
+        for (const [key, tower] of this.towers) {
+          if (tower.pos.x === skillPos.x && tower.pos.y === skillPos.y) {
+            towerToHeal = tower;
+            break;
+          }
+        }
         if (towerToHeal) {
           towerToHeal.hp += card.heal;
           if (towerToHeal.hp > towerToHeal.maxHp) {
             towerToHeal.hp = towerToHeal.maxHp;
           }
+          console.log(towerToHeal);
+        } else {
+          console.log('해당 위치에 타워가 존재하지 않음');
+          user.reAddCardOnFailure(prefabId);
+          return;
         }
-        console.log('skill: ', prefabId);
         break;
       default:
         return;
     }
-    //스킬 공격 알림
-    const notification = create(B2C_UseSkillNotificationSchema, {
+
+    const skilldata = create(SkillDataSchema, {
       prefabId: prefabId,
-      posInfo: create(PosInfoSchema, {
+      skillPos: create(PosInfoSchema, {
         x: skillPos.x,
         y: skillPos.y,
       }),
+    });
+    //스킬 공격 알림
+    const notification = create(B2C_UseSkillNotificationSchema, {
+      skill: skilldata,
     });
 
     const notificationBuffer = PacketUtils.SerializePacket(
@@ -496,29 +527,30 @@ export class GameRoom {
     );
 
     this.broadcast(notificationBuffer);
-    /*
-    //moster hp 동기화
-    const monsterHealthUpdates = monstersInLineRange.map((monster, index) =>
-      create(MonsterHealthUpdateSchema, {
-        monsterId: index,
-        currentHp: monster.hp,
-        maxHp: monster.maxHp,
-      }),
-    );
 
-    const monsterHealthUpdateNotification = create(B2C_MonsterHealthUpdateNotificationSchema, {
-      healthUpdates: monsterHealthUpdates,
-    });
+    // 공격 스킬일때만 몬스터 hp 동기화
+    if (card.type === 'Attack') {
+      const monsterHealthUpdates = monstersInLineRange.map((monster, index) =>
+        create(MonsterHealthUpdateSchema, {
+          monsterId: index,
+          currentHp: monster.hp,
+          maxHp: monster.maxHp,
+        }),
+      );
 
-    const monsterHealthUpdateBuffer = PacketUtils.SerializePacket(
-      monsterHealthUpdateNotification,
-      B2C_MonsterHealthUpdateNotificationSchema,
-      ePacketId.B2C_MonsterHealthUpdateNotification,
-      0,
-    );
+      const monsterHealthUpdateNotification = create(B2C_MonsterHealthUpdateNotificationSchema, {
+        healthUpdates: monsterHealthUpdates,
+      });
 
-    this.broadcast(monsterHealthUpdateBuffer);
-    */
+      const monsterHealthUpdateBuffer = PacketUtils.SerializePacket(
+        monsterHealthUpdateNotification,
+        B2C_MonsterHealthUpdateNotificationSchema,
+        ePacketId.B2C_MonsterHealthUpdateNotification,
+        0,
+      );
+
+      this.broadcast(monsterHealthUpdateBuffer);
+    }
   }
 
   /**---------------------------------------------

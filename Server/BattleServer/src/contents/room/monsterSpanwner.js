@@ -42,10 +42,10 @@ export class MonsterSpawner {
    */
   getRandomSpawnPosition() {
     const positions = [
-      { x: 15, y: Math.round(Math.random() * 31) },  // Top
-      { x: Math.round(Math.random() * 32), y: 15 },  // Right
+      { x: 0, y: Math.round(Math.random() * 32) }, // Left
+      { x: 32, y: Math.round(Math.random() * 32) }, // Right
       { x: Math.round(Math.random() * 32), y: 0 }, // Bottom
-      { x: 0, y: Math.round(Math.random() * 31) }, // Left
+      { x: Math.round(Math.random() * 32), y: 32 }, // Top
     ];
     // 배열에서 랜덤하게 하나 선택
     return positions[Math.floor(Math.random() * positions.length)];
