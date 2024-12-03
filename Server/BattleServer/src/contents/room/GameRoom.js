@@ -840,15 +840,23 @@ export class GameRoom {
    * 게임 루프 시작
    */
   gameLoop() {
-    //몬스터(Monster) 업데이트
-    for (const [uuid, monster] of this.monsters) {
-      monster.update();
-    }
+    setInterval(() => {
+      //몬스터(Monster) 업데이트
+      for (const [uuid, monster] of this.monsters) {
+        monster.update();
+      }
 
-    // 타워(Tower) 업데이트
-    for (const [uuid, tower] of this.towers) {
-      tower.update();
-    }
+      // 타워(Tower) 업데이트
+      for (const [uuid, tower] of this.towers) {
+        tower.update();
+      }
+
+      // 모든 타워에서 공격 처리
+      for (const [uuid, tower] of this.towers) {
+        tower.attackTarget(Array.from(this.monsters.values()));
+        tower.updateBullet(); // 투사체 이동 처리
+      }
+    }, this.updateInterval);
   }
 
   /**---------------------------------------------
