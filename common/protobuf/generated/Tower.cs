@@ -30,19 +30,19 @@ namespace Protocol {
             "Y2FyZElkGAQgASgJIisKFkIyQ19Ub3dlckJ1aWxkUmVzcG9uc2USEQoJaXNT",
             "dWNjZXNzGAEgASgIIlEKGkIyQ19Ub3dlckJ1aWxkTm90aWZpY2F0aW9uEiIK",
             "BXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQY",
-            "AiABKAkiYwoiQjJDX1Rvd2VyQXR0YWNrTW9uc3Rlck5vdGlmaWNhdGlvbhIR",
-            "Cglpc1N1Y2Nlc3MYASABKAgSFAoMYXR0YWNrRGFtYWdlGAIgASgFEhQKDHRh",
-            "cmdldEhlYWx0aBgDIAEoBSJCChxCMkNfVG93ZXJEZXN0cm95Tm90aWZpY2F0",
-            "aW9uEhEKCWlzU3VjY2VzcxgBIAEoCBIPCgd0b3dlcklkGAIgASgJIjIKG0Iy",
-            "Q19CYXNlRGVzdHJveU5vdGlmaWNhdGlvbhITCgtpc0Rlc3Ryb2llZBgBIAEo",
-            "CGIGcHJvdG8z"));
+            "AiABKAkidwoiQjJDX1Rvd2VyQXR0YWNrTW9uc3Rlck5vdGlmaWNhdGlvbhIP",
+            "Cgd0b3dlcklkGAEgASgJEiUKCm1vbnN0ZXJQb3MYAiABKAsyES5Qcm90b2Nv",
+            "bC5Qb3NJbmZvEgoKAmhwGAMgASgFEg0KBW1heEhwGAQgASgFIkIKHEIyQ19U",
+            "b3dlckRlc3Ryb3lOb3RpZmljYXRpb24SEQoJaXNTdWNjZXNzGAEgASgIEg8K",
+            "B3Rvd2VySWQYAiABKAkiMgobQjJDX0Jhc2VEZXN0cm95Tm90aWZpY2F0aW9u",
+            "EhMKC2lzRGVzdHJvaWVkGAEgASgIYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Protocol.StructReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.C2B_TowerBuildRequest), global::Protocol.C2B_TowerBuildRequest.Parser, new[]{ "Tower", "OwnerId", "RoomId", "CardId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_TowerBuildResponse), global::Protocol.B2C_TowerBuildResponse.Parser, new[]{ "IsSuccess" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_TowerBuildNotification), global::Protocol.B2C_TowerBuildNotification.Parser, new[]{ "Tower", "OwnerId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_TowerAttackMonsterNotification), global::Protocol.B2C_TowerAttackMonsterNotification.Parser, new[]{ "IsSuccess", "AttackDamage", "TargetHealth" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_TowerAttackMonsterNotification), global::Protocol.B2C_TowerAttackMonsterNotification.Parser, new[]{ "TowerId", "MonsterPos", "Hp", "MaxHp" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_TowerDestroyNotification), global::Protocol.B2C_TowerDestroyNotification.Parser, new[]{ "IsSuccess", "TowerId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_BaseDestroyNotification), global::Protocol.B2C_BaseDestroyNotification.Parser, new[]{ "IsDestroied" }, null, null, null, null)
           }));
@@ -845,9 +845,10 @@ namespace Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public B2C_TowerAttackMonsterNotification(B2C_TowerAttackMonsterNotification other) : this() {
-      isSuccess_ = other.isSuccess_;
-      attackDamage_ = other.attackDamage_;
-      targetHealth_ = other.targetHealth_;
+      towerId_ = other.towerId_;
+      monsterPos_ = other.monsterPos_ != null ? other.monsterPos_.Clone() : null;
+      hp_ = other.hp_;
+      maxHp_ = other.maxHp_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -857,39 +858,51 @@ namespace Protocol {
       return new B2C_TowerAttackMonsterNotification(this);
     }
 
-    /// <summary>Field number for the "isSuccess" field.</summary>
-    public const int IsSuccessFieldNumber = 1;
-    private bool isSuccess_;
+    /// <summary>Field number for the "towerId" field.</summary>
+    public const int TowerIdFieldNumber = 1;
+    private string towerId_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool IsSuccess {
-      get { return isSuccess_; }
+    public string TowerId {
+      get { return towerId_; }
       set {
-        isSuccess_ = value;
+        towerId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
-    /// <summary>Field number for the "attackDamage" field.</summary>
-    public const int AttackDamageFieldNumber = 2;
-    private int attackDamage_;
+    /// <summary>Field number for the "monsterPos" field.</summary>
+    public const int MonsterPosFieldNumber = 2;
+    private global::Protocol.PosInfo monsterPos_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int AttackDamage {
-      get { return attackDamage_; }
+    public global::Protocol.PosInfo MonsterPos {
+      get { return monsterPos_; }
       set {
-        attackDamage_ = value;
+        monsterPos_ = value;
       }
     }
 
-    /// <summary>Field number for the "targetHealth" field.</summary>
-    public const int TargetHealthFieldNumber = 3;
-    private int targetHealth_;
+    /// <summary>Field number for the "hp" field.</summary>
+    public const int HpFieldNumber = 3;
+    private int hp_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int TargetHealth {
-      get { return targetHealth_; }
+    public int Hp {
+      get { return hp_; }
       set {
-        targetHealth_ = value;
+        hp_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "maxHp" field.</summary>
+    public const int MaxHpFieldNumber = 4;
+    private int maxHp_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int MaxHp {
+      get { return maxHp_; }
+      set {
+        maxHp_ = value;
       }
     }
 
@@ -908,9 +921,10 @@ namespace Protocol {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (IsSuccess != other.IsSuccess) return false;
-      if (AttackDamage != other.AttackDamage) return false;
-      if (TargetHealth != other.TargetHealth) return false;
+      if (TowerId != other.TowerId) return false;
+      if (!object.Equals(MonsterPos, other.MonsterPos)) return false;
+      if (Hp != other.Hp) return false;
+      if (MaxHp != other.MaxHp) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -918,9 +932,10 @@ namespace Protocol {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (IsSuccess != false) hash ^= IsSuccess.GetHashCode();
-      if (AttackDamage != 0) hash ^= AttackDamage.GetHashCode();
-      if (TargetHealth != 0) hash ^= TargetHealth.GetHashCode();
+      if (TowerId.Length != 0) hash ^= TowerId.GetHashCode();
+      if (monsterPos_ != null) hash ^= MonsterPos.GetHashCode();
+      if (Hp != 0) hash ^= Hp.GetHashCode();
+      if (MaxHp != 0) hash ^= MaxHp.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -939,17 +954,21 @@ namespace Protocol {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (IsSuccess != false) {
-        output.WriteRawTag(8);
-        output.WriteBool(IsSuccess);
+      if (TowerId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(TowerId);
       }
-      if (AttackDamage != 0) {
-        output.WriteRawTag(16);
-        output.WriteInt32(AttackDamage);
+      if (monsterPos_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(MonsterPos);
       }
-      if (TargetHealth != 0) {
+      if (Hp != 0) {
         output.WriteRawTag(24);
-        output.WriteInt32(TargetHealth);
+        output.WriteInt32(Hp);
+      }
+      if (MaxHp != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(MaxHp);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -961,17 +980,21 @@ namespace Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (IsSuccess != false) {
-        output.WriteRawTag(8);
-        output.WriteBool(IsSuccess);
+      if (TowerId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(TowerId);
       }
-      if (AttackDamage != 0) {
-        output.WriteRawTag(16);
-        output.WriteInt32(AttackDamage);
+      if (monsterPos_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(MonsterPos);
       }
-      if (TargetHealth != 0) {
+      if (Hp != 0) {
         output.WriteRawTag(24);
-        output.WriteInt32(TargetHealth);
+        output.WriteInt32(Hp);
+      }
+      if (MaxHp != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(MaxHp);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -983,14 +1006,17 @@ namespace Protocol {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (IsSuccess != false) {
-        size += 1 + 1;
+      if (TowerId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(TowerId);
       }
-      if (AttackDamage != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(AttackDamage);
+      if (monsterPos_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(MonsterPos);
       }
-      if (TargetHealth != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(TargetHealth);
+      if (Hp != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Hp);
+      }
+      if (MaxHp != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MaxHp);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1004,14 +1030,20 @@ namespace Protocol {
       if (other == null) {
         return;
       }
-      if (other.IsSuccess != false) {
-        IsSuccess = other.IsSuccess;
+      if (other.TowerId.Length != 0) {
+        TowerId = other.TowerId;
       }
-      if (other.AttackDamage != 0) {
-        AttackDamage = other.AttackDamage;
+      if (other.monsterPos_ != null) {
+        if (monsterPos_ == null) {
+          MonsterPos = new global::Protocol.PosInfo();
+        }
+        MonsterPos.MergeFrom(other.MonsterPos);
       }
-      if (other.TargetHealth != 0) {
-        TargetHealth = other.TargetHealth;
+      if (other.Hp != 0) {
+        Hp = other.Hp;
+      }
+      if (other.MaxHp != 0) {
+        MaxHp = other.MaxHp;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1028,16 +1060,23 @@ namespace Protocol {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 8: {
-            IsSuccess = input.ReadBool();
+          case 10: {
+            TowerId = input.ReadString();
             break;
           }
-          case 16: {
-            AttackDamage = input.ReadInt32();
+          case 18: {
+            if (monsterPos_ == null) {
+              MonsterPos = new global::Protocol.PosInfo();
+            }
+            input.ReadMessage(MonsterPos);
             break;
           }
           case 24: {
-            TargetHealth = input.ReadInt32();
+            Hp = input.ReadInt32();
+            break;
+          }
+          case 32: {
+            MaxHp = input.ReadInt32();
             break;
           }
         }
@@ -1055,16 +1094,23 @@ namespace Protocol {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 8: {
-            IsSuccess = input.ReadBool();
+          case 10: {
+            TowerId = input.ReadString();
             break;
           }
-          case 16: {
-            AttackDamage = input.ReadInt32();
+          case 18: {
+            if (monsterPos_ == null) {
+              MonsterPos = new global::Protocol.PosInfo();
+            }
+            input.ReadMessage(MonsterPos);
             break;
           }
           case 24: {
-            TargetHealth = input.ReadInt32();
+            Hp = input.ReadInt32();
+            break;
+          }
+          case 32: {
+            MaxHp = input.ReadInt32();
             break;
           }
         }

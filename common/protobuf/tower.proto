@@ -30,7 +30,7 @@ message B2C_TowerBuildNotification
 message B2C_TowerAttackMonsterNotification
 {
     string towerId = 1;
-    PosInfo posInfo = 2;
+    PosInfo monsterPos = 2;
     int32 hp = 3;
     int32 maxHp = 4;
 }

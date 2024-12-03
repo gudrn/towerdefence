@@ -4,6 +4,7 @@ import { GameObject } from './gameObject.js';
 import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
 import { B2C_TowerAttackMonsterNotificationSchema } from '../../protocol/tower_pb.js';
 import { B2C_MonsterDeathNotificationSchema } from '../../protocol/monster_pb.js';
+import { create } from '@bufbuild/protobuf';
 
 export class Tower extends GameObject {
   /*---------------------------------------------
@@ -55,8 +56,8 @@ export class Tower extends GameObject {
 
     for (const monster of monsters) {
       const distance =
-        (this.pos.x - towerPos.x) * (this.pos.x - towerPos.x) +
-        (this.pos.y - towerPos.y) * (this.pos.y - towerPos.y);
+        (this.pos.x - monster.pos.x) * (this.pos.x - monster.pos.x) +
+        (this.pos.y - monster.pos.y) * (this.pos.y - monster.pos.y);
 
       if (distance <= this.attackRange && distance < minDistance) {
         minDistance = distance;
@@ -78,43 +79,46 @@ export class Tower extends GameObject {
       this.lastAttackTime = currentTime;
 
       const target = this.getMonsterInRange(monsters);
+      console.log('target: ', target); // null
 
-      // 몬스터 데미지 처리
-      const isDestroyed = target.onDamaged(this.attackDamage);
-
-      // 2. 클라이언트에 공격 패킷 전송
-      const attackPacket = create(B2C_TowerAttackMonsterNotificationSchema, {
-        towerId: this.getId(),
-        posInfo: target.getpos(),
-        hp: target.hp,
-        maxHp: target.maxHp,
-      });
-
-      const attackBuffer = PacketUtils.SerializePacket(
-        attackPacket,
-        B2C_TowerAttackMonsterNotificationSchema,
-        ePacketId.B2C_TowerAttackMonsterNotification,
-        0,
-      );
-      this.room.broadcast(attackBuffer);
-
-      // 3. 타워 파괴 처리
-      if (isDestroyed) {
-        console.log(`타워 ${target.id}가 파괴되었습니다.`);
-        this.room.removeObject(target.id); // GameRoom에서 타워 제거
-
-        const mopnsterDeathPacket = create(B2C_MonsterDeathNotificationSchema, {
-          monsterId: target.id,
+      if (target !== null) {
+        // 2. 클라이언트에 공격 패킷 전송
+        const attackPacket = create(B2C_TowerAttackMonsterNotificationSchema, {
+          towerId: this.getId(),
+          monsterPos: target.getpos(),
+          hp: target.hp,
+          maxHp: target.maxHp,
         });
 
-        const monsterDeathBuffer = PacketUtils.SerializePacket(
-          mopnsterDeathPacket,
-          B2C_MonsterDeathNotificationSchema,
-          ePacketId.B2C_MonsterDeathNotification,
-          0, //수정 부분
+        const attackBuffer = PacketUtils.SerializePacket(
+          attackPacket,
+          B2C_TowerAttackMonsterNotificationSchema,
+          ePacketId.B2C_TowerAttackMonsterNotification,
+          0,
         );
+        this.room.broadcast(attackBuffer);
 
-        this.room.broadcast(monsterDeathBuffer);
+        // 몬스터 데미지 처리
+        const isDestroyed = target.onDamaged(this.attackDamage);
+
+        // 3. 몬스터 사망 처리
+        if (isDestroyed) {
+          console.log(`타워 ${target.id}가 파괴되었습니다.`);
+          this.room.removeObject(target.id); // GameRoom에서 타워 제거
+
+          const mopnsterDeathPacket = create(B2C_MonsterDeathNotificationSchema, {
+            monsterId: target.id,
+          });
+
+          const monsterDeathBuffer = PacketUtils.SerializePacket(
+            mopnsterDeathPacket,
+            B2C_MonsterDeathNotificationSchema,
+            ePacketId.B2C_MonsterDeathNotification,
+            0, //수정 부분
+          );
+
+          this.room.broadcast(monsterDeathBuffer);
+        }
       }
     }
   }
