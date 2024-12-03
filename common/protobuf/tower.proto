@@ -27,7 +27,7 @@ message B2C_TowerBuildNotification
 }
 
 // 타워 -> 몬스터 공격 알림
-message B2C_TowerAttackMonstrNotification
+message B2C_TowerAttackMonsterNotification
 {
     bool isSuccess = 1;
     int32 attackDamage = 2;

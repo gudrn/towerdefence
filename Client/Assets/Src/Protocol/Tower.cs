@@ -30,19 +30,19 @@ namespace Protocol {
             "Y2FyZElkGAQgASgJIisKFkIyQ19Ub3dlckJ1aWxkUmVzcG9uc2USEQoJaXNT",
             "dWNjZXNzGAEgASgIIlEKGkIyQ19Ub3dlckJ1aWxkTm90aWZpY2F0aW9uEiIK",
             "BXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQY",
-            "AiABKAkiYgohQjJDX1Rvd2VyQXR0YWNrTW9uc3RyTm90aWZpY2F0aW9uEhEK",
-            "CWlzU3VjY2VzcxgBIAEoCBIUCgxhdHRhY2tEYW1hZ2UYAiABKAUSFAoMdGFy",
-            "Z2V0SGVhbHRoGAMgASgFIkIKHEIyQ19Ub3dlckRlc3Ryb3lOb3RpZmljYXRp",
-            "b24SEQoJaXNTdWNjZXNzGAEgASgIEg8KB3Rvd2VySWQYAiABKAkiMgobQjJD",
-            "X0Jhc2VEZXN0cm95Tm90aWZpY2F0aW9uEhMKC2lzRGVzdHJvaWVkGAEgASgI",
-            "YgZwcm90bzM="));
+            "AiABKAkiYwoiQjJDX1Rvd2VyQXR0YWNrTW9uc3Rlck5vdGlmaWNhdGlvbhIR",
+            "Cglpc1N1Y2Nlc3MYASABKAgSFAoMYXR0YWNrRGFtYWdlGAIgASgFEhQKDHRh",
+            "cmdldEhlYWx0aBgDIAEoBSJCChxCMkNfVG93ZXJEZXN0cm95Tm90aWZpY2F0",
+            "aW9uEhEKCWlzU3VjY2VzcxgBIAEoCBIPCgd0b3dlcklkGAIgASgJIjIKG0Iy",
+            "Q19CYXNlRGVzdHJveU5vdGlmaWNhdGlvbhITCgtpc0Rlc3Ryb2llZBgBIAEo",
+            "CGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Protocol.StructReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.C2B_TowerBuildRequest), global::Protocol.C2B_TowerBuildRequest.Parser, new[]{ "Tower", "OwnerId", "RoomId", "CardId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_TowerBuildResponse), global::Protocol.B2C_TowerBuildResponse.Parser, new[]{ "IsSuccess" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_TowerBuildNotification), global::Protocol.B2C_TowerBuildNotification.Parser, new[]{ "Tower", "OwnerId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_TowerAttackMonstrNotification), global::Protocol.B2C_TowerAttackMonstrNotification.Parser, new[]{ "IsSuccess", "AttackDamage", "TargetHealth" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_TowerAttackMonsterNotification), global::Protocol.B2C_TowerAttackMonsterNotification.Parser, new[]{ "IsSuccess", "AttackDamage", "TargetHealth" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_TowerDestroyNotification), global::Protocol.B2C_TowerDestroyNotification.Parser, new[]{ "IsSuccess", "TowerId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_BaseDestroyNotification), global::Protocol.B2C_BaseDestroyNotification.Parser, new[]{ "IsDestroied" }, null, null, null, null)
           }));
@@ -811,16 +811,16 @@ namespace Protocol {
   /// <summary>
   /// 타워 -> 몬스터 공격 알림
   /// </summary>
-  public sealed partial class B2C_TowerAttackMonstrNotification : pb::IMessage<B2C_TowerAttackMonstrNotification>
+  public sealed partial class B2C_TowerAttackMonsterNotification : pb::IMessage<B2C_TowerAttackMonsterNotification>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<B2C_TowerAttackMonstrNotification> _parser = new pb::MessageParser<B2C_TowerAttackMonstrNotification>(() => new B2C_TowerAttackMonstrNotification());
+    private static readonly pb::MessageParser<B2C_TowerAttackMonsterNotification> _parser = new pb::MessageParser<B2C_TowerAttackMonsterNotification>(() => new B2C_TowerAttackMonsterNotification());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<B2C_TowerAttackMonstrNotification> Parser { get { return _parser; } }
+    public static pb::MessageParser<B2C_TowerAttackMonsterNotification> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -836,7 +836,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public B2C_TowerAttackMonstrNotification() {
+    public B2C_TowerAttackMonsterNotification() {
       OnConstruction();
     }
 
@@ -844,7 +844,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public B2C_TowerAttackMonstrNotification(B2C_TowerAttackMonstrNotification other) : this() {
+    public B2C_TowerAttackMonsterNotification(B2C_TowerAttackMonsterNotification other) : this() {
       isSuccess_ = other.isSuccess_;
       attackDamage_ = other.attackDamage_;
       targetHealth_ = other.targetHealth_;
@@ -853,8 +853,8 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public B2C_TowerAttackMonstrNotification Clone() {
-      return new B2C_TowerAttackMonstrNotification(this);
+    public B2C_TowerAttackMonsterNotification Clone() {
+      return new B2C_TowerAttackMonsterNotification(this);
     }
 
     /// <summary>Field number for the "isSuccess" field.</summary>
@@ -896,12 +896,12 @@ namespace Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as B2C_TowerAttackMonstrNotification);
+      return Equals(other as B2C_TowerAttackMonsterNotification);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(B2C_TowerAttackMonstrNotification other) {
+    public bool Equals(B2C_TowerAttackMonsterNotification other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -1000,7 +1000,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(B2C_TowerAttackMonstrNotification other) {
+    public void MergeFrom(B2C_TowerAttackMonsterNotification other) {
       if (other == null) {
         return;
       }
