@@ -1,4 +1,7 @@
+import { CardDataSchema } from '../protocol/struct_pb.js';
 import { ParseUtils } from './parseUtils.js';
+import { create } from '@bufbuild/protobuf';
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * ---------------------------------------------
@@ -20,15 +23,29 @@ class AssetManager {
   stages;
 
   /**
-   * @type {Map<Object>} 타워 데이터를 저장합니다.
+   * @type {Map<string, Object>} 타워 데이터를 저장합니다.
    */
   towers;
 
+  /**
+   * @type {Array<string>} 타워 prefabId를 저장합니다.
+   */
+  towerPrefabIdCaches;
+
+  /**
+   * @type {Array<string>} 스킬카드 prefabId를 저장합니다.
+   */
+  skillPrefabIdCaches;
+  
   constructor() {
     this.monsters = new Map();
     this.stages = [];
     this.towers = new Map();
     this.cards = new Map();
+    this.skills = new Map();
+
+    this.towerPrefabIdCaches = new Array();
+    this.skillPrefabIdCaches = new Array();
   }
 
   /**
@@ -39,15 +56,16 @@ class AssetManager {
    */
   async loadGameAssets() {
     try {
-      const [monsters, stages, towers, cards] = await Promise.all([
+      const [monsters, stages, towers, skills] = await Promise.all([
         ParseUtils.readFileAsync('monsters.json'),
         ParseUtils.readFileAsync('stages.json'),
         ParseUtils.readFileAsync('towers.json'),
-        ParseUtils.readFileAsync('cards.json'),
+        ParseUtils.readFileAsync('skills.json'),
       ]);
 
       // 몬스터 자원 로드
       this.monsters = new Map(monsters.data.map((monster) => [monster.prefabId, monster]));
+
       // 스테이지 자원 로드
       this.stages = stages.data;
 
@@ -55,10 +73,17 @@ class AssetManager {
       this.towers = new Map(
         towers.data.map((tower) => [tower.prefabId, tower]), // prefabId를 키로 사용
       );
+      //타워 자원 로드2
+      this.towerPrefabIdCaches = towers.data.map((tower) => tower.prefabId);
+
+      //스킬 자원 로드
+      this.skills = new Map(
+        skills.data.map((skill) => [skill.prefabId, skill]) // prefabId를 키로 사용
+      );
+      //스킬 자원 로드2
+      this.skillPrefabIdCaches = skills.data.map((skill) => skill.prefabId);
 
       if (!this.monsters || this.towers.size === 0) throw new Error('asset is null');
-      // 카드 자원 로드
-      this.cards = new Map(cards.data.map((card) => [card.prefabId, card]));
 
       return {
         monsters: Array.from(this.monsters.values()),
@@ -192,6 +217,67 @@ class AssetManager {
   getStageCount() {
     return this.stages.length;
   }
+
+  /**
+   * ---------------------------------------------
+   * [getRandomTowerCards]
+   * - 랜덤 타워 카드 배열 반환
+   * ---------------------------------------------
+   * @param {number} num 뽑을 카드의 수
+   * @returns {Array<CardData>} 
+   */
+  getRandomTowerCards(num = 1) {
+    const ret = [];
+    for (let i = 0; i < num; i+=1) {
+        const randomIndex = Math.floor(Math.random() * this.towerPrefabIdCaches.length);
+        const card = create(CardDataSchema, {
+            cardId: uuidv4(),
+            prefabId: this.towerPrefabIdCaches[randomIndex]
+        })
+        ret.push(card);
+    }
+    return ret;
+}
+
+/**
+   * ---------------------------------------------
+   * [getRandomSkillCards]
+   * - 랜덤 스킬 카드 배열 반환
+   * ---------------------------------------------
+   * @param {number} num 뽑을 카드의 수
+   * @returns {Array<CardData>} 
+   */
+getRandomSkillCards(num = 1) {
+    const ret = [];
+    for (let i = 0; i < num; i+=1) {
+        const randomIndex = Math.floor(Math.random() * this.skillPrefabIdCaches.length);
+        const card = create(CardDataSchema, {
+            cardId: uuidv4(),
+            prefabId: this.skillPrefabIdCaches[randomIndex]
+        })
+        ret.push(card);
+    }
+    return ret;
+}
+
+/**
+   * ---------------------------------------------
+   * [getRandomCards]
+   * - 랜덤 카드 배열 반환
+   * ---------------------------------------------
+   * @param {number} num 뽑을 카드의 수
+   * @returns {Array<CardData>} 
+   */
+getRandomCards(num) {
+    //시간 남으면 subarray를 사용해서 최적화 해보기
+    const numTowerCards = Math.floor(Math.random() * (num + 1));
+    let towerCards = this.getRandomTowerCards(numTowerCards);
+    let skillCards = this.getRandomSkillCards(num-numTowerCards);
+    //let skillCards = this.getRandomSkillCards(num);
+
+    return towerCards.concat(skillCards);
+    //return skillCards;
+}
 }
 
 export const assetManager = new AssetManager();

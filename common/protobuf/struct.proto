@@ -53,9 +53,8 @@ message ErrorData
 }
 
 message TowerData {
-  string towerId = 1; // 타워 uuid
-  string prefabId = 2; // 타워 종류 구분하는 번호
-  PosInfo towerPos = 3;
+  string prefabId = 1; // 타워 종류 구분하는 번호
+  PosInfo towerPos = 2;
 }
 
 message SkillData {

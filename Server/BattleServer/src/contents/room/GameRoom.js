@@ -207,7 +207,7 @@ export class GameRoom {
    * @param {number} [obstacleCount=20]
    * @returns {PosInfo[]}
    */ //---------------------------------------------
-  generateObstacles(obstacleCount = 20) {
+  generateObstacles(obstacleCount = 40) {
     /** @type {Map<Vec2, PosInfo>} */
     let usedPositions = new Map();
 
@@ -249,10 +249,14 @@ export class GameRoom {
       parent.set(key(src), src);
     }
     const directions = [
-      { x: 0, y: -1 },
-      { x: 0, y: 1 },
-      { x: -1, y: 0 },
-      { x: 1, y: 0 },
+      { x: 0, y: -1 }, // 북
+      { x: 0, y: 1 },  // 남
+      { x: -1, y: 0 }, // 서
+      { x: 1, y: 0 },  // 동
+      { x: -1, y: -1 }, // 북서
+      { x: 1, y: -1 },  // 북동
+      { x: -1, y: 1 },  // 남서
+      { x: 1, y: 1 },   // 남동
     ];
 
     let found = false;
@@ -392,11 +396,11 @@ export class GameRoom {
 
   OnGameStart() {
     console.log('OnGameStart Called');
-    this.monsterSpawner.startSpawning(0);
+    // this.monsterSpawner.startSpawning(0);
 
-    setInterval(() => {
-      this.gameLoop();
-    }, this.updateInterval);
+    // setInterval(() => {
+    //   this.gameLoop();
+    // }, this.updateInterval);
   }
 
   getMonsterCount() {
@@ -604,8 +608,7 @@ export class GameRoom {
 
     // 2. 타워 정보 저장
     const towerPosInfo = create(PosInfoSchema, {
-      //uuid: uu,
-      uuid: packet.tower.towerId,
+      uuid: uuidv4(),
       x: packet.tower.towerPos.x,
       y: packet.tower.towerPos.y,
     });
@@ -613,7 +616,7 @@ export class GameRoom {
     this.addObject(newTower);
     this.towers.set(newTower.getId(), newTower);
     console.log(
-      `타워생성 성공. towerId: ${tower.towerId}, prefabId: ${towerData.prefabId}, 위치: (${tower.towerPos}`,
+      `타워생성 성공. towerId: ${newTower.getId()}, prefabId: ${newTower.getPrefabId()}, 위치: (${newTower.getPos()}`,
     );
 
     // 3. 타워 생성 성공 응답
@@ -632,13 +635,17 @@ export class GameRoom {
 
     // 4. 모든 클라이언트에게 타워 추가 알림
     const notification = create(B2C_TowerBuildNotificationSchema, {
-      tower: packet.tower,
+      tower: create(TowerDataSchema, {
+        prefabId: packet.tower.prefabId,
+        towerPos: towerPosInfo
+      }),
       ownerId: packet.ownerId,
     });
 
     console.log('-------------');
-    console.log(packet.tower);
-    console.log(packet.ownerId);
+    console.log('ㅇㅇ');
+    console.log(notification.tower);
+    console.log(notification.ownerId);
     console.log('-------------');
     const notificationBuffer = PacketUtils.SerializePacket(
       notification,
@@ -771,6 +778,7 @@ export class GameRoom {
     const moster = this.monsters.find((m) => m.id === buffer.id); //걍 막 하는중
     if (!moster) {
       //오류
+      throw new CustomError(ErrorCodes.INVALID_PACKET, "유효하지 않은 몬스터");
     }
     const target = this.towers.get(buffer.towerid);
 

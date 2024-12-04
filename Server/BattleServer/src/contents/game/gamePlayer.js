@@ -30,19 +30,15 @@ export class GamePlayer {
    */
   initCard() {
     // 포탑 카드를 무조건 하나 추가
-    const turretCards = Array.from(assetManager.towers.values());
-    const randomTurretCard = turretCards[Math.floor(Math.random() * turretCards.length)];
-    const turretUuid = uuidv4();
-    this.cardList.set(turretUuid, randomTurretCard.prefabId);
-    const cards = Array.from(assetManager.cards.values());
+    const mandatoryTowerCard = assetManager.getRandomTowerCards();
+    this.cardList.set(mandatoryTowerCard[0].cardId, mandatoryTowerCard[0].prefabId);
 
-    for (let i = 0; i < 3; i++) {
-      // 나머지 3개의 카드를 랜덤으로 추가
-      const randomCard = cards[Math.floor(Math.random() * cards.length)];
-      const uuid = uuidv4();
-      this.cardList.set(uuid, randomCard.prefabId);
+    // 나머지 3개의 카드를 랜덤으로 추가
+    const cards = assetManager.getRandomCards(3);
+    for(let card of cards){
+      this.cardList.set(card.cardId, card.prefabId);
     }
-    console.log('cardList: ', this.cardList);
+    
     const cardDatas = Array.from(this.cardList.entries()).map(([uuid, prefabId]) =>
       create(CardDataSchema, {
         cardId: uuid,
@@ -74,8 +70,8 @@ export class GamePlayer {
     if (this.cardList.size >= 7) {
       return;
     }
-    const cards = Array.from(assetManager.cards.values());
-    const turretCards = Array.from(assetManager.towers.values());
+    const cards = assetManager.towerPrefabIdCaches;
+    const turretCards = assetManager.skillPrefabIdCaches;
     const combinedCards = cards.concat(turretCards);
     const randomCard = combinedCards[Math.floor(Math.random() * combinedCards.length)];
     const uuid = uuidv4();

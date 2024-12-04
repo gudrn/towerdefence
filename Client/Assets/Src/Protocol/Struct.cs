@@ -36,14 +36,13 @@ namespace Protocol {
             "DAoEdXVpZBgBIAEoCRIJCgF4GAIgASgCEgkKAXkYAyABKAIiWQoOR2FtZVBs",
             "YXllckRhdGESIwoIcG9zaXRpb24YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZv",
             "EhAKCG5pY2tuYW1lGAIgASgJEhAKCHByZWZhYklkGAMgASgJIjIKCUVycm9y",
-            "RGF0YRIUCgxyZXNwb25zZUNvZGUYASABKAUSDwoHbWVzc2FnZRgCIAEoCSJT",
-            "CglUb3dlckRhdGESDwoHdG93ZXJJZBgBIAEoCRIQCghwcmVmYWJJZBgCIAEo",
-            "CRIjCgh0b3dlclBvcxgDIAEoCzIRLlByb3RvY29sLlBvc0luZm8iQgoJU2tp",
-            "bGxEYXRhEhAKCHByZWZhYklkGAEgASgJEiMKCHNraWxsUG9zGAIgASgLMhEu",
-            "UHJvdG9jb2wuUG9zSW5mbyIsCghDYXJkRGF0YRIOCgZjYXJkSWQYASABKAkS",
-            "EAoIcHJlZmFiSWQYAiABKAkiSgoTTW9uc3RlckhlYWx0aFVwZGF0ZRIRCglt",
-            "b25zdGVySWQYASABKAkSEQoJY3VycmVudEhwGAIgASgFEg0KBW1heEhwGAMg",
-            "ASgFYgZwcm90bzM="));
+            "RGF0YRIUCgxyZXNwb25zZUNvZGUYASABKAUSDwoHbWVzc2FnZRgCIAEoCSJC",
+            "CglUb3dlckRhdGESEAoIcHJlZmFiSWQYASABKAkSIwoIdG93ZXJQb3MYAiAB",
+            "KAsyES5Qcm90b2NvbC5Qb3NJbmZvIkIKCVNraWxsRGF0YRIQCghwcmVmYWJJ",
+            "ZBgBIAEoCRIjCghza2lsbFBvcxgCIAEoCzIRLlByb3RvY29sLlBvc0luZm8i",
+            "LAoIQ2FyZERhdGESDgoGY2FyZElkGAEgASgJEhAKCHByZWZhYklkGAIgASgJ",
+            "IkoKE01vbnN0ZXJIZWFsdGhVcGRhdGUSEQoJbW9uc3RlcklkGAEgASgJEhEK",
+            "CWN1cnJlbnRIcBgCIAEoBRINCgVtYXhIcBgDIAEoBWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Protocol.EnumReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -54,7 +53,7 @@ namespace Protocol {
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.PosInfo), global::Protocol.PosInfo.Parser, new[]{ "Uuid", "X", "Y" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.GamePlayerData), global::Protocol.GamePlayerData.Parser, new[]{ "Position", "Nickname", "PrefabId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.ErrorData), global::Protocol.ErrorData.Parser, new[]{ "ResponseCode", "Message" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.TowerData), global::Protocol.TowerData.Parser, new[]{ "TowerId", "PrefabId", "TowerPos" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.TowerData), global::Protocol.TowerData.Parser, new[]{ "PrefabId", "TowerPos" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.SkillData), global::Protocol.SkillData.Parser, new[]{ "PrefabId", "SkillPos" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.CardData), global::Protocol.CardData.Parser, new[]{ "CardId", "PrefabId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.MonsterHealthUpdate), global::Protocol.MonsterHealthUpdate.Parser, new[]{ "MonsterId", "CurrentHp", "MaxHp" }, null, null, null, null)
@@ -2071,7 +2070,6 @@ namespace Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TowerData(TowerData other) : this() {
-      towerId_ = other.towerId_;
       prefabId_ = other.prefabId_;
       towerPos_ = other.towerPos_ != null ? other.towerPos_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -2083,23 +2081,8 @@ namespace Protocol {
       return new TowerData(this);
     }
 
-    /// <summary>Field number for the "towerId" field.</summary>
-    public const int TowerIdFieldNumber = 1;
-    private string towerId_ = "";
-    /// <summary>
-    /// 타워 uuid
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string TowerId {
-      get { return towerId_; }
-      set {
-        towerId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
     /// <summary>Field number for the "prefabId" field.</summary>
-    public const int PrefabIdFieldNumber = 2;
+    public const int PrefabIdFieldNumber = 1;
     private string prefabId_ = "";
     /// <summary>
     /// 타워 종류 구분하는 번호
@@ -2114,7 +2097,7 @@ namespace Protocol {
     }
 
     /// <summary>Field number for the "towerPos" field.</summary>
-    public const int TowerPosFieldNumber = 3;
+    public const int TowerPosFieldNumber = 2;
     private global::Protocol.PosInfo towerPos_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -2140,7 +2123,6 @@ namespace Protocol {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (TowerId != other.TowerId) return false;
       if (PrefabId != other.PrefabId) return false;
       if (!object.Equals(TowerPos, other.TowerPos)) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -2150,7 +2132,6 @@ namespace Protocol {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (TowerId.Length != 0) hash ^= TowerId.GetHashCode();
       if (PrefabId.Length != 0) hash ^= PrefabId.GetHashCode();
       if (towerPos_ != null) hash ^= TowerPos.GetHashCode();
       if (_unknownFields != null) {
@@ -2171,16 +2152,12 @@ namespace Protocol {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (TowerId.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(TowerId);
-      }
       if (PrefabId.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(10);
         output.WriteString(PrefabId);
       }
       if (towerPos_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(18);
         output.WriteMessage(TowerPos);
       }
       if (_unknownFields != null) {
@@ -2193,16 +2170,12 @@ namespace Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (TowerId.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(TowerId);
-      }
       if (PrefabId.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(10);
         output.WriteString(PrefabId);
       }
       if (towerPos_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(18);
         output.WriteMessage(TowerPos);
       }
       if (_unknownFields != null) {
@@ -2215,9 +2188,6 @@ namespace Protocol {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (TowerId.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(TowerId);
-      }
       if (PrefabId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(PrefabId);
       }
@@ -2235,9 +2205,6 @@ namespace Protocol {
     public void MergeFrom(TowerData other) {
       if (other == null) {
         return;
-      }
-      if (other.TowerId.Length != 0) {
-        TowerId = other.TowerId;
       }
       if (other.PrefabId.Length != 0) {
         PrefabId = other.PrefabId;
@@ -2264,14 +2231,10 @@ namespace Protocol {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            TowerId = input.ReadString();
-            break;
-          }
-          case 18: {
             PrefabId = input.ReadString();
             break;
           }
-          case 26: {
+          case 18: {
             if (towerPos_ == null) {
               TowerPos = new global::Protocol.PosInfo();
             }
@@ -2294,14 +2257,10 @@ namespace Protocol {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            TowerId = input.ReadString();
-            break;
-          }
-          case 18: {
             PrefabId = input.ReadString();
             break;
           }
-          case 26: {
+          case 18: {
             if (towerPos_ == null) {
               TowerPos = new global::Protocol.PosInfo();
             }
