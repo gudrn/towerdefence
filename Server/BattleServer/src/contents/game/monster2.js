@@ -216,8 +216,6 @@ export class Monster extends GameObject {
    */
   attackBase(base) {
     const currentTime = Date.now();
-    if (currentTime - this.lastAttackTime > this.attackCoolDown) {
-      this.lastAttackTime = currentTime;
 
       const baseAttackPacket = create(B2C_MonsterAttackBaseNotificationSchema, {
         monsterId: this.getId(),
@@ -254,7 +252,7 @@ export class Monster extends GameObject {
 
         this.room.broadcast(baseDestroyedBuffer);
       }
-    }
+    
   }
 
   /**
