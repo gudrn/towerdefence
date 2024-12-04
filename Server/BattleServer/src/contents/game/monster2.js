@@ -169,7 +169,7 @@ export class Monster extends GameObject {
       // 2. 클라이언트에 공격 패킷 전송
       const attackPacket = create(B2C_MonsterAttackTowerNotificationSchema, {
         monsterId: this.getId(),
-        targetId: tower.id,
+        targetId: tower.getId(),
         attackDamage: this.attackDamage,
       });
 

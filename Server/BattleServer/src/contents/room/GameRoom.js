@@ -42,7 +42,7 @@ export class GameRoom {
     { x: 18, y: 19 },
     { x: 19, y: 19 },
     { x: 18, y: 18 },
-    { x: 19, y: 18 }
+    { x: 19, y: 18 },
   ];
 
   /**---------------------------------------------
@@ -250,13 +250,13 @@ export class GameRoom {
     }
     const directions = [
       { x: 0, y: -1 }, // 북
-      { x: 0, y: 1 },  // 남
+      { x: 0, y: 1 }, // 남
       { x: -1, y: 0 }, // 서
-      { x: 1, y: 0 },  // 동
+      { x: 1, y: 0 }, // 동
       { x: -1, y: -1 }, // 북서
-      { x: 1, y: -1 },  // 북동
-      { x: -1, y: 1 },  // 남서
-      { x: 1, y: 1 },   // 남동
+      { x: 1, y: -1 }, // 북동
+      { x: -1, y: 1 }, // 남서
+      { x: 1, y: 1 }, // 남동
     ];
 
     let found = false;
@@ -396,11 +396,11 @@ export class GameRoom {
 
   OnGameStart() {
     console.log('OnGameStart Called');
-    // this.monsterSpawner.startSpawning(0);
+    this.monsterSpawner.startSpawning(0);
 
-    // setInterval(() => {
-    //   this.gameLoop();
-    // }, this.updateInterval);
+    setInterval(() => {
+      this.gameLoop();
+    }, this.updateInterval);
   }
 
   getMonsterCount() {
@@ -637,7 +637,7 @@ export class GameRoom {
     const notification = create(B2C_TowerBuildNotificationSchema, {
       tower: create(TowerDataSchema, {
         prefabId: packet.tower.prefabId,
-        towerPos: towerPosInfo
+        towerPos: towerPosInfo,
       }),
       ownerId: packet.ownerId,
     });
@@ -778,7 +778,7 @@ export class GameRoom {
     const moster = this.monsters.find((m) => m.id === buffer.id); //걍 막 하는중
     if (!moster) {
       //오류
-      throw new CustomError(ErrorCodes.INVALID_PACKET, "유효하지 않은 몬스터");
+      throw new CustomError(ErrorCodes.INVALID_PACKET, '유효하지 않은 몬스터');
     }
     const target = this.towers.get(buffer.towerid);
 
