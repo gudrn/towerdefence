@@ -95,7 +95,7 @@ export class Monster extends GameObject {
           if (this.room.canGo(nextPos)) {
             //console.log("이동 가능");
             this.setPos(create(PosInfoSchema, { x: nextPos.x, y: nextPos.y }));
-            this.waitUntil = Date.now() + 500;
+            this.waitUntil = Date.now() + 1000;
             this.setState(OBJECT_STATE_TYPE.MOVE);
           } else {
             console.log('이동 불가능');

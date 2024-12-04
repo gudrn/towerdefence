@@ -37,11 +37,12 @@ import { B2C_MonsterHealthUpdateNotificationSchema } from '../../protocol/monste
 import { B2C_UseSkillNotificationSchema } from '../../protocol/skill_pb.js';
 
 export class GameRoom {
+  //유저의 스폰 위치
   static spawnCoordinates = [
-    { x: 14, y: 14 },
-    { x: 18, y: 14 },
+    { x: 18, y: 19 },
+    { x: 19, y: 19 },
     { x: 18, y: 18 },
-    { x: 14, y: 18 },
+    { x: 19, y: 18 }
   ];
 
   /**---------------------------------------------
@@ -56,10 +57,10 @@ export class GameRoom {
     this.towers = new Map();
 
     //this.grid = { width: 32, height: 32 };
-    this.tilemap = new Tilemap({ x: 15, y: 15 });
+    this.tilemap = new Tilemap({ x: 16, y: 16 });
 
     //this.base = new Vec2(0, 0); // 기지의 좌표
-    this.base = new Base(300, create(PosInfoSchema, { x: 15, y: 15 }));
+    this.base = new Base(300, create(PosInfoSchema, { x: 16, y: 16 }));
 
     //this.obstacles = []; // 장애물 좌표 배열
     //this.excludedCoordinates = [...this.base]; // 장애물이 생성되지 않도록 할 좌표 목록
@@ -848,29 +849,33 @@ export class GameRoom {
       monster.update();
     }
 
-    // 타워(Tower) 업데이트
+    // // 타워(Tower) 업데이트
     // for (const [uuid, tower] of this.towers) {
     //   tower.update();
     // }
 
-    //베이스캠프 체력 0 일시 게임 종료
-    if (this.checkBaseHealth()) {
-      //게임 종료 알림(false 시 패배)
-      const endNotification = create(B2C_GameEndNotificationSchema, {
-        isSuccess: false,
-      });
-      //패킷 직렬화
-      const endBuffer = PacketUtils.SerializePacket(
-        endNotification,
-        B2C_GameEndNotificationSchema,
-        ePacketId.B2C_GameEndNotification,
-        0,
-      );
-
-      this.broadcast(endBuffer);
-      //게임 종료 후 방 삭제
-      gameRoomManager.freeRoomId(this.id);
+    for (const [uuid, tower] of this.towers) {
+      tower.attackTarget(Array.from(this.monsters.values()));
     }
+
+    //베이스캠프 체력 0 일시 게임 종료
+    // if (this.checkBaseHealth()) {
+    //   //게임 종료 알림(false 시 패배)
+    //   const endNotification = create(B2C_GameEndNotificationSchema, {
+    //     isSuccess: false,
+    //   });
+    //   //패킷 직렬화
+    //   const endBuffer = PacketUtils.SerializePacket(
+    //     endNotification,
+    //     B2C_GameEndNotificationSchema,
+    //     ePacketId.B2C_GameEndNotification,
+    //     0,
+    //   );
+
+    //   this.broadcast(endBuffer);
+    //   //게임 종료 후 방 삭제
+    //   gameRoomManager.freeRoomId(this.id);
+    // }
     //유저가 0명이 되는 순간 게임 종료
     if (this.users.size === 0) {
       gameRoomManager.freeRoomId(this.id);
