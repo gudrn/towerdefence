@@ -34,7 +34,9 @@ export class LobbySession extends Session {
    * [소켓 종료 처리]
    ---------------------------------------------*/
   onEnd() {
-    throw new Error('Method not implemented.');
+    console.log('클라이언트 연결이 종료되었습니다.');
+    gameRoomManager.onSocketDisconnected(this.getId()); // 방에서 플레이어를 제거합니다.
+    sessionManager.removeSession(this.getId());
   }
 
   /**---------------------------------------------

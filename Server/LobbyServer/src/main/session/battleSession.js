@@ -3,7 +3,7 @@ import { CustomError } from 'servercore/src/utils/error/customError.js';
 import { ErrorCodes } from 'servercore/src/utils/error/errorCodes.js';
 import { battleSessionManager } from '../../server.js';
 import battleHandlerMappings from '../handlerMapping/battleServerPacketHandler.js'
-
+import { handleError } from '../../utils/errorHandler.js';
 export class BattleSession extends Session {
   constructor(socket) {
     super(socket);
@@ -15,7 +15,9 @@ export class BattleSession extends Session {
       - 목적: 자원을 정리하거나 로그를 남기기
     ---------------------------------------------*/
   onEnd() {
-    throw new Error('Method not implemented.');
+    console.log('클라이언트 연결이 종료되었습니다.');
+    roomManager.onSocketDisconnected(this.getId()); // 방에서 플레이어를 제거합니다.
+    lobbySessionManager.removeSession(this.getId());
   }
 
   /**---------------------------------------------

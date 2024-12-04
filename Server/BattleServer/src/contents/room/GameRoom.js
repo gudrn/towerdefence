@@ -409,11 +409,9 @@ export class GameRoom {
 
     setTimeout(() => {
       this.users.forEach((player) => player.initCard());
+      this.monsterSpawner.startSpawning(0);
     }, 500);
 
-    setTimeout(() => {
-      this.monsterSpawner.startSpawning(0);
-    }, 5000);
     setInterval(() => {
       this.gameLoop();
     }, this.updateInterval);
@@ -459,38 +457,38 @@ export class GameRoom {
   handleSkill(payload, session) {
     const { prefabId, skillPos } = payload.skill;
     const user = this.users.get(session.getId());
+    let monstersInRangeForOrbital = [];
     // 카드사용
     user.useCard(payload.cardId);
     console.log(user.cardList);
     console.log('skill: ', prefabId);
     console.log('skillPos: ', skillPos);
     // 카드 데이터 가져옴
-    const card = assetManager.getCardDataByPrefabId(prefabId);
+    const skill = assetManager.getSkillsDataByPrefabId(prefabId);
 
     const applyDamageToMonsters = (monsters, damage) => {
       monsters.forEach((monster) => {
         monster.hp -= damage;
         if (monster.hp <= 0) {
-          this.handleMonsterDeath(monster);
+          monster.onDeath();
         }
       });
     };
 
-    switch (card.prefabId) {
+    switch (skill.prefabId) {
       case 'OrbitalBeam': // 궤도 폭격
-        const monstersInRangeForOrbital = [];
         for (const [key, monster] of this.monsters) {
           const distance = Math.sqrt(
             Math.pow(monster.pos.x - skillPos.x, 2) + Math.pow(monster.pos.y - skillPos.y, 2),
           );
-          if (distance <= card.range) {
+          if (distance <= skill.attackRange) {
             monstersInRangeForOrbital.push(monster);
           }
         }
-        applyDamageToMonsters(monstersInRangeForOrbital, card.damage);
+        applyDamageToMonsters(monstersInRangeForOrbital, skill.attackDamage);
         break;
       case 'CARPET_BOMBING': // 융단 폭격(구현예정)
-        const monstersInLineRange = this.monsters.filter((monster) => {
+        monstersInRangeForOrbital = this.monsters.filter((monster) => {
           // 점과 직선 사이의 거리를 구하는 공식
           // |Ax + By + C| / sqrt(A^2 + B^2)
           // 여기서 A = posInfo.y - 0, B = -(posInfo.x - 0), C = 0
@@ -500,9 +498,9 @@ export class GameRoom {
                 (skillPos.x - 0) * monster.pos.y +
                 (skillPos.x * 0 - skillPos.y * 0),
             ) / Math.sqrt(Math.pow(skillPos.y - 0, 2) + Math.pow(skillPos.x - 0, 2));
-          return distance <= card.range;
+          return distance <= skill.attackRange;
         });
-        applyDamageToMonsters(monstersInLineRange, card.damage);
+        applyDamageToMonsters(monstersInLineRange, skill.attackDamage);
         break;
       case 'TowerRepair': // 타워 힐
         let towerToHeal = null;
@@ -513,7 +511,7 @@ export class GameRoom {
           }
         }
         if (towerToHeal) {
-          towerToHeal.hp += card.heal;
+          towerToHeal.hp += skill.heal;
           if (towerToHeal.hp > towerToHeal.maxHp) {
             towerToHeal.hp = towerToHeal.maxHp;
           }
@@ -550,27 +548,23 @@ export class GameRoom {
     this.broadcast(notificationBuffer);
 
     // 공격 스킬일때만 몬스터 hp 동기화
-    if (card.type === 'Attack') {
-      const monsterHealthUpdates = monstersInLineRange.map((monster, index) =>
-        create(MonsterHealthUpdateSchema, {
-          monsterId: index,
-          currentHp: monster.hp,
+    if (skill.type === 'Attack' && monstersInRangeForOrbital.length > 0) {
+      // 2. 클라이언트에 공격 패킷 전송
+      for (const monster of monstersInRangeForOrbital) {
+        const attackPacket = create(B2C_MonsterHealthUpdateNotificationSchema, {
+          monsterId: monster.getId(),
+          hp: monster.hp,
           maxHp: monster.maxHp,
-        }),
-      );
+        });
 
-      const monsterHealthUpdateNotification = create(B2C_MonsterHealthUpdateNotificationSchema, {
-        healthUpdates: monsterHealthUpdates,
-      });
-
-      const monsterHealthUpdateBuffer = PacketUtils.SerializePacket(
-        monsterHealthUpdateNotification,
-        B2C_MonsterHealthUpdateNotificationSchema,
-        ePacketId.B2C_MonsterHealthUpdateNotification,
-        0,
-      );
-
-      this.broadcast(monsterHealthUpdateBuffer);
+        const attackBuffer = PacketUtils.SerializePacket(
+          attackPacket,
+          B2C_MonsterHealthUpdateNotificationSchema,
+          ePacketId.B2C_MonsterHealthUpdateNotification,
+          0,
+        );
+        this.broadcast(attackBuffer);
+      }
     }
   }
 
@@ -861,9 +855,6 @@ export class GameRoom {
     return true;
   }
 
-  /**
-   * 게임 루프 시작
-   */
   /**
    * 게임 루프 시작
    */

@@ -36,7 +36,7 @@ class AssetManager {
    * @type {Array<string>} 스킬카드 prefabId를 저장합니다.
    */
   skillPrefabIdCaches;
-  
+
   constructor() {
     this.monsters = new Map();
     this.stages = [];
@@ -199,9 +199,9 @@ class AssetManager {
    * @param {string} cardPrefabId 카드 prefabId
    * @returns {Object|null} 해당 카드 데이터 또는 null
    */
-  getCardDataByPrefabId(cardPrefabId) {
-    let card = this.cards.get(cardPrefabId) || null;
-    return card;
+  getSkillsDataByPrefabId(skillPrefabId) {
+    let skill = this.skills.get(skillPrefabId) || null;
+    return skill;
   }
 
   /**
@@ -228,56 +228,56 @@ class AssetManager {
    */
   getRandomTowerCards(num = 1) {
     const ret = [];
-    for (let i = 0; i < num; i+=1) {
-        const randomIndex = Math.floor(Math.random() * this.towerPrefabIdCaches.length);
-        const card = create(CardDataSchema, {
-            cardId: uuidv4(),
-            prefabId: this.towerPrefabIdCaches[randomIndex]
-        })
-        ret.push(card);
+    for (let i = 0; i < num; i += 1) {
+      const randomIndex = Math.floor(Math.random() * this.towerPrefabIdCaches.length);
+      const card = create(CardDataSchema, {
+        cardId: uuidv4(),
+        prefabId: this.towerPrefabIdCaches[randomIndex]
+      })
+      ret.push(card);
     }
     return ret;
-}
+  }
 
-/**
-   * ---------------------------------------------
-   * [getRandomSkillCards]
-   * - 랜덤 스킬 카드 배열 반환
-   * ---------------------------------------------
-   * @param {number} num 뽑을 카드의 수
-   * @returns {Array<CardData>} 
-   */
-getRandomSkillCards(num = 1) {
+  /**
+     * ---------------------------------------------
+     * [getRandomSkillCards]
+     * - 랜덤 스킬 카드 배열 반환
+     * ---------------------------------------------
+     * @param {number} num 뽑을 카드의 수
+     * @returns {Array<CardData>} 
+     */
+  getRandomSkillCards(num = 1) {
     const ret = [];
-    for (let i = 0; i < num; i+=1) {
-        const randomIndex = Math.floor(Math.random() * this.skillPrefabIdCaches.length);
-        const card = create(CardDataSchema, {
-            cardId: uuidv4(),
-            prefabId: this.skillPrefabIdCaches[randomIndex]
-        })
-        ret.push(card);
+    for (let i = 0; i < num; i += 1) {
+      const randomIndex = Math.floor(Math.random() * this.skillPrefabIdCaches.length);
+      const card = create(CardDataSchema, {
+        cardId: uuidv4(),
+        prefabId: this.skillPrefabIdCaches[randomIndex]
+      })
+      ret.push(card);
     }
     return ret;
-}
+  }
 
-/**
-   * ---------------------------------------------
-   * [getRandomCards]
-   * - 랜덤 카드 배열 반환
-   * ---------------------------------------------
-   * @param {number} num 뽑을 카드의 수
-   * @returns {Array<CardData>} 
-   */
-getRandomCards(num) {
+  /**
+     * ---------------------------------------------
+     * [getRandomCards]
+     * - 랜덤 카드 배열 반환
+     * ---------------------------------------------
+     * @param {number} num 뽑을 카드의 수
+     * @returns {Array<CardData>} 
+     */
+  getRandomCards(num) {
     //시간 남으면 subarray를 사용해서 최적화 해보기
     const numTowerCards = Math.floor(Math.random() * (num + 1));
     let towerCards = this.getRandomTowerCards(numTowerCards);
-    let skillCards = this.getRandomSkillCards(num-numTowerCards);
+    let skillCards = this.getRandomSkillCards(num - numTowerCards);
     //let skillCards = this.getRandomSkillCards(num);
 
     return towerCards.concat(skillCards);
     //return skillCards;
-}
+  }
 }
 
 export const assetManager = new AssetManager();

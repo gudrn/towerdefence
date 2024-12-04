@@ -35,10 +35,10 @@ export class GamePlayer {
 
     // 나머지 3개의 카드를 랜덤으로 추가
     const cards = assetManager.getRandomCards(3);
-    for(let card of cards){
+    for (let card of cards) {
       this.cardList.set(card.cardId, card.prefabId);
     }
-    
+
     const cardDatas = Array.from(this.cardList.entries()).map(([uuid, prefabId]) =>
       create(CardDataSchema, {
         cardId: uuid,
