@@ -141,7 +141,7 @@ export class Monster extends GameObject {
         this.attackBase(this.target);
       }
       else {
-        console.log("유효하지 않은 target");  
+        console.log("유효하지 않은 target");
       }
     }
     else {
@@ -149,9 +149,9 @@ export class Monster extends GameObject {
     }
 
     // 공격 패킷 전송
-    
+
     this.setState(OBJECT_STATE_TYPE.IDLE);
-    
+
   }
 
   /**
@@ -170,50 +170,46 @@ export class Monster extends GameObject {
   attackTarget(tower) {
     //const currentTime = Date.now();
     //if (currentTime - this.lastAttackTime > this.attackCoolDown) {
-      //this.lastAttackTime = currentTime;
+    //this.lastAttackTime = currentTime;
 
-      console.log("attack");
-      // 2. 클라이언트에 공격 패킷 전송
-      const attackPacket = create(B2C_MonsterAttackTowerNotificationSchema, {
-        monsterId: this.getId(),
-<<<<<<< HEAD
-        targetId: tower.getId(),
-=======
-        targetId: tower.getId,
->>>>>>> f9f7583b7543d7198639c6c28b436dc270e0b22d
-        attackDamage: this.attackDamage,
+    console.log("attack");
+    // 2. 클라이언트에 공격 패킷 전송
+    const attackPacket = create(B2C_MonsterAttackTowerNotificationSchema, {
+      monsterId: this.getId(),
+      targetId: tower.getId,
+      attackDamage: this.attackDamage,
+    });
+
+    const attackBuffer = PacketUtils.SerializePacket(
+      attackPacket,
+      B2C_MonsterAttackTowerNotificationSchema,
+      ePacketId.B2C_MonsterAttackTowerNotification,
+      0,
+    );
+    this.room.broadcast(attackBuffer);
+
+    // 타워 데미지 처리
+    const isDestroyed = tower.onDamaged(this.attackDamage);
+
+    // 3. 타워 파괴 처리
+    if (isDestroyed) {
+      console.log(`타워 ${tower.getId()}가 파괴되었습니다.`);
+      this.room.removeObject(tower.getId()); // GameRoom에서 타워 제거
+
+      const towerDestroyedPacket = create(B2C_TowerDestroyNotificationSchema, {
+        towerId: tower.getId(),
+        isSuccess: true,
       });
 
-      const attackBuffer = PacketUtils.SerializePacket(
-        attackPacket,
-        B2C_MonsterAttackTowerNotificationSchema,
-        ePacketId.B2C_MonsterAttackTowerNotification,
-        0,
+      const towerDestroyedBuffer = PacketUtils.SerializePacket(
+        towerDestroyedPacket,
+        B2C_TowerDestroyNotificationSchema,
+        ePacketId.B2C_TowerDestroyNotification,
+        0, //수정 부분
       );
-      this.room.broadcast(attackBuffer);
 
-      // 타워 데미지 처리
-      const isDestroyed = tower.onDamaged(this.attackDamage);
-
-      // 3. 타워 파괴 처리
-      if (isDestroyed) {
-        console.log(`타워 ${tower.getId()}가 파괴되었습니다.`);
-        this.room.removeObject(tower.getId()); // GameRoom에서 타워 제거
-
-        const towerDestroyedPacket = create(B2C_TowerDestroyNotificationSchema, {
-          towerId: tower.getId(),
-          isSuccess: true,
-        });
-
-        const towerDestroyedBuffer = PacketUtils.SerializePacket(
-          towerDestroyedPacket,
-          B2C_TowerDestroyNotificationSchema,
-          ePacketId.B2C_TowerDestroyNotification,
-          0, //수정 부분
-        );
-
-        this.room.broadcast(towerDestroyedBuffer);
-      }
+      this.room.broadcast(towerDestroyedBuffer);
+    }
     //}
   }
 

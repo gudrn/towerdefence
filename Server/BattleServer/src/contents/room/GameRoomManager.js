@@ -203,21 +203,21 @@ class GameRoomManager {
    * @param {Buffer} buffer - 몬스터 타워 공격 패킷 데이터
    * @param {BattleSession} session - 몬스터 타워 공격 요청을 보낸 세션
    ---------------------------------------------*/
-  monsterAttackTowerHandler(buffer, session) {}
+  monsterAttackTowerHandler(buffer, session) { }
 
   /**---------------------------------------------
    * [타워 HP 동기화]
    * @param {Buffer} buffer - 타워 HP 패킷 데이터
    * @param {BattleSession} session - 타워 HP 요청을 보낸 세션
    ---------------------------------------------*/
-  updateTowerHPHandler(buffer, session) {}
+  updateTowerHPHandler(buffer, session) { }
 
   /**---------------------------------------------
    * [몬스터 기지 공격 동기화]
    * @param {Buffer} buffer - 몬스터 기지 공격 패킷 데이터
    * @param {BattleSession} session - 몬스터 기지 공격 요청을 보낸 세션
    ---------------------------------------------*/
-  monsterAttackBaseHandler(buffer, session) {}
+  monsterAttackBaseHandler(buffer, session) { }
 
   // /**---------------------------------------------
   //  * [몬스터 사망 동기화]
@@ -248,7 +248,7 @@ class GameRoomManager {
   onSocketDisconnected(playerId) {
     console.log('onSocketDisconnected');
     for (const room of this.rooms.values()) {
-      const player = Array.from(room.users.values()).find((user) => user.getId() === playerId);
+      const player = Array.from(room.users.values()).find((user) => user.session.getId() === playerId);
       if (player) {
         room.leaveRoom(player);
         if (room.getCurrentUsersCount() <= 0) {
@@ -264,7 +264,8 @@ class GameRoomManager {
       console.log('유효하지 않은 roomID');
       throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomID');
     }
-
+    const room = this.rooms.get(roomId);
+    room.destroy();
     this.rooms.delete(roomId);
     this.availableRoomIds.push(roomId);
   }

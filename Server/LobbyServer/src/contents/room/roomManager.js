@@ -48,28 +48,28 @@ class RoomManager {
   /*---------------------------------------------
     [방 생성]
 ---------------------------------------------*/
-createRoomHandler(buffer, session) {
-  console.log('createRoomHandler');
-  //패킷 분해
-  const packet = fromBinary(C2L_CreateRoomRequestSchema, buffer);
-  let roomId = this.availableRoomIds.shift();
-  if(roomId == undefined){
-    handleError(session, new CustomError(ErrorCodes.SOCKET_ERROR, "방 id부족"));
-    return;
+  createRoomHandler(buffer, session) {
+    console.log('createRoomHandler');
+    //패킷 분해
+    const packet = fromBinary(C2L_CreateRoomRequestSchema, buffer);
+    let roomId = this.availableRoomIds.shift();
+    if (roomId == undefined) {
+      handleError(session, new CustomError(ErrorCodes.SOCKET_ERROR, "방 id부족"));
+      return;
+    }
+    this.rooms.set(roomId, new Room(roomId, packet.name, packet.maxUserNum));
+
+    const response = create(L2C_CreateRoomResponseSchema, {
+      isSuccess: true,
+      room: create(RoomDataSchema, {
+        id: roomId,
+        name: packet.name,
+      })
+    });
+
+    const sendBuffer = PacketUtils.SerializePacket(response, L2C_CreateRoomResponseSchema, ePacketId.L2C_CreateRoomResponse, 0);
+    session.send(sendBuffer);
   }
-  this.rooms.set(roomId, new Room(roomId, packet.name, packet.maxUserNum));
-
-  const response = create(L2C_CreateRoomResponseSchema, {
-    isSuccess: true,
-    room: create(RoomDataSchema, {
-      id: roomId, 
-      name: packet.name,
-    })
-  });
-
-  const sendBuffer = PacketUtils.SerializePacket(response, L2C_CreateRoomResponseSchema, ePacketId.L2C_CreateRoomResponse, 0);
-  session.send(sendBuffer);
-}
   /**---------------------------------------------
     [방 입장]
     * @param {Buffer} buffer
