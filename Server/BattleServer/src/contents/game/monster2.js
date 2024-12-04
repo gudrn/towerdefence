@@ -82,10 +82,10 @@ export class Monster extends GameObject {
     if (this.target) {
       const pos = MathUtils.calcPosDiff(this.target.getPos(), this.getPos());
       const dist = Math.abs(pos.x) + Math.abs(pos.y);
-      const attackRange = this.target instanceof Base ? this.attackRange + 1 : this.attackRange;
+      const attackRange = this.target instanceof Base ? this.attackRange + 1.5 : this.attackRange;
 
-      if (dist === attackRange) {
-        // console.log('monsterAttack');
+      if (dist <= attackRange) {
+        console.log('monsterAttack');
         this.waitUntil = Date.now() + this.attackCoolDown * 1000;
         this.setState(OBJECT_STATE_TYPE.SKILL);
       } else {
@@ -140,12 +140,18 @@ export class Monster extends GameObject {
       } else if (this.target instanceof Base) {
         this.attackBase(this.target);
       }
+      else {
+        console.log("유효하지 않은 target");  
+      }
+    }
+    else {
+      console.log("유효하지 않은 target2");
     }
 
     // 공격 패킷 전송
-    if (!this.target || this.target.isDestroyed) {
-      this.setState(OBJECT_STATE_TYPE.IDLE);
-    }
+    
+    this.setState(OBJECT_STATE_TYPE.IDLE);
+    
   }
 
   /**
@@ -162,14 +168,15 @@ export class Monster extends GameObject {
    */
 
   attackTarget(tower) {
-    const currentTime = Date.now();
-    if (currentTime - this.lastAttackTime > this.attackCoolDown) {
-      this.lastAttackTime = currentTime;
+    //const currentTime = Date.now();
+    //if (currentTime - this.lastAttackTime > this.attackCoolDown) {
+      //this.lastAttackTime = currentTime;
 
+      console.log("attack");
       // 2. 클라이언트에 공격 패킷 전송
       const attackPacket = create(B2C_MonsterAttackTowerNotificationSchema, {
         monsterId: this.getId(),
-        targetId: tower.id,
+        targetId: tower.getId,
         attackDamage: this.attackDamage,
       });
 
@@ -203,7 +210,7 @@ export class Monster extends GameObject {
 
         this.room.broadcast(towerDestroyedBuffer);
       }
-    }
+    //}
   }
 
   /**
