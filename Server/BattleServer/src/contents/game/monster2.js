@@ -75,9 +75,9 @@ export class Monster extends GameObject {
   UpdateIdle() {
     if (!this.room) return;
 
-    if (!this.target) {
-      this.target = this.room.findCloseBuilding(this.getPos());
-    }
+    // if (!this.target) {
+    // }
+    this.target = this.room.findCloseBuilding(this.getPos());
 
     if (this.target) {
       const pos = MathUtils.calcPosDiff(this.target.getPos(), this.getPos());
