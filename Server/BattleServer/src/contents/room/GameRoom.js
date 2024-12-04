@@ -286,7 +286,17 @@ export class GameRoom {
 
         const nextKey = key(nextPos);
 
-        if (!this.canGo(nextPos)) continue;
+        //대각선 이동 시  막혀있는 곳은 없는지 검사
+        if (dir.x !== 0 && dir.y !== 0) {
+          const adjacent1 = { x: node.pos.x + dir.x, y: node.pos.y };
+          const adjacent2 = { x: node.pos.x, y: node.pos.y + dir.y };
+
+          if (!this.canGo(adjacent1) || !this.canGo(adjacent2)) {
+              continue; // 양쪽 경로 중 하나라도 막혀 있으면 대각선 이동 불가
+          }
+      }
+
+      if (!this.canGo(nextPos)) continue;
 
         const cost = Math.abs(dest.y - nextPos.y) + Math.abs(dest.x - nextPos.x);
         const bestValue = best.get(nextKey);
@@ -396,8 +406,19 @@ export class GameRoom {
 
   OnGameStart() {
     console.log('OnGameStart Called');
+<<<<<<< HEAD
     this.monsterSpawner.startSpawning(0);
 
+=======
+    
+    setTimeout(() => {
+      this.users.forEach((player) => player.initCard());
+    }, 500);
+
+    setTimeout(() => {
+      this.monsterSpawner.startSpawning(0);
+    }, 5000);
+>>>>>>> f9f7583b7543d7198639c6c28b436dc270e0b22d
     setInterval(() => {
       this.gameLoop();
     }, this.updateInterval);
