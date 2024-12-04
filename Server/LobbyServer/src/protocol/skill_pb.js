@@ -2,48 +2,46 @@
 // @generated from file skill.proto (package Protocol, syntax proto3)
 /* eslint-disable */
 
-import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import { file_enum } from "./enum_pb.js";
-import { file_struct } from "./struct_pb.js";
+import { fileDesc, messageDesc } from '@bufbuild/protobuf/codegenv1';
+import { file_enum } from './enum_pb.js';
+import { file_struct } from './struct_pb.js';
 
 /**
  * Describes the file skill.proto.
  */
-export const file_skill = /*@__PURE__*/
-  fileDesc("Cgtza2lsbC5wcm90bxIIUHJvdG9jb2wiVgoQQzJCX1NraWxsUmVxdWVzdBIiCgVza2lsbBgBIAEoCzITLlByb3RvY29sLlNraWxsRGF0YRIOCgZyb29tSWQYAiABKAUSDgoGY2FyZElkGAMgASgJIjYKEUIyQ19Ta2lsbFJlc3BvbnNlEhEKCWlzU3VjY2VzcxgBIAEoCBIOCgZjYXJkSWQYAiABKAkiPgoYQjJDX1VzZVNraWxsTm90aWZpY2F0aW9uEiIKBXNraWxsGAEgASgLMhMuUHJvdG9jb2wuU2tpbGxEYXRhIjMKC0IyQ19BZGRDYXJkEiQKCGNhcmREYXRhGAEgASgLMhIuUHJvdG9jb2wuQ2FyZERhdGEiOAoQQjJDX0luaXRDYXJkRGF0YRIkCghjYXJkRGF0YRgBIAMoCzISLlByb3RvY29sLkNhcmREYXRhYgZwcm90bzM", [file_enum, file_struct]);
+export const file_skill =
+  /*@__PURE__*/
+  fileDesc(
+    'Cgtza2lsbC5wcm90bxIIUHJvdG9jb2wiVgoQQzJCX1NraWxsUmVxdWVzdBIiCgVza2lsbBgBIAEoCzITLlByb3RvY29sLlNraWxsRGF0YRIOCgZyb29tSWQYAiABKAUSDgoGY2FyZElkGAMgASgJIjYKEUIyQ19Ta2lsbFJlc3BvbnNlEhEKCWlzU3VjY2VzcxgBIAEoCBIOCgZjYXJkSWQYAiABKAkiPgoYQjJDX1VzZVNraWxsTm90aWZpY2F0aW9uEiIKBXNraWxsGAEgASgLMhMuUHJvdG9jb2wuU2tpbGxEYXRhIjMKC0IyQ19BZGRDYXJkEiQKCGNhcmREYXRhGAEgASgLMhIuUHJvdG9jb2wuQ2FyZERhdGEiOAoQQjJDX0luaXRDYXJkRGF0YRIkCghjYXJkRGF0YRgBIAMoCzISLlByb3RvY29sLkNhcmREYXRhYgZwcm90bzM',
+    [file_enum, file_struct],
+  );
 
 /**
  * Describes the message Protocol.C2B_SkillRequest.
  * Use `create(C2B_SkillRequestSchema)` to create a new message.
  */
-export const C2B_SkillRequestSchema = /*@__PURE__*/
-  messageDesc(file_skill, 0);
+export const C2B_SkillRequestSchema = /*@__PURE__*/ messageDesc(file_skill, 0);
 
 /**
  * Describes the message Protocol.B2C_SkillResponse.
  * Use `create(B2C_SkillResponseSchema)` to create a new message.
  */
-export const B2C_SkillResponseSchema = /*@__PURE__*/
-  messageDesc(file_skill, 1);
+export const B2C_SkillResponseSchema = /*@__PURE__*/ messageDesc(file_skill, 1);
 
 /**
  * Describes the message Protocol.B2C_UseSkillNotification.
  * Use `create(B2C_UseSkillNotificationSchema)` to create a new message.
  */
-export const B2C_UseSkillNotificationSchema = /*@__PURE__*/
-  messageDesc(file_skill, 2);
+export const B2C_UseSkillNotificationSchema = /*@__PURE__*/ messageDesc(file_skill, 2);
 
 /**
  * Describes the message Protocol.B2C_AddCard.
  * Use `create(B2C_AddCardSchema)` to create a new message.
  */
-export const B2C_AddCardSchema = /*@__PURE__*/
-  messageDesc(file_skill, 3);
+export const B2C_AddCardSchema = /*@__PURE__*/ messageDesc(file_skill, 3);
 
 /**
  * Describes the message Protocol.B2C_InitCardData.
  * Use `create(B2C_InitCardDataSchema)` to create a new message.
  */
-export const B2C_InitCardDataSchema = /*@__PURE__*/
-  messageDesc(file_skill, 4);
-
+export const B2C_InitCardDataSchema = /*@__PURE__*/ messageDesc(file_skill, 4);

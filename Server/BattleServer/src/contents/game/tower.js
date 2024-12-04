@@ -162,8 +162,6 @@ export class Tower extends GameObject {
   }
 
   onDeath() {
-    console.log(`타워 ${this.getId()}가 터졌습니다.`);
-
     this.room.removeObject(this.getId());
   }
 
