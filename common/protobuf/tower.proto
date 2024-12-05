@@ -52,4 +52,5 @@ message B2C_TowerHealthUpdateNotification
 {
     string towerId = 1;
     int32 hp = 2;
+    int32 maxHp = 3;
 }

@@ -37,6 +37,7 @@ import { MonsterHealthUpdateSchema } from '../../protocol/struct_pb.js';
 import { B2C_MonsterHealthUpdateNotificationSchema } from '../../protocol/monster_pb.js';
 import { B2C_UseSkillNotificationSchema } from '../../protocol/skill_pb.js';
 import { B2C_MonsterDeathNotificationSchema } from '../../protocol/monster_pb.js';
+import { B2C_TowerHealthUpdateNotificationSchema } from '../../protocol/tower_pb.js';
 export class GameRoom {
   //유저의 스폰 위치
   static spawnCoordinates = [
@@ -590,6 +591,7 @@ export class GameRoom {
       const towerPacket = create(B2C_TowerHealthUpdateNotificationSchema, {
         towerId: towerToHeal[0],
         hp: towerToHeal[1].hp,
+        maxHp: towerToHeal[1].maxHp,
       });
 
       const towerBuffer = PacketUtils.SerializePacket(
