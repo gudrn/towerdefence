@@ -29,20 +29,21 @@ namespace Protocol {
             "LlByb3RvY29sLlBvc0luZm8SEAoIcHJlZmFiSWQYAiABKAkiQAocQjJDX01v",
             "bnN0ZXJEZWF0aE5vdGlmaWNhdGlvbhIRCgltb25zdGVySWQYASABKAkSDQoF",
             "c2NvcmUYAiABKAUiSwolQjJDX01vbnN0ZXJQb3NpdGlvblVwZGF0ZU5vdGlm",
-            "aWNhdGlvbhIiCgdwb3NJbmZvGAEgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyJf",
+            "aWNhdGlvbhIiCgdwb3NJbmZvGAEgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyJk",
             "CiJCMkNfTW9uc3RlckF0dGFja1Rvd2VyTm90aWZpY2F0aW9uEhEKCW1vbnN0",
-            "ZXJJZBgBIAEoCRIQCgh0YXJnZXRJZBgCIAEoCRIUCgxhdHRhY2tEYW1hZ2UY",
-            "AyABKAUiTAohQjJDX01vbnN0ZXJBdHRhY2tCYXNlTm90aWZpY2F0aW9uEhEK",
-            "CW1vbnN0ZXJJZBgBIAEoCRIUCgxhdHRhY2tEYW1hZ2UYAiABKAUiUwojQjJD",
-            "X01vbnN0ZXJIZWFsdGhVcGRhdGVOb3RpZmljYXRpb24SEQoJbW9uc3Rlcklk",
-            "GAEgASgJEgoKAmhwGAIgASgFEg0KBW1heEhwGAMgASgFYgZwcm90bzM="));
+            "ZXJJZBgBIAEoCRIQCgh0YXJnZXRJZBgCIAEoCRIKCgJocBgDIAEoBRINCgVt",
+            "YXhIcBgEIAEoBSJMCiFCMkNfTW9uc3RlckF0dGFja0Jhc2VOb3RpZmljYXRp",
+            "b24SEQoJbW9uc3RlcklkGAEgASgJEhQKDGF0dGFja0RhbWFnZRgCIAEoBSJT",
+            "CiNCMkNfTW9uc3RlckhlYWx0aFVwZGF0ZU5vdGlmaWNhdGlvbhIRCgltb25z",
+            "dGVySWQYASABKAkSCgoCaHAYAiABKAUSDQoFbWF4SHAYAyABKAViBnByb3Rv",
+            "Mw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Protocol.StructReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_SpawnMonsterNotification), global::Protocol.B2C_SpawnMonsterNotification.Parser, new[]{ "PosInfo", "PrefabId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_MonsterDeathNotification), global::Protocol.B2C_MonsterDeathNotification.Parser, new[]{ "MonsterId", "Score" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_MonsterPositionUpdateNotification), global::Protocol.B2C_MonsterPositionUpdateNotification.Parser, new[]{ "PosInfo" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_MonsterAttackTowerNotification), global::Protocol.B2C_MonsterAttackTowerNotification.Parser, new[]{ "MonsterId", "TargetId", "AttackDamage" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_MonsterAttackTowerNotification), global::Protocol.B2C_MonsterAttackTowerNotification.Parser, new[]{ "MonsterId", "TargetId", "Hp", "MaxHp" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_MonsterAttackBaseNotification), global::Protocol.B2C_MonsterAttackBaseNotification.Parser, new[]{ "MonsterId", "AttackDamage" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_MonsterHealthUpdateNotification), global::Protocol.B2C_MonsterHealthUpdateNotification.Parser, new[]{ "MonsterId", "Hp", "MaxHp" }, null, null, null, null)
           }));
@@ -758,7 +759,8 @@ namespace Protocol {
     public B2C_MonsterAttackTowerNotification(B2C_MonsterAttackTowerNotification other) : this() {
       monsterId_ = other.monsterId_;
       targetId_ = other.targetId_;
-      attackDamage_ = other.attackDamage_;
+      hp_ = other.hp_;
+      maxHp_ = other.maxHp_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -792,15 +794,27 @@ namespace Protocol {
       }
     }
 
-    /// <summary>Field number for the "attackDamage" field.</summary>
-    public const int AttackDamageFieldNumber = 3;
-    private int attackDamage_;
+    /// <summary>Field number for the "hp" field.</summary>
+    public const int HpFieldNumber = 3;
+    private int hp_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int AttackDamage {
-      get { return attackDamage_; }
+    public int Hp {
+      get { return hp_; }
       set {
-        attackDamage_ = value;
+        hp_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "maxHp" field.</summary>
+    public const int MaxHpFieldNumber = 4;
+    private int maxHp_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int MaxHp {
+      get { return maxHp_; }
+      set {
+        maxHp_ = value;
       }
     }
 
@@ -821,7 +835,8 @@ namespace Protocol {
       }
       if (MonsterId != other.MonsterId) return false;
       if (TargetId != other.TargetId) return false;
-      if (AttackDamage != other.AttackDamage) return false;
+      if (Hp != other.Hp) return false;
+      if (MaxHp != other.MaxHp) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -831,7 +846,8 @@ namespace Protocol {
       int hash = 1;
       if (MonsterId.Length != 0) hash ^= MonsterId.GetHashCode();
       if (TargetId.Length != 0) hash ^= TargetId.GetHashCode();
-      if (AttackDamage != 0) hash ^= AttackDamage.GetHashCode();
+      if (Hp != 0) hash ^= Hp.GetHashCode();
+      if (MaxHp != 0) hash ^= MaxHp.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -858,9 +874,13 @@ namespace Protocol {
         output.WriteRawTag(18);
         output.WriteString(TargetId);
       }
-      if (AttackDamage != 0) {
+      if (Hp != 0) {
         output.WriteRawTag(24);
-        output.WriteInt32(AttackDamage);
+        output.WriteInt32(Hp);
+      }
+      if (MaxHp != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(MaxHp);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -880,9 +900,13 @@ namespace Protocol {
         output.WriteRawTag(18);
         output.WriteString(TargetId);
       }
-      if (AttackDamage != 0) {
+      if (Hp != 0) {
         output.WriteRawTag(24);
-        output.WriteInt32(AttackDamage);
+        output.WriteInt32(Hp);
+      }
+      if (MaxHp != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(MaxHp);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -900,8 +924,11 @@ namespace Protocol {
       if (TargetId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(TargetId);
       }
-      if (AttackDamage != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(AttackDamage);
+      if (Hp != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Hp);
+      }
+      if (MaxHp != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MaxHp);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -921,8 +948,11 @@ namespace Protocol {
       if (other.TargetId.Length != 0) {
         TargetId = other.TargetId;
       }
-      if (other.AttackDamage != 0) {
-        AttackDamage = other.AttackDamage;
+      if (other.Hp != 0) {
+        Hp = other.Hp;
+      }
+      if (other.MaxHp != 0) {
+        MaxHp = other.MaxHp;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -948,7 +978,11 @@ namespace Protocol {
             break;
           }
           case 24: {
-            AttackDamage = input.ReadInt32();
+            Hp = input.ReadInt32();
+            break;
+          }
+          case 32: {
+            MaxHp = input.ReadInt32();
             break;
           }
         }
@@ -975,7 +1009,11 @@ namespace Protocol {
             break;
           }
           case 24: {
-            AttackDamage = input.ReadInt32();
+            Hp = input.ReadInt32();
+            break;
+          }
+          case 32: {
+            MaxHp = input.ReadInt32();
             break;
           }
         }

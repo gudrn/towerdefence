@@ -47,7 +47,8 @@ namespace Protocol {
             "c3MYASABKAgiJgoUQzJMX0xlYXZlUm9vbVJlcXVlc3QSDgoGcm9vbUlkGAEg",
             "ASgFIioKFUwyQ19MZWF2ZVJvb21SZXNwb25zZRIRCglpc1N1Y2Nlc3MYASAB",
             "KAgiKwoZTDJDX0xlYXZlUm9vbU5vdGlmaWNhdGlvbhIOCgZ1c2VySWQYASAB",
-            "KAliBnByb3RvMw=="));
+            "KAkiMQocQjJDX2luY3JlYXNlV2F2ZU5vdGlmaWNhdGlvbhIRCglpc1N1Y2Nl",
+            "c3MYASABKAhiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Protocol.StructReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -67,7 +68,8 @@ namespace Protocol {
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_JoinRoomRequest), global::Protocol.B2C_JoinRoomRequest.Parser, new[]{ "IsSuccess" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.C2L_LeaveRoomRequest), global::Protocol.C2L_LeaveRoomRequest.Parser, new[]{ "RoomId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.L2C_LeaveRoomResponse), global::Protocol.L2C_LeaveRoomResponse.Parser, new[]{ "IsSuccess" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.L2C_LeaveRoomNotification), global::Protocol.L2C_LeaveRoomNotification.Parser, new[]{ "UserId" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.L2C_LeaveRoomNotification), global::Protocol.L2C_LeaveRoomNotification.Parser, new[]{ "UserId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_increaseWaveNotification), global::Protocol.B2C_increaseWaveNotification.Parser, new[]{ "IsSuccess" }, null, null, null, null)
           }));
     }
     #endregion
@@ -3623,6 +3625,195 @@ namespace Protocol {
             break;
           case 10: {
             UserId = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class B2C_increaseWaveNotification : pb::IMessage<B2C_increaseWaveNotification>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<B2C_increaseWaveNotification> _parser = new pb::MessageParser<B2C_increaseWaveNotification>(() => new B2C_increaseWaveNotification());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<B2C_increaseWaveNotification> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Protocol.RoomReflection.Descriptor.MessageTypes[17]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public B2C_increaseWaveNotification() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public B2C_increaseWaveNotification(B2C_increaseWaveNotification other) : this() {
+      isSuccess_ = other.isSuccess_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public B2C_increaseWaveNotification Clone() {
+      return new B2C_increaseWaveNotification(this);
+    }
+
+    /// <summary>Field number for the "isSuccess" field.</summary>
+    public const int IsSuccessFieldNumber = 1;
+    private bool isSuccess_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool IsSuccess {
+      get { return isSuccess_; }
+      set {
+        isSuccess_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as B2C_increaseWaveNotification);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(B2C_increaseWaveNotification other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (IsSuccess != other.IsSuccess) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (IsSuccess != false) hash ^= IsSuccess.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (IsSuccess != false) {
+        output.WriteRawTag(8);
+        output.WriteBool(IsSuccess);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (IsSuccess != false) {
+        output.WriteRawTag(8);
+        output.WriteBool(IsSuccess);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (IsSuccess != false) {
+        size += 1 + 1;
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(B2C_increaseWaveNotification other) {
+      if (other == null) {
+        return;
+      }
+      if (other.IsSuccess != false) {
+        IsSuccess = other.IsSuccess;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            IsSuccess = input.ReadBool();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            IsSuccess = input.ReadBool();
             break;
           }
         }

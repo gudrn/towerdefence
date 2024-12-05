@@ -31,7 +31,7 @@ export class Base {
     onDamaged(amount) {
         this.hp -= amount;
         if (this.hp < 0) this.hp = 0;
-        console.log(`Base가 ${amount} 데미지를 받았습니다. 현재 HP: ${this.hp}`);
+        //console.log(`Base가 ${amount} 데미지를 받았습니다. 현재 HP: ${this.hp}`);
     }
 
     /**

@@ -2,8 +2,8 @@
 // @generated from file room.proto (package Protocol, syntax proto3)
 /* eslint-disable */
 
-import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import { file_struct } from "./struct_pb.js";
+import { fileDesc, messageDesc } from '@bufbuild/protobuf/codegenv1';
+import { file_struct } from './struct_pb.js';
 
 /**
  * Describes the file room.proto.
@@ -15,122 +15,110 @@ export const file_room = /*@__PURE__*/
  * Describes the message Protocol.C2L_CreateRoomRequest.
  * Use `create(C2L_CreateRoomRequestSchema)` to create a new message.
  */
-export const C2L_CreateRoomRequestSchema = /*@__PURE__*/
-  messageDesc(file_room, 0);
+export const C2L_CreateRoomRequestSchema = /*@__PURE__*/ messageDesc(file_room, 0);
 
 /**
  * Describes the message Protocol.L2C_CreateRoomResponse.
  * Use `create(L2C_CreateRoomResponseSchema)` to create a new message.
  */
-export const L2C_CreateRoomResponseSchema = /*@__PURE__*/
-  messageDesc(file_room, 1);
+export const L2C_CreateRoomResponseSchema = /*@__PURE__*/ messageDesc(file_room, 1);
 
 /**
  * Describes the message Protocol.L2B_CreateGameRoomRequest.
  * Use `create(L2B_CreateGameRoomRequestSchema)` to create a new message.
  */
-export const L2B_CreateGameRoomRequestSchema = /*@__PURE__*/
-  messageDesc(file_room, 2);
+export const L2B_CreateGameRoomRequestSchema = /*@__PURE__*/ messageDesc(file_room, 2);
 
 /**
  * Describes the message Protocol.B2L_CreateGameRoomRespone.
  * Use `create(B2L_CreateGameRoomResponeSchema)` to create a new message.
  */
-export const B2L_CreateGameRoomResponeSchema = /*@__PURE__*/
-  messageDesc(file_room, 3);
+export const B2L_CreateGameRoomResponeSchema = /*@__PURE__*/ messageDesc(file_room, 3);
 
 /**
  * Describes the message Protocol.C2L_GameStart.
  * Use `create(C2L_GameStartSchema)` to create a new message.
  */
-export const C2L_GameStartSchema = /*@__PURE__*/
-  messageDesc(file_room, 4);
+export const C2L_GameStartSchema = /*@__PURE__*/ messageDesc(file_room, 4);
 
 /**
  * Describes the message Protocol.L2C_GameStart.
  * Use `create(L2C_GameStartSchema)` to create a new message.
  */
-export const L2C_GameStartSchema = /*@__PURE__*/
-  messageDesc(file_room, 5);
+export const L2C_GameStartSchema = /*@__PURE__*/ messageDesc(file_room, 5);
 
 /**
  * Describes the message Protocol.L2B_GameStartRequest.
  * Use `create(L2B_GameStartRequestSchema)` to create a new message.
  */
-export const L2B_GameStartRequestSchema = /*@__PURE__*/
-  messageDesc(file_room, 6);
+export const L2B_GameStartRequestSchema = /*@__PURE__*/ messageDesc(file_room, 6);
 
 /**
  * Describes the message Protocol.B2C_GameStartNotification.
  * Use `create(B2C_GameStartNotificationSchema)` to create a new message.
  */
-export const B2C_GameStartNotificationSchema = /*@__PURE__*/
-  messageDesc(file_room, 7);
+export const B2C_GameStartNotificationSchema = /*@__PURE__*/ messageDesc(file_room, 7);
 
 /**
  * Describes the message Protocol.C2L_GetRoomListRequest.
  * Use `create(C2L_GetRoomListRequestSchema)` to create a new message.
  */
-export const C2L_GetRoomListRequestSchema = /*@__PURE__*/
-  messageDesc(file_room, 8);
+export const C2L_GetRoomListRequestSchema = /*@__PURE__*/ messageDesc(file_room, 8);
 
 /**
  * Describes the message Protocol.L2C_GetRoomListResponse.
  * Use `create(L2C_GetRoomListResponseSchema)` to create a new message.
  */
-export const L2C_GetRoomListResponseSchema = /*@__PURE__*/
-  messageDesc(file_room, 9);
+export const L2C_GetRoomListResponseSchema = /*@__PURE__*/ messageDesc(file_room, 9);
 
 /**
  * Describes the message Protocol.C2L_JoinRoomRequest.
  * Use `create(C2L_JoinRoomRequestSchema)` to create a new message.
  */
-export const C2L_JoinRoomRequestSchema = /*@__PURE__*/
-  messageDesc(file_room, 10);
+export const C2L_JoinRoomRequestSchema = /*@__PURE__*/ messageDesc(file_room, 10);
 
 /**
  * Describes the message Protocol.L2C_JoinRoomResponse.
  * Use `create(L2C_JoinRoomResponseSchema)` to create a new message.
  */
-export const L2C_JoinRoomResponseSchema = /*@__PURE__*/
-  messageDesc(file_room, 11);
+export const L2C_JoinRoomResponseSchema = /*@__PURE__*/ messageDesc(file_room, 11);
 
 /**
  * Describes the message Protocol.L2C_JoinRoomNotification.
  * Use `create(L2C_JoinRoomNotificationSchema)` to create a new message.
  */
-export const L2C_JoinRoomNotificationSchema = /*@__PURE__*/
-  messageDesc(file_room, 12);
+export const L2C_JoinRoomNotificationSchema = /*@__PURE__*/ messageDesc(file_room, 12);
 
 /**
  * Describes the message Protocol.B2C_JoinRoomRequest.
  * Use `create(B2C_JoinRoomRequestSchema)` to create a new message.
  */
-export const B2C_JoinRoomRequestSchema = /*@__PURE__*/
-  messageDesc(file_room, 13);
+export const B2C_JoinRoomRequestSchema = /*@__PURE__*/ messageDesc(file_room, 13);
 
 /**
  * Describes the message Protocol.C2L_LeaveRoomRequest.
  * Use `create(C2L_LeaveRoomRequestSchema)` to create a new message.
  */
-export const C2L_LeaveRoomRequestSchema = /*@__PURE__*/
-  messageDesc(file_room, 14);
+export const C2L_LeaveRoomRequestSchema = /*@__PURE__*/ messageDesc(file_room, 14);
 
 /**
  * Describes the message Protocol.L2C_LeaveRoomResponse.
  * Use `create(L2C_LeaveRoomResponseSchema)` to create a new message.
  */
-export const L2C_LeaveRoomResponseSchema = /*@__PURE__*/
-  messageDesc(file_room, 15);
+export const L2C_LeaveRoomResponseSchema = /*@__PURE__*/ messageDesc(file_room, 15);
 
 /**
  * Describes the message Protocol.L2C_LeaveRoomNotification.
  * Use `create(L2C_LeaveRoomNotificationSchema)` to create a new message.
  */
-export const L2C_LeaveRoomNotificationSchema = /*@__PURE__*/
-  messageDesc(file_room, 16);
+export const L2C_LeaveRoomNotificationSchema = /*@__PURE__*/ messageDesc(file_room, 16);
 
 /**
+ * Describes the message Protocol.B2C_increaseWaveNotification.
+ * Use `create(B2C_increaseWaveNotificationSchema)` to create a new message.
+ */
+export const B2C_increaseWaveNotificationSchema = /*@__PURE__*/ messageDesc(file_room, 17);
+
  * Describes the message Protocol.B2L_SocketDisconnectedNotification.
  * Use `create(B2L_SocketDisconnectedNotificationSchema)` to create a new message.
  */

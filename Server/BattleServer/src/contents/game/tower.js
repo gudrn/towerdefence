@@ -120,6 +120,9 @@ export class Tower extends GameObject {
           maxHp: target.maxHp,
         });
 
+        console.log('targetHp: ', target.hp);
+        console.log('targetMaxHp: ', target.maxHp);
+
         const attackBuffer = PacketUtils.SerializePacket(
           attackPacket,
           B2C_MonsterHealthUpdateNotificationSchema,
@@ -130,6 +133,10 @@ export class Tower extends GameObject {
 
         // 3. 몬스터 사망 처리
         if (isDestroyed) {
+          const monsterScore = target.score;
+
+          // 점수를 GameRoom에 추가
+          this.room.addScore(monsterScore);
           const mopnsterDeathPacket = create(B2C_MonsterDeathNotificationSchema, {
             monsterId: target.getId(),
             score: target.score,
@@ -162,8 +169,6 @@ export class Tower extends GameObject {
   }
 
   onDeath() {
-    console.log(`타워 ${this.getId()}가 터졌습니다.`);
-
     this.room.removeObject(this.getId());
   }
 

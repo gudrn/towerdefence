@@ -3,6 +3,7 @@ import { assetManager } from '../../utils/assetManager.js';
 import { GamePlayer } from '../../contents/game/gamePlayer.js';
 import {
   B2C_GameStartNotificationSchema,
+  B2C_increaseWaveNotificationSchema,
   B2C_JoinRoomRequestSchema,
 } from '../../protocol/room_pb.js';
 import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
@@ -70,7 +71,11 @@ export class GameRoom {
 
     //this.generateObstacles(); // 장애물 랜덤 배치
     this.updateInterval = 200; // 200ms 간격으로 업데이트
+    this.score = 0; // 현재 점수
+    this.wave = 1; // 현재 웨이브
+    this.monsterStatusMultiplier = 1; // 몬스터 강화 계수
     this.gameLoopInterval = null;
+
   }
 
   /**
@@ -211,7 +216,7 @@ export class GameRoom {
     /** @type {Map<Vec2, PosInfo>} */
     let usedPositions = new Map();
 
-    for (let i = 0; i < obstacleCount;) {
+    for (let i = 0; i < obstacleCount; ) {
       // 랜덤 좌표 생성
       const randomVec2 = { x: MathUtils.randomRangeInt(5, 26), y: MathUtils.randomRangeInt(2, 30) };
       const posInfo = create(PosInfoSchema, { x: randomVec2.x, y: randomVec2.y });
@@ -409,11 +414,8 @@ export class GameRoom {
 
     setTimeout(() => {
       this.users.forEach((player) => player.initCard());
-    }, 500);
-
-    setTimeout(() => {
       this.monsterSpawner.startSpawning(0);
-    }, 5000);
+    }, 500);
 
     this.gameLoopInterval = setInterval(() => {
       this.gameLoop();
@@ -498,8 +500,8 @@ export class GameRoom {
           const distance =
             Math.abs(
               (skillPos.y - 0) * monster.pos.x -
-              (skillPos.x - 0) * monster.pos.y +
-              (skillPos.x * 0 - skillPos.y * 0),
+                (skillPos.x - 0) * monster.pos.y +
+                (skillPos.x * 0 - skillPos.y * 0),
             ) / Math.sqrt(Math.pow(skillPos.y - 0, 2) + Math.pow(skillPos.x - 0, 2));
           return distance <= skill.attackRange;
         });
@@ -552,7 +554,6 @@ export class GameRoom {
 
     // 공격 스킬일때만 몬스터 hp 동기화
     if (skill.type === 'Attack' && monstersInRangeForOrbital.length > 0) {
-
       // 2. 클라이언트에 공격 패킷 전송
       for (const monster of monstersInRangeForOrbital) {
         if (monster.hp <= 0) {
@@ -922,6 +923,7 @@ export class GameRoom {
     if (object instanceof Monster) {
       this.monsters.set(object.getId(), object);
       console.log('몬스터 생성', object.getId());
+      console.log('몬스터 maxHp: ', object.maxHp);
 
       const packet = create(B2C_SpawnMonsterNotificationSchema, {
         posInfo: object.getPos(),
@@ -969,11 +971,6 @@ export class GameRoom {
     return null;
   }
 
-  getMonsterSearchAndReward = (monster) => {
-    const reward = monsterInfo.monsterInfo[monster.monsterNumber - 1];
-    this.score += reward.score;
-  };
-
   /**
    * 장애물 랜덤 배치
    */
@@ -1016,6 +1013,44 @@ export class GameRoom {
 
   //   this.broadcast(obstacleBuffer);
   // }
+
+
+  /**
+   * 점수를 추가하고 웨이브 상태를 확인
+   * @param {number} monsterScore - 추가할 점수
+   */
+  addScore(monsterScore) {
+    this.score += monsterScore;
+
+    // 특정 점수 도달 시 웨이브 증가
+    const scorePerWave = 10; // 웨이브 증가 기준 점수
+    if (this.score >= this.wave * scorePerWave) {
+      this.increaseWave();
+    }
+  }
+
+  /**
+   * 웨이브를 증가시키고 몬스터를 강화
+   */
+  increaseWave() {
+    this.wave += 1;
+    console.log(`웨이브가 ${this.wave}단계로 올랐습니다!`);
+
+    // 강화 계수 증가
+    this.monsterStatusMultiplier += 0.1;
+
+    const increaseWavePacket = create(B2C_increaseWaveNotificationSchema, {
+      isSuccess: true,
+    });
+
+    const increaseWaveBuffer = PacketUtils.SerializePacket(
+      increaseWavePacket,
+      B2C_increaseWaveNotificationSchema,
+      ePacketId.B2C_increaseWaveNotification,
+      0, //수정 부분
+    );
+
+    this.broadcast(increaseWaveBuffer);
 
   checkBaseHealth() {
     return this.baseHealth <= 0;

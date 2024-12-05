@@ -26,7 +26,8 @@ message B2C_MonsterAttackTowerNotification
 {
     string monsterId = 1;
     string targetId = 2;
-    int32 attackDamage =3;
+    int32 hp = 3;
+    int32 maxHp = 4;
 }
 
 // 몬스터 -> 베이스 공격 알림

@@ -17,6 +17,7 @@ import {
 } from '../../protocol/tower_pb.js';
 import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
+import { MonsterSpawner } from '../room/monsterSpanwner.js';
 
 /**
  * 몬스터를 나타내는 클래스입니다.
@@ -45,11 +46,24 @@ export class Monster extends GameObject {
     this.moveSpeed = monsterData.moveSpeed; // 이동 속도
     this.score = monsterData.score; // 점수
     this.waitUntil = 0; // 딜레이 시간
+    this.spawnRate = MonsterSpawner.spawnRate; // 몬스터 스폰 주기
 
     console.log('------------');
     console.log('몬스터 스포너');
     console.log(this.pos.uuid);
     console.log('------------');
+  }
+
+  /**
+   * 몬스터를 강화하는 메서드
+   * @param {number} multiplier - 강화 배율 0.1이면, 10%가 오름
+   */
+  statusMultiplier(multiplier) {
+    this.maxHp = Math.floor(this.maxHp * multiplier);
+    this.hp = this.maxHp;
+    this.attackDamage = Math.floor(this.attackDamage * multiplier);
+    this.spawnRate = Math.floor(this.spawnRate * multiplier);
+    console.log(`몬스터가 강화되었습니다. `, this.maxHp);
   }
 
   /**
@@ -75,9 +89,9 @@ export class Monster extends GameObject {
   UpdateIdle() {
     if (!this.room) return;
 
-    if (!this.target) {
-      this.target = this.room.findCloseBuilding(this.getPos());
-    }
+    //if (!this.target) {
+    this.target = this.room.findCloseBuilding(this.getPos());
+    //}
 
     if (this.target) {
       const pos = MathUtils.calcPosDiff(this.target.getPos(), this.getPos());
@@ -85,7 +99,7 @@ export class Monster extends GameObject {
       const attackRange = this.target instanceof Base ? this.attackRange + 1.5 : this.attackRange;
 
       if (dist <= attackRange) {
-        console.log('monsterAttack');
+        console.log('monsterAttack: ', this.getId());
         this.waitUntil = Date.now() + this.attackCoolDown * 1000;
         this.setState(OBJECT_STATE_TYPE.SKILL);
       } else {
@@ -131,27 +145,24 @@ export class Monster extends GameObject {
    * 몬스터의 SKILL 상태를 업데이트합니다.
    */
   UpdateSkill() {
-    // const now = Date.now();
-    // if (this.waitUntil > now) return;
+    const now = Date.now();
+    if (this.waitUntil > now) return;
 
     if (this.target) {
       if (this.target instanceof Tower) {
         this.attackTarget(this.target);
       } else if (this.target instanceof Base) {
         this.attackBase(this.target);
+      } else {
+        console.log('유효하지 않은 target');
       }
-      else {
-        console.log("유효하지 않은 target");
-      }
-    }
-    else {
-      console.log("유효하지 않은 target2");
+    } else {
+      console.log('유효하지 않은 target2');
     }
 
     // 공격 패킷 전송
 
     this.setState(OBJECT_STATE_TYPE.IDLE);
-
   }
 
   /**
@@ -168,16 +179,13 @@ export class Monster extends GameObject {
    */
 
   attackTarget(tower) {
-    //const currentTime = Date.now();
-    //if (currentTime - this.lastAttackTime > this.attackCoolDown) {
-    //this.lastAttackTime = currentTime;
-
-    console.log("attack");
+    console.log('attack');
     // 2. 클라이언트에 공격 패킷 전송
     const attackPacket = create(B2C_MonsterAttackTowerNotificationSchema, {
       monsterId: this.getId(),
-      targetId: tower.getId,
-      attackDamage: this.attackDamage,
+      targetId: tower.getId(),
+      hp: tower.hp,
+      maxHp: tower.maxHp,
     });
 
     const attackBuffer = PacketUtils.SerializePacket(
@@ -217,45 +225,40 @@ export class Monster extends GameObject {
    * 기지 공격
    */
   attackBase(base) {
-    const currentTime = Date.now();
-    if (currentTime - this.lastAttackTime > this.attackCoolDown) {
-      this.lastAttackTime = currentTime;
+    const baseAttackPacket = create(B2C_MonsterAttackBaseNotificationSchema, {
+      monsterId: this.getId(),
+      attackDamage: this.attackDamage,
+    });
 
-      const baseAttackPacket = create(B2C_MonsterAttackBaseNotificationSchema, {
-        monsterId: this.getId(),
-        attackDamage: this.attackDamage,
+    const baseAttackBuffer = PacketUtils.SerializePacket(
+      baseAttackPacket,
+      B2C_MonsterAttackBaseNotificationSchema,
+      ePacketId.B2C_MonsterAttackBaseNotification,
+      0, //수정 부분
+    );
+    this.room.broadcast(baseAttackBuffer);
+
+    // 기지 데미지 처리
+    const isDestroyed = base.onDamaged(this.attackDamage);
+
+    // 3. 기지 파괴 처리
+    if (isDestroyed) {
+      console.log(`기지가 파괴되었습니다.`);
+      this.room.removeObject(base.getId()); // GameRoom에서 타워 제거
+
+      // 이걸 그냥 게임오버로 만들면 되는게 아닌지.
+      const baseDestroyedPacket = create(B2C_BaseDestroyNotificationSchema, {
+        isSuccess: true,
       });
 
-      const baseAttackBuffer = PacketUtils.SerializePacket(
-        baseAttackPacket,
-        B2C_MonsterAttackBaseNotificationSchema,
-        ePacketId.B2C_MonsterAttackBaseNotification,
+      const baseDestroyedBuffer = PacketUtils.SerializePacket(
+        baseDestroyedPacket,
+        B2C_BaseDestroyNotificationSchema,
+        ePacketId.B2C_BaseDestroyNotification,
         0, //수정 부분
       );
-      this.room.broadcast(baseAttackBuffer);
 
-      // 기지 데미지 처리
-      const isDestroyed = base.onDamaged(this.attackDamage);
-
-      // 3. 기지 파괴 처리
-      if (isDestroyed) {
-        console.log(`기지가 파괴되었습니다.`);
-        this.room.removeObject(base.getId()); // GameRoom에서 타워 제거
-
-        // 이걸 그냥 게임오버로 만들면 되는게 아닌지.
-        const baseDestroyedPacket = create(B2C_BaseDestroyNotificationSchema, {
-          isSuccess: true,
-        });
-
-        const baseDestroyedBuffer = PacketUtils.SerializePacket(
-          baseDestroyedPacket,
-          B2C_BaseDestroyNotificationSchema,
-          ePacketId.B2C_BaseDestroyNotification,
-          0, //수정 부분
-        );
-
-        this.room.broadcast(baseDestroyedBuffer);
-      }
+      this.room.broadcast(baseDestroyedBuffer);
     }
   }
 
