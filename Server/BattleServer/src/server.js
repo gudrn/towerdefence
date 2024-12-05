@@ -4,11 +4,9 @@ import { onConnection } from './main/handler/initPacketHandler.js';
 
 import { BattleSession } from './main/session/battleSession.js';
 
-
 import { battleConfig } from './config/config.js';
 import { SessionManager } from 'ServerCore/src/network/sessionManager.js';
 import { assetManager } from './utils/assetManager.js';
-
 
 const server = net.createServer(onConnection);
 
@@ -19,11 +17,11 @@ const server = net.createServer(onConnection);
 export const sessionManager = new SessionManager(BattleSession);
 
 export let lobbySession = new LobbySession(new net.Socket());
-lobbySession.connectLobbyServer();
 
 const initServer = async () => {
   try {
-    await assetManager.loadGameAssets();
+    lobbySession.connectLobbyServer();
+    const asset = await assetManager.loadGameAssets();
     // 다음 작업
   } catch (error) {
     console.error(error.message);

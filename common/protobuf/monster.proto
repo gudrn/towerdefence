@@ -4,33 +4,45 @@ package Protocol;
 
 import "struct.proto";
 
-message C2B_SpawnMonsterRequest {
-}
-
-
+// 몬스터 생성 알림
 message B2C_SpawnMonsterNotification {
-    PosInfo posInfos = 1;
+    PosInfo posInfo = 1;
     string prefabId = 2;
 }
 
-message C2B_MonsterAttackTowerRequest {
-    int32 monsterId = 1;
-    int32 towerId = 2;
-}
-
-message S2B_UpdateTowerHPNotification {
-    int32 towerId = 1;
-    int32 updatedTowerHP = 2;
-}
-
-message B2S_MonsterAttackBaseRequest {
-    int32 damage = 1;
-}
-
-message C2B_MonsterDeathRequest {
-    int32 monsterId = 1;
-}
-
+// 몬스터 사망 알림
 message B2C_MonsterDeathNotification {
-    int32 monsterId = 1;
+    string monsterId = 1;
+    int32 score = 2;
 }
+
+// 몬스터 위치 동기화
+message B2C_MonsterPositionUpdateNotification {
+    PosInfo posInfo = 1;
+}
+
+// 몬스터 -> 타워 공격 알림
+message B2C_MonsterAttackTowerNotification
+{
+    string monsterId = 1;
+    string targetId = 2;
+    int32 hp = 3;
+    int32 maxHp = 4;
+}
+
+// 몬스터 -> 베이스 공격 알림
+message B2C_MonsterAttackBaseNotification
+{
+    string monsterId = 1;
+    int32 attackDamage = 2;
+}
+
+// 몬스터 체력 업데이트
+message B2C_MonsterHealthUpdateNotification {
+    string monsterId = 1;
+    int32 hp = 2;
+    int32 maxHp = 3;
+}
+
+
+

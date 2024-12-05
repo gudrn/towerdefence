@@ -8,7 +8,7 @@ import { enumDesc, fileDesc, tsEnum } from "@bufbuild/protobuf/codegenv1";
  * Describes the file enum.proto.
  */
 export const file_enum = /*@__PURE__*/
-  fileDesc("CgplbnVtLnByb3RvEghQcm90b2NvbCozCg1Sb29tU3RhdGVUeXBlEggKBFdBSVQQABILCgdQUkVQQVJFEAESCwoHSU5BR0FNRRACKkkKCk9iamVjdFR5cGUSCQoFVE9XRVIQABIKCgZQTEFZRVIQARILCgdNT05TVEVSEAISDgoKUFJPSkVDVElMRRADEgcKA0VOVhAEKjIKCENhcmRUeXBlEhAKDEFUVEFDS19UT1dFUhAAEhQKEFNUUl9BVFRBQ0tfVE9XRVIQASqAAQoNQ2hhcmFjdGVyVHlwZRIRCg1Ob25lQ2hhcmFjdGVyEAASBwoDUmVkEAESCQoFU2hhcmsQAxIKCgZNYWxhbmcQBRIKCgZGcm9nZ3kQBxILCgdCb21iTWFuEAgSCwoHU2xvd01hbhAJEggKBE1hc2sQChIMCghEaW5vc291chAMYgZwcm90bzM");
+  fileDesc("CgplbnVtLnByb3RvEghQcm90b2NvbCozCg1Sb29tU3RhdGVUeXBlEggKBFdBSVQQABILCgdQUkVQQVJFEAESCwoHSU5BR0FNRRACKkkKCk9iamVjdFR5cGUSCQoFVE9XRVIQABIKCgZQTEFZRVIQARILCgdNT05TVEVSEAISDgoKUFJPSkVDVElMRRADEgcKA0VOVhAEKjIKEU9CSkVDVF9TVEFURV9UWVBFEggKBElETEUQABIICgRNT1ZFEAESCQoFU0tJTEwQAio0CghDYXJkVHlwZRITCg9DQVJEX1RZUEVfVE9XRVIQABITCg9DQVJEX1RZUEVfU0tJTEwQAWIGcHJvdG8z");
 
 /**
  * Describes the enum Protocol.RoomStateType.
@@ -37,28 +37,26 @@ export const ObjectType = /*@__PURE__*/
   tsEnum(ObjectTypeSchema);
 
 /**
+ * Describes the enum Protocol.OBJECT_STATE_TYPE.
+ */
+export const OBJECT_STATE_TYPESchema = /*@__PURE__*/
+  enumDesc(file_enum, 2);
+
+/**
+ * @generated from enum Protocol.OBJECT_STATE_TYPE
+ */
+export const OBJECT_STATE_TYPE = /*@__PURE__*/
+  tsEnum(OBJECT_STATE_TYPESchema);
+
+/**
  * Describes the enum Protocol.CardType.
  */
 export const CardTypeSchema = /*@__PURE__*/
-  enumDesc(file_enum, 2);
+  enumDesc(file_enum, 3);
 
 /**
  * @generated from enum Protocol.CardType
  */
 export const CardType = /*@__PURE__*/
   tsEnum(CardTypeSchema);
-
-/**
- * Describes the enum Protocol.CharacterType.
- */
-export const CharacterTypeSchema = /*@__PURE__*/
-  enumDesc(file_enum, 3);
-
-/**
- * 캐릭터 타입, 변경 주의(클라 의존성)
- *
- * @generated from enum Protocol.CharacterType
- */
-export const CharacterType = /*@__PURE__*/
-  tsEnum(CharacterTypeSchema);
 

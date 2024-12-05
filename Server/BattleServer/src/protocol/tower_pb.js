@@ -9,7 +9,7 @@ import { file_struct } from "./struct_pb.js";
  * Describes the file tower.proto.
  */
 export const file_tower = /*@__PURE__*/
-  fileDesc("Cgt0b3dlci5wcm90bxIIUHJvdG9jb2wiTAoVQzJCX1Rvd2VyQnVpbGRSZXF1ZXN0EiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAUiTwoWQjJDX1Rvd2VyQnVpbGRSZXNwb25zZRIRCglpc1N1Y2Nlc3MYASABKAgSIgoFdG93ZXIYAiABKAsyEy5Qcm90b2NvbC5Ub3dlckRhdGEiTwoYQjJDX0FkZFRvd2VyTm90aWZpY2F0aW9uEiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAUiOwoWQjJDX1Rvd2VyQXR0YWNrUmVxdWVzdBIPCgd0b3dlcklkGAEgASgFEhAKCHRhcmdldElkGAIgASgFIlYKG0IyQ19Ub3dlckF0dGFja05vdGlmaWNhdGlvbhIRCglpc1N1Y2Nlc3MYASABKAgSDgoGZGFtYWdlGAIgASgFEhQKDHRhcmdldEhlYWx0aBgDIAEoBSIqChdDMkJfVG93ZXJEZXN0cm95UmVxdWVzdBIPCgd0b3dlcklkGAEgASgFIisKGEMyQl9Ub3dlckRlc3Ryb3lSZXNwb25zZRIPCgd0b3dlcklkGAEgASgFIi8KHEMyQl9Ub3dlckRlc3Ryb3lOb3RpZmljYXRpb24SDwoHdG93ZXJJZBgBIAEoBWIGcHJvdG8z", [file_struct]);
+  fileDesc("Cgt0b3dlci5wcm90bxIIUHJvdG9jb2wibAoVQzJCX1Rvd2VyQnVpbGRSZXF1ZXN0EiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAkSDgoGcm9vbUlkGAMgASgFEg4KBmNhcmRJZBgEIAEoCSIrChZCMkNfVG93ZXJCdWlsZFJlc3BvbnNlEhEKCWlzU3VjY2VzcxgBIAEoCCJRChpCMkNfVG93ZXJCdWlsZE5vdGlmaWNhdGlvbhIiCgV0b3dlchgBIAEoCzITLlByb3RvY29sLlRvd2VyRGF0YRIPCgdvd25lcklkGAIgASgJInAKIkIyQ19Ub3dlckF0dGFja01vbnN0ZXJOb3RpZmljYXRpb24SDwoHdG93ZXJJZBgBIAEoCRIlCgptb25zdGVyUG9zGAIgASgLMhEuUHJvdG9jb2wuUG9zSW5mbxISCgp0cmF2ZWxUaW1lGAMgASgCIkIKHEIyQ19Ub3dlckRlc3Ryb3lOb3RpZmljYXRpb24SEQoJaXNTdWNjZXNzGAEgASgIEg8KB3Rvd2VySWQYAiABKAkiMgobQjJDX0Jhc2VEZXN0cm95Tm90aWZpY2F0aW9uEhMKC2lzRGVzdHJvaWVkGAEgASgIIk8KIUIyQ19Ub3dlckhlYWx0aFVwZGF0ZU5vdGlmaWNhdGlvbhIPCgd0b3dlcklkGAEgASgJEgoKAmhwGAIgASgFEg0KBW1heEhwGAMgASgFYgZwcm90bzM", [file_struct]);
 
 /**
  * Describes the message Protocol.C2B_TowerBuildRequest.
@@ -26,44 +26,37 @@ export const B2C_TowerBuildResponseSchema = /*@__PURE__*/
   messageDesc(file_tower, 1);
 
 /**
- * Describes the message Protocol.B2C_AddTowerNotification.
- * Use `create(B2C_AddTowerNotificationSchema)` to create a new message.
+ * Describes the message Protocol.B2C_TowerBuildNotification.
+ * Use `create(B2C_TowerBuildNotificationSchema)` to create a new message.
  */
-export const B2C_AddTowerNotificationSchema = /*@__PURE__*/
+export const B2C_TowerBuildNotificationSchema = /*@__PURE__*/
   messageDesc(file_tower, 2);
 
 /**
- * Describes the message Protocol.B2C_TowerAttackRequest.
- * Use `create(B2C_TowerAttackRequestSchema)` to create a new message.
+ * Describes the message Protocol.B2C_TowerAttackMonsterNotification.
+ * Use `create(B2C_TowerAttackMonsterNotificationSchema)` to create a new message.
  */
-export const B2C_TowerAttackRequestSchema = /*@__PURE__*/
+export const B2C_TowerAttackMonsterNotificationSchema = /*@__PURE__*/
   messageDesc(file_tower, 3);
 
 /**
- * Describes the message Protocol.B2C_TowerAttackNotification.
- * Use `create(B2C_TowerAttackNotificationSchema)` to create a new message.
+ * Describes the message Protocol.B2C_TowerDestroyNotification.
+ * Use `create(B2C_TowerDestroyNotificationSchema)` to create a new message.
  */
-export const B2C_TowerAttackNotificationSchema = /*@__PURE__*/
+export const B2C_TowerDestroyNotificationSchema = /*@__PURE__*/
   messageDesc(file_tower, 4);
 
 /**
- * Describes the message Protocol.C2B_TowerDestroyRequest.
- * Use `create(C2B_TowerDestroyRequestSchema)` to create a new message.
+ * Describes the message Protocol.B2C_BaseDestroyNotification.
+ * Use `create(B2C_BaseDestroyNotificationSchema)` to create a new message.
  */
-export const C2B_TowerDestroyRequestSchema = /*@__PURE__*/
+export const B2C_BaseDestroyNotificationSchema = /*@__PURE__*/
   messageDesc(file_tower, 5);
 
 /**
- * Describes the message Protocol.C2B_TowerDestroyResponse.
- * Use `create(C2B_TowerDestroyResponseSchema)` to create a new message.
+ * Describes the message Protocol.B2C_TowerHealthUpdateNotification.
+ * Use `create(B2C_TowerHealthUpdateNotificationSchema)` to create a new message.
  */
-export const C2B_TowerDestroyResponseSchema = /*@__PURE__*/
+export const B2C_TowerHealthUpdateNotificationSchema = /*@__PURE__*/
   messageDesc(file_tower, 6);
-
-/**
- * Describes the message Protocol.C2B_TowerDestroyNotification.
- * Use `create(C2B_TowerDestroyNotificationSchema)` to create a new message.
- */
-export const C2B_TowerDestroyNotificationSchema = /*@__PURE__*/
-  messageDesc(file_tower, 7);
 

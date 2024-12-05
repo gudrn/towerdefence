@@ -30,7 +30,7 @@ message B2L_CreateGameRoomRespone
 
 message C2L_GameStart
 {
-    string userId = 1; //방장(보내는 사람의 )의 I
+    string userId = 1;      // 방장(보내는 사람)의 ID
     int32 roomId = 2;       // 입장하려는 Room ID
 }
 
@@ -50,6 +50,7 @@ message L2B_GameStartRequest
 message B2C_GameStartNotification  
 {
     repeated GamePlayerData playerDatas = 1;
+    repeated PosInfo obstaclePosInfos = 2;
 }
 
 message C2L_GetRoomListRequest 
@@ -96,4 +97,20 @@ message L2C_LeaveRoomResponse
 message L2C_LeaveRoomNotification 
 {
     string userId = 1;
+}
+
+
+message B2C_increaseWaveNotification
+{
+    bool isSuccess = 1;
+}
+
+message B2L_SocketDisconnectedNotification
+{
+    string sessionId = 1;
+}
+
+message B2C_GameEndNotification
+{
+    bool isSuccess = 1;
 }

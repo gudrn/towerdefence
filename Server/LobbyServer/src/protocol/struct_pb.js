@@ -9,7 +9,7 @@ import { file_enum } from "./enum_pb.js";
  * Describes the file struct.proto.
  */
 export const file_struct = /*@__PURE__*/
-  fileDesc("CgxzdHJ1Y3QucHJvdG8SCFByb3RvY29sIiUKCEJhc2VEYXRhEgoKAmhwGAEgASgFEg0KBW1heEhwGAIgASgFIlYKCVRvd2VyRGF0YRIPCgd0b3dlcklkGAEgASgFEhMKC3Rvd2VyTnVtYmVyGAIgASgFEiMKCHRvd2VyUG9zGAMgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyJtCgtNb25zdGVyRGF0YRIRCgltb25zdGVySWQYASABKAUSFQoNbW9uc3Rlck51bWJlchgCIAEoBRINCgVsZXZlbBgDIAEoBRIlCgptb25zdGVyUG9zGAQgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyJQCghVc2VyRGF0YRIKCgJpZBgBIAEoCRIMCgRuYW1lGAIgASgJEioKCWNoYXJhY3RlchgDIAEoCzIXLlByb3RvY29sLkNoYXJhY3RlckRhdGEilAEKCFJvb21EYXRhEgoKAmlkGAEgASgFEg8KB293bmVySWQYAiABKAkSDAoEbmFtZRgDIAEoCRISCgptYXhVc2VyTnVtGAQgASgFEiYKBXN0YXRlGAUgASgOMhcuUHJvdG9jb2wuUm9vbVN0YXRlVHlwZRIhCgV1c2VycxgGIAMoCzISLlByb3RvY29sLlVzZXJEYXRhIj8KDUNoYXJhY3RlckRhdGESLgoNY2hhcmFjdGVyVHlwZRgBIAEoDjIXLlByb3RvY29sLkNoYXJhY3RlclR5cGUiLQoHUG9zSW5mbxIMCgR1dWlkGAEgASgJEgkKAXgYAiABKAISCQoBeRgDIAEoAiIcCgRWZWMyEgkKAXgYASABKAISCQoBeRgCIAEoAiJ3Cg5HYW1lUGxheWVyRGF0YRIjCghwb3NpdGlvbhgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SEAoIbmlja25hbWUYAiABKAkSLgoNY2hhcmFjdGVyVHlwZRgDIAEoDjIXLlByb3RvY29sLkNoYXJhY3RlclR5cGUiMgoJRXJyb3JEYXRhEhQKDHJlc3BvbnNlQ29kZRgBIAEoBRIPCgdtZXNzYWdlGAIgASgJYgZwcm90bzM", [file_enum]);
+  fileDesc("CgxzdHJ1Y3QucHJvdG8SCFByb3RvY29sIiUKCEJhc2VEYXRhEgoKAmhwGAEgASgFEg0KBW1heEhwGAIgASgFIm0KC01vbnN0ZXJEYXRhEhEKCW1vbnN0ZXJJZBgBIAEoBRIVCg1tb25zdGVyTnVtYmVyGAIgASgFEg0KBWxldmVsGAMgASgFEiUKCm1vbnN0ZXJQb3MYBCABKAsyES5Qcm90b2NvbC5Qb3NJbmZvIjYKCFVzZXJEYXRhEgoKAmlkGAEgASgJEgwKBG5hbWUYAiABKAkSEAoIcHJlZmFiSWQYAyABKAkilAEKCFJvb21EYXRhEgoKAmlkGAEgASgFEg8KB293bmVySWQYAiABKAkSDAoEbmFtZRgDIAEoCRISCgptYXhVc2VyTnVtGAQgASgFEiYKBXN0YXRlGAUgASgOMhcuUHJvdG9jb2wuUm9vbVN0YXRlVHlwZRIhCgV1c2VycxgGIAMoCzISLlByb3RvY29sLlVzZXJEYXRhIi0KB1Bvc0luZm8SDAoEdXVpZBgBIAEoCRIJCgF4GAIgASgCEgkKAXkYAyABKAIiWQoOR2FtZVBsYXllckRhdGESIwoIcG9zaXRpb24YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhAKCG5pY2tuYW1lGAIgASgJEhAKCHByZWZhYklkGAMgASgJIjIKCUVycm9yRGF0YRIUCgxyZXNwb25zZUNvZGUYASABKAUSDwoHbWVzc2FnZRgCIAEoCSJCCglUb3dlckRhdGESEAoIcHJlZmFiSWQYASABKAkSIwoIdG93ZXJQb3MYAiABKAsyES5Qcm90b2NvbC5Qb3NJbmZvIkIKCVNraWxsRGF0YRIQCghwcmVmYWJJZBgBIAEoCRIjCghza2lsbFBvcxgCIAEoCzIRLlByb3RvY29sLlBvc0luZm8iLAoIQ2FyZERhdGESDgoGY2FyZElkGAEgASgJEhAKCHByZWZhYklkGAIgASgJIkoKE01vbnN0ZXJIZWFsdGhVcGRhdGUSEQoJbW9uc3RlcklkGAEgASgJEhEKCWN1cnJlbnRIcBgCIAEoBRINCgVtYXhIcBgDIAEoBWIGcHJvdG8z", [file_enum]);
 
 /**
  * Describes the message Protocol.BaseData.
@@ -19,65 +19,72 @@ export const BaseDataSchema = /*@__PURE__*/
   messageDesc(file_struct, 0);
 
 /**
- * Describes the message Protocol.TowerData.
- * Use `create(TowerDataSchema)` to create a new message.
- */
-export const TowerDataSchema = /*@__PURE__*/
-  messageDesc(file_struct, 1);
-
-/**
  * Describes the message Protocol.MonsterData.
  * Use `create(MonsterDataSchema)` to create a new message.
  */
 export const MonsterDataSchema = /*@__PURE__*/
-  messageDesc(file_struct, 2);
+  messageDesc(file_struct, 1);
 
 /**
  * Describes the message Protocol.UserData.
  * Use `create(UserDataSchema)` to create a new message.
  */
 export const UserDataSchema = /*@__PURE__*/
-  messageDesc(file_struct, 3);
+  messageDesc(file_struct, 2);
 
 /**
  * Describes the message Protocol.RoomData.
  * Use `create(RoomDataSchema)` to create a new message.
  */
 export const RoomDataSchema = /*@__PURE__*/
-  messageDesc(file_struct, 4);
-
-/**
- * Describes the message Protocol.CharacterData.
- * Use `create(CharacterDataSchema)` to create a new message.
- */
-export const CharacterDataSchema = /*@__PURE__*/
-  messageDesc(file_struct, 5);
+  messageDesc(file_struct, 3);
 
 /**
  * Describes the message Protocol.PosInfo.
  * Use `create(PosInfoSchema)` to create a new message.
  */
 export const PosInfoSchema = /*@__PURE__*/
-  messageDesc(file_struct, 6);
-
-/**
- * Describes the message Protocol.Vec2.
- * Use `create(Vec2Schema)` to create a new message.
- */
-export const Vec2Schema = /*@__PURE__*/
-  messageDesc(file_struct, 7);
+  messageDesc(file_struct, 4);
 
 /**
  * Describes the message Protocol.GamePlayerData.
  * Use `create(GamePlayerDataSchema)` to create a new message.
  */
 export const GamePlayerDataSchema = /*@__PURE__*/
-  messageDesc(file_struct, 8);
+  messageDesc(file_struct, 5);
 
 /**
  * Describes the message Protocol.ErrorData.
  * Use `create(ErrorDataSchema)` to create a new message.
  */
 export const ErrorDataSchema = /*@__PURE__*/
+  messageDesc(file_struct, 6);
+
+/**
+ * Describes the message Protocol.TowerData.
+ * Use `create(TowerDataSchema)` to create a new message.
+ */
+export const TowerDataSchema = /*@__PURE__*/
+  messageDesc(file_struct, 7);
+
+/**
+ * Describes the message Protocol.SkillData.
+ * Use `create(SkillDataSchema)` to create a new message.
+ */
+export const SkillDataSchema = /*@__PURE__*/
+  messageDesc(file_struct, 8);
+
+/**
+ * Describes the message Protocol.CardData.
+ * Use `create(CardDataSchema)` to create a new message.
+ */
+export const CardDataSchema = /*@__PURE__*/
   messageDesc(file_struct, 9);
+
+/**
+ * Describes the message Protocol.MonsterHealthUpdate.
+ * Use `create(MonsterHealthUpdateSchema)` to create a new message.
+ */
+export const MonsterHealthUpdateSchema = /*@__PURE__*/
+  messageDesc(file_struct, 10);
 

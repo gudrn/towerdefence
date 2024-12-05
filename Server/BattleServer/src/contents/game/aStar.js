@@ -1,3 +1,5 @@
+import { Vec2 } from "ServerCore/src/utils/vec2.js";
+
 class PriorityQueue {
   // PriorityQueue는 우선순위 큐로 우선순위따라 좌표 처리를 함
   constructor() {
@@ -19,14 +21,14 @@ class PriorityQueue {
 } // PriorityQueue를 통하여 전체적인 탐색 효율 향상.
 
 /**
- @param {string} start - 시작 지점 (객체 {x, y} 형태)
- @param {string} goal - 목표 지점 (객체 {x, y} 형태)
+ @param {Vec2} start - 시작 지점 (객체 {x, y} 형태)
+ @param {Vec2} goal - 목표 지점 (객체 {x, y} 형태)
  @param {string} grid - 탐색할 전체 맵의 크기 ({width, height} 형태)
  @param {Array} obstacles - 장애물 목록 (객체 배열 [ {x, y}, ... ])
  @param {number} size - 오브젝트 크기 (이번 프로젝트에서는 몬스터)
 **/
 
-function aStar(start, goal, grid, obstacles, size) {
+export function aStar(start, goal, grid, obstacles, size) {
   const openSet = new PriorityQueue(); // openSet을 PriorityQueue로 변경
   openSet.enqueue(start, 0); // 시작 지점을 priority 0으로 큐에 추가.
 
@@ -72,6 +74,11 @@ function aStar(start, goal, grid, obstacles, size) {
   return []; // 탐색이 완료될 때까지 목표를 찾지 못하면 빈 배열 반환.
 }
 
+
+  /**
+    @param {Vec2} node - 시작 지점 (객체 {x, y} 형태)
+    @param {Vec2} goal - 목표 지점 (객체 {x, y} 형태)
+    **/
 function heuristic(node, goal) {
   // 대각선 이동을 반영하기 위한 휴리스틱 (Chebyshev distance - 체비쇼프 거리 = 체스판 거리)
   const dx = Math.abs(node.x - goal.x);
@@ -139,15 +146,19 @@ function getNeighbors(node, grid, obstacles, size) {
 
 // isInGrid는 이웃 노드가 grid 범위 내에 있는지 확인.
 function isInGrid(node, grid, size) {
-  // dx와 dy로 몬스터가 이동 할 시, 차지하는 모든 셀이 grid 내에 있는지 확인
+  // Grid 중심을 기준으로 음수 범위를 계산
+  const gridMinX = -Math.floor(grid.width / 2);
+  const gridMinY = -Math.floor(grid.height / 2);
+  const gridMaxX = Math.floor(grid.width / 2);
+  const gridMaxY = Math.floor(grid.height / 2);
+
+  // dx와 dy로 몬스터 크기를 고려하여 모든 셀이 그리드 내에 있는지 확인
   for (let dx = 0; dx < size; dx++) {
     for (let dy = 0; dy < size; dy++) {
-      if (
-        node.x + dx < 0 ||
-        node.x + dx >= grid.width ||
-        node.y + dy < 0 ||
-        node.y + dy >= grid.height
-      ) {
+      const checkX = node.x + dx;
+      const checkY = node.y + dy;
+
+      if (checkX < gridMinX || checkX >= gridMaxX || checkY < gridMinY || checkY >= gridMaxY) {
         return false;
       }
     }
@@ -211,70 +222,3 @@ function reconstructPath(cameFrom, current) {
   }
   return path;
 }
-
-// // A* 알고리즘 테스트 데이터
-// const start = { x: 0, y: 0 }; // 시작 지점
-// const goal = { x: 11, y: 11 }; // 목표 지점
-// const grid = { width: 12, height: 12 }; // 그리드 크기
-
-// // 장애물 배치: 대각선으로 이동할 때 몬스터가 걸리도록 구성
-// const obstacles = [
-//   { x: 2, y: 2 },
-//   { x: 2, y: 3 }, // 몬스터가 2x2 크기라서 대각선으로 갈 수 없게 만듦
-//   { x: 3, y: 2 },
-//   { x: 3, y: 3 },
-//   { x: 5, y: 5 },
-//   { x: 5, y: 6 }, // 중간에도 장애물 배치
-//   { x: 6, y: 5 },
-//   { x: 6, y: 6 },
-//   { x: 8, y: 8 },
-//   { x: 8, y: 9 }, // 끝부분에서 몬스터가 또다시 막히도록 배치
-//   { x: 9, y: 8 },
-//   { x: 9, y: 9 },
-// ];
-
-// // 몬스터 크기
-// const Size = 2;
-
-// // A* 알고리즘 테스트 데이터
-// const start = { x: 0, y: 0 }; // 시작 지점
-// const goal = { x: 7, y: 7 }; // 목표 지점
-// const grid = { width: 8, height: 8 }; // 그리드 크기
-// const obstacles = [
-//   { x: 1, y: 1 },
-//   { x: 1, y: 3 },
-//   { x: 1, y: 4 },
-//   { x: 1, y: 5 }, // 시작 지점 근처 장애물
-//   { x: 1, y: 7 },
-//   { x: 4, y: 2 },
-//   { x: 4, y: 3 },
-//   { x: 4, y: 4 }, // 중앙부를 막는 장애물
-//   { x: 4, y: 5 },
-//   { x: 5, y: 6 },
-//   { x: 6, y: 6 }, // 목표 지점 근처 장애물
-//   { x: 2, y: 6 },
-//   { x: 3, y: 6 },
-//   { x: 6, y: 1 }, // 기타 장애물
-//   { x: 7, y: 3 },
-//   { x: 7, y: 4 },
-//   { x: 6, y: 5 }, // 추가로 복잡하게 만드는 장애물
-// ];
-
-// // 몬스터 크기
-// const Size = 1;
-
-// console.log('A* 알고리즘 테스트 시작');
-
-// // A* 알고리즘 실행
-// try {
-//   const path = aStar(start, goal, grid, obstacles, monsterSize);
-//   if (path.length > 0) {
-//     console.log('최단 경로:', path);
-//   } else {
-//     console.log('경로를 찾을 수 없습니다.');
-//   }
-// } catch (error) {
-//   console.error('오류 발생:', error.message);
-// }
-
-// console.log('A* 알고리즘 테스트 종료');

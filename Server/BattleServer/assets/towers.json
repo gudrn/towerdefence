@@ -1,0 +1,55 @@
+{
+  "name": "towers",
+  "version": "1.0.0",
+  "data": [
+    {
+      "prefabId": "BasicTower",
+      "attackDamage": 50,
+      "attackRange": 5,
+      "attackCoolDown": 1000,
+      "maxHp": 100
+    },
+    {
+      "prefabId": "BuffTower",
+      "attackDamage": 50,
+      "attackRange": 5,
+      "attackCoolDown": 1000,
+      "maxHp": 100
+    },
+    {
+      "prefabId": "IceTower",
+      "attackDamage": 50,
+      "attackRange": 5,
+      "attackCoolDown": 1000,
+      "maxHp": 100
+    },
+    {
+      "prefabId": "MissileTower",
+      "attackDamage": 50,
+      "attackRange": 8,
+      "attackCoolDown": 1000,
+      "maxHp": 100
+    },
+    {
+      "prefabId": "StrongTower",
+      "attackDamage": 50,
+      "attackRange": 5,
+      "attackCoolDown": 2000,
+      "maxHp": 100
+    },
+    {
+      "prefabId": "TankTower",
+      "attackDamage": 50,
+      "attackRange": 5,
+      "attackCoolDown": 2000,
+      "maxHp": 100
+    },
+    {
+      "prefabId": "ThunderTower",
+      "attackDamage": 50,
+      "attackRange": 5,
+      "attackCoolDown": 2000,
+      "maxHp": 100
+    }
+  ]
+}
