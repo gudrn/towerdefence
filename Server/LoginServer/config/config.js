@@ -10,7 +10,7 @@ import {
   REDIS_URL,
 } from '../constants/env.js';
 
-export const config = {
+export const Config = {
   server: {
     host: HOST,
     port: PORT,
@@ -19,13 +19,13 @@ export const config = {
     version: CLIENT_VERSION,
   },
   db: {
-    host: DB_HOST,
-    port: DB_PORT,
-    user: DB_NAME,
-    password: DB_PASSWORD,
-    database: DB_NAME,
+    host: DB_HOST || '127.0.0.1', // 기본값 추가
+    port: DB_PORT || 3306,
+    user: DB_USER || 'root',
+    password: DB_PASSWORD || 'qwer1234',
+    database: DB_NAME || 'user_db',
   },
   redisClient: {
-    host: REDIS_URL,
+    host: REDIS_URL || 'redis://localhost:5000', // 기본값 추가
   },
 };

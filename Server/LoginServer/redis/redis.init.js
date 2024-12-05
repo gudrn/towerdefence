@@ -1,8 +1,8 @@
 import Redis from 'ioredis';
 import dotenv from 'dotenv';
-import { config } from '../config/config.js';
+import { Config } from '../config/config.js';
 
-export const redisClient = new Redis(config.redisClient.host);
+export const redisClient = new Redis(Config.redisClient.host);
 
 redisClient.on('error', (err) => console.error('Redis 클라이언트 오류:', err));
 
