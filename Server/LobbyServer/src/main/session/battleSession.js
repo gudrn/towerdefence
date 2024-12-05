@@ -1,10 +1,9 @@
 import { Session } from 'servercore/src/network/session.js';
 import { CustomError } from 'servercore/src/utils/error/customError.js';
 import { ErrorCodes } from 'servercore/src/utils/error/errorCodes.js';
-import { sessionManager } from '../../server.js';
-import battleHandlerMappings from '../handlerMapping/battleServerPacketHandler.js'
+import { lobbySessionManager } from '../../server.js';
+import battleHandlerMappings from '../handlerMapping/battleServerPacketHandler.js';
 import { handleError } from '../../utils/errorHandler.js';
-
 
 //배틀 서버를 연결해주는 세션
 export class BattleSession extends Session {
@@ -33,7 +32,7 @@ export class BattleSession extends Session {
 
     handleError(this, new CustomError(500, `소켓 오류: ${error.message}`));
     // 세션에서 유저 삭제
-    console.log('유저 제거: ', sessionManager.removeSession(this.getId()));
+    console.log('유저 제거: ', lobbySessionManager.removeSession(this.getId()));
   }
 
   /*---------------------------------------------
