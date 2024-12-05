@@ -46,3 +46,10 @@ message B2C_BaseDestroyNotification
 {
     bool isDestroied = 1;
 }
+
+// 타워 체력 업데이트 알림
+message B2C_TowerHealthUpdateNotification
+{
+    string towerId = 1;
+    int32 hp = 2;
+}

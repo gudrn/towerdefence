@@ -463,6 +463,7 @@ export class GameRoom {
     const { prefabId, skillPos } = payload.skill;
     const user = this.users.get(session.getId());
     let monstersInRangeForOrbital = [];
+    let towerToHeal = [];
     // 카드사용
     user.useCard(payload.cardId);
     console.log(user.cardList);
@@ -508,17 +509,16 @@ export class GameRoom {
         applyDamageToMonsters(monstersInLineRange, skill.attackDamage);
         break;
       case 'TowerRepair': // 타워 힐
-        let towerToHeal = null;
         for (const [key, tower] of this.towers) {
           if (tower.pos.x === skillPos.x && tower.pos.y === skillPos.y) {
-            towerToHeal = tower;
+            towerToHeal = [key, tower];
             break;
           }
         }
         if (towerToHeal) {
-          towerToHeal.hp += skill.heal;
-          if (towerToHeal.hp > towerToHeal.maxHp) {
-            towerToHeal.hp = towerToHeal.maxHp;
+          towerToHeal[1].hp += skill.heal;
+          if (towerToHeal[1].hp > towerToHeal[1].maxHp) {
+            towerToHeal[1].hp = towerToHeal[1].maxHp;
           }
           console.log(towerToHeal);
         } else {
@@ -586,6 +586,19 @@ export class GameRoom {
         );
         this.broadcast(attackBuffer);
       }
+    } else if (skill.type === 'heal') {
+      const towerPacket = create(B2C_TowerHealthUpdateNotificationSchema, {
+        towerId: towerToHeal[0],
+        hp: towerToHeal[1].hp,
+      });
+
+      const towerBuffer = PacketUtils.SerializePacket(
+        towerPacket,
+        B2C_TowerHealthUpdateNotificationSchema,
+        ePacketId.B2C_TowerHealthUpdateNotification,
+        0,
+      );
+      this.broadcast(towerBuffer);
     }
   }
 
