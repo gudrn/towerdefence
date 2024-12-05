@@ -21,6 +21,7 @@ import { handleError } from '../../utils/errorHandler.js';
 import { LobbySession } from '../../main/session/lobbySession.js';
 import { lobbyConfig } from '../../config/config.js';
 import { RoomDataSchema } from '../../protocol/struct_pb.js';
+import { B2L_SocketDisconnectedNotificationSchema } from '../../protocol/room_pb.js';
 
 const MAX_ROOMS_SIZE = 10000;
 
@@ -276,7 +277,16 @@ class RoomManager {
     this.rooms.delete(roomId);
     this.availableRoomIds.push(roomId);
   }
+  onSocketDisconnectedHandler(buffer, session) {
+    console.log('onSocketDisconnectedHandler');
+    const packet = fromBinary(B2L_SocketDisconnectedNotificationSchema, buffer);
+    this.onSocketDisconnected(packet.sessionId);
+  }
 
+  /**---------------------------------------------
+   * [소켓 연결 종료 처리]
+   * @param {string} playerId
+   ---------------------------------------------*/
   onSocketDisconnected(playerId) {
     console.log('onSocketDisconnected');
     for (const room of this.rooms.values()) {

@@ -35,7 +35,7 @@ import { Tower } from '../game/tower.js';
 import { MonsterHealthUpdateSchema } from '../../protocol/struct_pb.js';
 import { B2C_MonsterHealthUpdateNotificationSchema } from '../../protocol/monster_pb.js';
 import { B2C_UseSkillNotificationSchema } from '../../protocol/skill_pb.js';
-
+import { B2C_MonsterDeathNotificationSchema } from '../../protocol/monster_pb.js';
 export class GameRoom {
   //유저의 스폰 위치
   static spawnCoordinates = [
@@ -70,6 +70,7 @@ export class GameRoom {
 
     //this.generateObstacles(); // 장애물 랜덤 배치
     this.updateInterval = 200; // 200ms 간격으로 업데이트
+    this.gameLoopInterval = null;
   }
 
   /**
@@ -415,7 +416,7 @@ export class GameRoom {
       this.monsterSpawner.startSpawning(0);
     }, 5000);
 
-    setInterval(() => {
+    this.gameLoopInterval = setInterval(() => {
       this.gameLoop();
     }, this.updateInterval);
   }
@@ -555,6 +556,22 @@ export class GameRoom {
 
       // 2. 클라이언트에 공격 패킷 전송
       for (const monster of monstersInRangeForOrbital) {
+        if (monster.hp <= 0) {
+          const mopnsterDeathPacket = create(B2C_MonsterDeathNotificationSchema, {
+            monsterId: monster.getId(),
+            score: monster.score,
+          });
+
+          const monsterDeathBuffer = PacketUtils.SerializePacket(
+            mopnsterDeathPacket,
+            B2C_MonsterDeathNotificationSchema,
+            ePacketId.B2C_MonsterDeathNotification,
+            0, //수정 부분
+          );
+
+          this.broadcast(monsterDeathBuffer);
+        }
+
         const attackPacket = create(B2C_MonsterHealthUpdateNotificationSchema, {
           monsterId: monster.getId(),
           hp: monster.hp,
@@ -878,27 +895,21 @@ export class GameRoom {
     }
 
     //베이스캠프 체력 0 일시 게임 종료
-    // if (this.checkBaseHealth()) {
-    //   //게임 종료 알림(false 시 패배)
-    //   const endNotification = create(B2C_GameEndNotificationSchema, {
-    //     isSuccess: false,
-    //   });
-    //   //패킷 직렬화
-    //   const endBuffer = PacketUtils.SerializePacket(
-    //     endNotification,
-    //     B2C_GameEndNotificationSchema,
-    //     ePacketId.B2C_GameEndNotification,
-    //     0,
-    //   );
+    if (this.checkBaseHealth()) {
+      const endNotification = create(B2C_GameEndNotificationSchema, {
+        isSuccess: false,
+      });
+      const endBuffer = PacketUtils.SerializePacket(
+        endNotification,
+        B2C_GameEndNotificationSchema,
+        ePacketId.B2C_GameEndNotification,
+        0,
+      );
 
-    //   this.broadcast(endBuffer);
-    //   //게임 종료 후 방 삭제
-    //   gameRoomManager.freeRoomId(this.id);
-    // }
-    //유저가 0명이 되는 순간 게임 종료
-    if (this.users.size === 0) {
+      this.broadcast(endBuffer);
       gameRoomManager.freeRoomId(this.id);
     }
+    //유저가 0명이 되는 순간 게임 종료
   }
 
   /**---------------------------------------------
@@ -1006,4 +1017,28 @@ export class GameRoom {
 
   //   this.broadcast(obstacleBuffer);
   // }
+
+  checkBaseHealth() {
+    return this.baseHealth <= 0;
+  }
+
+  leaveRoom(player) {
+    this.users.delete(player);
+    console.log('플레이어 퇴장', player);
+    console.log('현재 플레이어 수', this.users.size);
+  }
+
+  getCurrentUsersCount() {
+    return this.users.size;
+  }
+
+  destroy() {
+    setTimeout(() => {
+      this.monsterSpawner.destroy();
+      clearInterval(this.gameLoopInterval);
+      this.monsters.clear();
+      this.towers.clear();
+      this.users.clear();
+    }, 7000);
+  }
 }

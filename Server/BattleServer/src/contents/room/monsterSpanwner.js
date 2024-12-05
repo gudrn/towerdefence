@@ -120,4 +120,8 @@ export class MonsterSpawner {
     this.spawnedMonster = 0;
     clearInterval(this.spawnTimer);
   }
+
+  destroy() {
+    clearInterval(this.spawnTimer);
+  }
 }
