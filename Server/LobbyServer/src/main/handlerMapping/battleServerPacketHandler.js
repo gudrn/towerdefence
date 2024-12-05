@@ -8,6 +8,7 @@ import { roomManager } from '../../contents/room/roomManager.js';
 const battleHandlerMappings = {
   [ePacketId.B2L_Init]: (buffer, session) => defaultHandler(buffer, session),
   [ePacketId.B2L_CreateGameRoomRespone]: (buffer, session) => roomManager.onGameStartHandler(buffer, session),
+  [ePacketId.B2L_SocketDisconnectedNotification]: (buffer, session) => roomManager.onSocketDisconnectedHandler(buffer, session),
 };
 
 export default battleHandlerMappings;

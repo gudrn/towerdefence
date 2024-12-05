@@ -4,14 +4,13 @@ import { lobbySessionManager } from '../../server.js';
 import { handleError } from '../../utils/errorHandler.js';
 import { CustomError } from 'ServerCore/src/utils/error/customError.js';
 import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
-import { CharacterType } from '../../protocol/enum_pb.js';
 import { roomManager } from '../../contents/room/roomManager.js'; // 방 관리자를 임포트합니다.
 
 export class LobbySession extends Session {
   constructor(socket) {
     super(socket);
     this.nickname = 'tmpName';
-    this.characterType = CharacterType.Dinosour;
+    this.prefabId = "Red";
   }
 
   /*---------------------------------------------
@@ -20,10 +19,16 @@ export class LobbySession extends Session {
     - 목적: 자원을 정리하거나 로그를 남기기
   ---------------------------------------------*/
   onEnd() {
-    console.log('클라이언트 연결이 종료되었습니다.');
-    roomManager.onSocketDisconnected(this.getId()); // 방에서 플레이어를 제거합니다.
-    lobbySessionManager.removeSession(this.getId());
+    console.log('[LobbySession] 클라이언트 연결이 종료되었습니다.');
+    try {
+      roomManager.onSocketDisconnected(this.getId()); // 방에서 플레이어를 제거합니다.
+      lobbySessionManager.removeSession(this.getId());
+    }
+    catch (error) {
+      console.log(error);
+    }
   }
+  
 
   /*---------------------------------------------
     [onError]
@@ -95,7 +100,7 @@ export class LobbySession extends Session {
   /*---------------------------------------------
     [getter]
   ---------------------------------------------*/
-  getCharacterType() {
-    return this.characterType;
+  getPrefabId() {
+    return this.prefabId;
   }
 }

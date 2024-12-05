@@ -21,6 +21,7 @@ import { handleError } from '../../utils/errorHandler.js';
 import { LobbySession } from '../../main/session/lobbySession.js';
 import { lobbyConfig } from '../../config/config.js';
 import { RoomDataSchema } from '../../protocol/struct_pb.js';
+import { B2L_SocketDisconnectedNotificationSchema } from '../../protocol/room_pb.js';
 
 const MAX_ROOMS_SIZE = 10000;
 
@@ -31,9 +32,6 @@ class RoomManager {
     this.availableRoomIds = Array.from({ length: MAX_ROOMS_SIZE }, (_, i) => i + 1);
 
     this.waitingQueue = [];
-    let tmpRoomId = this.availableRoomIds.shift();
-    if (!tmpRoomId) tmpRoomId = 0;
-    this.rooms.set(tmpRoomId, new Room(tmpRoomId, '정현의 방', 2));
   }
 
   sendResponse(session, responsePacket, packetSchema, packetId) {
@@ -48,28 +46,28 @@ class RoomManager {
   /*---------------------------------------------
     [방 생성]
 ---------------------------------------------*/
-createRoomHandler(buffer, session) {
-  console.log('createRoomHandler');
-  //패킷 분해
-  const packet = fromBinary(C2L_CreateRoomRequestSchema, buffer);
-  let roomId = this.availableRoomIds.shift();
-  if(roomId == undefined){
-    handleError(session, new CustomError(ErrorCodes.SOCKET_ERROR, "방 id부족"));
-    return;
+  createRoomHandler(buffer, session) {
+    console.log('createRoomHandler');
+    //패킷 분해
+    const packet = fromBinary(C2L_CreateRoomRequestSchema, buffer);
+    let roomId = this.availableRoomIds.shift();
+    if (roomId == undefined) {
+      handleError(session, new CustomError(ErrorCodes.SOCKET_ERROR, "방 id부족"));
+      return;
+    }
+    this.rooms.set(roomId, new Room(roomId, packet.name, packet.maxUserNum));
+
+    const response = create(L2C_CreateRoomResponseSchema, {
+      isSuccess: true,
+      room: create(RoomDataSchema, {
+        id: roomId,
+        name: packet.name,
+      })
+    });
+
+    const sendBuffer = PacketUtils.SerializePacket(response, L2C_CreateRoomResponseSchema, ePacketId.L2C_CreateRoomResponse, 0);
+    session.send(sendBuffer);
   }
-  this.rooms.set(roomId, new Room(roomId, packet.name, packet.maxUserNum));
-
-  const response = create(L2C_CreateRoomResponseSchema, {
-    isSuccess: true,
-    room: create(RoomDataSchema, {
-      id: roomId, 
-      name: packet.name,
-    })
-  });
-
-  const sendBuffer = PacketUtils.SerializePacket(response, L2C_CreateRoomResponseSchema, ePacketId.L2C_CreateRoomResponse, 0);
-  session.send(sendBuffer);
-}
   /**---------------------------------------------
     [방 입장]
     * @param {Buffer} buffer
@@ -99,11 +97,17 @@ createRoomHandler(buffer, session) {
     const packet = fromBinary(C2L_LeaveRoomRequestSchema, buffer);
 
     const room = this.rooms.get(packet.roomId);
+    if (room == undefined) {
+      console.log('방을 찾을 수 없습니다.');
+      console.log(packet.roomId);
+      throw new CustomError(ErrorCodes.SOCKET_ERROR, 'invalid roomId.');
+    }
 
     room.leaveRoom(session);
 
     if (room.getCurrentUsersCount() <= 0) {
       this.freeRoomId(packet.roomId);
+      console.log('방 해제 및 재등록 됨')
     }
   }
 
@@ -276,7 +280,16 @@ createRoomHandler(buffer, session) {
     this.rooms.delete(roomId);
     this.availableRoomIds.push(roomId);
   }
+  onSocketDisconnectedHandler(buffer, session) {
+    console.log('onSocketDisconnectedHandler');
+    const packet = fromBinary(B2L_SocketDisconnectedNotificationSchema, buffer);
+    this.onSocketDisconnected(packet.sessionId);
+  }
 
+  /**---------------------------------------------
+   * [소켓 연결 종료 처리]
+   * @param {string} playerId
+   ---------------------------------------------*/
   onSocketDisconnected(playerId) {
     console.log('onSocketDisconnected');
     for (const room of this.rooms.values()) {

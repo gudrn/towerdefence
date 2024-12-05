@@ -3,19 +3,31 @@ syntax = "proto3";
 package Protocol;
 
 import "enum.proto";
+import "struct.proto";
 
-//스킬 카드 사용 요청
 message C2B_SkillRequest {
-    CardType cardType = 1;
+    SkillData skill = 1;
+    int32 roomId = 2; // 룸 ID
+    string cardId = 3;
 }
 
 //스킬 카드 사용 응답
-message C2B_SkillResponse {
+message B2C_SkillResponse {
     bool isSuccess = 1;
+    string cardId = 2; //카드 사용 요청 -> 서버로부터 응답을 받으면: 패에서 카드 제거거거
 }
 
 //스킬 카드 사용 알림
-message C2B_SkillNotify {
-    CardType cardType = 1;
-    int32 userId = 2;
+message B2C_UseSkillNotification {
+    SkillData skill = 1;
+}
+
+//카드 추가 알림
+message B2C_AddCard {
+    CardData cardData = 1;
+}
+
+//초기 카드 데이터 알림
+message B2C_InitCardData {
+    repeated CardData cardData = 1;
 }

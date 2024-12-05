@@ -14,25 +14,18 @@ enum ObjectType {
 	TOWER = 0;
 	PLAYER = 1;
 	MONSTER = 2;
-  PROJECTILE = 3;
+  	PROJECTILE = 3;
 	ENV = 4;
 }
 
-enum CardType {
-	ATTACK_TOWER = 0;
-	STR_ATTACK_TOWER = 1;
-	// 추가해야됨
+enum OBJECT_STATE_TYPE
+{
+	IDLE = 0;
+	MOVE = 1;
+	SKILL = 2;
 }
 
-// 캐릭터 타입, 변경 주의(클라 의존성)
-enum CharacterType {
-  NoneCharacter = 0;
-  Red = 1;
-  Shark = 3;
-  Malang = 5;
-  Froggy = 7;
-  BombMan = 8;
-  SlowMan = 9;
-  Mask = 10;
-  Dinosour = 12;
+enum CardType {
+	CARD_TYPE_TOWER = 0;
+	CARD_TYPE_SKILL = 1;
 }

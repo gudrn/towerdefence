@@ -9,54 +9,47 @@ import { file_struct } from "./struct_pb.js";
  * Describes the file monster.proto.
  */
 export const file_monster = /*@__PURE__*/
-  fileDesc("Cg1tb25zdGVyLnByb3RvEghQcm90b2NvbCIZChdDMkJfU3Bhd25Nb25zdGVyUmVxdWVzdCJVChxCMkNfU3Bhd25Nb25zdGVyTm90aWZpY2F0aW9uEiMKCHBvc0luZm9zGAEgASgLMhEuUHJvdG9jb2wuUG9zSW5mbxIQCghwcmVmYWJJZBgCIAEoCSJDCh1DMkJfTW9uc3RlckF0dGFja1Rvd2VyUmVxdWVzdBIRCgltb25zdGVySWQYASABKAUSDwoHdG93ZXJJZBgCIAEoBSJICh1TMkJfVXBkYXRlVG93ZXJIUE5vdGlmaWNhdGlvbhIPCgd0b3dlcklkGAEgASgFEhYKDnVwZGF0ZWRUb3dlckhQGAIgASgFIi4KHEIyU19Nb25zdGVyQXR0YWNrQmFzZVJlcXVlc3QSDgoGZGFtYWdlGAEgASgFIiwKF0MyQl9Nb25zdGVyRGVhdGhSZXF1ZXN0EhEKCW1vbnN0ZXJJZBgBIAEoBSIxChxCMkNfTW9uc3RlckRlYXRoTm90aWZpY2F0aW9uEhEKCW1vbnN0ZXJJZBgBIAEoBWIGcHJvdG8z", [file_struct]);
-
-/**
- * Describes the message Protocol.C2B_SpawnMonsterRequest.
- * Use `create(C2B_SpawnMonsterRequestSchema)` to create a new message.
- */
-export const C2B_SpawnMonsterRequestSchema = /*@__PURE__*/
-  messageDesc(file_monster, 0);
+  fileDesc("Cg1tb25zdGVyLnByb3RvEghQcm90b2NvbCJUChxCMkNfU3Bhd25Nb25zdGVyTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhAKCHByZWZhYklkGAIgASgJIkAKHEIyQ19Nb25zdGVyRGVhdGhOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEg0KBXNjb3JlGAIgASgFIksKJUIyQ19Nb25zdGVyUG9zaXRpb25VcGRhdGVOb3RpZmljYXRpb24SIgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8iZAoiQjJDX01vbnN0ZXJBdHRhY2tUb3dlck5vdGlmaWNhdGlvbhIRCgltb25zdGVySWQYASABKAkSEAoIdGFyZ2V0SWQYAiABKAkSCgoCaHAYAyABKAUSDQoFbWF4SHAYBCABKAUiTAohQjJDX01vbnN0ZXJBdHRhY2tCYXNlTm90aWZpY2F0aW9uEhEKCW1vbnN0ZXJJZBgBIAEoCRIUCgxhdHRhY2tEYW1hZ2UYAiABKAUiUwojQjJDX01vbnN0ZXJIZWFsdGhVcGRhdGVOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEgoKAmhwGAIgASgFEg0KBW1heEhwGAMgASgFYgZwcm90bzM", [file_struct]);
 
 /**
  * Describes the message Protocol.B2C_SpawnMonsterNotification.
  * Use `create(B2C_SpawnMonsterNotificationSchema)` to create a new message.
  */
 export const B2C_SpawnMonsterNotificationSchema = /*@__PURE__*/
-  messageDesc(file_monster, 1);
-
-/**
- * Describes the message Protocol.C2B_MonsterAttackTowerRequest.
- * Use `create(C2B_MonsterAttackTowerRequestSchema)` to create a new message.
- */
-export const C2B_MonsterAttackTowerRequestSchema = /*@__PURE__*/
-  messageDesc(file_monster, 2);
-
-/**
- * Describes the message Protocol.S2B_UpdateTowerHPNotification.
- * Use `create(S2B_UpdateTowerHPNotificationSchema)` to create a new message.
- */
-export const S2B_UpdateTowerHPNotificationSchema = /*@__PURE__*/
-  messageDesc(file_monster, 3);
-
-/**
- * Describes the message Protocol.B2S_MonsterAttackBaseRequest.
- * Use `create(B2S_MonsterAttackBaseRequestSchema)` to create a new message.
- */
-export const B2S_MonsterAttackBaseRequestSchema = /*@__PURE__*/
-  messageDesc(file_monster, 4);
-
-/**
- * Describes the message Protocol.C2B_MonsterDeathRequest.
- * Use `create(C2B_MonsterDeathRequestSchema)` to create a new message.
- */
-export const C2B_MonsterDeathRequestSchema = /*@__PURE__*/
-  messageDesc(file_monster, 5);
+  messageDesc(file_monster, 0);
 
 /**
  * Describes the message Protocol.B2C_MonsterDeathNotification.
  * Use `create(B2C_MonsterDeathNotificationSchema)` to create a new message.
  */
 export const B2C_MonsterDeathNotificationSchema = /*@__PURE__*/
-  messageDesc(file_monster, 6);
+  messageDesc(file_monster, 1);
+
+/**
+ * Describes the message Protocol.B2C_MonsterPositionUpdateNotification.
+ * Use `create(B2C_MonsterPositionUpdateNotificationSchema)` to create a new message.
+ */
+export const B2C_MonsterPositionUpdateNotificationSchema = /*@__PURE__*/
+  messageDesc(file_monster, 2);
+
+/**
+ * Describes the message Protocol.B2C_MonsterAttackTowerNotification.
+ * Use `create(B2C_MonsterAttackTowerNotificationSchema)` to create a new message.
+ */
+export const B2C_MonsterAttackTowerNotificationSchema = /*@__PURE__*/
+  messageDesc(file_monster, 3);
+
+/**
+ * Describes the message Protocol.B2C_MonsterAttackBaseNotification.
+ * Use `create(B2C_MonsterAttackBaseNotificationSchema)` to create a new message.
+ */
+export const B2C_MonsterAttackBaseNotificationSchema = /*@__PURE__*/
+  messageDesc(file_monster, 4);
+
+/**
+ * Describes the message Protocol.B2C_MonsterHealthUpdateNotification.
+ * Use `create(B2C_MonsterHealthUpdateNotificationSchema)` to create a new message.
+ */
+export const B2C_MonsterHealthUpdateNotificationSchema = /*@__PURE__*/
+  messageDesc(file_monster, 5);
 
