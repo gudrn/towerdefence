@@ -250,7 +250,7 @@ class GameRoomManager {
     for (const room of this.rooms.values()) {
       const player = Array.from(room.users.values()).find((user) => user.session.getId() === playerId);
       if (player) {
-        room.leaveRoom(player);
+        room.leaveRoom(player.session.getId());
         if (room.getCurrentUsersCount() <= 0) {
           this.freeRoomId(room.id);
         }

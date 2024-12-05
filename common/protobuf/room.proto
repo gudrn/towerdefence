@@ -99,7 +99,14 @@ message L2C_LeaveRoomNotification
     string userId = 1;
 }
 
+
 message B2C_increaseWaveNotification
 {
     bool isSuccess = 1;
 }
+
+message B2L_SocketDisconnectedNotification
+{
+    string sessionId = 1;
+}
+

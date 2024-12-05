@@ -15,6 +15,7 @@ export const file_room =
     [file_struct],
   );
 
+
 /**
  * Describes the message Protocol.C2L_CreateRoomRequest.
  * Use `create(C2L_CreateRoomRequestSchema)` to create a new message.
@@ -122,3 +123,9 @@ export const L2C_LeaveRoomNotificationSchema = /*@__PURE__*/ messageDesc(file_ro
  * Use `create(B2C_increaseWaveNotificationSchema)` to create a new message.
  */
 export const B2C_increaseWaveNotificationSchema = /*@__PURE__*/ messageDesc(file_room, 17);
+ * Describes the message Protocol.B2L_SocketDisconnectedNotification.
+ * Use `create(B2L_SocketDisconnectedNotificationSchema)` to create a new message.
+ */
+export const B2L_SocketDisconnectedNotificationSchema = /*@__PURE__*/
+  messageDesc(file_room, 17);
+
