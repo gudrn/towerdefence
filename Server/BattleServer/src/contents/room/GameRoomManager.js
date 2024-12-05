@@ -1,7 +1,7 @@
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
 import { CustomError } from 'ServerCore/src/utils/error/customError.js';
 import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
-import { GameRoom } from './GameRoom.js';
+import { GameRoom } from './gameRoom.js';
 import { fromBinary, create } from '@bufbuild/protobuf';
 import {
   B2L_CreateGameRoomResponeSchema,

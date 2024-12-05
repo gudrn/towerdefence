@@ -1,5 +1,5 @@
 import { GameObject } from './gameObject.js';
-import { GameRoom } from '../room/GameRoom.js';
+import { GameRoom } from '../room/gameRoom.js';
 import { aStar } from './aStar.js';
 import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
