@@ -196,7 +196,6 @@ export class GameRoom {
 
       // 모든 유저에게 전송
       this.broadcast(gameStartBuffer);
-      player.initCard();
       //몬스터 생성
       this.OnGameStart();
     }

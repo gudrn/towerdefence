@@ -16,7 +16,7 @@ export class BattleSession extends Session {
     ---------------------------------------------*/
   onEnd() {
     console.log('클라이언트 연결이 종료되었습니다.');
-    roomManager.onSocketDisconnected(this.getId()); // 방에서 플레이어를 제거합니다.
+    // roomManager.onSocketDisconnected(this.getId()); // 방에서 플레이어를 제거합니다.
     lobbySessionManager.removeSession(this.getId());
   }
 

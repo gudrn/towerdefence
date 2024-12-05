@@ -131,8 +131,8 @@ export class Monster extends GameObject {
    * 몬스터의 SKILL 상태를 업데이트합니다.
    */
   UpdateSkill() {
-    // const now = Date.now();
-    // if (this.waitUntil > now) return;
+    const now = Date.now();
+    if (this.waitUntil > now) return;
 
     if (this.target) {
       if (this.target instanceof Tower) {
@@ -165,10 +165,6 @@ export class Monster extends GameObject {
    */
 
   attackTarget(tower) {
-    //const currentTime = Date.now();
-    //if (currentTime - this.lastAttackTime > this.attackCoolDown) {
-    //this.lastAttackTime = currentTime;
-
     console.log('attack');
     // 2. 클라이언트에 공격 패킷 전송
     const attackPacket = create(B2C_MonsterAttackTowerNotificationSchema, {
@@ -215,8 +211,6 @@ export class Monster extends GameObject {
    * 기지 공격
    */
   attackBase(base) {
-    const currentTime = Date.now();
-
     const baseAttackPacket = create(B2C_MonsterAttackBaseNotificationSchema, {
       monsterId: this.getId(),
       attackDamage: this.attackDamage,
