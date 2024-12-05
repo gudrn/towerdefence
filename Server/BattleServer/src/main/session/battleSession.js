@@ -26,6 +26,11 @@ export class BattleSession extends Session {
     console.log('클라이언트 연결이 종료되었습니다.');
     gameRoomManager.onSocketDisconnected(this.getId()); // 방에서 플레이어를 제거합니다.
     sessionManager.removeSession(this.getId());
+    const packet = create(B2L_SocketDisconnectedNotificationSchema, {
+      sessionId: this.getId(),
+    });
+    const sendBuffer = PacketUtils.SerializePacket(packet, B2L_SocketDisconnectedNotificationSchema, ePacketId.B2L_SocketDisconnectedNotification, 0);
+    lobbySession.send(sendBuffer);
   }
 
   /**---------------------------------------------
