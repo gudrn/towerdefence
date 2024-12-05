@@ -17,11 +17,12 @@ export class GamePlayer {
    * @param {GamePlayerData} playerData - 플레이어의 정보 객체
    */
   constructor(session, playerData, gameRoom) {
-    this.session = session;
-    this.playerData = playerData;
-    this.gameRoom = gameRoom;
-    this.cardList = new Map();
+    this.session = session; // 세션 정보 저장
+    this.playerData = playerData; // 플레이어 데이터 저장
+    this.gameRoom = gameRoom; // 게임 방 정보 저장
+    this.cardList = new Map(); // 카드 목록 초기화
   }
+
   /**
    * ---------------------------------------------
    * [randomCard]
@@ -29,14 +30,12 @@ export class GamePlayer {
    * ---------------------------------------------
    */
   initCard() {
-    // 포탑 카드를 무조건 하나 추가
-    const mandatoryTowerCard = assetManager.getRandomTowerCards();
-    this.cardList.set(mandatoryTowerCard[0].cardId, mandatoryTowerCard[0].prefabId);
+    const mandatoryTowerCard = assetManager.getRandomTowerCards(); // 필수 포탑 카드 가져오기
+    this.cardList.set(mandatoryTowerCard[0].cardId, mandatoryTowerCard[0].prefabId); // 포탑 카드 추가
 
-    // 나머지 3개의 카드를 랜덤으로 추가
-    const cards = assetManager.getRandomCards(3);
+    const cards = assetManager.getRandomCards(3); // 랜덤 카드 3개 가져오기
     for (let card of cards) {
-      this.cardList.set(card.cardId, card.prefabId);
+      this.cardList.set(card.cardId, card.prefabId); // 카드 목록에 추가
     }
 
     const cardDatas = Array.from(this.cardList.entries()).map(([uuid, prefabId]) =>
@@ -57,7 +56,7 @@ export class GamePlayer {
       this.session.getNextSequence(),
     );
 
-    this.session.send(sendBuffer);
+    this.session.send(sendBuffer); // 초기 카드 데이터 전송
   }
 
   /**
@@ -68,14 +67,15 @@ export class GamePlayer {
    */
   addRandomCard() {
     if (this.cardList.size >= 7) {
-      return;
+      return; // 카드가 7개 이상이면 종료
     }
-    const cards = assetManager.towerPrefabIdCaches;
-    const turretCards = assetManager.skillPrefabIdCaches;
-    const combinedCards = cards.concat(turretCards);
-    const randomCard = combinedCards[Math.floor(Math.random() * combinedCards.length)];
-    const uuid = uuidv4();
-    this.cardList.set(uuid, randomCard.prefabId);
+
+    const cards = assetManager.towerPrefabIdCaches; // 타워 카드 목록 가져오기
+    const turretCards = assetManager.skillPrefabIdCaches; // 스킬 카드 목록 가져오기
+    const combinedCards = cards.concat(turretCards); // 카드 목록 결합
+    const randomCard = combinedCards[Math.floor(Math.random() * combinedCards.length)]; // 랜덤 카드 선택
+    const uuid = uuidv4(); // 새로운 UUID 생성
+    this.cardList.set(uuid, randomCard.prefabId); // 카드 목록에 추가
 
     const packet = create(B2C_AddCardSchema, {
       cardId: uuid,
@@ -89,7 +89,7 @@ export class GamePlayer {
       this.session.getNextSequence(),
     );
 
-    this.session.send(sendBuffer);
+    this.session.send(sendBuffer); // 카드 추가 데이터 전송
   }
 
   /**
@@ -97,11 +97,11 @@ export class GamePlayer {
    * @param {string} cardPrefabId 카드 prefabId
    */
   reAddCardOnFailure(cardPrefabId) {
-    const card = assetManager.getCardDataByPrefabId(cardPrefabId);
+    const card = assetManager.getCardDataByPrefabId(cardPrefabId); // 카드 데이터 가져오기
     if (!card) return;
 
-    const uuid = uuidv4();
-    this.cardList.set(uuid, card.prefabId);
+    const uuid = uuidv4(); // 새로운 UUID 생성
+    this.cardList.set(uuid, card.prefabId); // 카드 목록에 추가
 
     const packet = create(B2C_AddCardSchema, {
       cardId: uuid,
@@ -115,7 +115,7 @@ export class GamePlayer {
       this.session.getNextSequence(),
     );
 
-    this.session.send(sendBuffer);
+    this.session.send(sendBuffer); // 카드 추가 데이터 전송
   }
 
   /*
@@ -132,11 +132,10 @@ export class GamePlayer {
    * ---------------------------------------------
    * @param {string} cardId 카드 ID
    */
-
   useCard(cardId) {
-    const card = this.cardList.get(cardId);
+    const card = this.cardList.get(cardId); // 카드 목록에서 카드 가져오기
     if (!card) return;
-    this.cardList.delete(cardId);
+    this.cardList.delete(cardId); // 카드 목록에서 카드 삭제
     const responsePacket = create(B2C_UseSkillNotificationSchema, {
       isSuccess: true,
     });
@@ -148,6 +147,6 @@ export class GamePlayer {
       this.session.getNextSequence(),
     );
 
-    this.session.send(sendBuffer);
+    this.session.send(sendBuffer); // 카드 사용 결과 전송
   }
 }
