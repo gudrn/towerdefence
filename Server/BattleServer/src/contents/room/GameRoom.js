@@ -216,7 +216,7 @@ export class GameRoom {
     /** @type {Map<Vec2, PosInfo>} */
     let usedPositions = new Map();
 
-    for (let i = 0; i < obstacleCount; ) {
+    for (let i = 0; i < obstacleCount;) {
       // 랜덤 좌표 생성
       const randomVec2 = { x: MathUtils.randomRangeInt(5, 26), y: MathUtils.randomRangeInt(2, 30) };
       const posInfo = create(PosInfoSchema, { x: randomVec2.x, y: randomVec2.y });
@@ -500,8 +500,8 @@ export class GameRoom {
           const distance =
             Math.abs(
               (skillPos.y - 0) * monster.pos.x -
-                (skillPos.x - 0) * monster.pos.y +
-                (skillPos.x * 0 - skillPos.y * 0),
+              (skillPos.x - 0) * monster.pos.y +
+              (skillPos.x * 0 - skillPos.y * 0),
             ) / Math.sqrt(Math.pow(skillPos.y - 0, 2) + Math.pow(skillPos.x - 0, 2));
           return distance <= skill.attackRange;
         });
@@ -1051,10 +1051,12 @@ export class GameRoom {
     );
 
     this.broadcast(increaseWaveBuffer);
+  }
 
   checkBaseHealth() {
     return this.baseHealth <= 0;
   }
+
 
   leaveRoom(player) {
     this.users.delete(player);
