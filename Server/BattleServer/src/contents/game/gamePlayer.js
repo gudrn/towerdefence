@@ -70,16 +70,11 @@ export class GamePlayer {
       return; // 카드가 7개 이상이면 종료
     }
 
-    const cards = assetManager.towerPrefabIdCaches; // 타워 카드 목록 가져오기
-    const turretCards = assetManager.skillPrefabIdCaches; // 스킬 카드 목록 가져오기
-    const combinedCards = cards.concat(turretCards); // 카드 목록 결합
-    const randomCard = combinedCards[Math.floor(Math.random() * combinedCards.length)]; // 랜덤 카드 선택
-    const uuid = uuidv4(); // 새로운 UUID 생성
-    this.cardList.set(uuid, randomCard.prefabId); // 카드 목록에 추가
+    const card = assetManager.getRandomCards(); // 랜덤 카드 3개 가져오기
+    this.cardList.set(card[0].cardId, card[0].prefabId); // 카드 목록에 추가
 
     const packet = create(B2C_AddCardSchema, {
-      cardId: uuid,
-      prefabId: randomCard.prefabId,
+      cardData: create(CardDataSchema, {cardId: card[0].cardId, prefabId: card[0].prefabId})
     });
 
     const sendBuffer = PacketUtils.SerializePacket(

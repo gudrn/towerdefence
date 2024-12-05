@@ -76,6 +76,7 @@ export class GameRoom {
     this.updateInterval = 200; // 200ms 간격으로 업데이트
 
     this.score = 0; // 현재 점수
+    this.rewardScore = 10;
     this.wave = 1; // 현재 웨이브
     this.monsterStatusMultiplier = 1; // 몬스터 강화 계수
     this.gameLoopInterval = null; //gameLoop를 저장 후 방 제거 시 clear하기 위함
@@ -1043,6 +1044,13 @@ export class GameRoom {
   addScore(monsterScore) {
     this.score += monsterScore;
 
+    if (this.score >= this.rewardScore) {
+      // 여기에 카드 추가 로직
+      this.users.forEach((player) => player.addRandomCard());
+      console.log(`점수가 달성되어 카드가 지급됩니다.`)
+      this.rewardScore += 10
+    }
+
     // 특정 점수 도달 시 웨이브 증가
     const scorePerWave = 10; // 웨이브 증가 기준 점수
     if (this.score >= this.wave * scorePerWave) {
@@ -1056,6 +1064,9 @@ export class GameRoom {
   increaseWave() {
     this.wave += 1;
     console.log(`웨이브가 ${this.wave}단계로 올랐습니다!`);
+
+    this.users.forEach((player) => player.addRandomCard());
+    console.log(`웨이브가 올라가서 카드가 지급됩니다.`)
 
     // 강화 계수 증가
     this.monsterStatusMultiplier += 0.1;

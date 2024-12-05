@@ -268,7 +268,7 @@ class AssetManager {
      * @param {number} num 뽑을 카드의 수
      * @returns {Array<CardData>} 
      */
-  getRandomCards(num) {
+  getRandomCards(num = 1) {
     //시간 남으면 subarray를 사용해서 최적화 해보기
     const numTowerCards = Math.floor(Math.random() * (num + 1));
     let towerCards = this.getRandomTowerCards(numTowerCards);
