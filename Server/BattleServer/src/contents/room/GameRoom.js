@@ -38,6 +38,7 @@ import { B2C_MonsterHealthUpdateNotificationSchema } from '../../protocol/monste
 import { B2C_UseSkillNotificationSchema } from '../../protocol/skill_pb.js';
 import { B2C_MonsterDeathNotificationSchema } from '../../protocol/monster_pb.js';
 import { B2C_TowerHealthUpdateNotificationSchema } from '../../protocol/tower_pb.js';
+import { B2C_GameEndNotificationSchema } from '../../protocol/room_pb.js';
 export class GameRoom {
   //유저의 스폰 위치
   static spawnCoordinates = [

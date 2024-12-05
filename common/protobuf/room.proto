@@ -110,3 +110,7 @@ message B2L_SocketDisconnectedNotification
     string sessionId = 1;
 }
 
+message B2C_GameEndNotification
+{
+    bool isSuccess = 1;
+}
