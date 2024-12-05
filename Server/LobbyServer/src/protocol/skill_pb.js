@@ -3,8 +3,8 @@
 /* eslint-disable */
 
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import { file_enum } from "./enum_pb";
-import { file_struct } from "./struct_pb";
+import { file_enum } from "./enum_pb.js";
+import { file_struct } from "./struct_pb.js";
 
 /**
  * Describes the file skill.proto.
