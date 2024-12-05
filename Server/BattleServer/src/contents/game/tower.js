@@ -130,6 +130,10 @@ export class Tower extends GameObject {
 
         // 3. 몬스터 사망 처리
         if (isDestroyed) {
+          const monsterScore = target.score;
+
+          // 점수를 GameRoom에 추가
+          this.room.addScore(monsterScore);
           const mopnsterDeathPacket = create(B2C_MonsterDeathNotificationSchema, {
             monsterId: target.getId(),
             score: target.score,

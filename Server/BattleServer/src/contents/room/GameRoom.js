@@ -70,6 +70,9 @@ export class GameRoom {
 
     //this.generateObstacles(); // 장애물 랜덤 배치
     this.updateInterval = 200; // 200ms 간격으로 업데이트
+    this.score = 0; // 현재 점수
+    this.wave = 1; // 현재 웨이브
+    this.monsterStatusMultiplier = 1; // 몬스터 강화 계수
   }
 
   /**
@@ -954,11 +957,6 @@ export class GameRoom {
     return null;
   }
 
-  getMonsterSearchAndReward = (monster) => {
-    const reward = monsterInfo.monsterInfo[monster.monsterNumber - 1];
-    this.score += reward.score;
-  };
-
   /**
    * 장애물 랜덤 배치
    */
@@ -1001,4 +999,42 @@ export class GameRoom {
 
   //   this.broadcast(obstacleBuffer);
   // }
+
+  /**
+   * 점수를 추가하고 웨이브 상태를 확인
+   * @param {number} monsterScore - 추가할 점수
+   */
+  addScore(monsterScore) {
+    this.score += monsterScore;
+
+    // 특정 점수 도달 시 웨이브 증가
+    const scorePerWave = 10; // 웨이브 증가 기준 점수
+    if (this.score >= this.wave * scorePerWave) {
+      this.increaseWave();
+    }
+  }
+
+  /**
+   * 웨이브를 증가시키고 몬스터를 강화
+   */
+  increaseWave() {
+    this.wave += 1;
+    console.log(`웨이브가 ${this.wave}단계로 올랐습니다!`);
+
+    // 강화 계수 증가
+    this.monsterStatusMultiplier += 0.1;
+
+    const increaseWavePacket = create(B2C_increaseWaveNotificationSchema, {
+      isSuccess: true,
+    });
+
+    const increaseWaveBuffer = PacketUtils.SerializePacket(
+      increaseWavePacket,
+      B2C_increaseWaveNotificationSchema,
+      ePacketId.B2C_increaseWaveNotification,
+      0, //수정 부분
+    );
+
+    this.broadcast(increaseWaveBuffer);
+  }
 }

@@ -262,42 +262,44 @@ export class _Monster extends GameObject {
    */
   attackBase(base) {
     const currentTime = Date.now();
-    this.lastAttackTime = currentTime;
+    if (currentTime - this.lastAttackTime > this.attackCoolDown) {
+      this.lastAttackTime = currentTime;
 
-    const baseAttackPacket = create(B2C_MonsterAttackBaseNotificationSchema, {
-      monsterId: this.getId(),
-      attackDamage: this.attackDamage,
-    });
-
-    const baseAttackBuffer = PacketUtils.SerializePacket(
-      baseAttackPacket,
-      B2C_MonsterAttackBaseNotificationSchema,
-      ePacketId.B2C_MonsterAttackBaseNotification,
-      0, //수정 부분
-    );
-    this.room.broadcast(baseAttackBuffer);
-
-    // 기지 데미지 처리
-    const isDestroyed = base.onDamaged(this.attackDamage);
-
-    // 3. 기지 파괴 처리
-    if (isDestroyed) {
-      console.log(`기지가 파괴되었습니다.`);
-      this.room.removeObject(base.id); // GameRoom에서 타워 제거
-
-      // 이걸 그냥 게임오버로 만들면 되는게 아닌지.
-      const baseDestroyedPacket = create(B2C_BaseDestroyNotificationSchema, {
-        isSuccess: true,
+      const baseAttackPacket = create(B2C_MonsterAttackBaseNotificationSchema, {
+        monsterId: this.getId(),
+        attackDamage: this.attackDamage,
       });
 
-      const baseDestroyedBuffer = PacketUtils.SerializePacket(
-        baseDestroyedPacket,
-        B2C_BaseDestroyNotificationSchema,
-        ePacketId.B2C_BaseDestroyNotification,
+      const baseAttackBuffer = PacketUtils.SerializePacket(
+        baseAttackPacket,
+        B2C_MonsterAttackBaseNotificationSchema,
+        ePacketId.B2C_MonsterAttackBaseNotification,
         0, //수정 부분
       );
+      this.room.broadcast(baseAttackBuffer);
 
-      this.room.broadcast(baseDestroyedBuffer);
+      // 기지 데미지 처리
+      const isDestroyed = base.onDamaged(this.attackDamage);
+
+      // 3. 기지 파괴 처리
+      if (isDestroyed) {
+        console.log(`기지가 파괴되었습니다.`);
+        this.room.removeObject(base.id); // GameRoom에서 타워 제거
+
+        // 이걸 그냥 게임오버로 만들면 되는게 아닌지.
+        const baseDestroyedPacket = create(B2C_BaseDestroyNotificationSchema, {
+          isSuccess: true,
+        });
+
+        const baseDestroyedBuffer = PacketUtils.SerializePacket(
+          baseDestroyedPacket,
+          B2C_BaseDestroyNotificationSchema,
+          ePacketId.B2C_BaseDestroyNotification,
+          0, //수정 부분
+        );
+
+        this.room.broadcast(baseDestroyedBuffer);
+      }
     }
   }
 

@@ -17,6 +17,7 @@ import {
 } from '../../protocol/tower_pb.js';
 import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
 import { ePacketId } from 'ServerCore/src/network/packetId.js';
+import { MonsterSpawner } from '../room/monsterSpanwner.js';
 
 /**
  * 몬스터를 나타내는 클래스입니다.
@@ -45,11 +46,23 @@ export class Monster extends GameObject {
     this.moveSpeed = monsterData.moveSpeed; // 이동 속도
     this.score = monsterData.score; // 점수
     this.waitUntil = 0; // 딜레이 시간
+    this.spawnRate = MonsterSpawner.spawnRate; // 몬스터 스폰 주기
 
     console.log('------------');
     console.log('몬스터 스포너');
     console.log(this.pos.uuid);
     console.log('------------');
+  }
+
+  /**
+   * 몬스터를 강화하는 메서드
+   * @param {number} multiplier - 강화 배율 0.1이면, 10%가 오름
+   */
+  statusMultiplier(multiplier) {
+    this.maxHp = Math.floor(this.maxHp * multiplier);
+    this.attackDamage = Math.floor(this.attackDamage * multiplier);
+    this.spawnRate = Math.floor(this.spawnRate * (1 - multiplier));
+    console.log(`몬스터가 강화되었습니다.`);
   }
 
   /**
