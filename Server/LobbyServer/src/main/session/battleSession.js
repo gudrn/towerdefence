@@ -1,9 +1,12 @@
 import { Session } from 'servercore/src/network/session.js';
 import { CustomError } from 'servercore/src/utils/error/customError.js';
 import { ErrorCodes } from 'servercore/src/utils/error/errorCodes.js';
-import { battleSessionManager } from '../../server.js';
+import { sessionManager } from '../../server.js';
 import battleHandlerMappings from '../handlerMapping/battleServerPacketHandler.js'
 import { handleError } from '../../utils/errorHandler.js';
+
+
+//배틀 서버를 연결해주는 세션
 export class BattleSession extends Session {
   constructor(socket) {
     super(socket);
@@ -16,8 +19,6 @@ export class BattleSession extends Session {
     ---------------------------------------------*/
   onEnd() {
     console.log('클라이언트 연결이 종료되었습니다.');
-    // roomManager.onSocketDisconnected(this.getId()); // 방에서 플레이어를 제거합니다.
-    lobbySessionManager.removeSession(this.getId());
   }
 
   /**---------------------------------------------
@@ -32,7 +33,7 @@ export class BattleSession extends Session {
 
     handleError(this, new CustomError(500, `소켓 오류: ${error.message}`));
     // 세션에서 유저 삭제
-    console.log('유저 제거: ', battleSessionManager.removeSession(this.getId()));
+    console.log('유저 제거: ', sessionManager.removeSession(this.getId()));
   }
 
   /*---------------------------------------------

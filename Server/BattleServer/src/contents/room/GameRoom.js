@@ -39,6 +39,8 @@ import { B2C_UseSkillNotificationSchema } from '../../protocol/skill_pb.js';
 import { B2C_MonsterDeathNotificationSchema } from '../../protocol/monster_pb.js';
 import { B2C_TowerHealthUpdateNotificationSchema } from '../../protocol/tower_pb.js';
 import { B2C_GameEndNotificationSchema } from '../../protocol/room_pb.js';
+import { gameRoomManager } from './gameRoomManager.js';
+
 export class GameRoom {
   //유저의 스폰 위치
   static spawnCoordinates = [
@@ -71,13 +73,12 @@ export class GameRoom {
     this.maxPlayerCount = maxPlayerCount;
     this.monsterSpawner = new MonsterSpawner(this);
 
-    //this.generateObstacles(); // 장애물 랜덤 배치
     this.updateInterval = 200; // 200ms 간격으로 업데이트
+
     this.score = 0; // 현재 점수
     this.wave = 1; // 현재 웨이브
     this.monsterStatusMultiplier = 1; // 몬스터 강화 계수
-    this.gameLoopInterval = null;
-
+    this.gameLoopInterval = null; //gameLoop를 저장 후 방 제거 시 clear하기 위함
   }
 
   /**
@@ -100,6 +101,10 @@ export class GameRoom {
   //   return base;
   // }
 
+
+  getCurrentUsersCount() {
+    return this.users.length;
+  }
   getMonsters() {
     return this.monsters;
   }
@@ -856,6 +861,7 @@ export class GameRoom {
       name: player.name,
     }));
   }
+
   /**---------------------------------------------
    * 타워 생성 가능 여부 검증
    * @param {PosInfo} position - 타워 생성 위치
@@ -1030,7 +1036,6 @@ export class GameRoom {
   //   this.broadcast(obstacleBuffer);
   // }
 
-
   /**
    * 점수를 추가하고 웨이브 상태를 확인
    * @param {number} monsterScore - 추가할 점수
@@ -1085,12 +1090,10 @@ export class GameRoom {
   }
 
   destroy() {
-    setTimeout(() => {
-      this.monsterSpawner.destroy();
+      this.monsterSpawner.stopSpawning();
       clearInterval(this.gameLoopInterval);
       this.monsters.clear();
       this.towers.clear();
       this.users.clear();
-    }, 7000);
   }
 }

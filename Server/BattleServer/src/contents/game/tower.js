@@ -93,7 +93,7 @@ export class Tower extends GameObject {
       const travelTime = (distance / this.bulletSpeed) * 1000; // 이동 시간 (ms)
 
       // 총알 이동 효과 (애니메이션 대체)
-      console.log(`총알이 ${travelTime.toFixed(0)}ms 동안 날아감.`);
+      //console.log(`총알이 ${travelTime.toFixed(0)}ms 동안 날아감.`);
 
       const attackMotionPacket = create(B2C_TowerAttackMonsterNotificationSchema, {
         towerId: this.getId(),
