@@ -3,6 +3,7 @@ import { assetManager } from '../../utils/assetManager.js';
 import { GamePlayer } from '../../contents/game/gamePlayer.js';
 import {
   B2C_GameStartNotificationSchema,
+  B2C_increaseWaveNotificationSchema,
   B2C_JoinRoomRequestSchema,
 } from '../../protocol/room_pb.js';
 import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
@@ -910,6 +911,7 @@ export class GameRoom {
     if (object instanceof Monster) {
       this.monsters.set(object.getId(), object);
       console.log('몬스터 생성', object.getId());
+      console.log('몬스터 maxHp: ', object.maxHp);
 
       const packet = create(B2C_SpawnMonsterNotificationSchema, {
         posInfo: object.getPos(),

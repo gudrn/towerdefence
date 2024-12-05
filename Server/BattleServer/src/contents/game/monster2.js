@@ -60,9 +60,10 @@ export class Monster extends GameObject {
    */
   statusMultiplier(multiplier) {
     this.maxHp = Math.floor(this.maxHp * multiplier);
+    this.hp = this.maxHp;
     this.attackDamage = Math.floor(this.attackDamage * multiplier);
-    this.spawnRate = Math.floor(this.spawnRate * (1 - multiplier));
-    console.log(`몬스터가 강화되었습니다.`);
+    this.spawnRate = Math.floor(this.spawnRate * multiplier);
+    console.log(`몬스터가 강화되었습니다. `, this.maxHp);
   }
 
   /**

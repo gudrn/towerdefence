@@ -71,7 +71,7 @@ export class MonsterSpawner {
     console.log(stageInfo, 'stageInfo', stageId);
     this.spawnedMonster = 0; // 생성된 몬스터 수 초기화
     this.stageMonsters = Infinity; // 생성할 총 몬스터 수
-    this.spawnRate = 2000; // 몬스터 생성 간격(ms)
+    this.spawnRate = 5000; // 몬스터 생성 간격(ms)
 
     this.spawnTimer = setInterval(() => {
       console.log('monsterLog: ', this.spawnedMonster, this.stageMonsters);
@@ -108,7 +108,7 @@ export class MonsterSpawner {
 
     let randomAssetMonster = assetManager.getRandomAssetMonster();
     const monster = new Monster(randomAssetMonster.prefabId, posInfo, this.gameRoom);
-    monster.statusMultiplier(this.monsterStatusMultiplier); // 강화 배율 적용
+    monster.statusMultiplier(this.gameRoom.monsterStatusMultiplier); // 강화 배율 적용
     this.gameRoom.addObject(monster);
   }
 

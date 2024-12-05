@@ -120,6 +120,9 @@ export class Tower extends GameObject {
           maxHp: target.maxHp,
         });
 
+        console.log('targetHp: ', target.hp);
+        console.log('targetMaxHp: ', target.maxHp);
+
         const attackBuffer = PacketUtils.SerializePacket(
           attackPacket,
           B2C_MonsterHealthUpdateNotificationSchema,
