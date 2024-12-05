@@ -17,10 +17,6 @@ class AssetManager {
    */
   monsters;
 
-  /**
-   * @type {Array<Object>} 스테이지 데이터를 저장합니다.
-   */
-  stages;
 
   /**
    * @type {Map<string, Object>} 타워 데이터를 저장합니다.
@@ -39,7 +35,6 @@ class AssetManager {
 
   constructor() {
     this.monsters = new Map();
-    this.stages = [];
     this.towers = new Map();
     this.cards = new Map();
     this.skills = new Map();
@@ -56,18 +51,14 @@ class AssetManager {
    */
   async loadGameAssets() {
     try {
-      const [monsters, stages, towers, skills] = await Promise.all([
+      const [monsters, towers, skills] = await Promise.all([
         ParseUtils.readFileAsync('monsters.json'),
-        ParseUtils.readFileAsync('stages.json'),
         ParseUtils.readFileAsync('towers.json'),
         ParseUtils.readFileAsync('skills.json'),
       ]);
 
       // 몬스터 자원 로드
       this.monsters = new Map(monsters.data.map((monster) => [monster.prefabId, monster]));
-
-      // 스테이지 자원 로드
-      this.stages = stages.data;
 
       // 타워 자원 로드 (prefabId를 키로 설정)
       this.towers = new Map(
@@ -101,50 +92,17 @@ class AssetManager {
    * [getGameAssets]
    * - 클라이언트 접속 시 전달하기 위함
    * ---------------------------------------------
-   * @returns {{monsters: Array<Object>, stages: Array<Object>}} 게임 에셋
+   * @returns {{monsters: Array<Object>}} 게임 에셋
    */
   getGameAssets() {
     return {
       monsters: this.monsters,
-      stages: this.stages,
       towers: this.towers,
       cards: this.cards,
     };
   }
 
-  /**
-   * ---------------------------------------------
-   * [getStages]
-   * ---------------------------------------------
-   * @returns {Array<Object>} 모든 스테이지 데이터를 반환합니다.
-   */
-  getStages() {
-    return this.stages;
-  }
 
-  /**
-   * ---------------------------------------------
-   * [getStage]
-   * - 특정 스테이지 데이터를 가져옵니다.
-   * ---------------------------------------------
-   * @param {number} stageId 스테이지 ID
-   * @returns {Object|null} 해당 스테이지 데이터 또는 null
-   */
-  getStage(stageId) {
-    return this.stages[stageId] || null;
-  }
-
-  /**
-   * ---------------------------------------------
-   * [getStageMonsters]
-   * - 해당 스테이지에서 생성해야 하는 몬스터 수를 가져옵니다.
-   * ---------------------------------------------
-   * @param {number} stageId 스테이지 ID
-   * @returns {Array<Object>|null} 스테이지 몬스터 데이터 또는 null
-   */
-  getStageMonsters(stageId) {
-    return this.stages[stageId]?.stageMonsters || null;
-  }
   /**
    * ---------------------------------------------
    * [getMonsterData]
@@ -214,9 +172,7 @@ class AssetManager {
   getAllTowers() {
     return this.towers;
   }
-  getStageCount() {
-    return this.stages.length;
-  }
+
 
   /**
    * ---------------------------------------------
@@ -268,7 +224,7 @@ class AssetManager {
      * @param {number} num 뽑을 카드의 수
      * @returns {Array<CardData>} 
      */
-  getRandomCards(num) {
+  getRandomCards(num = 1) {
     //시간 남으면 subarray를 사용해서 최적화 해보기
     const numTowerCards = Math.floor(Math.random() * (num + 1));
     let towerCards = this.getRandomTowerCards(numTowerCards);

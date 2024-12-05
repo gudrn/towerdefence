@@ -21,10 +21,6 @@ export class MonsterSpawner {
    */
   spawnedMonster = 0;
 
-  /**
-   * @type {number} - 생성할 총 몬스터 수
-   */
-  stageMonsters = 0;
 
   /**
    * @type {number} - 몬스터 생성 간격(ms)
@@ -63,24 +59,14 @@ export class MonsterSpawner {
    * 스폰 시작
    *
    * - 지정된 스테이지 ID의 정보를 기반으로 몬스터 생성 시작
-   *
-   * @param {number} stageId - 스테이지 ID
    */
-  startSpawning(stageId) {
-    const stageInfo = assetManager.getStage(stageId);
-    console.log(stageInfo, 'stageInfo', stageId);
+  startSpawning() {
     this.spawnedMonster = 0; // 생성된 몬스터 수 초기화
-    this.stageMonsters = Infinity; // 생성할 총 몬스터 수
     this.spawnRate = 5000; // 몬스터 생성 간격(ms)
 
     this.spawnTimer = setInterval(() => {
-      console.log('monsterLog: ', this.spawnedMonster, this.stageMonsters);
-      if (this.spawnedMonster < this.stageMonsters) {
         this.spawnMonster(); // 몬스터 생성
         this.spawnedMonster += 1;
-      } else {
-        this.stopSpawning();
-      }
     }, this.spawnRate);
   }
 
@@ -90,10 +76,6 @@ export class MonsterSpawner {
    * - 지정된 위치에 몬스터를 생성하고 게임 방에 추가
    */
   spawnMonster() {
-    if (this.gameRoom.getMonsterCount() >= this.stageMonsters) {
-      return;
-    }
-
     const randomSpawnPos = this.getRandomSpawnPosition();
     console.log(randomSpawnPos);
 
