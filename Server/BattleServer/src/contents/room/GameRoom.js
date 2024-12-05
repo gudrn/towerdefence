@@ -35,6 +35,7 @@ import { Tower } from '../game/tower.js';
 import { MonsterHealthUpdateSchema } from '../../protocol/struct_pb.js';
 import { B2C_MonsterHealthUpdateNotificationSchema } from '../../protocol/monster_pb.js';
 import { B2C_UseSkillNotificationSchema } from '../../protocol/skill_pb.js';
+import { gameRoomManager } from './gameRoomManager.js';
 
 export class GameRoom {
   //유저의 스폰 위치
@@ -68,8 +69,10 @@ export class GameRoom {
     this.maxPlayerCount = maxPlayerCount;
     this.monsterSpawner = new MonsterSpawner(this);
 
-    //this.generateObstacles(); // 장애물 랜덤 배치
     this.updateInterval = 200; // 200ms 간격으로 업데이트
+
+    //gameLoop를 저장 후 방 제거 시 clear하기 위함
+    this.gameLoopInterval;
   }
 
   /**
@@ -92,6 +95,10 @@ export class GameRoom {
   //   return base;
   // }
 
+
+  getCurrentUsersCount() {
+    return this.users.length;
+  }
   getMonsters() {
     return this.monsters;
   }
@@ -411,7 +418,7 @@ export class GameRoom {
       this.monsterSpawner.startSpawning(0);
     }, 500);
 
-    setInterval(() => {
+    this.gameLoopInterval = setInterval(() => {
       this.gameLoop();
     }, this.updateInterval);
   }
@@ -818,6 +825,7 @@ export class GameRoom {
       name: player.name,
     }));
   }
+
   /**---------------------------------------------
    * 타워 생성 가능 여부 검증
    * @param {PosInfo} position - 타워 생성 위치
@@ -1001,4 +1009,9 @@ export class GameRoom {
 
   //   this.broadcast(obstacleBuffer);
   // }
+
+  destroy(){
+    this.monsterSpawner.stopSpawning();
+    clearInterval(this.gameLoopInterval);
+  }
 }

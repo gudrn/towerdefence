@@ -17,9 +17,15 @@ export class BattleSession extends Session {
    [클라이언트 연결 종료 처리]
   ---------------------------------------------*/
   onEnd() {
-    console.log('클라이언트 연결이 종료되었습니다.');
-    gameRoomManager.onSocketDisconnected(this.getId()); // 방에서 플레이어를 제거합니다.
-    sessionManager.removeSession(this.getId());
+      console.log('[BattleSession] 클라이언트 연결이 종료되었습니다.');
+      try{
+      gameRoomManager.onSocketDisconnected(this.getId()); // 방에서 플레이어를 제거합니다.
+      sessionManager.removeSession(this.getId());
+    } 
+    catch (error) {
+      console.error('[BattleSession::onEnd] ', error)
+    }
+
   }
 
   /**---------------------------------------------
@@ -27,7 +33,17 @@ export class BattleSession extends Session {
    * @param {Error} error
    */
   onError(error) {
-    throw new Error('Method not implemented.');
+    console.log(error);
+    //[TODO]: 클라 재진입을 위해 바로 제거가 아닌 setTimeout 등을 이용해 제거하기
+    if (error.code === 'ECONNRESET') {
+      console.log('[BattleSession::onError] 클라이언트 연결이 비정상적으로 종료되었습니다');
+      try {
+          gameRoomManager.onSocketDisconnected(this.getId());
+          sessionManager.removeSession(this.getId());
+      } catch (err) {
+          console.error('[BattleSession::onError] 처리 중 에러 발생:', err);
+      }
+  }
   }
 
   /**---------------------------------------------

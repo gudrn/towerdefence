@@ -31,9 +31,6 @@ class RoomManager {
     this.availableRoomIds = Array.from({ length: MAX_ROOMS_SIZE }, (_, i) => i + 1);
 
     this.waitingQueue = [];
-    let tmpRoomId = this.availableRoomIds.shift();
-    if (!tmpRoomId) tmpRoomId = 0;
-    this.rooms.set(tmpRoomId, new Room(tmpRoomId, '정현의 방', 2));
   }
 
   sendResponse(session, responsePacket, packetSchema, packetId) {
@@ -99,11 +96,17 @@ class RoomManager {
     const packet = fromBinary(C2L_LeaveRoomRequestSchema, buffer);
 
     const room = this.rooms.get(packet.roomId);
+    if (room == undefined) {
+      console.log('방을 찾을 수 없습니다.');
+      console.log(packet.roomId);
+      throw new CustomError(ErrorCodes.SOCKET_ERROR, 'invalid roomId.');
+    }
 
     room.leaveRoom(session);
 
     if (room.getCurrentUsersCount() <= 0) {
       this.freeRoomId(packet.roomId);
+      console.log('방 해제 및 재등록 됨')
     }
   }
 
