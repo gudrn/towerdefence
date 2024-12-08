@@ -1,5 +1,6 @@
 import { ePacketId } from "ServerCore/network/packetId";
 import { BattleSession } from "../session/battleSession";
+import { roomManager } from "src/contents/room/roomManager";
 
 
 type PacketHandler = (buffer: Buffer, session: BattleSession) => void;

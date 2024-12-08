@@ -1,37 +1,30 @@
 import { fromBinary, create } from '@bufbuild/protobuf';
-import { ePacketId } from 'ServerCore/src/network/packetId.js';
-import { CustomError } from 'ServerCore/src/utils/error/customError.js';
-import { ErrorCodes } from 'ServerCore/src/utils/error/errorCodes.js';
-import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
-import {
-  C2L_GameStartSchema,
-  L2B_CreateGameRoomRequestSchema,
-  C2L_JoinRoomRequestSchema,
-  C2L_CreateRoomRequestSchema,
-  C2L_LeaveRoomRequestSchema,
-  L2C_GetRoomListResponseSchema,
-  L2C_CreateRoomResponseSchema,
-  B2L_CreateGameRoomResponeSchema,
-  L2C_GameStartSchema,
-  L2C_JoinRoomResponseSchema,
-} from '../../protocol/room_pb.js';
-import { battleSessionManager } from '../../server.js';
-import { Room } from './room.js';
-import { handleError } from '../../utils/errorHandler.js';
-import { LobbySession } from '../../main/session/lobbySession.js';
-import { lobbyConfig } from '../../config/config.js';
-import { RoomDataSchema } from '../../protocol/struct_pb.js';
-import { B2L_SocketDisconnectedNotificationSchema } from '../../protocol/room_pb.js';
+import { Room } from './room';
+import { PacketUtils } from 'ServerCore/utils/packetUtils';
+import { B2L_CreateGameRoomResponeSchema, B2L_SocketDisconnectedNotificationSchema, C2L_CreateRoomRequestSchema, C2L_GameStartSchema, C2L_JoinRoomRequestSchema, C2L_LeaveRoomRequestSchema, L2B_CreateGameRoomRequestSchema, L2C_CreateRoomResponseSchema, L2C_GameStartSchema, L2C_GetRoomListResponseSchema } from 'src/protocol/room_pb';
+import { CustomError } from 'ServerCore/utils/error/customError';
+import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
+import { handleError } from 'src/utils/errorHandler';
+import { RoomDataSchema } from 'src/protocol/struct_pb';
+import { ePacketId } from 'ServerCore/network/packetId';
+import { LobbySession } from 'src/main/session/lobbySession';
+import { battleSessionManager } from 'src/server';
+import { lobbyConfig } from 'src/config/config';
+import { BattleSession } from 'src/main/session/battleSession';
+
 
 const MAX_ROOMS_SIZE = 10000;
 
 class RoomManager {
-  constructor() {
-    /** @private @type {Map<string, Room>} */
-    this.rooms = new Map();
-    this.availableRoomIds = Array.from({ length: MAX_ROOMS_SIZE }, (_, i) => i + 1);
+  /*---------------------------------------------
+  [멤버 변수]
+---------------------------------------------*/
+  private rooms: Map<number, Room>  = new Map<number, Room>();
+  private availableRoomIds: Array<number>;
 
-    this.waitingQueue = [];
+  constructor() {
+    this.rooms = new Map<number, Room>();
+    this.availableRoomIds = Array.from({ length: MAX_ROOMS_SIZE }, (_, i) => i + 1);
   }
 
   sendResponse(session, responsePacket, packetSchema, packetId) {
@@ -85,13 +78,10 @@ class RoomManager {
     room.enterRoom(session);
   }
 
-  /**---------------------------------------------
+  /*---------------------------------------------
     [방 퇴장]
-
-    * @param {Buffer} buffer
-    * @param {LobbySession} session
 ---------------------------------------------*/
-  leaveRoomHandler(buffer, session) {
+  leaveRoomHandler(buffer: Buffer, session: LobbySession) {
     console.log('leaveRoomHandler');
 
     const packet = fromBinary(C2L_LeaveRoomRequestSchema, buffer);
@@ -128,7 +118,7 @@ class RoomManager {
         id: roomId,
         name: room.getRoomName(),
         maxUserNum: room.getMaxUsersCount(),
-        state: room.state,
+        state: room.getRoomState,
       };
       roomsData.push(roomData);
     });
@@ -144,33 +134,6 @@ class RoomManager {
     session.send(sendBuffer);
   }
 
-  /**---------------------------------------------
-    [랜덤 방 입장]
-    * @param {Buffer} buffer
-    * @param {LobbySession} session
----------------------------------------------*/
-
-  randomMatchingHandler(buffer, session) {
-    console.log('randomMatchingHandler');
-    this.waitingQueue.push(session);
-    if (this.waitingQueue.length >= 4) {
-      const room = new Room(this.availableRoomIds.shift() || 0, '랜덤방', 4);
-      this.rooms.set(room.id, room);
-      this.waitingQueue.splice(0, 4).forEach((user) => room.enterRoom(user));
-
-      const L2BPacket = create(L2B_CreateGameRoomRequestSchema, {
-        roomId: room.id,
-        maxPlayers: room.getCurrentUsersCount(),
-      });
-      const sendBuffer = PacketUtils.SerializePacket(
-        L2BPacket,
-        L2B_CreateGameRoomRequestSchema,
-        ePacketId.L2B_CreateRoom,
-        session.getNextSequence(),
-      );
-      battleSession.send(sendBuffer);
-    }
-  }
   // 수정 요구사항:
   // randomMatching으로 변경, 인원수 4명으로
 
@@ -225,15 +188,10 @@ class RoomManager {
     console.log('보내기 직후');
   }
 
-  /**---------------------------------------------
-   * [게임 시작2] - 클라에게 배틀 서버의 주소와 포트번호, 게임 방ID 전송
-   * @param {Buffer} buffer
-   * @param {LobbySession | BattleSession} session
-   * // 4. 로비 -> 클라: 게임 시작 응답(배틀 서버의 주소, port, gameRoomID)
-   * 
-   * 
-   ---------------------------------------------*/
-  onGameStartHandler(buffer, session) {
+  /*---------------------------------------------
+   [게임 시작2] - 클라에게 배틀 서버의 주소와 포트번호, 게임 방ID 전송
+  ---------------------------------------------*/
+  onGameStartHandler(buffer: Buffer, session: BattleSession) {
     console.log('------------------------------');
     console.log('onGameStartHandler');
     console.log('------------------------------');
@@ -293,11 +251,11 @@ class RoomManager {
   onSocketDisconnected(playerId) {
     console.log('onSocketDisconnected');
     for (const room of this.rooms.values()) {
-      const player = room.users.find((user) => user.getId() === playerId);
+      const player = room.getUser(playerId);
       if (player) {
         room.leaveRoom(player);
         if (room.getCurrentUsersCount() <= 0) {
-          this.freeRoomId(room.id);
+          this.freeRoomId(room.getRoomId());
         }
         break;
       }

@@ -4,13 +4,13 @@ import { ePacketId } from 'ServerCore/network/packetId';
 import { PacketUtils } from "ServerCore/utils/packetUtils";
 import { C2B_PlayerPositionUpdateRequestSchema } from 'src/protocol/character_pb';
 import { B2L_CreateGameRoomResponeSchema, L2B_CreateGameRoomRequestSchema } from "src/protocol/room_pb";
-import { GamePlayer } from '../game/gamePlayer';
 import { LobbySession } from 'src/main/session/lobbySession';
 import { CustomError } from 'ServerCore/utils/error/customError';
 import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
 import { BattleSession } from 'src/main/session/battleSession';
 import { C2B_TowerBuildRequestSchema } from 'src/protocol/tower_pb';
 import { C2B_SkillRequestSchema } from 'src/protocol/skill_pb';
+import { GamePlayer } from '../game/gamePlayer';
 
 
 const MAX_ROOMS_SIZE = 10000;

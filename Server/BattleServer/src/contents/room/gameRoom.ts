@@ -10,7 +10,6 @@ import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
 import { B2C_GameEndNotificationSchema, B2C_GameStartNotificationSchema, B2C_increaseWaveNotificationSchema, B2C_JoinRoomRequestSchema } from "src/protocol/room_pb";
 import { PacketUtils } from "ServerCore/utils/packetUtils";
 import { ePacketId } from "ServerCore/network/packetId";
-import { GamePlayer } from '../game/gamePlayer';
 import { Tower } from '../game/tower';
 import { Vec2 } from 'ServerCore/utils/vec2';
 import { B2C_UseSkillNotificationSchema } from 'src/protocol/skill_pb';
@@ -22,6 +21,7 @@ import { BattleSession } from 'src/main/session/battleSession';
 import { assetManager } from 'src/utils/assetManager';
 import { B2C_PlayerPositionUpdateNotificationSchema, C2B_PlayerPositionUpdateRequest } from 'src/protocol/character_pb';
 import { v4 as uuidv4 } from "uuid";
+import { GamePlayer } from '../game/gamePlayer';
 interface PQNode {
   cost: number;
   pos: Vec2;
@@ -52,7 +52,7 @@ export class GameRoom {
   private score: number = 0; // 현재 점수
   private rewardScore: number = 10;
   private wave = 1; // 현재 웨이브
-  private monsterStatusMultiplier = 1; // 몬스터 강화 계수 (wave만으론 강화가 불가능한가요?) --12.06 조정현
+  public monsterStatusMultiplier = 1; // 몬스터 강화 계수 (wave만으론 강화가 불가능한가요?) --12.06 조정현
   private gameLoopInterval: any = null; //gameLoop를 저장 후 방 제거 시 clear하기 위함
 
   constructor(id: number, maxPlayerCount: number) {
@@ -433,7 +433,7 @@ export class GameRoom {
    ---------------------------------------------*/
   handleSkill(payload:any, session: BattleSession) {
     const { prefabId, skillPos } = payload.skill;
-    const user = this.users.get(session.getId());
+    const user: GamePlayer | undefined = this.users.get(session.getId());
     let monstersInRangeForOrbital:any[]=[];
     let towerToHeal:[string,Tower]| undefined;
     // 카드사용

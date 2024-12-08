@@ -1,35 +1,43 @@
 import { create, toBinary } from '@bufbuild/protobuf';
-import { RoomDataSchema, UserDataSchema } from '../../protocol/struct_pb.js';
-import { ePacketId } from 'ServerCore/src/network/packetId.js';
-import { PacketUtils } from 'ServerCore/src/utils/packetUtils.js';
-import { L2C_JoinRoomNotificationSchema, L2C_JoinRoomResponseSchema, L2C_LeaveRoomNotificationSchema, L2C_LeaveRoomResponseSchema } from '../../protocol/room_pb.js';
-import { eRoomStateId } from '../../config/roomState.js';
+import { ePacketId } from 'ServerCore/network/packetId';
+import { PacketUtils } from 'ServerCore/utils/packetUtils';
+import { LobbySession } from 'src/main/session/lobbySession.js';
+import { RoomStateType } from 'src/protocol/enum_pb';
+import { L2C_JoinRoomNotificationSchema, L2C_JoinRoomResponseSchema, L2C_LeaveRoomNotificationSchema, L2C_LeaveRoomResponseSchema } from 'src/protocol/room_pb';
+import { RoomDataSchema, UserDataSchema } from 'src/protocol/struct_pb';
 
 /**
  * Room 클래스
  * 게임 방 관리
  */
 export class Room {
-  /**
-   * @param {number} id 방 ID
-   * @param {string} roomName 방 이름
-   * @param {number} [maxPlayerCount=2] 최대 플레이어 수
-   */
-  constructor(id, roomName, maxPlayerCount = 2) {
+  /*---------------------------------------------
+    [멤버 변수]
+---------------------------------------------*/
+  private id: number;
+  private roomName: string;
+  private users: Array<LobbySession>;
+  private state: RoomStateType;
+  private maxPlayerCount: number;
+  private score: number;
+
+  constructor(id: number, roomName: string, maxPlayerCount: number = 2) {
     this.id = id;
     this.roomName = roomName;
-    this.users = [];
-    this.state = eRoomStateId.WAITING; // 'waiting', 'inProgress'
+    this.users = new Array<LobbySession>();
+    this.state = RoomStateType.WAIT; // 'waiting', 'inProgress'
     this.maxPlayerCount = maxPlayerCount;
     this.score = 0; 
   }
 
-  /**
-   * 방에 유저 입장
-   * @param {GamePlayer} newUser 새로운 유저 객체
-   * @returns {boolean} 성공 여부
-   */
-  enterRoom(newUser) {
+  /*---------------------------------------------
+    [방 입장]
+    // 1. 방이 가득 찼는지 확인
+    // 2. 기존 플레이어 목록을 유저에게 보내기
+    // 3.  유저 추가
+    // 4. 새 유저 입장 정보를 다른 유저들에게 알리기
+---------------------------------------------*/
+public enterRoom(newUser: LobbySession): boolean {
     //console.log('Room::enterRoom');
 
     // 1. 방이 가득 찼는지 확인
@@ -57,7 +65,7 @@ export class Room {
           name: this.roomName,
           maxUserNum: this.maxPlayerCount,
           ownerId: 'tmp',
-          state: eRoomStateId.WAITING,
+          state: RoomStateType.WAIT,
           users: existUsers,
         }),
       });
@@ -113,7 +121,6 @@ export class Room {
 
     const leaveResponse = create(L2C_LeaveRoomResponseSchema, {
       isSuccess: true,
-      failCode: 0,
     });
     const leaveResponseBuffer = PacketUtils.SerializePacket(
       leaveResponse,
@@ -153,15 +160,11 @@ export class Room {
    * 게임 시작
    */
   startGame() {
-    this.state = eRoomStateId.IN_PROGRESS;
+    this.state = RoomStateType.INAGAME
 
     // TODO: 게임 시작 로직 구현
   }
 
-  /**
-   * 모든 유저에게 메시지 전송
-   * @param {Buffer} buffer 전송할 데이터
-   */
   broadcast(buffer) {
     for (const user of this.users) {
       user.send(buffer);
@@ -190,5 +193,13 @@ export class Room {
    */
   getMaxUsersCount() {
     return this.maxPlayerCount;
+  }
+
+  getRoomId() {
+    return this.id;
+  }
+
+  getRoomState() {
+    return this.state;
   }
 }

@@ -3,8 +3,8 @@ import { CustomError } from "ServerCore/utils/error/customError";
 import { roomManager } from "src/contents/room/roomManager";
 import { lobbySessionManager } from "src/server";
 import { handleError } from "src/utils/errorHandler";
-import handlerMappings from "../handler/clientPacketHandler";
 import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
+import handlerMappings from "../handlerMapping/clientPacketHandler";
 
 export class LobbySession extends Session {
   nickname: string;
