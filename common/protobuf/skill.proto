@@ -24,7 +24,8 @@ message B2C_UseSkillNotification {
 
 //카드 추가 알림
 message B2C_AddCard {
-    CardData cardData = 1;
+    string cardId = 1;
+    CardData cardData = 2;
 }
 
 //초기 카드 데이터 알림

@@ -1,12 +1,15 @@
-export class CustomError extends Error {
-    /**---------------------------------------------
-     * @param {number} code - 오류 코드
-     * @param {string} message - 오류 메시지
-     ---------------------------------------------*/
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CustomError = void 0;
+class CustomError extends Error {
+    /*---------------------------------------------
+      [생성자]
+  ---------------------------------------------*/
     constructor(code, message) {
-      super(message);
-      this.code = code;
-      this.name = "CustomError";
+        super(message);
+        this.code = code;
+        this.name = "CustomError";
     }
-  }
-  
+}
+exports.CustomError = CustomError;
+//# sourceMappingURL=customError.js.map

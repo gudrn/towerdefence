@@ -1,8 +1,7 @@
 {
   "name": "servercore",
   "version": "1.0.0",
-  "main": "index.js",
-  "type": "module",
+  "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "protoc": "cd ../../ && npx buf generate ./common/protobuf"
@@ -14,8 +13,12 @@
   "devDependencies": {
     "@bufbuild/buf": "^1.47.2",
     "@bufbuild/protoc-gen-es": "^2.2.2",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.1",
     "nodemon": "^3.1.7",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
   },
   "dependencies": {
     "@bufbuild/protobuf": "^2.2.2",
