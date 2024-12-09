@@ -6,9 +6,12 @@ import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
 import { PacketUtils } from "ServerCore/utils/packetUtils";
 import { B2L_InitSchema, C2L_InitSchema, L2C_InitSchema } from "src/protocol/init_pb";
 import { battleSessionManager, lobbySessionManager } from "../../server";
+import { Socket } from "net";
+import { PacketHeader } from "ServerCore/network/packetHeader";
 
 
-export const onConnection = (socket) => {
+
+export const onConnection = (socket: Socket): void => {
   console.log('새로운 연결이 감지되었습니다:', socket.remoteAddress, socket.remotePort);
 
   let buffer = Buffer.alloc(0);
@@ -20,7 +23,7 @@ export const onConnection = (socket) => {
       return;
     }
 
-    let header = PacketUtils.readPacketHeader(buffer);
+    let header: PacketHeader = PacketUtils.readPacketHeader(buffer);
     if (buffer.length < header.size) {
       console.log('파싱X', buffer.length, header.size);
       return;
@@ -49,7 +52,7 @@ export const onConnection = (socket) => {
     [초기화 핸들러] 
     [TODO] Initial패킷 구조 변경에 따른 코드 변경 필요
 ---------------------------------------------*/
-const initialHandler = async (buffer, socket, packetId) => {
+const initialHandler = async (buffer: Buffer, socket: Socket, packetId: ePacketId) => {
   console.log('initialHandler: called');
   socket.removeAllListeners('data');
 

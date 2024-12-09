@@ -18,7 +18,6 @@ export const battleSessionManager = new SessionManager(BattleSession);
 
 const initServer = async () => {
   try {
-    // 테스트 코드를 여기에 추가해주세요
     //await testAllConnections(pools);
   } catch (error) {
     console.error(error.message);

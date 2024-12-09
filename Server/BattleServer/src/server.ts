@@ -7,7 +7,6 @@ import { battleConfig } from "./config/config";
 import { BattleSession } from "./main/session/battleSession";
 
 const server: Server = net.createServer(onConnection);
-
 /*---------------------------------------------
     [전역 변수]
       -sessionManager: 
@@ -18,8 +17,8 @@ export let lobbySession: LobbySession = new LobbySession(new Socket());
 
 const initServer = async () => {
   try {
-    lobbySession.connectLobbyServer();
-    const asset = await assetManager.loadGameAssets();
+    //lobbySession.connectLobbyServer();
+    //const asset = await assetManager.loadGameAssets();
     // 다음 작업
   } catch (error: any) {
     console.error(error.message);

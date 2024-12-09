@@ -27,3 +27,13 @@ message B2L_Init
 {
   string serverId = 1; //UUID
 }
+
+message G2L_Init 
+{
+  string serverId = 1;
+}
+
+message G2B_Init 
+{
+  string serverId = 1;
+}
