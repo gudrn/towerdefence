@@ -261,6 +261,15 @@ class RoomManager {
       }
     }
   }
+
+  //   /**
+  //  * 채팅 기능
+  //  */
+  //   chat(session, buffer) {
+  //     const chatPacket = fromBinary(C2L_chat, buffer);
+  //     const room = this.rooms.get(chatPacket.roomId);
+  //     room.sendChat(session, chatPacket.message)
+  //   }
 }
 
 export const roomManager = new RoomManager();

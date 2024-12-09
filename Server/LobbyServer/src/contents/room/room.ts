@@ -148,6 +148,28 @@ public enterRoom(newUser: LobbySession): boolean {
     return true; // 퇴장 성공
   }
 
+  // /**
+  //  * @param {string} userId 유저 ID
+  //  * 
+  //  */
+  // sendChat(user: LobbySession, message: string) {
+  //   const chatPacket = create(sendChatSchema, {
+  //     userId: user.getId(),
+  //     message: message,
+  //     timestamp: Date.now(),
+  //   });
+
+  //   const sendChatBuffer = PacketUtils.SerializePacket(
+  //     chatPacket,
+  //     sendChatSchema,
+  //     ePacketId.sendChat,
+  //     0
+  //   )
+
+  //   this.broadcast(sendChatBuffer)
+  //   return sendChatBuffer
+  // }
+
   /**
    * @param {string} userId 유저 ID
    * @returns {Object|undefined} 해당 유저 객체

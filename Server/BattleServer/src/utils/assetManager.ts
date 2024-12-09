@@ -53,6 +53,7 @@ class AssetManager {
   private cards:Map<string, CardData>
   private towerPrefabIdCaches: Array<string>;
   private skillPrefabIdCaches: Array<string>;
+  private normalMoster: Array<Monster>;
 
   constructor() {
     this.monsters = new Map<string, AssetMonster>();
@@ -63,6 +64,7 @@ class AssetManager {
 
     this.towerPrefabIdCaches = new Array<string>();
     this.skillPrefabIdCaches = new Array<string>();
+    this.normalMoster = new Array<Monster>();
   }
 
 /*---------------------------------------------
@@ -80,6 +82,8 @@ class AssetManager {
       this.monsters = new Map(
         monsters.data.map((monster: AssetMonster) => [monster.prefabId, monster]) // prefabId를 키로 사용
       );
+
+      this.normalMoster = Array.from(this.monsters.values()).filter((monster)=>monster.prefabId !== 'Robot5');
 
       //타워 자원 로드
       this.towers = new Map(
@@ -139,17 +143,16 @@ class AssetManager {
   /**
    * ---------------------------------------------
    * [getRandomAssetMonster]
-   * - 랜덤 몬스터 데이터를 가져옵니다.
+   * - 1 ~ 4번의 노말 몬스터 랜덤 데이터를 가져옵니다.
    * ---------------------------------------------
    * @returns {Object} 랜덤 몬스터 데이터
    */
   getRandomAssetMonster() {
-    const monstersArray = Array.from(this.monsters.values());
     console.log('----------');
     console.log(this.monsters.get('Robot1'));
     console.log('----------');
-    const random = Math.floor(Math.random() * monstersArray.length);
-    return monstersArray[random];
+    const random = Math.floor(Math.random() * this.normalMoster.length);
+    return this.normalMoster[random];
   }
 
   /**

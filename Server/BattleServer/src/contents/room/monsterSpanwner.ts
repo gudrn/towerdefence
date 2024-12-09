@@ -16,9 +16,12 @@ export class MonsterSpawner {
 ---------------------------------------------*/
   private gameRoom: GameRoom;
   private spawnedMonster: number = 0;
-  private spawnRate: number = 0; //몬스터 생성 간격
-  private spawnTimer: NodeJS.Timeout | undefined; //NodeJS.Timeout
+  private normalSpawnRate: number = 0; // 일반 몬스터 생성 간격
+  private eliteSpawnRate: number = 0; // 엘리트 몬스터 생성 간격
+  private normalSpawnTimer: NodeJS.Timeout | undefined; //NodeJS.Timeout
+  private eliteSpawnTimer: NodeJS.Timeout | undefined; //NodeJS.Timeout
 
+  // 랜덤 스폰 위치 생성
   public getRandomSpawnPosition() {
     const positions = [
       { x: 0, y: Math.round(Math.random() * 32) }, // Left
@@ -30,63 +33,110 @@ export class MonsterSpawner {
     return positions[Math.floor(Math.random() * positions.length)];
   }
 
-/*---------------------------------------------
+  /*---------------------------------------------
     [생성자]
----------------------------------------------*/
+  ---------------------------------------------*/
   constructor(gameRoom: GameRoom) {
     this.gameRoom = gameRoom;
   }
 
-  /**
-   * 스폰 시작
-   *
+  /*---------------------------------------------
+   * 몬스터 스폰 시작
    * - 지정된 스테이지 ID의 정보를 기반으로 몬스터 생성 시작
-   */
+  ---------------------------------------------*/
   startSpawning() {
     this.spawnedMonster = 0; // 생성된 몬스터 수 초기화
-    this.spawnRate = 5000; // 몬스터 생성 간격(ms)
+    this.normalSpawnRate = 5000; // 몬스터 생성 간격(ms)
+    this.eliteSpawnRate = 20000 // 몇초로하지 게임 해보면서 결정하기
 
-    this.spawnTimer = setInterval(() => {
-        this.spawnMonster(); // 몬스터 생성
+    // 노말 몬스터 스폰 타이머
+    this.normalSpawnTimer = setInterval(() => {
+        this.spawnNomalMonster(); // 노말 몬스터 생성
         this.spawnedMonster += 1;
-    }, this.spawnRate);
+    }, this.normalSpawnRate);
+
+    // 엘리트 몬스터 스폰 타이머
+    this.eliteSpawnTimer = setInterval(() => {
+      this.spawnEilteMonster(); // 엘리트 몬스터 생성
+      this.spawnedMonster += 1;
+  }, this.eliteSpawnRate);
+
   }
 
-  /**
-   * 몬스터 스폰
-   *
+  /*---------------------------------------------
+   * 노말 몬스터 스폰
    * - 지정된 위치에 몬스터를 생성하고 게임 방에 추가
-   */
-  spawnMonster() {
+  ---------------------------------------------*/
+  spawnNomalMonster() {
+    // 랜덤 위치 선택
     const randomSpawnPos = this.getRandomSpawnPosition();
     console.log(randomSpawnPos);
 
+    // 몬스터 uuid 생성
     const newUuid = uuidv4();
     console.log('Generated UUID:', newUuid);
 
+    // 위치 정보 생성
     const posInfo = create(PosInfoSchema, {
       uuid: newUuid,
       x: randomSpawnPos.x,
       y: randomSpawnPos.y,
     });
 
+    // 1~4번 몬스터 중 랜덤 
     let randomAssetMonster = assetManager.getRandomAssetMonster();
     const monster = new Monster(randomAssetMonster.prefabId, posInfo, this.gameRoom);
     monster.statusMultiplier(this.gameRoom.monsterStatusMultiplier); // 강화 배율 적용
     this.gameRoom.addObject(monster);
   }
 
-  /**
+  /*---------------------------------------------
+   * 엘리트 몬스터 스폰
+   * - 지정된 위치에 몬스터를 생성하고 게임 방에 추가
+   * - 점수를 기준으로 
+  ---------------------------------------------*/
+  spawnEilteMonster() {
+    // 랜덤 위치 선택
+    const randomSpawnPos = this.getRandomSpawnPosition();
+    console.log(randomSpawnPos);
+
+    // 몬스터 uuid 생성
+    const newUuid = uuidv4();
+    console.log('Generated UUID:', newUuid);
+
+    // 위치 정보 생성
+    const posInfo = create(PosInfoSchema, {
+      uuid: newUuid,
+      x: randomSpawnPos.x,
+      y: randomSpawnPos.y,
+    });
+
+    // 엘리트 몬스터 가져오기
+    let eliteAssetMonster = assetManager.getMonsterData('Robot5')
+
+    // null인지 확인하기
+    if(!eliteAssetMonster) {
+      console.log('엘리트 몬스터 못 찾음')
+      return
+    }
+
+    const monster = new Monster(eliteAssetMonster.prefabId, posInfo, this.gameRoom);
+    monster.statusMultiplier(this.gameRoom.monsterStatusMultiplier); // 강화 배율 적용
+    this.gameRoom.addObject(monster);
+  }
+
+  /*---------------------------------------------
    * 스폰 중지
-   *
    * - 현재 진행 중인 몬스터 생성 간격 타이머를 멈춤
-   */
+  ---------------------------------------------*/
   stopSpawning() {
     this.spawnedMonster = 0;
-    clearInterval(this.spawnTimer);
+    if(this.normalSpawnTimer) clearInterval(this.normalSpawnTimer);
+    if(this.eliteSpawnTimer) clearInterval(this.eliteSpawnTimer);
   }
 
   destroy() {
-    clearInterval(this.spawnTimer);
+    if(this.normalSpawnTimer) clearInterval(this.normalSpawnTimer);
+    if(this.eliteSpawnTimer) clearInterval(this.eliteSpawnTimer);
   }
 }
