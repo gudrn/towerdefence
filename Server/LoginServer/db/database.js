@@ -1,7 +1,11 @@
+import mysql, { Pool, QueryOptions, RowDataPacket, FieldPacket } from 'mysql2/promise';
+import { config } from '../config/config.js';
+import { formatDate } from '../util/dataFormatter.js';
 
 const { db } = config;
 
-const createPool = (dbConfig) => {
+// 커넥션 풀 생성 함수
+const createPool = (dbConfig): Pool => {
   const pool = mysql.createPool({
     host: dbConfig.host,
     port: dbConfig.port,
@@ -13,20 +17,25 @@ const createPool = (dbConfig) => {
     queueLimit: 0, // 0일 경우 무제한 대기열
   });
 
+  // 기존 query 함수 저장
   const originalQuery = pool.query;
-  pool.query = (sql, params) => {
+
+  // query 함수 재정의
+  pool.query = async (sql: string | QueryOptions, params?: any[]): Promise<[RowDataPacket[], FieldPacket[]]> => {
     const date = new Date();
 
     console.log(
       `[${formatDate(date)}] 쿼리 실행 중: ${sql} ${params ? `, ${JSON.stringify(params)}` : ''}`,
     );
 
-    return originalQuery.call(pool, sql, params); //원래 함수 호출
+    // 기존 query 호출
+    return originalQuery.call(pool, sql, params || []);
   };
 
   return pool;
 };
 
+// 여러 데이터베이스 풀 설정
 const pools = {
   USER_DB: createPool(db),
 };

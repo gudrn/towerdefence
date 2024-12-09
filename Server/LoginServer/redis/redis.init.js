@@ -1,9 +1,22 @@
+import Redis from 'ioredis';
+import dotenv from 'dotenv';
+dotenv.config();
 
+// Redis 설정값 로드
+const redisConfig = {
+  host: process.env.REDIS_HOST || 'localhost',
+  port: parseInt(process.env.REDIS_PORT || '6379', 10),
+};
 
-export const redisClient = new Redis(config.redisClient.host);
+// Redis 클라이언트 생성
+export const redisClient = new Redis({
+  host: redisConfig.host,
+  port: redisConfig.port,
+});
 
 redisClient.on('error', (err) => console.error('Redis 클라이언트 오류:', err));
 
+// Redis 연결 함수
 const connectRedis = async () => {
   try {
     if (!redisClient.status || redisClient.status === 'end') {
@@ -17,8 +30,9 @@ const connectRedis = async () => {
 
 await connectRedis();
 
+// Redis 관리 유틸리티
 export const redisManager = {
-  setCache: async (key, value, expiration = 3600) => {
+  setCache: async (key: string, value: any, expiration = 3600) => {
     try {
       await redisClient.set(key, JSON.stringify(value), 'EX', expiration);
       console.log(`캐시 설정 완료: ${key}`);
@@ -26,7 +40,7 @@ export const redisManager = {
       console.error('캐시 설정 중 오류 발생:', error);
     }
   },
-  getCache: async (key) => {
+  getCache: async (key: string) => {
     try {
       const data = await redisClient.get(key);
       return data ? JSON.parse(data) : null;
@@ -35,7 +49,7 @@ export const redisManager = {
       return null;
     }
   },
-  deleteCache: async (key) => {
+  deleteCache: async (key: string) => {
     try {
       await redisClient.del(key);
       console.log(`캐시 삭제 완료: ${key}`);
@@ -43,7 +57,7 @@ export const redisManager = {
       console.error('캐시 삭제 중 오류 발생:', error);
     }
   },
-  updateCacheExpiration: async (key, expiration) => {
+  updateCacheExpiration: async (key: string, expiration: number) => {
     try {
       await redisClient.expire(key, expiration);
       console.log(`캐시 만료 시간 업데이트 완료: ${key}`);
