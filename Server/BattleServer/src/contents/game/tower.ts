@@ -8,6 +8,8 @@ import { B2C_MonsterDeathNotificationSchema, B2C_MonsterHealthUpdateNotification
 import { ePacketId } from "ServerCore/network/packetId";
 import { B2C_TowerAttackMonsterNotificationSchema } from 'src/protocol/tower_pb';
 import { Monster } from './monster';
+import { createTowerAttackMotionPacket, createTowerAttackNotificationPacket } from 'src/packet/towerPacket';
+import { createDeathMoster } from 'src/packet/gameRoomPacket';
 
 
 
@@ -88,18 +90,11 @@ export class Tower extends GameObject {
       // 총알 이동 효과 (애니메이션 대체)
       //console.log(`총알이 ${travelTime.toFixed(0)}ms 동안 날아감.`);
 
-      const attackMotionPacket = create(B2C_TowerAttackMonsterNotificationSchema, {
-        towerId: this.getId(),
-        monsterPos: target.getPos(),
-        travelTime: travelTime,
-      });
-
-      const attackMotionBuffer = PacketUtils.SerializePacket(
-        attackMotionPacket,
-        B2C_TowerAttackMonsterNotificationSchema,
-        ePacketId.B2C_TowerAttackMonsterNotification,
-        0,
-      );
+      const attackMotionBuffer = createTowerAttackMotionPacket (
+        this.getId(),
+        target.getPos(),
+        travelTime,
+      )
       this.room.broadcast(attackMotionBuffer);
 
       setTimeout(() => {
@@ -107,21 +102,15 @@ export class Tower extends GameObject {
         const isDestroyed = target.onDamaged(this.attackDamage);
 
         // 2. 클라이언트에 공격 패킷 전송
-        const attackPacket = create(B2C_MonsterHealthUpdateNotificationSchema, {
-          monsterId: target.getId(),
-          hp: target.hp,
-          maxHp: target.maxHp,
-        });
+        const attackBuffer = createTowerAttackNotificationPacket(
+          target.getId(),
+          target.hp,
+          target.maxHp,
+        );
 
         console.log('targetHp: ', target.hp);
         console.log('targetMaxHp: ', target.maxHp);
 
-        const attackBuffer = PacketUtils.SerializePacket(
-          attackPacket,
-          B2C_MonsterHealthUpdateNotificationSchema,
-          ePacketId.B2C_MonsterHealthUpdateNotification,
-          0,
-        );
         this.room.broadcast(attackBuffer);
 
         // 3. 몬스터 사망 처리
@@ -130,18 +119,7 @@ export class Tower extends GameObject {
 
           // 점수를 GameRoom에 추가
           this.room.addScore(monsterScore);
-          const mopnsterDeathPacket = create(B2C_MonsterDeathNotificationSchema, {
-            monsterId: target.getId(),
-            score: target.score,
-          });
-
-          const monsterDeathBuffer = PacketUtils.SerializePacket(
-            mopnsterDeathPacket,
-            B2C_MonsterDeathNotificationSchema,
-            ePacketId.B2C_MonsterDeathNotification,
-            0, //수정 부분
-          );
-
+          const monsterDeathBuffer = createDeathMoster(target.getId(),target.score)
           this.room.broadcast(monsterDeathBuffer);
         }
       }, travelTime); // 총알 이동 시간 이후 실행
@@ -167,3 +145,5 @@ export class Tower extends GameObject {
 
   update() {}
 }
+
+

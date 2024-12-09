@@ -1,13 +1,9 @@
 
-import { v4 as uuidv4 } from 'uuid';
 import { create } from '@bufbuild/protobuf';
 import { BattleSession } from 'src/main/session/battleSession';
 import { CardData, CardDataSchema, GamePlayerData, SkillDataSchema } from 'src/protocol/struct_pb';
-import { GameRoom } from '../room/gameRoom';
 import { assetManager } from 'src/utils/assetManager';
-import { B2C_AddCardSchema, B2C_InitCardDataSchema, B2C_UseSkillNotificationSchema } from 'src/protocol/skill_pb';
-import { PacketUtils } from 'ServerCore/utils/packetUtils';
-import { ePacketId } from 'ServerCore/network/packetId';
+import { createAddRandomCard, createInitCard, createUseCard } from 'src/packet/gamePlayerPacket';
 
 
 export class GamePlayer {
@@ -41,17 +37,9 @@ export class GamePlayer {
       }),
     );
 
-    const packet = create(B2C_InitCardDataSchema, {
-      cardData: cardDatas,
-    });
-
-    const sendBuffer = PacketUtils.SerializePacket(
-      packet,
-      B2C_InitCardDataSchema,
-      ePacketId.B2C_InitCardData,
-      this.session.getNextSequence(),
-    );
-
+    const sendBuffer = createInitCard(
+      cardDatas, 
+      this.session.getNextSequence.bind(this));
     this.session.send(sendBuffer); // 초기 카드 데이터 전송
   }
 
@@ -69,17 +57,10 @@ export class GamePlayer {
     const card = assetManager.getRandomCards(); // 랜덤 카드 1개 가져오기
     this.cardList.set(card[0].cardId, card[0].prefabId); // 카드 목록에 추가
 
-    const packet = create(B2C_AddCardSchema, {
-      cardData: create(CardDataSchema, {cardId: card[0].cardId, prefabId: card[0].prefabId})
-    });
-
-    const sendBuffer = PacketUtils.SerializePacket(
-      packet,
-      B2C_AddCardSchema,
-      ePacketId.B2C_AddCard,
-      this.session.getNextSequence(),
+    const sendBuffer = createAddRandomCard(
+      card,
+      this.session.getNextSequence.bind(this),
     );
-
     this.session.send(sendBuffer); // 카드 추가 데이터 전송
   }
 
@@ -124,19 +105,12 @@ export class GamePlayer {
     const card = this.cardList.get(cardId); // 카드 목록에서 카드 가져오기
     if (!card) return;
     this.cardList.delete(cardId); // 카드 목록에서 카드 삭제
-    const responsePacket = create(B2C_UseSkillNotificationSchema, {
-      skill: create(SkillDataSchema, {
-        prefabId: card
-      })
-    });
 
-    const sendBuffer = PacketUtils.SerializePacket(
-      responsePacket,
-      B2C_UseSkillNotificationSchema,
-      ePacketId.B2C_SkillResponse,
-      this.session.getNextSequence(),
+    const sendBuffer = createUseCard(
+    card,
+    this.session.getNextSequence.bind(this),
     );
-
+    
     this.session.send(sendBuffer); // 카드 사용 결과 전송
   }
 

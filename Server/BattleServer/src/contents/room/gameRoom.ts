@@ -1,27 +1,22 @@
-import { B2C_GameEndNotification } from 'src/protocol/room_pb';
 import { Monster } from '../game/monster';
 import { create } from '@bufbuild/protobuf';
-import { GamePlayerDataSchema, PosInfo, PosInfoSchema, SkillDataSchema, TowerDataSchema } from "src/protocol/struct_pb";
+import { GamePlayerDataSchema, PosInfo, PosInfoSchema } from "src/protocol/struct_pb";
 import { Base } from "../game/base";
 import { MonsterSpawner } from "./monsterSpanwner";
 import { Tile, Tilemap } from "./tilemap";
 import { CustomError } from "ServerCore/utils/error/customError";
 import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
-import { B2C_GameEndNotificationSchema, B2C_GameStartNotificationSchema, B2C_increaseWaveNotificationSchema, B2C_JoinRoomRequestSchema } from "src/protocol/room_pb";
-import { PacketUtils } from "ServerCore/utils/packetUtils";
-import { ePacketId } from "ServerCore/network/packetId";
 import { Tower } from '../game/tower';
 import { Vec2 } from 'ServerCore/utils/vec2';
-import { B2C_UseSkillNotificationSchema } from 'src/protocol/skill_pb';
-import { B2C_MonsterDeathNotificationSchema, B2C_MonsterHealthUpdateNotificationSchema, B2C_SpawnMonsterNotificationSchema } from 'src/protocol/monster_pb';
-import { B2C_TowerBuildNotificationSchema, B2C_TowerBuildResponseSchema, B2C_TowerHealthUpdateNotificationSchema } from 'src/protocol/tower_pb';
 import { gameRoomManager } from './gameRoomManager';
 import { MathUtils } from 'src/utils/mathUtils';
 import { BattleSession } from 'src/main/session/battleSession';
 import { assetManager } from 'src/utils/assetManager';
-import { B2C_PlayerPositionUpdateNotificationSchema, C2B_PlayerPositionUpdateRequest } from 'src/protocol/character_pb';
+import { C2B_PlayerPositionUpdateRequest } from 'src/protocol/character_pb';
 import { v4 as uuidv4 } from "uuid";
 import { GamePlayer } from '../game/gamePlayer';
+import { createAddObject, createDeathMoster, createEndGame, createEnterRoom, createGameStart, createIcreaseWave, createMosterHpSync, createPosionUpdate, createUserSkill } from 'src/packet/gameRoomPacket';
+import { createTowerBuildNotificationPacket, createTowerBuildPacket, createTowerHealNotificationPacket } from 'src/packet/towerPacket';
 interface PQNode {
   cost: number;
   pos: Vec2;
@@ -131,16 +126,7 @@ export class GameRoom {
       throw new CustomError(ErrorCodes.SOCKET_ERROR, '방 입장에 실패했습니다.');
     }
     // 3. 해당 유저에게 B2C_JoinRoomResponse 패킷 전송
-    const enterRoomPacket = create(B2C_JoinRoomRequestSchema, {
-      isSuccess: true,
-    });
-
-    const enterRoomBuffer = PacketUtils.SerializePacket(
-      enterRoomPacket,
-      B2C_JoinRoomRequestSchema,
-      ePacketId.B2C_JoinRoomResponse,
-      player.session.getNextSequence(),
-    );
+    const enterRoomBuffer = createEnterRoom(player.session.getNextSequence());
     player.session.send(enterRoomBuffer);
 
     // 4. 모든 인원이 들어왔다면 B2C_GameStart 패킷 전송
@@ -170,20 +156,8 @@ export class GameRoom {
 
         playerDatas.push(gamePlayerData);
       }
-
       const obstaclePosInfos = this.generateObstacles(20);
-      // B2C_GameStartNotification 패킷 생성
-      const gameStartPacket = create(B2C_GameStartNotificationSchema, {
-        playerDatas,
-        obstaclePosInfos,
-      });
-
-      const gameStartBuffer = PacketUtils.SerializePacket(
-        gameStartPacket,
-        B2C_GameStartNotificationSchema,
-        ePacketId.B2C_GameStartNotification,
-        0,
-      );
+      const gameStartBuffer = createGameStart(playerDatas,obstaclePosInfos);
 
       // 모든 유저에게 전송
       this.broadcast(gameStartBuffer);
@@ -215,8 +189,6 @@ export class GameRoom {
     }
 
     const arr = Array.from(usedPositions.values());
-    console.log(arr);
-    console.log(arr.length);
     return arr;
   }
 
@@ -409,21 +381,8 @@ export class GameRoom {
       console.log(`유효하지 않은 위치. ${clientPacket.posInfo}`);
       return;
     }
+    const sendBuffer = createPosionUpdate(session.getId(),clientPacket.posInfo?.x ,clientPacket.posInfo?.y);
 
-    const packet = create(B2C_PlayerPositionUpdateNotificationSchema, {
-      posInfo: create(PosInfoSchema, {
-        uuid: session.getId(),
-        x: clientPacket.posInfo?.x,
-        y: clientPacket.posInfo?.y,
-      }),
-    });
-
-    const sendBuffer = PacketUtils.SerializePacket(
-      packet,
-      B2C_PlayerPositionUpdateNotificationSchema,
-      ePacketId.B2C_PlayerPositionUpdateNotification,
-      0,
-    );
     this.broadcast(sendBuffer);
   }
 
@@ -438,9 +397,6 @@ export class GameRoom {
     let towerToHeal:[string,Tower]| undefined;
     // 카드사용
     user?.useCard(payload.cardId);
-    console.log(user?.getCardList());
-    console.log('skill: ', prefabId);
-    console.log('skillPos: ', skillPos);
     // 카드 데이터 가져옴
     const skill = assetManager.getSkillsDataByPrefabId(prefabId);
 
@@ -499,43 +455,14 @@ export class GameRoom {
           //user?.reAddCardOnFailure(prefabId);
           return;
         }
-        const towerPacket = create(B2C_TowerHealthUpdateNotificationSchema, {
-          towerId: towerToHeal[0],
-          hp: towerToHeal[1].hp,
-          maxHp: towerToHeal[1].maxHp,
-        });
-    
-        const towerBuffer = PacketUtils.SerializePacket(
-          towerPacket,
-          B2C_TowerHealthUpdateNotificationSchema,
-          ePacketId.B2C_TowerHealthUpdateNotification,
-          0,
-        );
+        const towerBuffer = createTowerHealNotificationPacket(towerToHeal[0],towerToHeal[1]); //타워 패킷 얻는 곳 (변경 하시면 됩니다.)
         this.broadcast(towerBuffer);
         
         break;
       default:
         return;
     }
-
-    const skilldata = create(SkillDataSchema, {
-      prefabId: prefabId,
-      skillPos: create(PosInfoSchema, {
-        x: skillPos.x,
-        y: skillPos.y,
-      }),
-    });
-    //스킬 공격 알림
-    const notification = create(B2C_UseSkillNotificationSchema, {
-      skill: skilldata,
-    });
-
-    const notificationBuffer = PacketUtils.SerializePacket(
-      notification,
-      B2C_UseSkillNotificationSchema,
-      ePacketId.B2C_UseSkillNotification,
-      0,
-    );
+    const notificationBuffer = createUserSkill(prefabId,skillPos.x,skillPos.y);
 
     this.broadcast(notificationBuffer);
 
@@ -544,33 +471,12 @@ export class GameRoom {
       // 2. 클라이언트에 공격 패킷 전송
       for (const monster of monstersInRangeForOrbital) {
         if (monster.hp <= 0) {
-          const mopnsterDeathPacket = create(B2C_MonsterDeathNotificationSchema, {
-            monsterId: monster.getId(),
-            score: monster.score,
-          });
-
-          const monsterDeathBuffer = PacketUtils.SerializePacket(
-            mopnsterDeathPacket,
-            B2C_MonsterDeathNotificationSchema,
-            ePacketId.B2C_MonsterDeathNotification,
-            0, //수정 부분
-          );
-
+          const monsterDeathBuffer = createDeathMoster(monster.getId(),monster.score);
           this.broadcast(monsterDeathBuffer);
+          continue;
         }
 
-        const attackPacket = create(B2C_MonsterHealthUpdateNotificationSchema, {
-          monsterId: monster.getId(),
-          hp: monster.hp,
-          maxHp: monster.maxHp,
-        });
-
-        const attackBuffer = PacketUtils.SerializePacket(
-          attackPacket,
-          B2C_MonsterHealthUpdateNotificationSchema,
-          ePacketId.B2C_MonsterHealthUpdateNotification,
-          0,
-        );
+        const attackBuffer = createMosterHpSync(monster.getId(),monster.hp,monster.maxHp) 
         this.broadcast(attackBuffer);
       }
     } 
@@ -590,39 +496,10 @@ export class GameRoom {
     // 1. 타워 데이터 존재 확인
     const towerData = assetManager.getTowerData(tower.prefabId);
     if (!towerData) {
-      const failResponse = create(B2C_TowerBuildResponseSchema, {
-        isSuccess: false,
-      });
-
-      const failBuffer = PacketUtils.SerializePacket(
-        failResponse,
-        B2C_TowerBuildResponseSchema,
-        ePacketId.B2C_TowerBuildResponse,
-        session.getNextSequence(),
-      );
-
+      const failBuffer = createTowerBuildPacket(false, session.getNextSequence());
       session.send(failBuffer);
       return;
     }
-
-    // 1. 타워 생성 가능 여부 검증 (범위, 위치)
-    // if (!this.validateTowerBuild(tower.towerPos)) {
-    //   // 실패 응답
-    //   const failResponse = create(B2C_TowerBuildResponseSchema, {
-    //     isSuccess: false,
-    //     tower: null,
-    //   });
-
-    //   const failBuffer = PacketUtils.SerializePacket(
-    //     failResponse,
-    //     B2C_TowerBuildResponseSchema,
-    //     ePacketId.B2C_TowerBuildResponse,
-    //     session.getNextSequence(),
-    //   );
-
-    //   session.send(failBuffer);
-    //   return;
-    // }
 
     // 2. 타워 정보 저장
     const towerPosInfo = create(PosInfoSchema, {
@@ -638,40 +515,18 @@ export class GameRoom {
     );
 
     // 3. 타워 생성 성공 응답
-    const successResponse = create(B2C_TowerBuildResponseSchema, {
-      isSuccess: true,
-    });
-
-    const responseBuffer = PacketUtils.SerializePacket(
-      successResponse,
-      B2C_TowerBuildResponseSchema,
-      ePacketId.B2C_TowerBuildResponse,
-      session.getNextSequence(),
-    );
-
+    const responseBuffer = createTowerBuildPacket(true,session.getNextSequence());
     session.send(responseBuffer);
 
     // 4. 모든 클라이언트에게 타워 추가 알림
-    const notification = create(B2C_TowerBuildNotificationSchema, {
-      tower: create(TowerDataSchema, {
+    const notificationBuffer = createTowerBuildNotificationPacket(
+      {
         prefabId: packet.tower.prefabId,
         towerPos: towerPosInfo,
-      }),
-      ownerId: packet.ownerId,
-    });
-
-    console.log('-------------');
-    console.log('ㅇㅇ');
-    console.log(notification.tower);
-    console.log(notification.ownerId);
-    console.log('-------------');
-    const notificationBuffer = PacketUtils.SerializePacket(
-      notification,
-      B2C_TowerBuildNotificationSchema,
-      ePacketId.B2C_TowerBuildNotification,
-      session.getNextSequence(),
+      },
+      packet.ownerId,
+      0
     );
-
     this.broadcast(notificationBuffer);
   }
 
@@ -722,16 +577,7 @@ export class GameRoom {
 
     //베이스캠프 체력 0 일시 게임 종료
     if (this.checkBaseHealth()) {
-      const endNotification = create(B2C_GameEndNotificationSchema, {
-        isSuccess: false,
-      });
-      const endBuffer = PacketUtils.SerializePacket(
-        endNotification,
-        B2C_GameEndNotificationSchema,
-        ePacketId.B2C_GameEndNotification,
-        0,
-      );
-
+      const endBuffer = createEndGame(false);
       this.broadcast(endBuffer);
       gameRoomManager.freeRoomId(this.id);
     }
@@ -747,17 +593,7 @@ export class GameRoom {
     if (object instanceof Monster) {
       this.monsters.set(object.getId(), object);
 
-      const packet = create(B2C_SpawnMonsterNotificationSchema, {
-        posInfo: object.getPos(),
-        prefabId: object.getPrefabId(),
-      });
-
-      const sendBuffer: Buffer = PacketUtils.SerializePacket(
-        packet,
-        B2C_SpawnMonsterNotificationSchema,
-        ePacketId.B2C_SpawnMonsterNotification,
-        0,
-      );
+      const sendBuffer = createAddObject(object);
       this.broadcast(sendBuffer);
     }
   }
@@ -778,15 +614,9 @@ export class GameRoom {
   }
 
   findObject(uuid: string) {
-    if (this.users.has(uuid)) {
-      return this.users.get(uuid);
-    }
-    if (this.monsters.has(uuid)) {
-      return this.monsters.get(uuid);
-    }
-    if (this.towers.has(uuid)) {
-      return this.towers.get(uuid);
-    }
+    if (this.users.has(uuid)) return this.users.get(uuid);
+    if (this.monsters.has(uuid)) return this.monsters.get(uuid);
+    if (this.towers.has(uuid)) return this.towers.get(uuid);
     return null;
   }
 
@@ -825,16 +655,7 @@ export class GameRoom {
     // 강화 계수 증가
     this.monsterStatusMultiplier += 0.1;
 
-    const increaseWavePacket = create(B2C_increaseWaveNotificationSchema, {
-      isSuccess: true,
-    });
-
-    const increaseWaveBuffer = PacketUtils.SerializePacket(
-      increaseWavePacket,
-      B2C_increaseWaveNotificationSchema,
-      ePacketId.B2C_increaseWaveNotification,
-      0, //수정 부분
-    );
+    const increaseWaveBuffer = createIcreaseWave(true);
 
     this.broadcast(increaseWaveBuffer);
   }
