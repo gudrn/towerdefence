@@ -18,7 +18,7 @@ export abstract class Session {
   constructor(socket: Socket) {
     this.socket = socket;
     this.buffer = Buffer.alloc(0);
-    this.init();
+    this._init();
   }
 
   /*---------------------------------------------
@@ -27,7 +27,7 @@ export abstract class Session {
     2. end: 자원을 정리하거나 로그를 남기기
     3. error: 예외 상황을 적절히 처리하고 로그를 남기거나 대응을 하기
 ---------------------------------------------*/
-  private init() {
+  private _init() {
     this.socket.removeAllListeners();
     this.socket.on("data", (data: Buffer) => this.onData(data));
     this.socket.on("end", () => this.onEnd());

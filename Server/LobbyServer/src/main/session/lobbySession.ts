@@ -1,6 +1,5 @@
 import { Session } from "ServerCore/network/session";
 import { CustomError } from "ServerCore/utils/error/customError";
-import { roomManager } from "src/contents/room/roomManager";
 import { lobbySessionManager } from "src/server";
 import { handleError } from "src/utils/errorHandler";
 import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
@@ -22,13 +21,6 @@ export class LobbySession extends Session {
   ---------------------------------------------*/
   onEnd() {
     console.log('[LobbySession] 클라이언트 연결이 종료되었습니다.');
-    try {
-      roomManager.onSocketDisconnected(this.getId()); // 방에서 플레이어를 제거합니다.
-      lobbySessionManager.removeSession(this.getId());
-    }
-    catch (error) {
-      console.log(error);
-    }
   }
   
 
@@ -42,9 +34,6 @@ export class LobbySession extends Session {
   onError(error) {
     console.error('소켓 오류:', error);
     handleError(this, new CustomError(500, `소켓 오류: ${error.message}`));
-    // 세션에서 유저 삭제
-    roomManager.onSocketDisconnected(this.getId()); // 방에서 플레이어를 제거합니다.
-    console.log('유저 제거: ', lobbySessionManager.removeSession(this.getId()));
   }
 
   /*---------------------------------------------
@@ -57,7 +46,7 @@ export class LobbySession extends Session {
     3. 핸들러 호출
   ---------------------------------------------*/
   async handlePacket(packet, header) {
-    console.log('핸들러 호출');
+    //console.log('핸들러 호출');
     try {
       // 1. sequence 검증
       if (this.sequence !== header.sequence) {

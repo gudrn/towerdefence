@@ -1,9 +1,8 @@
 import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
-import { BattleSession } from "src/main/session/battleSession";
 import { LobbySession } from "src/main/session/lobbySession";
 
 
-export const handleError = (session: LobbySession | BattleSession, error: any) => {
+export const handleError = (session: LobbySession, error: any) => {
     let responseCode;
     let message = error.message;
     if (error.code) {

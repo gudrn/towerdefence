@@ -17,7 +17,6 @@ export let lobbySession: LobbySession = new LobbySession(new Socket());
 
 const initServer = async () => {
   try {
-    //lobbySession.connectLobbyServer();
     //const asset = await assetManager.loadGameAssets();
     // 다음 작업
   } catch (error: any) {

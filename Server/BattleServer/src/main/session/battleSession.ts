@@ -11,8 +11,6 @@ import { PacketHeader } from "ServerCore/network/packetHeader";
 
 
 export class BattleSession extends Session {
-  private nickname: string = 'tmpName';
-
   constructor(socket: Socket) {
     super(socket);
   }
@@ -75,12 +73,4 @@ export class BattleSession extends Session {
     }
   }
 
-
-  getNickname(): string {
-    return this.nickname;
-  }
-
-  setNickname(nickname: string) {
-    this.nickname = nickname;
-  }
 }

@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file init.proto.
  */
 export const file_init: GenFile = /*@__PURE__*/
-  fileDesc("Cgppbml0LnByb3RvEghQcm90b2NvbCIdCghMMkNfSW5pdBIRCglpc1N1Y2Nlc3MYASABKAgiLAoIQzJMX0luaXQSDgoGdXNlcklkGAEgASgJEhAKCG5pY2tuYW1lGAIgASgJIkgKCEMyQl9Jbml0EiwKCnBsYXllckRhdGEYASABKAsyGC5Qcm90b2NvbC5HYW1lUGxheWVyRGF0YRIOCgZyb29tSWQYAiABKAUiHAoIQjJMX0luaXQSEAoIc2VydmVySWQYASABKAkiHAoIRzJMX0luaXQSEAoIc2VydmVySWQYASABKAkiHAoIRzJCX0luaXQSEAoIc2VydmVySWQYASABKAliBnByb3RvMw", [file_struct]);
+  fileDesc("Cgppbml0LnByb3RvEghQcm90b2NvbCIdCghMMkNfSW5pdBIRCglpc1N1Y2Nlc3MYASABKAgiLAoIQzJMX0luaXQSDgoGdXNlcklkGAEgASgJEhAKCG5pY2tuYW1lGAIgASgJIkgKCEMyQl9Jbml0EiwKCnBsYXllckRhdGEYASABKAsyGC5Qcm90b2NvbC5HYW1lUGxheWVyRGF0YRIOCgZyb29tSWQYAiABKAUiHAoIQjJMX0luaXQSEAoIc2VydmVySWQYASABKAkiHAoIRzJMX0luaXQSEAoIc2VydmVySWQYASABKAkiHAoIRzJCX0luaXQSEAoIc2VydmVySWQYASABKAkiGQoIQzJHX0luaXQSDQoFdG9rZW4YASABKAliBnByb3RvMw", [file_struct]);
 
 /**
  * @generated from message Protocol.L2C_Init
@@ -129,4 +129,21 @@ export type G2B_Init = Message<"Protocol.G2B_Init"> & {
  */
 export const G2B_InitSchema: GenMessage<G2B_Init> = /*@__PURE__*/
   messageDesc(file_init, 5);
+
+/**
+ * @generated from message Protocol.C2G_Init
+ */
+export type C2G_Init = Message<"Protocol.C2G_Init"> & {
+  /**
+   * @generated from field: string token = 1;
+   */
+  token: string;
+};
+
+/**
+ * Describes the message Protocol.C2G_Init.
+ * Use `create(C2G_InitSchema)` to create a new message.
+ */
+export const C2G_InitSchema: GenMessage<C2G_Init> = /*@__PURE__*/
+  messageDesc(file_init, 6);
 

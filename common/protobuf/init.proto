@@ -37,3 +37,8 @@ message G2B_Init
 {
   string serverId = 1;
 }
+
+message C2G_Init 
+{
+  string token = 1;
+}

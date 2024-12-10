@@ -59,6 +59,24 @@ export enum ePacketId {
     B2C_AddCard = 507,
     B2L_SocketDisconnectedNotification = 508,
     B2C_GameEndNotification = 509,
-    C2G_Init = 601
+    C2G_Init = 601,
+    G2L_Init = 602,
+    G2B_Init = 603,
+    C2G_GetRoomListRequest = 604,
+    G2L_GetRoomListRequest = 605,
+    L2G_GetRoomListResponse = 606,
+    G2C_GetRoomListResponse = 607,
+    C2G_CreateRoomRequest = 608,
+    G2L_CreateRoomRequest = 609,
+    L2G_CreateRoomResponse = 610,
+    G2C_CreateRoomResponse = 611,
+    G2B_CreateGameRoomResponse = 612,
+    C2G_JoinRoomRequest = 613,
+    G2L_JoinRoomRequest = 614,
+    L2G_JoinRoomResponse = 615,
+    G2C_JoinRoomResponse = 616,
+    L2G_JoinRoomNotification = 617,
+    G2C_JoinRoomNotification = 618,
+
   };
   

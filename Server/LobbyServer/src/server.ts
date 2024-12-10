@@ -1,9 +1,9 @@
 import { SessionManager } from "ServerCore/network/sessionManager";
 import { onConnection } from "./main/handler/initPacketHandler";
 import { LobbySession } from "./main/session/lobbySession";
-import { BattleSession } from "./main/session/battleSession";
 import { lobbyConfig } from "./config/config";
 import { createServer } from "net";
+import { initLobbyRoom } from "./utils/redis/initRoom";
 
 
 const server = createServer(onConnection);
@@ -11,14 +11,12 @@ const server = createServer(onConnection);
 /*---------------------------------------------
   [전역 변수]
     - sessionManager: Lobby 서버 세션 관리
-    - battleSessionManager: Battle 서버 세션 관리
 ---------------------------------------------*/
 export const lobbySessionManager = new SessionManager(LobbySession);
-export const battleSessionManager = new SessionManager(BattleSession);
 
 const initServer = async () => {
   try {
-    //await testAllConnections(pools);
+    await initLobbyRoom();
   } catch (error) {
     console.error(error.message);
     process.exit(1); // 오류 발생 시 프로세스 종료

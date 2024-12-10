@@ -16,6 +16,7 @@ export class SessionManager<T extends Session> {
 ---------------------------------------------*/
   private sessions: Map<string, T>;
   private sessionFactory: SessionFactory<T>;
+  private roundRobinIndex: number = 0;
   /*---------------------------------------------
     [생성자]
 ---------------------------------------------*/
@@ -56,5 +57,17 @@ export class SessionManager<T extends Session> {
     }
 
     return session.getNextSequence();
+  }
+
+  getRandomSession(): T | null {
+    const sessionArray = Array.from(this.sessions.values());
+    if (sessionArray.length === 0) {
+      return null;
+    }
+
+    const session = sessionArray[this.roundRobinIndex];
+    this.roundRobinIndex = (this.roundRobinIndex + 1) % sessionArray.length;
+
+    return session;
   }
 }
