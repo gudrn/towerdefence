@@ -17,14 +17,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { GamePlayer } from '../game/gamePlayer';
 import {
   createAddObject,
-  createDeathMoster,
   createEndGame,
   createEnterRoom,
   createGameStart,
   createIcreaseWave,
-  createMosterHpSync,
   createPosionUpdate,
-  createUserSkill,
 } from 'src/packet/gameRoomPacket';
 import {
   createTowerBuildNotificationPacket,
@@ -32,6 +29,8 @@ import {
   createTowerHealNotificationPacket,
 } from 'src/packet/towerPacket';
 import { SkillManager } from './skillManager';
+import { MonsterManager } from './monsterManager';
+
 interface PQNode {
   cost: number;
   pos: Vec2;
@@ -51,12 +50,11 @@ export class GameRoom {
 ---------------------------------------------*/
   public id: number;
   public users: Map<string, GamePlayer>;
-  private monsters: Map<string, Monster>;
+  private monsterManager: MonsterManager;
   private towers: Map<string, Tower>;
   private maxPlayerCount: number;
   private tilemap: Tilemap;
   private base: Base;
-  private monsterSpawner: MonsterSpawner;
   private updateInterval: number = 200; // 200ms 간격으로 업데이트
 
   private score: number = 0; // 현재 점수
@@ -69,12 +67,11 @@ export class GameRoom {
   constructor(id: number, maxPlayerCount: number) {
     this.id = id;
     this.users = new Map<string, GamePlayer>();
-    this.monsters = new Map<string, Monster>();
     this.towers = new Map<string, Tower>();
     this.tilemap = new Tilemap({ x: 16, y: 16 });
+    this.monsterManager = new MonsterManager(this, this.tilemap);
     this.base = new Base(300, create(PosInfoSchema, { x: 16, y: 16 }), this);
     this.maxPlayerCount = maxPlayerCount;
-    this.monsterSpawner = new MonsterSpawner(this);
     this.skillManager = new SkillManager(this);
   }
 
@@ -99,11 +96,15 @@ export class GameRoom {
   // }
 
   getMonsters() {
-    return this.monsters;
+    return this.monsterManager.getMonsters();
   }
 
   getTowers() {
     return this.towers;
+  }
+
+  getMonsterManager() {
+    return this.monsterManager;
   }
 
   // 1. 방이 가득 찼는지 확인
@@ -210,118 +211,6 @@ export class GameRoom {
     return arr;
   }
 
-  /*---------------------------------------------
-    [길찾기]
-  ---------------------------------------------*/
-  public findPath(src: Vec2, dest: Vec2): Vec2[] | null {
-    const path: Vec2[] = [];
-
-    const pq: PQNode[] = [];
-    const best: Map<string, number> = new Map();
-    const parent: Map<string, Vec2> = new Map();
-
-    const key = (vec: Vec2) => `${vec.x},${vec.y}`;
-    // 초기값 설정
-    {
-      const cost = Math.abs(dest.y - src.y) + Math.abs(dest.x - src.x);
-      pq.push({ cost, pos: src });
-      best.set(key(src), cost);
-      parent.set(key(src), src);
-    }
-    const directions = [
-      { x: 0, y: -1 }, // 북
-      { x: 0, y: 1 }, // 남
-      { x: -1, y: 0 }, // 서
-      { x: 1, y: 0 }, // 동
-      { x: -1, y: -1 }, // 북서
-      { x: 1, y: -1 }, // 북동
-      { x: -1, y: 1 }, // 남서
-      { x: 1, y: 1 }, // 남동
-    ];
-
-    let found = false;
-
-    while (pq.length > 0) {
-      // 우선순위 큐에서 최소 비용 노드 선택
-      pq.sort((a, b) => a.cost - b.cost);
-      const node = pq.shift()!;
-
-      const nodeKey = key(node.pos);
-
-      // 더 짧은 경로를 뒤늦게 찾았다면 스킵
-      if ((best.get(nodeKey) ?? Infinity) < node.cost) continue;
-
-      // 목적지에 도착했으면 종료
-      if (node.pos.x === dest.x && node.pos.y === dest.y) {
-        found = true;
-        break;
-      }
-
-      // 방문
-      for (const dir of directions) {
-        const nextPos: Vec2 = {
-          x: node.pos.x + dir.x,
-          y: node.pos.y + dir.y,
-        };
-
-        const nextKey = key(nextPos);
-
-        // 대각선 이동 시  막혀있는 곳은 없는지 검사
-        if (dir.x !== 0 && dir.y !== 0) {
-          const adjacent1 = { x: node.pos.x + dir.x, y: node.pos.y };
-          const adjacent2 = { x: node.pos.x, y: node.pos.y + dir.y };
-
-          if (!this.canGo(adjacent1) || !this.canGo(adjacent2)) {
-            continue; // 양쪽 경로 중 하나라도 막혀 있으면 대각선 이동 불가
-          }
-        }
-
-        if (!this.canGo(nextPos)) continue;
-
-        const cost = Math.abs(dest.y - nextPos.y) + Math.abs(dest.x - nextPos.x);
-        const bestValue = best.get(nextKey);
-
-        if (bestValue !== undefined && bestValue <= cost) continue;
-
-        // 예약 진행
-        best.set(nextKey, cost);
-        pq.push({ cost, pos: nextPos });
-        parent.set(nextKey, node.pos);
-      }
-    }
-
-    if (!found) {
-      let bestScore = Number.MAX_VALUE;
-
-      for (const [posKey, score] of best.entries()) {
-        const pos = this.parseKey(posKey);
-
-        // 동점이라면 최초 위치에서 가장 덜 이동하는 쪽으로
-        if (bestScore === score) {
-          const dist1 = Math.abs(dest.x - src.x) + Math.abs(dest.y - src.y);
-          const dist2 = Math.abs(pos.x - src.x) + Math.abs(pos.y - src.y);
-          if (dist1 > dist2) dest = pos;
-        } else if (bestScore > score) {
-          dest = pos;
-          bestScore = score;
-        }
-      }
-    }
-
-    let pos = dest;
-    while (true) {
-      path.push(pos);
-
-      const parentPos = parent.get(key(pos));
-      if (!parentPos || (pos.x === parentPos.x && pos.y === parentPos.y)) break;
-
-      pos = parentPos;
-    }
-
-    path.reverse();
-    return path;
-  }
-
   public findCloseBuilding(pos: PosInfo): Tower | Base | null {
     let ret: Tower | Base | null = null;
     let best: number = Number.MAX_VALUE;
@@ -366,23 +255,12 @@ export class GameRoom {
     return ret;
   }
 
-  private parseKey(key: string): Vec2 {
-    const [x, y] = key.split(',').map(Number);
-    return { x, y };
-  }
-
-  public canGo(pos: Vec2): boolean;
-  public canGo(pos: PosInfo) {
-    const tile = this.tilemap.getTile(pos);
-    return tile !== null;
-  }
-
   OnGameStart() {
     console.log('OnGameStart Called');
 
     setTimeout(() => {
       this.users.forEach((player) => player.initCard());
-      this.monsterSpawner.startSpawning();
+      this.monsterManager.startSpawning();
     }, 500);
 
     this.gameLoopInterval = setInterval(() => {
@@ -391,7 +269,7 @@ export class GameRoom {
   }
 
   getMonsterCount() {
-    return this.monsters.size;
+    return this.monsterManager.getMonsterCount();
   }
 
   /*---------------------------------------------
@@ -499,18 +377,11 @@ export class GameRoom {
    * 게임 루프 시작
   ---------------------------------------------*/
   gameLoop() {
-    //몬스터(Monster) 업데이트
-    for (const [uuid, monster] of this.monsters) {
-      monster.update();
-    }
-
-    // // 타워(Tower) 업데이트
-    // for (const [uuid, tower] of this.towers) {
-    //   tower.update();
-    // }
+    // 몬스터 업데이트
+    this.monsterManager.updateMonsters();
 
     for (const [uuid, tower] of this.towers) {
-      tower.attackTarget(Array.from(this.monsters.values()));
+      tower.attackTarget(Array.from(this.monsterManager.getMonsters().values()));
     }
 
     //베이스캠프 체력 0 일시 게임 종료
@@ -530,8 +401,7 @@ export class GameRoom {
   ---------------------------------------------*/
   addObject(object: Monster | Tower) {
     if (object instanceof Monster) {
-      this.monsters.set(object.getId(), object);
-
+      this.monsterManager.addMonster(object);
       const sendBuffer = createAddObject(object);
       this.broadcast(sendBuffer);
     }
@@ -547,7 +417,7 @@ export class GameRoom {
     if (object instanceof GamePlayer) {
       this.users.delete(uuid);
     } else if (object instanceof Monster) {
-      this.monsters.delete(uuid);
+      this.monsterManager.removeMonster(uuid);
     } else if (object instanceof Tower) {
       this.towers.delete(uuid);
     }
@@ -555,7 +425,8 @@ export class GameRoom {
 
   findObject(uuid: string) {
     if (this.users.has(uuid)) return this.users.get(uuid);
-    if (this.monsters.has(uuid)) return this.monsters.get(uuid);
+    if (this.monsterManager.getMonsters().has(uuid))
+      return this.monsterManager.getMonsters().get(uuid);
     if (this.towers.has(uuid)) return this.towers.get(uuid);
     return null;
   }
@@ -599,9 +470,9 @@ export class GameRoom {
 
     this.broadcast(increaseWaveBuffer);
 
-    if(this.wave%5===0 &&this.wave!==1){
-      this.monsterSpawner.spawnEilteMonster();
-      console.log('엘리트 몬스터 등장')
+    if (this.wave % 5 === 0 && this.wave !== 1) {
+      this.monsterManager.spawnEilteMonster();
+      console.log('엘리트 몬스터 등장');
     }
   }
 
@@ -620,9 +491,9 @@ export class GameRoom {
   }
 
   destroy() {
-    this.monsterSpawner.stopSpawning();
+    this.monsterManager.stopSpawning();
     clearInterval(this.gameLoopInterval);
-    this.monsters.clear();
+    this.monsterManager.destroy();
     this.towers.clear();
     this.users.clear();
   }

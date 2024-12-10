@@ -1,9 +1,9 @@
-import { assetManager } from "src/utils/assetManager";
-import { Monster } from "../game/monster";
-import { create } from "@bufbuild/protobuf";
-import { PosInfoSchema } from "src/protocol/struct_pb";
-import { v4 as uuidv4 } from "uuid";
-import { GameRoom } from "./gameRoom";
+import { assetManager } from 'src/utils/assetManager';
+import { Monster } from '../game/monster';
+import { create } from '@bufbuild/protobuf';
+import { PosInfoSchema } from 'src/protocol/struct_pb';
+import { v4 as uuidv4 } from 'uuid';
+import { GameRoom } from './gameRoom';
 
 /**
  * 몬스터 스포너 클래스
@@ -14,10 +14,10 @@ export class MonsterSpawner {
   /*---------------------------------------------
     [멤버 변수]
 ---------------------------------------------*/
-  private gameRoom: GameRoom;
+  protected gameRoom: GameRoom;
   private spawnedMonster: number = 0;
-  private normalSpawnRate: number = 0; // 일반 몬스터 생성 간격
-  private eliteSpawnRate: number = 0; // 엘리트 몬스터 생성 간격
+  private normalSpawnRate: number = 500; // 일반 몬스터 생성 간격
+  private eliteSpawnRate: number = 20000; // 엘리트 몬스터 생성 간격
   private normalSpawnTimer: NodeJS.Timeout | undefined; //NodeJS.Timeout
   private eliteSpawnTimer: NodeJS.Timeout | undefined; //NodeJS.Timeout
 
@@ -45,22 +45,18 @@ export class MonsterSpawner {
    * - 지정된 스테이지 ID의 정보를 기반으로 몬스터 생성 시작
   ---------------------------------------------*/
   startSpawning() {
-    this.spawnedMonster = 0; // 생성된 몬스터 수 초기화
-    this.normalSpawnRate = 5000; // 몬스터 생성 간격(ms)
-    this.eliteSpawnRate = 20000 // 몇초로하지 게임 해보면서 결정하기
-
     // 노말 몬스터 스폰 타이머
     this.normalSpawnTimer = setInterval(() => {
-        this.spawnNomalMonster(); // 노말 몬스터 생성
-        this.spawnedMonster += 1;
+      this.spawnNomalMonster(); // 노말 몬스터 생성
+      this.spawnedMonster += 1;
     }, this.normalSpawnRate);
+  }
 
-    // 엘리트 몬스터 스폰 타이머
+  startSpawningElite() {
     this.eliteSpawnTimer = setInterval(() => {
       this.spawnEilteMonster(); // 엘리트 몬스터 생성
       this.spawnedMonster += 1;
-  }, this.eliteSpawnRate);
-
+    }, this.eliteSpawnRate);
   }
 
   /*---------------------------------------------
@@ -83,7 +79,7 @@ export class MonsterSpawner {
       y: randomSpawnPos.y,
     });
 
-    // 1~4번 몬스터 중 랜덤 
+    // 1~4번 몬스터 중 랜덤
     let randomAssetMonster = assetManager.getRandomAssetMonster();
     const monster = new Monster(randomAssetMonster.prefabId, posInfo, this.gameRoom);
     monster.statusMultiplier(this.gameRoom.monsterStatusMultiplier); // 강화 배율 적용
@@ -112,12 +108,12 @@ export class MonsterSpawner {
     });
 
     // 엘리트 몬스터 가져오기
-    let eliteAssetMonster = assetManager.getMonsterData('Robot5')
+    let eliteAssetMonster = assetManager.getMonsterData('Robot5');
 
     // null인지 확인하기
-    if(!eliteAssetMonster) {
-      console.log('엘리트 몬스터 못 찾음')
-      return
+    if (!eliteAssetMonster) {
+      console.log('엘리트 몬스터 못 찾음');
+      return;
     }
 
     const monster = new Monster(eliteAssetMonster.prefabId, posInfo, this.gameRoom);
@@ -131,12 +127,12 @@ export class MonsterSpawner {
   ---------------------------------------------*/
   stopSpawning() {
     this.spawnedMonster = 0;
-    if(this.normalSpawnTimer) clearInterval(this.normalSpawnTimer);
-    if(this.eliteSpawnTimer) clearInterval(this.eliteSpawnTimer);
+    if (this.normalSpawnTimer) clearInterval(this.normalSpawnTimer);
+    if (this.eliteSpawnTimer) clearInterval(this.eliteSpawnTimer);
   }
 
   destroy() {
-    if(this.normalSpawnTimer) clearInterval(this.normalSpawnTimer);
-    if(this.eliteSpawnTimer) clearInterval(this.eliteSpawnTimer);
+    if (this.normalSpawnTimer) clearInterval(this.normalSpawnTimer);
+    if (this.eliteSpawnTimer) clearInterval(this.eliteSpawnTimer);
   }
 }
