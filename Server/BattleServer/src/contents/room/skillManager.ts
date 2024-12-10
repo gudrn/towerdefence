@@ -2,7 +2,6 @@ import { GamePlayer } from '../game/gamePlayer';
 import { BattleSession } from 'src/main/session/battleSession';
 import { GameRoom } from './gameRoom';
 import { assetManager } from 'src/utils/assetManager';
-import { Tower } from '../game/tower';
 import { createUserSkill, createDeathMoster, createMosterHpSync } from 'src/packet/gameRoomPacket';
 import { createTowerHealNotificationPacket } from 'src/packet/towerPacket';
 
