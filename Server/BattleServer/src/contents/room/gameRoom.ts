@@ -599,9 +599,9 @@ export class GameRoom {
 
     this.broadcast(increaseWaveBuffer);
 
-    if(this.wave%5===0 &&this.wave!==1){
+    if (this.wave % 5 === 0 && this.wave !== 1) {
       this.monsterSpawner.spawnEilteMonster();
-      console.log('엘리트 몬스터 등장')
+      console.log('엘리트 몬스터 등장');
     }
   }
 

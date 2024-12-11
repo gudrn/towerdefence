@@ -32,13 +32,13 @@ export class SkillManager {
       case 'OrbitalBeam':
         this.handleOrbitalBeam(skill, skillPos);
         break;
-      case "Molotov Cocktail":
-        this.handlerMolotovCocktail(skill,skillPos);
+      case 'Molotov Cocktail':
+        this.handlerMolotovCocktail(skill, skillPos);
       case 'TowerRepair':
         this.handleTowerRepair(skill, skillPos);
         break;
-      case "TowerAllRepair": 
-        this.handleTowerAllRepair(skill)
+      case 'TowerAllRepair':
+        this.handleTowerAllRepair(skill);
       default:
         return;
     }
@@ -78,9 +78,7 @@ export class SkillManager {
    * @param {any} skillPos - 스킬 위치
    * @returns {void}
    ---------------------------------------------*/
-   private handlerMolotovCocktail (skill: any, skillPos: any){
-    
-   }
+  private handlerMolotovCocktail(skill: any, skillPos: any) {}
 
   /**---------------------------------------------
    * [타워 수리 처리]
@@ -106,13 +104,13 @@ export class SkillManager {
    * @param {any} skill - 스킬 정보
    * @returns {void}
    ---------------------------------------------*/
-   handleTowerAllRepair(skill:any){
-    for(const [key,tower] of this.gameRoom.getTowers()){
-      tower.hp = Math.min(tower.hp+skill.heal, tower.maxHp);
+  handleTowerAllRepair(skill: any) {
+    for (const [key, tower] of this.gameRoom.getTowers()) {
+      tower.hp = Math.min(tower.hp + skill.heal, tower.maxHp);
       const towerBuffer = createTowerHealNotificationPacket(key, tower);
       this.gameRoom.broadcast(towerBuffer);
     }
-   }
+  }
 
   /**---------------------------------------------
    * [몬스터에게 데미지 적용]

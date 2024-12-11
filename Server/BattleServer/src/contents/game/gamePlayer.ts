@@ -1,23 +1,77 @@
-
 import { create } from '@bufbuild/protobuf';
 import { BattleSession } from 'src/main/session/battleSession';
 import { CardData, CardDataSchema, GamePlayerData, SkillDataSchema } from 'src/protocol/struct_pb';
 import { assetManager } from 'src/utils/assetManager';
 import { createAddRandomCard, createInitCard, createUseCard } from 'src/packet/gamePlayerPacket';
-
+import { Character } from './character/character';
+import { GameRoom } from '../room/gameRoom.js';
+import { eCharacterId } from 'ServerCore/utils/characterId';
+import { CreateCharacter } from './character/createCharcter';
 
 export class GamePlayer {
-    public session: BattleSession;
-    public playerData: GamePlayerData;
-    public cardList: Map<string, string> = new Map();
+  public session: BattleSession;
+  public playerData: GamePlayerData;
+  public cardList: Map<string, string> = new Map();
+  public character?: Character; // 플레이어와 연결된 캐릭터
 
-    constructor(session: BattleSession, playerData: GamePlayerData) {
-        this.session = session; // 세션 정보 저장
-        this.playerData = playerData; // 플레이어 데이터 저장
-        this.cardList = new Map(); // 카드 목록 초기화
+  constructor(session: BattleSession, playerData: GamePlayerData, room: GameRoom) {
+    this.session = session; // 세션 정보 저장
+    this.playerData = playerData; // 플레이어 데이터 저장
+    this.cardList = new Map(); // 카드 목록 초기화
+    this.initCharacter(room); // 게임 방에서 캐릭터를 생성하여 플레이어와 연결
+  }
+
+  /**
+   * prefabId로 GamePlayer 가져오기
+   * @param {string} prefabId - 캐릭터 ID
+   * @returns {GamePlayer | undefined} - 해당 플레이어 반환
+   */
+
+  /**
+   * 캐릭터 초기화 및 생성
+   * @param {GameRoom} room - 게임 방 객체
+   */
+  private initCharacter(room: GameRoom) {
+    const prefabId = this.playerData.prefabId; // 플레이어 데이터에 저장된 캐릭터 ID
+
+    // 캐릭터 ID를 기반으로 캐릭터 생성
+    switch (prefabId) {
+      case eCharacterId.red:
+        this.character = CreateCharacter.createChar(eCharacterId.red, room, this);
+        break;
+      case eCharacterId.Malang:
+        this.character = CreateCharacter.createChar(eCharacterId.Malang, room, this);
+        break;
+      case eCharacterId.shark:
+        this.character = CreateCharacter.createChar(eCharacterId.shark, room, this);
+        break;
+      case eCharacterId.frog:
+        this.character = CreateCharacter.createChar(eCharacterId.frog, room, this);
+        break;
+      // 다른 캐릭터 추가 가능
+      default:
+        console.log('알 수 없는 캐릭터 ID입니다.');
+        break;
     }
 
-    /*---------------------------------------------
+    if (this.character) {
+      console.log(`${this.character.prefabId} 캐릭터가 생성되었습니다.`);
+    }
+  }
+
+  /**
+   * 캐릭터의 고유 능력 발동
+   */
+  useCharacterAbility() {
+    if (!this.character) {
+      console.log('캐릭터가 설정되지 않았습니다.');
+      return;
+    }
+
+    this.character.useAbility(); // 연결된 캐릭터의 고유 능력 발동
+  }
+
+  /*---------------------------------------------
     [initCard]
 ---------------------------------------------*/
   initCard() {
@@ -37,9 +91,7 @@ export class GamePlayer {
       }),
     );
 
-    const sendBuffer = createInitCard(
-      cardDatas, 
-      this.session.getNextSequence.bind(this));
+    const sendBuffer = createInitCard(cardDatas, this.session.getNextSequence.bind(this));
     this.session.send(sendBuffer); // 초기 카드 데이터 전송
   }
 
@@ -57,38 +109,9 @@ export class GamePlayer {
     const card = assetManager.getRandomCards(); // 랜덤 카드 1개 가져오기
     this.cardList.set(card[0].cardId, card[0].prefabId); // 카드 목록에 추가
 
-    const sendBuffer = createAddRandomCard(
-      card,
-      this.session.getNextSequence.bind(this),
-    );
+    const sendBuffer = createAddRandomCard(card, this.session.getNextSequence.bind(this));
     this.session.send(sendBuffer); // 카드 추가 데이터 전송
   }
-
-//   /**
-//    * 카드 사용 실패시 다시 추가
-//    * @param {string} cardPrefabId 카드 prefabId
-//    */
-//   reAddCardOnFailure(cardPrefabId) {
-//     const card = assetManager.getCardDataByPrefabId(cardPrefabId); // 카드 데이터 가져오기
-//     if (!card) return;
-
-//     const uuid = uuidv4(); // 새로운 UUID 생성
-//     this.cardList.set(uuid, card.prefabId); // 카드 목록에 추가
-
-//     const packet = create(B2C_AddCardSchema, {
-//       cardId: uuid,
-//       prefabId: card.prefabId,
-//     });
-
-//     const sendBuffer = PacketUtils.SerializePacket(
-//       packet,
-//       B2C_AddCardSchema,
-//       ePacketId.B2C_AddCard,
-//       this.session.getNextSequence(),
-//     );
-
-//     this.session.send(sendBuffer); // 카드 추가 데이터 전송
-//   }
 
   /*
    * 1. 카드 사용시 카드 삭제
@@ -106,11 +129,8 @@ export class GamePlayer {
     if (!card) return;
     this.cardList.delete(cardId); // 카드 목록에서 카드 삭제
 
-    const sendBuffer = createUseCard(
-    card,
-    this.session.getNextSequence.bind(this),
-    );
-    
+    const sendBuffer = createUseCard(card, this.session.getNextSequence.bind(this));
+
     this.session.send(sendBuffer); // 카드 사용 결과 전송
   }
 

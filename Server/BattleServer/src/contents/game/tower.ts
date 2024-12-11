@@ -1,23 +1,27 @@
 import { create } from '@bufbuild/protobuf';
-import { PosInfo } from "src/protocol/struct_pb";
-import { GameRoom } from "../room/gameRoom";
-import { assetManager } from "src/utils/assetManager";
-import { GameObject } from "./gameObject";
-import { PacketUtils } from "ServerCore/utils/packetUtils";
-import { B2C_MonsterDeathNotificationSchema, B2C_MonsterHealthUpdateNotificationSchema } from "src/protocol/monster_pb";
-import { ePacketId } from "ServerCore/network/packetId";
+import { PosInfo } from 'src/protocol/struct_pb';
+import { GameRoom } from '../room/gameRoom';
+import { assetManager } from 'src/utils/assetManager';
+import { GameObject } from './gameObject';
+import { PacketUtils } from 'ServerCore/utils/packetUtils';
+import {
+  B2C_MonsterDeathNotificationSchema,
+  B2C_MonsterHealthUpdateNotificationSchema,
+} from 'src/protocol/monster_pb';
+import { ePacketId } from 'ServerCore/network/packetId';
 import { B2C_TowerAttackMonsterNotificationSchema } from 'src/protocol/tower_pb';
 import { Monster } from './monster';
-import { createTowerAttackMotionPacket, createTowerAttackNotificationPacket } from 'src/packet/towerPacket';
+import {
+  createTowerAttackMotionPacket,
+  createTowerAttackNotificationPacket,
+} from 'src/packet/towerPacket';
 import { createDeathMoster } from 'src/packet/gameRoomPacket';
-
-
 
 export class Tower extends GameObject {
   /*---------------------------------------------
     [멤버 변수]
 ---------------------------------------------*/
-  private attackDamage: number = 0;
+  public attackDamage: number = 0;
   private attackRange: number = 0;
   private attackCoolDown: number = 0;
   public hp: number = 0;
@@ -26,10 +30,10 @@ export class Tower extends GameObject {
   public target: null | undefined;
   public lastAttackTime: number = 0;
 
-/*---------------------------------------------
+  /*---------------------------------------------
     [생성자]
 ---------------------------------------------*/
-  constructor(prefabId: string, pos: PosInfo, room: GameRoom){
+  constructor(prefabId: string, pos: PosInfo, room: GameRoom) {
     super(prefabId, pos, room);
 
     const towerData = assetManager.getTowerData(prefabId);
@@ -90,11 +94,11 @@ export class Tower extends GameObject {
       // 총알 이동 효과 (애니메이션 대체)
       //console.log(`총알이 ${travelTime.toFixed(0)}ms 동안 날아감.`);
 
-      const attackMotionBuffer = createTowerAttackMotionPacket (
+      const attackMotionBuffer = createTowerAttackMotionPacket(
         this.getId(),
         target.getPos(),
         travelTime,
-      )
+      );
       this.room.broadcast(attackMotionBuffer);
 
       setTimeout(() => {
@@ -119,7 +123,7 @@ export class Tower extends GameObject {
 
           // 점수를 GameRoom에 추가
           this.room.addScore(monsterScore);
-          const monsterDeathBuffer = createDeathMoster(target.getId(),target.score)
+          const monsterDeathBuffer = createDeathMoster(target.getId(), target.score);
           this.room.broadcast(monsterDeathBuffer);
         }
       }, travelTime); // 총알 이동 시간 이후 실행
@@ -145,5 +149,3 @@ export class Tower extends GameObject {
 
   update() {}
 }
-
-
