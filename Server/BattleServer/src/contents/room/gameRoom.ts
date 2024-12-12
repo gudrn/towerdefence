@@ -23,11 +23,7 @@ import {
   createIcreaseWave,
   createPositionUpdate,
 } from 'src/packet/gameRoomPacket';
-import {
-  createTowerBuildNotificationPacket,
-  createTowerBuildPacket,
-  createTowerHealNotificationPacket,
-} from 'src/packet/towerPacket';
+import { createTowerBuildNotificationPacket, createTowerBuildPacket } from 'src/packet/towerPacket';
 import { SkillManager } from './skillManager';
 import { MonsterManager } from './monsterManager';
 import { SkillUseMonster } from '../game/skillUseMonster';
@@ -65,6 +61,7 @@ export class GameRoom {
   private gameLoopInterval: any = null; //gameLoop를 저장 후 방 제거 시 clear하기 위함
   private skillManager: SkillManager;
 
+
   constructor(id: number, maxPlayerCount: number) {
     this.id = id;
     this.users = new Map<string, GamePlayer>();
@@ -74,6 +71,7 @@ export class GameRoom {
     this.base = new Base(300, create(PosInfoSchema, { x: 16, y: 16 }), this);
     this.maxPlayerCount = maxPlayerCount;
     this.skillManager = new SkillManager(this);
+
   }
 
   /**
@@ -450,6 +448,7 @@ export class GameRoom {
   /*---------------------------------------------
     [increaseWave]
     - 웨이브를 증가시키고 몬스터를 강화
+    - 5 웨이브 마다 엘리트 몬스터 스폰
    ---------------------------------------------*/
   increaseWave() {
     this.wave += 1;
@@ -462,6 +461,7 @@ export class GameRoom {
     const increaseWaveBuffer = createIcreaseWave(true);
 
     this.broadcast(increaseWaveBuffer);
+
     if (this.wave % 5 === 0 && this.wave !== 1) {
       this.monsterManager.startSpawningElite();
     }

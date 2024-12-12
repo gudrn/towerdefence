@@ -4,7 +4,7 @@ import { PacketUtils } from 'ServerCore/utils/packetUtils';
 import { Tower } from 'src/contents/game/tower';
 import { B2C_MonsterHealthUpdateNotificationSchema } from 'src/protocol/monster_pb';
 import { PosInfo, TowerDataSchema } from 'src/protocol/struct_pb';
-import { B2C_TowerAttackMonsterNotificationSchema, B2C_TowerBuildNotificationSchema, B2C_TowerBuildResponseSchema, B2C_TowerHealthUpdateNotificationSchema } from 'src/protocol/tower_pb';
+import { B2C_TowerAttackMonsterNotificationSchema, B2C_TowerBuffNotificationSchema, B2C_TowerBuildNotificationSchema, B2C_TowerBuildResponseSchema, B2C_TowerHealthUpdateNotificationSchema } from 'src/protocol/tower_pb';
 
 // 타워 생성
 export function createTowerBuildPacket(isSuccess: boolean, sequence: number) {
@@ -92,4 +92,22 @@ export function createTowerAttackNotificationPacket (monsterId:string, hp: numbe
 
     return towerAttackNotificationBuffer
 }
+
+// 타워 버프 적용 알림
+export function createTowerBuffNotificationPacket(towerId: string, isBuffed: boolean): Buffer {
+    const TowerBuffNotificationPacket = create(B2C_TowerBuffNotificationSchema, {
+        towerId: towerId,
+        isBuffed: isBuffed
+    });
+
+    const TowerBuffNotificationBuffer = PacketUtils.SerializePacket(
+        TowerBuffNotificationPacket,
+        B2C_TowerBuffNotificationSchema,
+        ePacketId.B2C_TowerBuffNotification,
+        0
+    );
+    return TowerBuffNotificationBuffer
+}
+
+// 타워 버프 해제 알림
 

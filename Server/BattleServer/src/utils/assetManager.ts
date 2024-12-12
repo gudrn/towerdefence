@@ -8,6 +8,7 @@ import { AssetTower } from './interfaces/assetTower';
 interface CardData {
   cardId: string;
   prefabId: string;
+  type: 'Tower' | 'Skill'; // 카드 유형
 }
 
 interface Monster {
@@ -144,7 +145,7 @@ class AssetManager {
    * ---------------------------------------------
    * @returns {Object} 랜덤 몬스터 데이터
    */
-  getRandomAssetMonster() {
+  getRandomAssetMonster(): AssetMonster {
     console.log('----------');
     console.log(this.monsters.get('Robot5'));
     console.log('----------');
@@ -178,6 +179,17 @@ class AssetManager {
   getSkillsDataByPrefabId(skillPrefabId: string) {
     let skill = this.skills.get(skillPrefabId) || null;
     return skill;
+  }
+  /**
+   * ---------------------------------------------
+   * [getCardDataByPrefabId]
+   * - 특정 카드의 데이터를 가져옵니다.
+   * ---------------------------------------------
+   * @param {string} cardPrefabId 카드 prefabId
+   * @returns {Object|null} 해당 카드 데이터 또는 null
+   */
+  getCardDataByPrefabId(prefabId: string): CardData | null {
+    return this.cards.get(prefabId) || null;
   }
 
   /**
