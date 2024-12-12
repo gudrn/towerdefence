@@ -16,7 +16,7 @@ export class MonsterSpawner {
 ---------------------------------------------*/
   protected gameRoom: GameRoom;
   private spawnedMonster: number = 0;
-  private normalSpawnRate: number = 500; // 일반 몬스터 생성 간격
+  private normalSpawnRate: number = 5000; // 일반 몬스터 생성 간격
   private normalSpawnTimer: NodeJS.Timeout | undefined; //NodeJS.Timeout
   private eliteSpawnTimer: NodeJS.Timeout | undefined; //NodeJS.Timeout
 

@@ -417,7 +417,7 @@ export class GameRoom {
 
     if (object instanceof GamePlayer) {
       this.users.delete(uuid);
-    } else if (object instanceof Monster) {
+    } else if (object instanceof SkillUseMonster) {
       this.monsterManager.removeMonster(uuid);
     } else if (object instanceof Tower) {
       this.towers.delete(uuid);

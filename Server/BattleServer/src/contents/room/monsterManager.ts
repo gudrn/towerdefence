@@ -55,7 +55,6 @@ export class MonsterManager extends MonsterSpawner {
   }
 
   public removeMonster(uuid: string) {
-    this.monsters.get(uuid)?.onDeath();
     this.monsters.delete(uuid);
     // 몬스터 제거 시 필요한 로직
   }

@@ -6,7 +6,7 @@ import { create } from '@bufbuild/protobuf';
 // 스킬을 사용하는 몬스터 클래스 정의
 export class SkillUseMonster extends Monster {
   private cloneInterval: NodeJS.Timeout | null = null; // 클론 생성 간격
-  private isattackUpBuffed: boolean = false; // 버프 상태 여부
+  private isAttackUpBuffed: boolean = false; // 버프 상태 여부
   private isAttackCoolDownBuffed: boolean = false; // 공격 속도 버프 상태 여부
 
   constructor(prefabId: string, pos: PosInfo, room: GameRoom) {
@@ -21,13 +21,13 @@ export class SkillUseMonster extends Monster {
 
   // 공격력을 버프하는 메서드
   public buffAttack() {
-    this.isattackUpBuffed = true;
+    this.isAttackUpBuffed = true;
     this.setAttackDamage(this.getAttackDamage() * 2.5); // 공격력 증가
   }
 
   // 버프를 제거하는 메서드
   public removeBuff() {
-    this.isattackUpBuffed = false;
+    this.isAttackUpBuffed = false;
     this.setAttackDamage(this.getAttackDamage() / 2.5); // 공격력 감소
     // 버프 상태 해제
   }
@@ -42,7 +42,7 @@ export class SkillUseMonster extends Monster {
     this.setAttackCoolDown(this.getAttackCoolDown() / 0.7);
   }
   public getIsAttackUpBuffed() {
-    return this.isattackUpBuffed;
+    return this.isAttackUpBuffed;
   }
   public getIsAttackCoolDownBuffed() {
     return this.isAttackCoolDownBuffed;
@@ -50,7 +50,22 @@ export class SkillUseMonster extends Monster {
 
   // 클론 생성을 시작하는 메서드
   public startCloning() {
+    // 이미 실행 중인 경우 중복 실행 방지
+    if (this.cloneInterval) {
+      return;
+    }
+
+    // 최대 클론 수 제한 추가
+    let cloneCount = 0;
+    const MAX_CLONES = 5;
+
     this.cloneInterval = setInterval(() => {
+      if (cloneCount >= MAX_CLONES) {
+        clearInterval(this.cloneInterval!);
+        this.cloneInterval = null;
+        return;
+      }
+
       const uuid = uuidv4();
       let newX = this.getPos().x;
       let newY = this.getPos().y;
@@ -90,17 +105,25 @@ export class SkillUseMonster extends Monster {
       clone.statusMultiplier(this.room.monsterStatusMultiplier); // 강화 배율 적용
       this.room.addObject(clone); // 룸에 클론 추가
       console.log(`클론 생성: ${uuid}`);
+      cloneCount++;
     }, 1000); // 1초 간격으로 클론 생성
   }
 
   // 몬스터가 죽었을 때 호출되는 메서드
   public onDeath() {
-    super.onDeath(); // 부모 클래스의 onDeath 호출
     if (this.cloneInterval) {
-      // 클론 생성 간격이 설정되어 있을 경우
-      clearInterval(this.cloneInterval); // 클론 생성 중지
+      clearInterval(this.cloneInterval);
     }
-    this.removeBuff(); // 버프 제거
-    this.room.removeObject(this.getId());
+    if (this.isAttackUpBuffed) {
+      this.isAttackUpBuffed = false;
+      this.setAttackDamage(this.getAttackDamage() / 2.5);
+    }
+    if (this.isAttackCoolDownBuffed) {
+      this.isAttackCoolDownBuffed = false;
+      this.setAttackCoolDown(this.getAttackCoolDown() / 0.7);
+    }
+
+    // 부모 클래스의 onDeath 호출
+    super.onDeath();
   }
 }

@@ -68,6 +68,9 @@ export class Monster extends GameObject {
   setAttackCoolDown(coolDown: number) {
     this.attackCoolDown = coolDown;
   }
+  getRoom() {
+    return this.room;
+  }
   /**
    * 몬스터를 강화하는 메서드
    * @param {number} multiplier - 강화 배율 0.1이면, 10%가 오름
@@ -226,5 +229,6 @@ export class Monster extends GameObject {
    */
   onDeath() {
     console.log(`몬스터 ${this.getId()}가 사망.`);
+    this.room.removeObject(this.getId());
   }
 }
