@@ -5,6 +5,7 @@ import { Vec2 } from 'ServerCore/utils/vec2';
 import { Tilemap } from './tilemap';
 import { PQNode } from 'src/utils/interfaces/assetPQnode';
 import { SkillUseMonster } from '../game/skillUseMonster';
+import { createAttackBuff } from 'src/packet/monsterPacket';
 
 export class MonsterManager extends MonsterSpawner {
   private monsters: Map<string, SkillUseMonster>;
@@ -36,15 +37,12 @@ export class MonsterManager extends MonsterSpawner {
       // 공격력 버프
       if (hasRobot5 && !monster.getIsAttackUpBuffed()) {
         monster.buffAttack();
+        const packet = createAttackBuff('atkBuff', true);
+        this.gameRoom.broadcast(packet);
       } else if (!hasRobot5 && monster.getIsAttackUpBuffed()) {
         monster.removeBuff();
-      }
-
-      // 공격 속도 버프
-      if (hasRobot2 && !monster.getIsAttackCoolDownBuffed()) {
-        monster.attackCoolDownBuff();
-      } else if (!hasRobot2 && monster.getIsAttackCoolDownBuffed()) {
-        monster.removeAttackCoolDownBuff();
+        const packet = createAttackBuff('atkBuff', false);
+        this.gameRoom.broadcast(packet);
       }
     }
   }

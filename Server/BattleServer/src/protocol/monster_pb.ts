@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file monster.proto.
  */
 export const file_monster: GenFile = /*@__PURE__*/
-  fileDesc("Cg1tb25zdGVyLnByb3RvEghQcm90b2NvbCJUChxCMkNfU3Bhd25Nb25zdGVyTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhAKCHByZWZhYklkGAIgASgJIkAKHEIyQ19Nb25zdGVyRGVhdGhOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEg0KBXNjb3JlGAIgASgFIksKJUIyQ19Nb25zdGVyUG9zaXRpb25VcGRhdGVOb3RpZmljYXRpb24SIgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8iZAoiQjJDX01vbnN0ZXJBdHRhY2tUb3dlck5vdGlmaWNhdGlvbhIRCgltb25zdGVySWQYASABKAkSEAoIdGFyZ2V0SWQYAiABKAkSCgoCaHAYAyABKAUSDQoFbWF4SHAYBCABKAUiTAohQjJDX01vbnN0ZXJBdHRhY2tCYXNlTm90aWZpY2F0aW9uEhEKCW1vbnN0ZXJJZBgBIAEoCRIUCgxhdHRhY2tEYW1hZ2UYAiABKAUiUwojQjJDX01vbnN0ZXJIZWFsdGhVcGRhdGVOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEgoKAmhwGAIgASgFEg0KBW1heEhwGAMgASgFYgZwcm90bzM", [file_struct]);
+  fileDesc("Cg1tb25zdGVyLnByb3RvEghQcm90b2NvbCJUChxCMkNfU3Bhd25Nb25zdGVyTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhAKCHByZWZhYklkGAIgASgJIkAKHEIyQ19Nb25zdGVyRGVhdGhOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEg0KBXNjb3JlGAIgASgFIksKJUIyQ19Nb25zdGVyUG9zaXRpb25VcGRhdGVOb3RpZmljYXRpb24SIgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8iZAoiQjJDX01vbnN0ZXJBdHRhY2tUb3dlck5vdGlmaWNhdGlvbhIRCgltb25zdGVySWQYASABKAkSEAoIdGFyZ2V0SWQYAiABKAkSCgoCaHAYAyABKAUSDQoFbWF4SHAYBCABKAUiTAohQjJDX01vbnN0ZXJBdHRhY2tCYXNlTm90aWZpY2F0aW9uEhEKCW1vbnN0ZXJJZBgBIAEoCRIUCgxhdHRhY2tEYW1hZ2UYAiABKAUiUwojQjJDX01vbnN0ZXJIZWFsdGhVcGRhdGVOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEgoKAmhwGAIgASgFEg0KBW1heEhwGAMgASgFIj4KG0IyQ19Nb25zdGVyQnVmZk5vdGlmaWNhdGlvbhIQCghidWZmVHlwZRgBIAEoCRINCgVzdGF0ZRgCIAEoCGIGcHJvdG8z", [file_struct]);
 
 /**
  * 몬스터 생성 알림
@@ -167,4 +167,26 @@ export type B2C_MonsterHealthUpdateNotification = Message<"Protocol.B2C_MonsterH
  */
 export const B2C_MonsterHealthUpdateNotificationSchema: GenMessage<B2C_MonsterHealthUpdateNotification> = /*@__PURE__*/
   messageDesc(file_monster, 5);
+
+/**
+ * @generated from message Protocol.B2C_MonsterBuffNotification
+ */
+export type B2C_MonsterBuffNotification = Message<"Protocol.B2C_MonsterBuffNotification"> & {
+  /**
+   * @generated from field: string buffType = 1;
+   */
+  buffType: string;
+
+  /**
+   * @generated from field: bool state = 2;
+   */
+  state: boolean;
+};
+
+/**
+ * Describes the message Protocol.B2C_MonsterBuffNotification.
+ * Use `create(B2C_MonsterBuffNotificationSchema)` to create a new message.
+ */
+export const B2C_MonsterBuffNotificationSchema: GenMessage<B2C_MonsterBuffNotification> = /*@__PURE__*/
+  messageDesc(file_monster, 6);
 

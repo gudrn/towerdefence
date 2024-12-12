@@ -171,23 +171,22 @@ export class Monster extends GameObject {
     ---------------------------------------------*/
 
   attackTarget(tower: Tower) {
-    console.log('attack');
-    // 2. 클라이언트에 공격 패킷 전송
-    const attackBuffer = createAttackTarget(this.getId.bind(this), tower);
-
-    this.room.broadcast(attackBuffer);
-
-    // 타워 데미지 처리
+    // 1. 타워 데미지 처리
     const isDestroyed = tower.onDamaged(this.attackDamage); // 버프 상태일 때 더 높은 데미지
 
-    // 3. 타워 파괴 처리
+    // 2. 타워 파괴 처리
     if (isDestroyed) {
       console.log(`타워 ${tower.getId()}가 파괴되었습니다.`);
       this.room.removeObject(tower.getId()); // GameRoom에서 타워 제거
 
       const towerDestroyedBuffer = createTowerDestroyed(tower);
       this.room.broadcast(towerDestroyedBuffer);
+      return;
     }
+    // 3. 클라이언트에 공격 패킷 전송
+    const attackBuffer = createAttackTarget(this.getId.bind(this), tower);
+
+    this.room.broadcast(attackBuffer);
   }
 
   setAttackDamage(damage: number) {

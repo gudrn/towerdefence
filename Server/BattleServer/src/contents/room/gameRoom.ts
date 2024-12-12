@@ -111,9 +111,6 @@ export class GameRoom {
   // 1. 방이 가득 찼는지 확인
   addplayer(player: GamePlayer) {
     if (this.users.size >= this.maxPlayerCount) {
-      console.log('this.users.length: ' + this.users.size);
-
-      console.log('this.maxPlayerCount: ' + this.maxPlayerCount);
       return false; // 방이 가득 참
     }
     if (this.users.get(player.session.getId()) != undefined) {
@@ -305,7 +302,6 @@ export class GameRoom {
    * @param {C2B_TowerBuildRequest} packet - 타워 생성 패킷 데이터
    ---------------------------------------------*/
   handleTowerBuild(packet: any, session: BattleSession) {
-    console.log('handleTowerBuild');
     const { tower, ownerId, cardId } = packet;
     const user = this.users.get(session.getId());
     user?.useCard(cardId);
@@ -327,9 +323,6 @@ export class GameRoom {
     const newTower = new Tower(packet.tower.prefabId, towerPosInfo, this);
     this.addObject(newTower);
     this.towers.set(newTower.getId(), newTower);
-    console.log(
-      `타워생성 성공. towerId: ${newTower.getId()}, prefabId: ${newTower.getPrefabId()}, 위치: (${newTower.getPos()}`,
-    );
 
     // 3. 타워 생성 성공 응답
     const responseBuffer = createTowerBuildPacket(true, session.getNextSequence());
@@ -384,7 +377,6 @@ export class GameRoom {
     for (const [uuid, tower] of this.towers) {
       tower.attackTarget(Array.from(this.monsterManager.getMonsters().values()));
     }
-
     //베이스캠프 체력 0 일시 게임 종료
     if (this.checkBaseHealth()) {
       const endBuffer = createEndGame(false);
@@ -459,10 +451,8 @@ export class GameRoom {
    ---------------------------------------------*/
   increaseWave() {
     this.wave += 1;
-    console.log(`웨이브가 ${this.wave}단계로 올랐습니다!`);
 
     this.users.forEach((player) => player.addRandomCard());
-    console.log(`웨이브가 올라가서 카드가 지급됩니다.`);
 
     // 강화 계수 증가
     this.monsterStatusMultiplier += 0.1;
@@ -472,7 +462,6 @@ export class GameRoom {
     this.broadcast(increaseWaveBuffer);
     if (this.wave % 5 === 0 && this.wave !== 1) {
       this.monsterManager.startSpawningElite();
-      console.log('엘리트 몬스터 등장');
     }
   }
 
@@ -482,8 +471,6 @@ export class GameRoom {
 
   leaveRoom(playerId: string) {
     this.users.delete(playerId);
-    console.log('플레이어 퇴장', playerId);
-    console.log('현재 플레이어 수', this.users.size);
   }
 
   getCurrentUsersCount() {

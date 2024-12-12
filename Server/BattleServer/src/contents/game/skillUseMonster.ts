@@ -7,45 +7,25 @@ import { create } from '@bufbuild/protobuf';
 export class SkillUseMonster extends Monster {
   private cloneInterval: NodeJS.Timeout | null = null; // 클론 생성 간격
   private isAttackUpBuffed: boolean = false; // 버프 상태 여부
-  private isAttackCoolDownBuffed: boolean = false; // 공격 속도 버프 상태 여부
 
   constructor(prefabId: string, pos: PosInfo, room: GameRoom) {
     super(prefabId, pos, room); // 부모 클래스 생성자 호출
-
-    switch (this.prefabId) {
-      case 'Robot3':
-        this.isAttackCoolDownBuffed = true; // 공격 속도 버프 상태 설정
-        break;
-    }
   }
 
   // 공격력을 버프하는 메서드
   public buffAttack() {
     this.isAttackUpBuffed = true;
-    this.setAttackDamage(this.getAttackDamage() * 2.5); // 공격력 증가
+    this.setAttackDamage(this.getAttackDamage() * 3); // 공격력 증가
   }
 
   // 버프를 제거하는 메서드
   public removeBuff() {
     this.isAttackUpBuffed = false;
-    this.setAttackDamage(this.getAttackDamage() / 2.5); // 공격력 감소
+    this.setAttackDamage(this.getAttackDamage() / 3); // 공격력 감소
     // 버프 상태 해제
-  }
-
-  public attackCoolDownBuff() {
-    this.isAttackCoolDownBuffed = true;
-    this.setAttackCoolDown(this.getAttackCoolDown() * 0.7);
-  }
-
-  public removeAttackCoolDownBuff() {
-    this.isAttackCoolDownBuffed = false;
-    this.setAttackCoolDown(this.getAttackCoolDown() / 0.7);
   }
   public getIsAttackUpBuffed() {
     return this.isAttackUpBuffed;
-  }
-  public getIsAttackCoolDownBuffed() {
-    return this.isAttackCoolDownBuffed;
   }
 
   // 클론 생성을 시작하는 메서드
@@ -116,11 +96,7 @@ export class SkillUseMonster extends Monster {
     }
     if (this.isAttackUpBuffed) {
       this.isAttackUpBuffed = false;
-      this.setAttackDamage(this.getAttackDamage() / 2.5);
-    }
-    if (this.isAttackCoolDownBuffed) {
-      this.isAttackCoolDownBuffed = false;
-      this.setAttackCoolDown(this.getAttackCoolDown() / 0.7);
+      this.setAttackDamage(this.getAttackDamage() / 3);
     }
 
     // 부모 클래스의 onDeath 호출

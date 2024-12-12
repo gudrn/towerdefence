@@ -68,7 +68,7 @@ export function createPosionUpdate(Id: string, x: any, y: any) {
   return sendBuffer;
 }
 
-export function createUserSkill(prefabId: string, x: number, y: number) {
+export function createUserSkill(uuid: string, prefabId: string, x: number, y: number) {
   const skilldata = create(SkillDataSchema, {
     prefabId: prefabId,
     skillPos: create(PosInfoSchema, {
@@ -78,6 +78,7 @@ export function createUserSkill(prefabId: string, x: number, y: number) {
   });
   //스킬 사용 알림
   const notification = create(B2C_UseSkillNotificationSchema, {
+    ownerId: uuid,
     skill: skilldata,
   });
 

@@ -52,10 +52,8 @@ export class MonsterSpawner {
   }
 
   startSpawningElite() {
-    if (this.gameRoom.getMonsterManager().getMonsterCount() === 0) {
-      this.spawnEilteMonster(); // 엘리트 몬스터 생성
-      this.spawnedMonster += 1;
-    }
+    this.spawnEilteMonster(); // 엘리트 몬스터 생성
+    this.spawnedMonster += 1;
   }
 
   /*---------------------------------------------
@@ -65,11 +63,9 @@ export class MonsterSpawner {
   spawnNomalMonster() {
     // 랜덤 위치 선택
     const randomSpawnPos = this.getRandomSpawnPosition();
-    console.log(randomSpawnPos);
 
     // 몬스터 uuid 생성
     const newUuid = uuidv4();
-    console.log('Generated UUID:', newUuid);
 
     // 위치 정보 생성
     const posInfo = create(PosInfoSchema, {
@@ -93,11 +89,9 @@ export class MonsterSpawner {
   spawnEilteMonster() {
     // 랜덤 위치 선택
     const randomSpawnPos = this.getRandomSpawnPosition();
-    console.log(randomSpawnPos);
 
     // 몬스터 uuid 생성
     const newUuid = uuidv4();
-    console.log('Generated UUID:', newUuid);
 
     // 위치 정보 생성
     const posInfo = create(PosInfoSchema, {
