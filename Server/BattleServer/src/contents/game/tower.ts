@@ -9,6 +9,7 @@ import {
   createTowerBuffNotificationPacket,
 } from 'src/packet/towerPacket';
 import { createDeathMoster } from 'src/packet/gameRoomPacket';
+import { SkillUseMonster } from './skillUseMonster';
 
 export class Tower extends GameObject {
   /*---------------------------------------------
@@ -25,9 +26,6 @@ export class Tower extends GameObject {
   public lastAttackTime: number = 0;
   private buffedBy: Set<string> = new Set();
 
-  /*---------------------------------------------
-    [생성자]
-  ---------------------------------------------*/
   constructor(prefabId: string, pos: PosInfo, room: GameRoom) {
     super(prefabId, pos, room);
 
@@ -51,8 +49,10 @@ export class Tower extends GameObject {
    * 타워가 공격할 몬스터를 선택
    * @param {Array} monsters - 몬스터 배열
    */
-  private getMonsterInRange(monsters: Monster[]): { monster: Monster; distance: number } | null {
-    let closestMonster: Monster | null = null;
+  private getMonsterInRange(
+    monsters: SkillUseMonster[],
+  ): { monster: SkillUseMonster; distance: number } | null {
+    let closestMonster: SkillUseMonster | null = null;
     let minDistance = Infinity;
 
     for (const monster of monsters) {
@@ -74,7 +74,7 @@ export class Tower extends GameObject {
    * @param {object} monsters - 몬스터 객체 { id, x, y }
    */
 
-  attackTarget(monsters: Monster[]) {
+  attackTarget(monsters: SkillUseMonster[]) {
     const currentTime = Date.now();
     if (currentTime - this.lastAttackTime > this.attackCoolDown) {
       this.lastAttackTime = currentTime;
@@ -107,9 +107,6 @@ export class Tower extends GameObject {
           target.hp,
           target.maxHp,
         );
-
-        console.log('targetHp: ', target.hp);
-        console.log('targetMaxHp: ', target.maxHp);
 
         this.room.broadcast(attackBuffer);
 

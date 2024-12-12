@@ -1,23 +1,21 @@
-
 import { create } from '@bufbuild/protobuf';
 import { BattleSession } from 'src/main/session/battleSession';
 import { CardData, CardDataSchema, GamePlayerData, SkillDataSchema } from 'src/protocol/struct_pb';
 import { assetManager } from 'src/utils/assetManager';
 import { createAddRandomCard, createInitCard, createUseCard } from 'src/packet/gamePlayerPacket';
 
-
 export class GamePlayer {
-    public session: BattleSession;
-    public playerData: GamePlayerData;
-    public cardList: Map<string, string> = new Map();
+  public session: BattleSession;
+  public playerData: GamePlayerData;
+  public cardList: Map<string, string> = new Map();
 
-    constructor(session: BattleSession, playerData: GamePlayerData) {
-        this.session = session; // 세션 정보 저장
-        this.playerData = playerData; // 플레이어 데이터 저장
-        this.cardList = new Map(); // 카드 목록 초기화
-    }
+  constructor(session: BattleSession, playerData: GamePlayerData) {
+    this.session = session; // 세션 정보 저장
+    this.playerData = playerData; // 플레이어 데이터 저장
+    this.cardList = new Map(); // 카드 목록 초기화
+  }
 
-    /*---------------------------------------------
+  /*---------------------------------------------
     [initCard]
 ---------------------------------------------*/
   initCard() {
@@ -37,9 +35,7 @@ export class GamePlayer {
       }),
     );
 
-    const sendBuffer = createInitCard(
-      cardDatas, 
-      this.session.getNextSequence.bind(this));
+    const sendBuffer = createInitCard(cardDatas, this.session.getNextSequence.bind(this));
     this.session.send(sendBuffer); // 초기 카드 데이터 전송
   }
 
@@ -57,38 +53,35 @@ export class GamePlayer {
     const card = assetManager.getRandomCards(); // 랜덤 카드 1개 가져오기
     this.cardList.set(card[0].cardId, card[0].prefabId); // 카드 목록에 추가
 
-    const sendBuffer = createAddRandomCard(
-      card,
-      this.session.getNextSequence.bind(this),
-    );
+    const sendBuffer = createAddRandomCard(card, this.session.getNextSequence.bind(this));
     this.session.send(sendBuffer); // 카드 추가 데이터 전송
   }
 
-//   /**
-//    * 카드 사용 실패시 다시 추가
-//    * @param {string} cardPrefabId 카드 prefabId
-//    */
-//   reAddCardOnFailure(cardPrefabId) {
-//     const card = assetManager.getCardDataByPrefabId(cardPrefabId); // 카드 데이터 가져오기
-//     if (!card) return;
+  //   /**
+  //    * 카드 사용 실패시 다시 추가
+  //    * @param {string} cardPrefabId 카드 prefabId
+  //    */
+  //   reAddCardOnFailure(cardPrefabId) {
+  //     const card = assetManager.getCardDataByPrefabId(cardPrefabId); // 카드 데이터 가져오기
+  //     if (!card) return;
 
-//     const uuid = uuidv4(); // 새로운 UUID 생성
-//     this.cardList.set(uuid, card.prefabId); // 카드 목록에 추가
+  //     const uuid = uuidv4(); // 새로운 UUID 생성
+  //     this.cardList.set(uuid, card.prefabId); // 카드 목록에 추가
 
-//     const packet = create(B2C_AddCardSchema, {
-//       cardId: uuid,
-//       prefabId: card.prefabId,
-//     });
+  //     const packet = create(B2C_AddCardSchema, {
+  //       cardId: uuid,
+  //       prefabId: card.prefabId,
+  //     });
 
-//     const sendBuffer = PacketUtils.SerializePacket(
-//       packet,
-//       B2C_AddCardSchema,
-//       ePacketId.B2C_AddCard,
-//       this.session.getNextSequence(),
-//     );
+  //     const sendBuffer = PacketUtils.SerializePacket(
+  //       packet,
+  //       B2C_AddCardSchema,
+  //       ePacketId.B2C_AddCard,
+  //       this.session.getNextSequence(),
+  //     );
 
-//     this.session.send(sendBuffer); // 카드 추가 데이터 전송
-//   }
+  //     this.session.send(sendBuffer); // 카드 추가 데이터 전송
+  //   }
 
   /*
    * 1. 카드 사용시 카드 삭제
@@ -107,10 +100,11 @@ export class GamePlayer {
     this.cardList.delete(cardId); // 카드 목록에서 카드 삭제
 
     const sendBuffer = createUseCard(
-    card,
-    this.session.getNextSequence.bind(this),
+      this.session.getId(),
+      card,
+      this.session.getNextSequence.bind(this),
     );
-    
+
     this.session.send(sendBuffer); // 카드 사용 결과 전송
   }
 
