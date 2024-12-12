@@ -31,8 +31,6 @@ export class Monster extends GameObject {
   protected moveSpeed: number = 0; //공격 속도
   private waitUntil: number = 0; //동작 간 딜레이 시간
   public score: number = 0; //점수
-  private isBuffed: boolean = false; // 버프 상태
-  private buffPercent: number = 2.5; // 버프 퍼센트
 
   constructor(prefabId: string, pos: PosInfo, room: GameRoom) {
     super(prefabId, pos, room);
@@ -61,7 +59,15 @@ export class Monster extends GameObject {
   getpos() {
     return this.pos;
   }
-
+  getAttackDamage() {
+    return this.attackDamage;
+  }
+  getAttackCoolDown() {
+    return this.attackCoolDown;
+  }
+  setAttackCoolDown(coolDown: number) {
+    this.attackCoolDown = coolDown;
+  }
   /**
    * 몬스터를 강화하는 메서드
    * @param {number} multiplier - 강화 배율 0.1이면, 10%가 오름
@@ -72,11 +78,6 @@ export class Monster extends GameObject {
     this.attackDamage = Math.floor(this.attackDamage * multiplier);
     console.log(`몬스터가 강화되었습니다. `, this.maxHp);
   }
-
-  buffed(bool: boolean = false) {
-    this.isBuffed = bool;
-  }
-
   /**
    * 몬스터의 상태를 업데이트합니다.
    */
@@ -179,11 +180,7 @@ export class Monster extends GameObject {
     this.room.broadcast(attackBuffer);
 
     // 타워 데미지 처리
-    const isDestroyed = tower.onDamaged(
-      this.isBuffed
-        ? Math.ceil(this.attackDamage + this.attackDamage * this.buffPercent)
-        : this.attackDamage,
-    ); // 버프 상태일 때 더 높은 데미지
+    const isDestroyed = tower.onDamaged(this.attackDamage); // 버프 상태일 때 더 높은 데미지
 
     // 3. 타워 파괴 처리
     if (isDestroyed) {
@@ -195,25 +192,19 @@ export class Monster extends GameObject {
     }
   }
 
+  setAttackDamage(damage: number) {
+    this.attackDamage = damage;
+  }
   /**
    * 기지 공격
    */
   attackBase(base: Base) {
-    const baseAttackBuffer = createAttackBase(
-      this.getId.bind(this),
-      this.isBuffed
-        ? Math.ceil(this.attackDamage + this.attackDamage * this.buffPercent)
-        : this.attackDamage,
-    ); // 버프 상태일 때 더 높은 데미지
+    const baseAttackBuffer = createAttackBase(this.getId.bind(this), this.attackDamage); // 버프 상태일 때 더 높은 데미지
 
     this.room.broadcast(baseAttackBuffer);
 
     // 기지 데미지 처리
-    base.onDamaged(
-      this.isBuffed
-        ? Math.ceil(this.attackDamage + this.attackDamage * this.buffPercent)
-        : this.attackDamage,
-    ); // 버프 상태일 때 더 높은 데미지
+    base.onDamaged(this.attackDamage); // 버프 상태일 때 더 높은 데미지
   }
 
   /*---------------------------------------------
@@ -235,7 +226,5 @@ export class Monster extends GameObject {
    */
   onDeath() {
     console.log(`몬스터 ${this.getId()}가 사망.`);
-
-    this.room.removeObject(this.getId());
   }
 }

@@ -1,9 +1,9 @@
 import { assetManager } from 'src/utils/assetManager';
-import { Monster } from '../game/monster';
 import { create } from '@bufbuild/protobuf';
 import { PosInfoSchema } from 'src/protocol/struct_pb';
 import { v4 as uuidv4 } from 'uuid';
 import { GameRoom } from './gameRoom';
+import { SkillUseMonster } from '../game/skillUseMonster';
 
 /**
  * 몬스터 스포너 클래스
@@ -17,7 +17,6 @@ export class MonsterSpawner {
   protected gameRoom: GameRoom;
   private spawnedMonster: number = 0;
   private normalSpawnRate: number = 500; // 일반 몬스터 생성 간격
-  private eliteSpawnRate: number = 20000; // 엘리트 몬스터 생성 간격
   private normalSpawnTimer: NodeJS.Timeout | undefined; //NodeJS.Timeout
   private eliteSpawnTimer: NodeJS.Timeout | undefined; //NodeJS.Timeout
 
@@ -53,10 +52,10 @@ export class MonsterSpawner {
   }
 
   startSpawningElite() {
-    this.eliteSpawnTimer = setInterval(() => {
+    if (this.gameRoom.getMonsterManager().getMonsterCount() === 0) {
       this.spawnEilteMonster(); // 엘리트 몬스터 생성
       this.spawnedMonster += 1;
-    }, this.eliteSpawnRate);
+    }
   }
 
   /*---------------------------------------------
@@ -81,7 +80,7 @@ export class MonsterSpawner {
 
     // 1~4번 몬스터 중 랜덤
     let randomAssetMonster = assetManager.getRandomAssetMonster();
-    const monster = new Monster(randomAssetMonster.prefabId, posInfo, this.gameRoom);
+    const monster = new SkillUseMonster(randomAssetMonster.prefabId, posInfo, this.gameRoom);
     monster.statusMultiplier(this.gameRoom.monsterStatusMultiplier); // 강화 배율 적용
     this.gameRoom.addObject(monster);
   }
@@ -116,7 +115,7 @@ export class MonsterSpawner {
       return;
     }
 
-    const monster = new Monster(eliteAssetMonster.prefabId, posInfo, this.gameRoom);
+    const monster = new SkillUseMonster(eliteAssetMonster.prefabId, posInfo, this.gameRoom);
     monster.statusMultiplier(this.gameRoom.monsterStatusMultiplier); // 강화 배율 적용
     this.gameRoom.addObject(monster);
   }

@@ -1,56 +1,61 @@
 import { PosInfo } from 'src/protocol/struct_pb';
-import { Monster } from '../game/monster';
 import { GameRoom } from './gameRoom';
 import { MonsterSpawner } from './monsterSpanwner';
 import { Vec2 } from 'ServerCore/utils/vec2';
 import { Tilemap } from './tilemap';
-
-interface PQNode {
-  cost: number;
-  pos: Vec2;
-}
+import { PQNode } from 'src/utils/interfaces/assetPQnode';
+import { SkillUseMonster } from '../game/skillUseMonster';
 
 export class MonsterManager extends MonsterSpawner {
-  private monsters: Map<string, Monster>;
+  private monsters: Map<string, SkillUseMonster>;
   private tilemap: Tilemap;
-  private isEliteBuffed: boolean = false;
+  private attackCoolDownBuffer: boolean = false; // 공격 속도 버프 상태 여부
+  private attackUpBuffer: boolean = false; // 공격력 버프 상태 여부
+
   constructor(gameRoom: GameRoom, tilemap: Tilemap) {
     super(gameRoom);
-    this.monsters = new Map<string, Monster>();
+    this.monsters = new Map<string, SkillUseMonster>();
     this.tilemap = tilemap;
-    this.isEliteBuffed = false;
   }
 
   public startSpawning() {
     super.startSpawning();
-    super.startSpawningElite();
   }
 
   public updateMonsters() {
-    let hasEliteBoss = false;
-    for (const [uuid, monster] of this.monsters) {
+    let hasRobot5 = false;
+    let hasRobot2 = false;
+
+    for (const monster of this.monsters.values()) {
       monster.update();
-      if (monster.getPrefabId() === 'Robot5') {
-        hasEliteBoss = true;
-      }
+      hasRobot5 ||= monster.getPrefabId() === 'Robot5';
+      hasRobot2 ||= monster.getPrefabId() === 'Robot2';
     }
-    if (hasEliteBoss) {
-      for (const [uuid, monster] of this.monsters) {
-        monster.buffed(true);
+
+    for (const monster of this.monsters.values()) {
+      // 공격력 버프
+      if (hasRobot5 && !monster.getIsAttackUpBuffed()) {
+        monster.buffAttack();
+      } else if (!hasRobot5 && monster.getIsAttackUpBuffed()) {
+        monster.removeBuff();
       }
-    } else {
-      for (const [uuid, monster] of this.monsters) {
-        monster.buffed(false);
+
+      // 공격 속도 버프
+      if (hasRobot2 && !monster.getIsAttackCoolDownBuffed()) {
+        monster.attackCoolDownBuff();
+      } else if (!hasRobot2 && monster.getIsAttackCoolDownBuffed()) {
+        monster.removeAttackCoolDownBuff();
       }
     }
   }
 
-  public addMonster(monster: Monster) {
+  public addMonster(monster: SkillUseMonster) {
     this.monsters.set(monster.getId(), monster);
     // 몬스터 추가 시 필요한 로직
   }
 
   public removeMonster(uuid: string) {
+    this.monsters.get(uuid)?.onDeath();
     this.monsters.delete(uuid);
     // 몬스터 제거 시 필요한 로직
   }

@@ -30,6 +30,7 @@ import {
 } from 'src/packet/towerPacket';
 import { SkillManager } from './skillManager';
 import { MonsterManager } from './monsterManager';
+import { SkillUseMonster } from '../game/skillUseMonster';
 
 interface PQNode {
   cost: number;
@@ -399,8 +400,8 @@ export class GameRoom {
    * 대상: 몬스터, 타워, 투사체
    * 주의: 플레이어는 enterRoom으로 추가하기 
   ---------------------------------------------*/
-  addObject(object: Monster | Tower) {
-    if (object instanceof Monster) {
+  addObject(object: SkillUseMonster | Tower) {
+    if (object instanceof SkillUseMonster) {
       this.monsterManager.addMonster(object);
       const sendBuffer = createAddObject(object);
       this.broadcast(sendBuffer);
@@ -469,9 +470,8 @@ export class GameRoom {
     const increaseWaveBuffer = createIcreaseWave(true);
 
     this.broadcast(increaseWaveBuffer);
-
     if (this.wave % 5 === 0 && this.wave !== 1) {
-      this.monsterManager.spawnEilteMonster();
+      this.monsterManager.startSpawningElite();
       console.log('엘리트 몬스터 등장');
     }
   }
