@@ -47,6 +47,7 @@ export enum ePacketId {
     B2C_BaseDestroyNotification = 306,
     B2C_ObstacleSpawnNotification = 307,
     B2C_TowerHealthUpdateNotification = 308,
+    B2C_TowerBuffNotification = 309,
     C2B_SkillRequest = 401,
     B2C_SkillResponse = 402,
     B2C_SkillNotify = 403,

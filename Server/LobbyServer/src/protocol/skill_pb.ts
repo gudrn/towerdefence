@@ -13,7 +13,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file skill.proto.
  */
 export const file_skill: GenFile = /*@__PURE__*/
-  fileDesc("Cgtza2lsbC5wcm90bxIIUHJvdG9jb2wiVgoQQzJCX1NraWxsUmVxdWVzdBIiCgVza2lsbBgBIAEoCzITLlByb3RvY29sLlNraWxsRGF0YRIOCgZyb29tSWQYAiABKAUSDgoGY2FyZElkGAMgASgJIjYKEUIyQ19Ta2lsbFJlc3BvbnNlEhEKCWlzU3VjY2VzcxgBIAEoCBIOCgZjYXJkSWQYAiABKAkiPgoYQjJDX1VzZVNraWxsTm90aWZpY2F0aW9uEiIKBXNraWxsGAEgASgLMhMuUHJvdG9jb2wuU2tpbGxEYXRhIjMKC0IyQ19BZGRDYXJkEiQKCGNhcmREYXRhGAEgASgLMhIuUHJvdG9jb2wuQ2FyZERhdGEiOAoQQjJDX0luaXRDYXJkRGF0YRIkCghjYXJkRGF0YRgBIAMoCzISLlByb3RvY29sLkNhcmREYXRhYgZwcm90bzM", [file_enum, file_struct]);
+  fileDesc("Cgtza2lsbC5wcm90bxIIUHJvdG9jb2wiVgoQQzJCX1NraWxsUmVxdWVzdBIiCgVza2lsbBgBIAEoCzITLlByb3RvY29sLlNraWxsRGF0YRIOCgZyb29tSWQYAiABKAUSDgoGY2FyZElkGAMgASgJIjYKEUIyQ19Ta2lsbFJlc3BvbnNlEhEKCWlzU3VjY2VzcxgBIAEoCBIOCgZjYXJkSWQYAiABKAkiPgoYQjJDX1VzZVNraWxsTm90aWZpY2F0aW9uEiIKBXNraWxsGAEgASgLMhMuUHJvdG9jb2wuU2tpbGxEYXRhIkMKC0IyQ19BZGRDYXJkEg4KBmNhcmRJZBgBIAEoCRIkCghjYXJkRGF0YRgCIAEoCzISLlByb3RvY29sLkNhcmREYXRhIjgKEEIyQ19Jbml0Q2FyZERhdGESJAoIY2FyZERhdGEYASADKAsyEi5Qcm90b2NvbC5DYXJkRGF0YWIGcHJvdG8z", [file_enum, file_struct]);
 
 /**
  * @generated from message Protocol.C2B_SkillRequest
@@ -96,7 +96,12 @@ export const B2C_UseSkillNotificationSchema: GenMessage<B2C_UseSkillNotification
  */
 export type B2C_AddCard = Message<"Protocol.B2C_AddCard"> & {
   /**
-   * @generated from field: Protocol.CardData cardData = 1;
+   * @generated from field: string cardId = 1;
+   */
+  cardId: string;
+
+  /**
+   * @generated from field: Protocol.CardData cardData = 2;
    */
   cardData?: CardData;
 };

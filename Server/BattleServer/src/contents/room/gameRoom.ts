@@ -17,20 +17,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { GamePlayer } from '../game/gamePlayer';
 import {
   createAddObject,
-  createDeathMoster,
   createEndGame,
   createEnterRoom,
   createGameStart,
   createIcreaseWave,
-  createMosterHpSync,
   createPosionUpdate,
-  createUserSkill,
 } from 'src/packet/gameRoomPacket';
-import {
-  createTowerBuildNotificationPacket,
-  createTowerBuildPacket,
-  createTowerHealNotificationPacket,
-} from 'src/packet/towerPacket';
+import { createTowerBuildNotificationPacket, createTowerBuildPacket } from 'src/packet/towerPacket';
 import { SkillManager } from './skillManager';
 interface PQNode {
   cost: number;
@@ -66,6 +59,7 @@ export class GameRoom {
   private gameLoopInterval: any = null; //gameLoop를 저장 후 방 제거 시 clear하기 위함
   private skillManager: SkillManager;
 
+
   constructor(id: number, maxPlayerCount: number) {
     this.id = id;
     this.users = new Map<string, GamePlayer>();
@@ -76,6 +70,7 @@ export class GameRoom {
     this.maxPlayerCount = maxPlayerCount;
     this.monsterSpawner = new MonsterSpawner(this);
     this.skillManager = new SkillManager(this);
+
   }
 
   /**
@@ -584,6 +579,7 @@ export class GameRoom {
   /*---------------------------------------------
     [increaseWave]
     - 웨이브를 증가시키고 몬스터를 강화
+    - 5 웨이브 마다 엘리트 몬스터 스폰
    ---------------------------------------------*/
   increaseWave() {
     this.wave += 1;
@@ -599,9 +595,10 @@ export class GameRoom {
 
     this.broadcast(increaseWaveBuffer);
 
-    if(this.wave%5===0 &&this.wave!==1){
+    // 엘리트 몬스터 스폰
+    if (this.wave % 5 === 0 && this.wave !== 1) {
       this.monsterSpawner.spawnEilteMonster();
-      console.log('엘리트 몬스터 등장')
+      console.log('엘리트 몬스터 등장');
     }
   }
 
