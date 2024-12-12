@@ -242,6 +242,7 @@ class AssetManager {
       });
       ret.push(card);
     }
+
     return ret;
   }
 

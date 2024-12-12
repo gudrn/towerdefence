@@ -15,7 +15,6 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_skill: GenFile = /*@__PURE__*/
   fileDesc("Cgtza2lsbC5wcm90bxIIUHJvdG9jb2wiVgoQQzJCX1NraWxsUmVxdWVzdBIiCgVza2lsbBgBIAEoCzITLlByb3RvY29sLlNraWxsRGF0YRIOCgZyb29tSWQYAiABKAUSDgoGY2FyZElkGAMgASgJIjYKEUIyQ19Ta2lsbFJlc3BvbnNlEhEKCWlzU3VjY2VzcxgBIAEoCBIOCgZjYXJkSWQYAiABKAkiTwoYQjJDX1VzZVNraWxsTm90aWZpY2F0aW9uEg8KB293bmVySWQYASABKAkSIgoFc2tpbGwYAiABKAsyEy5Qcm90b2NvbC5Ta2lsbERhdGEiQwoLQjJDX0FkZENhcmQSDgoGY2FyZElkGAEgASgJEiQKCGNhcmREYXRhGAIgASgLMhIuUHJvdG9jb2wuQ2FyZERhdGEiOAoQQjJDX0luaXRDYXJkRGF0YRIkCghjYXJkRGF0YRgBIAMoCzISLlByb3RvY29sLkNhcmREYXRhYgZwcm90bzM", [file_enum, file_struct]);
 
-
 /**
  * @generated from message Protocol.C2B_SkillRequest
  */

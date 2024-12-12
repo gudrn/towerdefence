@@ -27,14 +27,13 @@ export class GamePlayer {
     for (let card of cards) {
       this.cardList.set(card.cardId, card.prefabId); // 카드 목록에 추가
     }
-
+    this.cardList.set('123', 'BuffTower');
     const cardDatas = Array.from(this.cardList.entries()).map(([uuid, prefabId]) =>
       create(CardDataSchema, {
         cardId: uuid,
         prefabId: prefabId,
       }),
     );
-
     const sendBuffer = createInitCard(cardDatas, this.session.getNextSequence.bind(this));
     this.session.send(sendBuffer); // 초기 카드 데이터 전송
   }

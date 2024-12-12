@@ -43,6 +43,13 @@ export class Tower extends GameObject {
     this.hp = this.maxHp = towerData?.maxHp;
     this.bulletSpeed = 15; // 총알 속도 (픽셀/초)
     this.lastAttackTime = 0; // 마지막 공격 시간
+
+    if (prefabId === 'BuffTower') {
+      const towersInRange = this.getTowersInRange(Array.from(this.room.getTowers().values()));
+      towersInRange.forEach((tower) => {
+        tower.increaseAttackDamage(this.getId()); // 범위 내의 각 타워에게 버프 적용
+      });
+    }
   }
 
   /**
@@ -161,6 +168,7 @@ export class Tower extends GameObject {
       // 버프량
       this.attackDamage = this.originalAttackDamage + this.buffedBy.size * 5;
 
+      console.log(`버프적용됨,${this.originalAttackDamage} -> ${this.attackDamage}`);
       // 버프 적용 패킷 전송
       const buffApplyPacket = createTowerBuffNotificationPacket(this.getId(), true); // 버프 적용
       this.room.broadcast(buffApplyPacket);
