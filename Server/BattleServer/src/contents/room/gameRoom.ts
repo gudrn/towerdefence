@@ -21,7 +21,7 @@ import {
   createEnterRoom,
   createGameStart,
   createIcreaseWave,
-  createPosionUpdate,
+  createPositionUpdate,
 } from 'src/packet/gameRoomPacket';
 import {
   createTowerBuildNotificationPacket,
@@ -279,10 +279,12 @@ export class GameRoom {
       console.log(`유효하지 않은 위치. ${clientPacket.posInfo}`);
       return;
     }
-    const sendBuffer = createPosionUpdate(
+    const sendBuffer = createPositionUpdate(
       session.getId(),
       clientPacket.posInfo?.x,
       clientPacket.posInfo?.y,
+      clientPacket.parameter,
+      clientPacket.state,
     );
 
     this.broadcast(sendBuffer);

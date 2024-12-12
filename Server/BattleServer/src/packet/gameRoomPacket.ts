@@ -49,13 +49,21 @@ export function createGameStart(playerDatas: any[], obstaclePosInfos: any[]) {
   return gameStartBuffer;
 }
 
-export function createPosionUpdate(Id: string, x: any, y: any) {
+export function createPositionUpdate(
+  Id: string,
+  x: any,
+  y: any,
+  parameter: string,
+  state: boolean,
+) {
   const packet = create(B2C_PlayerPositionUpdateNotificationSchema, {
     posInfo: create(PosInfoSchema, {
       uuid: Id,
       x: x,
       y: y,
     }),
+    parameter: parameter,
+    state: state,
   });
 
   const sendBuffer = PacketUtils.SerializePacket(

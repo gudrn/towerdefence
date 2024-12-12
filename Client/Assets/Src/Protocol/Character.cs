@@ -25,17 +25,18 @@ namespace Protocol {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Cg9jaGFyYWN0ZXIucHJvdG8SCFByb3RvY29sGgxzdHJ1Y3QucHJvdG8aCmVu",
-            "dW0ucHJvdG8iVQofQzJCX1BsYXllclBvc2l0aW9uVXBkYXRlUmVxdWVzdBIi",
-            "Cgdwb3NJbmZvGAEgASgLMhEuUHJvdG9jb2wuUG9zSW5mbxIOCgZyb29tSWQY",
-            "AiABKAUiSgokQjJDX1BsYXllclBvc2l0aW9uVXBkYXRlTm90aWZpY2F0aW9u",
-            "EiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvIjQKEkMyQl9V",
-            "c2VDYXJkUmVxdWVzdBIOCgZyb29tSWQYASABKAUSDgoGY2FyZElkGAIgASgJ",
-            "YgZwcm90bzM="));
+            "dW0ucHJvdG8idwofQzJCX1BsYXllclBvc2l0aW9uVXBkYXRlUmVxdWVzdBIi",
+            "Cgdwb3NJbmZvGAEgASgLMhEuUHJvdG9jb2wuUG9zSW5mbxIRCglwYXJhbWV0",
+            "ZXIYAiABKAkSDQoFc3RhdGUYAyABKAgSDgoGcm9vbUlkGAQgASgFImwKJEIy",
+            "Q19QbGF5ZXJQb3NpdGlvblVwZGF0ZU5vdGlmaWNhdGlvbhIiCgdwb3NJbmZv",
+            "GAEgASgLMhEuUHJvdG9jb2wuUG9zSW5mbxIRCglwYXJhbWV0ZXIYAiABKAkS",
+            "DQoFc3RhdGUYAyABKAgiNAoSQzJCX1VzZUNhcmRSZXF1ZXN0Eg4KBnJvb21J",
+            "ZBgBIAEoBRIOCgZjYXJkSWQYAiABKAliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Protocol.StructReflection.Descriptor, global::Protocol.EnumReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.C2B_PlayerPositionUpdateRequest), global::Protocol.C2B_PlayerPositionUpdateRequest.Parser, new[]{ "PosInfo", "RoomId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_PlayerPositionUpdateNotification), global::Protocol.B2C_PlayerPositionUpdateNotification.Parser, new[]{ "PosInfo" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.C2B_PlayerPositionUpdateRequest), global::Protocol.C2B_PlayerPositionUpdateRequest.Parser, new[]{ "PosInfo", "Parameter", "State", "RoomId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_PlayerPositionUpdateNotification), global::Protocol.B2C_PlayerPositionUpdateNotification.Parser, new[]{ "PosInfo", "Parameter", "State" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.C2B_UseCardRequest), global::Protocol.C2B_UseCardRequest.Parser, new[]{ "RoomId", "CardId" }, null, null, null, null)
           }));
     }
@@ -81,6 +82,8 @@ namespace Protocol {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public C2B_PlayerPositionUpdateRequest(C2B_PlayerPositionUpdateRequest other) : this() {
       posInfo_ = other.posInfo_ != null ? other.posInfo_.Clone() : null;
+      parameter_ = other.parameter_;
+      state_ = other.state_;
       roomId_ = other.roomId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -103,8 +106,32 @@ namespace Protocol {
       }
     }
 
+    /// <summary>Field number for the "parameter" field.</summary>
+    public const int ParameterFieldNumber = 2;
+    private string parameter_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Parameter {
+      get { return parameter_; }
+      set {
+        parameter_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "state" field.</summary>
+    public const int StateFieldNumber = 3;
+    private bool state_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool State {
+      get { return state_; }
+      set {
+        state_ = value;
+      }
+    }
+
     /// <summary>Field number for the "roomId" field.</summary>
-    public const int RoomIdFieldNumber = 2;
+    public const int RoomIdFieldNumber = 4;
     private int roomId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -131,6 +158,8 @@ namespace Protocol {
         return true;
       }
       if (!object.Equals(PosInfo, other.PosInfo)) return false;
+      if (Parameter != other.Parameter) return false;
+      if (State != other.State) return false;
       if (RoomId != other.RoomId) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -140,6 +169,8 @@ namespace Protocol {
     public override int GetHashCode() {
       int hash = 1;
       if (posInfo_ != null) hash ^= PosInfo.GetHashCode();
+      if (Parameter.Length != 0) hash ^= Parameter.GetHashCode();
+      if (State != false) hash ^= State.GetHashCode();
       if (RoomId != 0) hash ^= RoomId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -163,8 +194,16 @@ namespace Protocol {
         output.WriteRawTag(10);
         output.WriteMessage(PosInfo);
       }
+      if (Parameter.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Parameter);
+      }
+      if (State != false) {
+        output.WriteRawTag(24);
+        output.WriteBool(State);
+      }
       if (RoomId != 0) {
-        output.WriteRawTag(16);
+        output.WriteRawTag(32);
         output.WriteInt32(RoomId);
       }
       if (_unknownFields != null) {
@@ -181,8 +220,16 @@ namespace Protocol {
         output.WriteRawTag(10);
         output.WriteMessage(PosInfo);
       }
+      if (Parameter.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Parameter);
+      }
+      if (State != false) {
+        output.WriteRawTag(24);
+        output.WriteBool(State);
+      }
       if (RoomId != 0) {
-        output.WriteRawTag(16);
+        output.WriteRawTag(32);
         output.WriteInt32(RoomId);
       }
       if (_unknownFields != null) {
@@ -197,6 +244,12 @@ namespace Protocol {
       int size = 0;
       if (posInfo_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(PosInfo);
+      }
+      if (Parameter.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Parameter);
+      }
+      if (State != false) {
+        size += 1 + 1;
       }
       if (RoomId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(RoomId);
@@ -218,6 +271,12 @@ namespace Protocol {
           PosInfo = new global::Protocol.PosInfo();
         }
         PosInfo.MergeFrom(other.PosInfo);
+      }
+      if (other.Parameter.Length != 0) {
+        Parameter = other.Parameter;
+      }
+      if (other.State != false) {
+        State = other.State;
       }
       if (other.RoomId != 0) {
         RoomId = other.RoomId;
@@ -244,7 +303,15 @@ namespace Protocol {
             input.ReadMessage(PosInfo);
             break;
           }
-          case 16: {
+          case 18: {
+            Parameter = input.ReadString();
+            break;
+          }
+          case 24: {
+            State = input.ReadBool();
+            break;
+          }
+          case 32: {
             RoomId = input.ReadInt32();
             break;
           }
@@ -270,7 +337,15 @@ namespace Protocol {
             input.ReadMessage(PosInfo);
             break;
           }
-          case 16: {
+          case 18: {
+            Parameter = input.ReadString();
+            break;
+          }
+          case 24: {
+            State = input.ReadBool();
+            break;
+          }
+          case 32: {
             RoomId = input.ReadInt32();
             break;
           }
@@ -319,6 +394,8 @@ namespace Protocol {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public B2C_PlayerPositionUpdateNotification(B2C_PlayerPositionUpdateNotification other) : this() {
       posInfo_ = other.posInfo_ != null ? other.posInfo_.Clone() : null;
+      parameter_ = other.parameter_;
+      state_ = other.state_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -340,6 +417,30 @@ namespace Protocol {
       }
     }
 
+    /// <summary>Field number for the "parameter" field.</summary>
+    public const int ParameterFieldNumber = 2;
+    private string parameter_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Parameter {
+      get { return parameter_; }
+      set {
+        parameter_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "state" field.</summary>
+    public const int StateFieldNumber = 3;
+    private bool state_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool State {
+      get { return state_; }
+      set {
+        state_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -356,6 +457,8 @@ namespace Protocol {
         return true;
       }
       if (!object.Equals(PosInfo, other.PosInfo)) return false;
+      if (Parameter != other.Parameter) return false;
+      if (State != other.State) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -364,6 +467,8 @@ namespace Protocol {
     public override int GetHashCode() {
       int hash = 1;
       if (posInfo_ != null) hash ^= PosInfo.GetHashCode();
+      if (Parameter.Length != 0) hash ^= Parameter.GetHashCode();
+      if (State != false) hash ^= State.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -386,6 +491,14 @@ namespace Protocol {
         output.WriteRawTag(10);
         output.WriteMessage(PosInfo);
       }
+      if (Parameter.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Parameter);
+      }
+      if (State != false) {
+        output.WriteRawTag(24);
+        output.WriteBool(State);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -400,6 +513,14 @@ namespace Protocol {
         output.WriteRawTag(10);
         output.WriteMessage(PosInfo);
       }
+      if (Parameter.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Parameter);
+      }
+      if (State != false) {
+        output.WriteRawTag(24);
+        output.WriteBool(State);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -412,6 +533,12 @@ namespace Protocol {
       int size = 0;
       if (posInfo_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(PosInfo);
+      }
+      if (Parameter.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Parameter);
+      }
+      if (State != false) {
+        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -430,6 +557,12 @@ namespace Protocol {
           PosInfo = new global::Protocol.PosInfo();
         }
         PosInfo.MergeFrom(other.PosInfo);
+      }
+      if (other.Parameter.Length != 0) {
+        Parameter = other.Parameter;
+      }
+      if (other.State != false) {
+        State = other.State;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -453,6 +586,14 @@ namespace Protocol {
             input.ReadMessage(PosInfo);
             break;
           }
+          case 18: {
+            Parameter = input.ReadString();
+            break;
+          }
+          case 24: {
+            State = input.ReadBool();
+            break;
+          }
         }
       }
     #endif
@@ -473,6 +614,14 @@ namespace Protocol {
               PosInfo = new global::Protocol.PosInfo();
             }
             input.ReadMessage(PosInfo);
+            break;
+          }
+          case 18: {
+            Parameter = input.ReadString();
+            break;
+          }
+          case 24: {
+            State = input.ReadBool();
             break;
           }
         }
