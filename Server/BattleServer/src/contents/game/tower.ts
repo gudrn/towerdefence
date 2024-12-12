@@ -144,12 +144,12 @@ export class Tower extends GameObject {
       if (tower.getId() === this.getId()) continue;
 
       // 타워 간 거리 계산
-      const distance = Math.sqrt(
-        Math.pow(this.pos.x - tower.pos.x, 2) + Math.pow(this.pos.y - tower.pos.y, 2),
-      );
+      const distance =
+        (this.pos.x - tower.pos.x) * (this.pos.x - tower.pos.x) +
+        (this.pos.y - tower.pos.y) * (this.pos.y - tower.pos.y);
 
       // 범위 내에 있으면 배열에 추가
-      if (distance <= this.attackRange) {
+      if (distance <= this.attackRange * this.attackRange) {
         towersInRange.push(tower);
       }
     }
@@ -168,7 +168,7 @@ export class Tower extends GameObject {
       // 버프량
       this.attackDamage = this.originalAttackDamage + this.buffedBy.size * 5;
 
-      console.log(`버프적용됨,${this.originalAttackDamage} -> ${this.attackDamage}`);
+      console.log(`${this.getPrefabId()}: ${this.originalAttackDamage} -> ${this.attackDamage}`);
       // 버프 적용 패킷 전송
       const buffApplyPacket = createTowerBuffNotificationPacket(this.getId(), true); // 버프 적용
       this.room.broadcast(buffApplyPacket);
