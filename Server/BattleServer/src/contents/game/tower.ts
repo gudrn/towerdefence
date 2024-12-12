@@ -107,9 +107,6 @@ export class Tower extends GameObject {
           target.maxHp,
         );
 
-        console.log('targetHp: ', target.hp);
-        console.log('targetMaxHp: ', target.maxHp);
-
         this.room.broadcast(attackBuffer);
 
         // 3. 몬스터 사망 처리

@@ -49,11 +49,6 @@ export class Monster extends GameObject {
     this.moveSpeed = monsterData.moveSpeed; // 이동 속도
     this.score = monsterData.score; // 점수
     this.waitUntil = 0; // 딜레이 시간
-
-    console.log('------------');
-    console.log('몬스터 스포너');
-    console.log(this.pos.uuid);
-    console.log('------------');
   }
 
   getpos() {
@@ -228,7 +223,6 @@ export class Monster extends GameObject {
    * @override
    */
   onDeath() {
-    console.log(`몬스터 ${this.getId()}가 사망.`);
     this.room.removeObject(this.getId());
   }
 }
