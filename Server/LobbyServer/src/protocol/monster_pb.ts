@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file monster.proto.
  */
 export const file_monster: GenFile = /*@__PURE__*/
-  fileDesc("Cg1tb25zdGVyLnByb3RvEghQcm90b2NvbCJkChxCMkdfU3Bhd25Nb25zdGVyTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhAKCHByZWZhYklkGAIgASgJEg4KBnJvb21JZBgDIAEoBSJUChxHMkNfU3Bhd25Nb25zdGVyTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhAKCHByZWZhYklkGAIgASgJIkAKHEIyQ19Nb25zdGVyRGVhdGhOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEg0KBXNjb3JlGAIgASgFIlsKJUIyR19Nb25zdGVyUG9zaXRpb25VcGRhdGVOb3RpZmljYXRpb24SIgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SDgoGcm9vbUlkGAIgASgFIksKJUcyQ19Nb25zdGVyUG9zaXRpb25VcGRhdGVOb3RpZmljYXRpb24SIgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8iZAoiQjJDX01vbnN0ZXJBdHRhY2tUb3dlck5vdGlmaWNhdGlvbhIRCgltb25zdGVySWQYASABKAkSEAoIdGFyZ2V0SWQYAiABKAkSCgoCaHAYAyABKAUSDQoFbWF4SHAYBCABKAUiTAohQjJDX01vbnN0ZXJBdHRhY2tCYXNlTm90aWZpY2F0aW9uEhEKCW1vbnN0ZXJJZBgBIAEoCRIUCgxhdHRhY2tEYW1hZ2UYAiABKAUiUwojQjJDX01vbnN0ZXJIZWFsdGhVcGRhdGVOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEgoKAmhwGAIgASgFEg0KBW1heEhwGAMgASgFYgZwcm90bzM", [file_struct]);
+  fileDesc("Cg1tb25zdGVyLnByb3RvEghQcm90b2NvbCJkChxCMkdfU3Bhd25Nb25zdGVyTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhAKCHByZWZhYklkGAIgASgJEg4KBnJvb21JZBgDIAEoBSJUChxHMkNfU3Bhd25Nb25zdGVyTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhAKCHByZWZhYklkGAIgASgJIlAKHEIyR19Nb25zdGVyRGVhdGhOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEg0KBXNjb3JlGAIgASgFEg4KBnJvb21JZBgDIAEoBSJAChxHMkNfTW9uc3RlckRlYXRoTm90aWZpY2F0aW9uEhEKCW1vbnN0ZXJJZBgBIAEoCRINCgVzY29yZRgCIAEoBSJbCiVCMkdfTW9uc3RlclBvc2l0aW9uVXBkYXRlTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEg4KBnJvb21JZBgCIAEoBSJLCiVHMkNfTW9uc3RlclBvc2l0aW9uVXBkYXRlTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvInQKIkIyR19Nb25zdGVyQXR0YWNrVG93ZXJOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEhAKCHRhcmdldElkGAIgASgJEgoKAmhwGAMgASgFEg0KBW1heEhwGAQgASgFEg4KBnJvb21JZBgFIAEoBSJkCiJHMkNfTW9uc3RlckF0dGFja1Rvd2VyTm90aWZpY2F0aW9uEhEKCW1vbnN0ZXJJZBgBIAEoCRIQCgh0YXJnZXRJZBgCIAEoCRIKCgJocBgDIAEoBRINCgVtYXhIcBgEIAEoBSJcCiFCMkdfTW9uc3RlckF0dGFja0Jhc2VOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEhQKDGF0dGFja0RhbWFnZRgCIAEoBRIOCgZyb29tSWQYAyABKAUiTAohRzJDX01vbnN0ZXJBdHRhY2tCYXNlTm90aWZpY2F0aW9uEhEKCW1vbnN0ZXJJZBgBIAEoCRIUCgxhdHRhY2tEYW1hZ2UYAiABKAUiYwojQjJHX01vbnN0ZXJIZWFsdGhVcGRhdGVOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEgoKAmhwGAIgASgFEg0KBW1heEhwGAMgASgFEg4KBnJvb21JZBgEIAEoBSJTCiNHMkNfTW9uc3RlckhlYWx0aFVwZGF0ZU5vdGlmaWNhdGlvbhIRCgltb25zdGVySWQYASABKAkSCgoCaHAYAiABKAUSDQoFbWF4SHAYAyABKAViBnByb3RvMw", [file_struct]);
 
 /**
  * 몬스터 생성 알림
@@ -68,9 +68,38 @@ export const G2C_SpawnMonsterNotificationSchema: GenMessage<G2C_SpawnMonsterNoti
 /**
  * 몬스터 사망 알림
  *
- * @generated from message Protocol.B2C_MonsterDeathNotification
+ * @generated from message Protocol.B2G_MonsterDeathNotification
  */
-export type B2C_MonsterDeathNotification = Message<"Protocol.B2C_MonsterDeathNotification"> & {
+export type B2G_MonsterDeathNotification = Message<"Protocol.B2G_MonsterDeathNotification"> & {
+  /**
+   * @generated from field: string monsterId = 1;
+   */
+  monsterId: string;
+
+  /**
+   * @generated from field: int32 score = 2;
+   */
+  score: number;
+
+  /**
+   * @generated from field: int32 roomId = 3;
+   */
+  roomId: number;
+};
+
+/**
+ * Describes the message Protocol.B2G_MonsterDeathNotification.
+ * Use `create(B2G_MonsterDeathNotificationSchema)` to create a new message.
+ */
+export const B2G_MonsterDeathNotificationSchema: GenMessage<B2G_MonsterDeathNotification> = /*@__PURE__*/
+  messageDesc(file_monster, 2);
+
+/**
+ * 몬스터 사망 알림
+ *
+ * @generated from message Protocol.G2C_MonsterDeathNotification
+ */
+export type G2C_MonsterDeathNotification = Message<"Protocol.G2C_MonsterDeathNotification"> & {
   /**
    * @generated from field: string monsterId = 1;
    */
@@ -83,11 +112,11 @@ export type B2C_MonsterDeathNotification = Message<"Protocol.B2C_MonsterDeathNot
 };
 
 /**
- * Describes the message Protocol.B2C_MonsterDeathNotification.
- * Use `create(B2C_MonsterDeathNotificationSchema)` to create a new message.
+ * Describes the message Protocol.G2C_MonsterDeathNotification.
+ * Use `create(G2C_MonsterDeathNotificationSchema)` to create a new message.
  */
-export const B2C_MonsterDeathNotificationSchema: GenMessage<B2C_MonsterDeathNotification> = /*@__PURE__*/
-  messageDesc(file_monster, 2);
+export const G2C_MonsterDeathNotificationSchema: GenMessage<G2C_MonsterDeathNotification> = /*@__PURE__*/
+  messageDesc(file_monster, 3);
 
 /**
  * 몬스터 위치 동기화
@@ -111,7 +140,7 @@ export type B2G_MonsterPositionUpdateNotification = Message<"Protocol.B2G_Monste
  * Use `create(B2G_MonsterPositionUpdateNotificationSchema)` to create a new message.
  */
 export const B2G_MonsterPositionUpdateNotificationSchema: GenMessage<B2G_MonsterPositionUpdateNotification> = /*@__PURE__*/
-  messageDesc(file_monster, 3);
+  messageDesc(file_monster, 4);
 
 /**
  * 몬스터 위치 동기화
@@ -130,14 +159,53 @@ export type G2C_MonsterPositionUpdateNotification = Message<"Protocol.G2C_Monste
  * Use `create(G2C_MonsterPositionUpdateNotificationSchema)` to create a new message.
  */
 export const G2C_MonsterPositionUpdateNotificationSchema: GenMessage<G2C_MonsterPositionUpdateNotification> = /*@__PURE__*/
-  messageDesc(file_monster, 4);
+  messageDesc(file_monster, 5);
 
 /**
  * 몬스터 -> 타워 공격 알림
  *
- * @generated from message Protocol.B2C_MonsterAttackTowerNotification
+ * @generated from message Protocol.B2G_MonsterAttackTowerNotification
  */
-export type B2C_MonsterAttackTowerNotification = Message<"Protocol.B2C_MonsterAttackTowerNotification"> & {
+export type B2G_MonsterAttackTowerNotification = Message<"Protocol.B2G_MonsterAttackTowerNotification"> & {
+  /**
+   * @generated from field: string monsterId = 1;
+   */
+  monsterId: string;
+
+  /**
+   * @generated from field: string targetId = 2;
+   */
+  targetId: string;
+
+  /**
+   * @generated from field: int32 hp = 3;
+   */
+  hp: number;
+
+  /**
+   * @generated from field: int32 maxHp = 4;
+   */
+  maxHp: number;
+
+  /**
+   * @generated from field: int32 roomId = 5;
+   */
+  roomId: number;
+};
+
+/**
+ * Describes the message Protocol.B2G_MonsterAttackTowerNotification.
+ * Use `create(B2G_MonsterAttackTowerNotificationSchema)` to create a new message.
+ */
+export const B2G_MonsterAttackTowerNotificationSchema: GenMessage<B2G_MonsterAttackTowerNotification> = /*@__PURE__*/
+  messageDesc(file_monster, 6);
+
+/**
+ * 몬스터 -> 타워 공격 알림
+ *
+ * @generated from message Protocol.G2C_MonsterAttackTowerNotification
+ */
+export type G2C_MonsterAttackTowerNotification = Message<"Protocol.G2C_MonsterAttackTowerNotification"> & {
   /**
    * @generated from field: string monsterId = 1;
    */
@@ -160,18 +228,47 @@ export type B2C_MonsterAttackTowerNotification = Message<"Protocol.B2C_MonsterAt
 };
 
 /**
- * Describes the message Protocol.B2C_MonsterAttackTowerNotification.
- * Use `create(B2C_MonsterAttackTowerNotificationSchema)` to create a new message.
+ * Describes the message Protocol.G2C_MonsterAttackTowerNotification.
+ * Use `create(G2C_MonsterAttackTowerNotificationSchema)` to create a new message.
  */
-export const B2C_MonsterAttackTowerNotificationSchema: GenMessage<B2C_MonsterAttackTowerNotification> = /*@__PURE__*/
-  messageDesc(file_monster, 5);
+export const G2C_MonsterAttackTowerNotificationSchema: GenMessage<G2C_MonsterAttackTowerNotification> = /*@__PURE__*/
+  messageDesc(file_monster, 7);
 
 /**
  * 몬스터 -> 베이스 공격 알림
  *
- * @generated from message Protocol.B2C_MonsterAttackBaseNotification
+ * @generated from message Protocol.B2G_MonsterAttackBaseNotification
  */
-export type B2C_MonsterAttackBaseNotification = Message<"Protocol.B2C_MonsterAttackBaseNotification"> & {
+export type B2G_MonsterAttackBaseNotification = Message<"Protocol.B2G_MonsterAttackBaseNotification"> & {
+  /**
+   * @generated from field: string monsterId = 1;
+   */
+  monsterId: string;
+
+  /**
+   * @generated from field: int32 attackDamage = 2;
+   */
+  attackDamage: number;
+
+  /**
+   * @generated from field: int32 roomId = 3;
+   */
+  roomId: number;
+};
+
+/**
+ * Describes the message Protocol.B2G_MonsterAttackBaseNotification.
+ * Use `create(B2G_MonsterAttackBaseNotificationSchema)` to create a new message.
+ */
+export const B2G_MonsterAttackBaseNotificationSchema: GenMessage<B2G_MonsterAttackBaseNotification> = /*@__PURE__*/
+  messageDesc(file_monster, 8);
+
+/**
+ * 몬스터 -> 베이스 공격 알림
+ *
+ * @generated from message Protocol.G2C_MonsterAttackBaseNotification
+ */
+export type G2C_MonsterAttackBaseNotification = Message<"Protocol.G2C_MonsterAttackBaseNotification"> & {
   /**
    * @generated from field: string monsterId = 1;
    */
@@ -184,18 +281,52 @@ export type B2C_MonsterAttackBaseNotification = Message<"Protocol.B2C_MonsterAtt
 };
 
 /**
- * Describes the message Protocol.B2C_MonsterAttackBaseNotification.
- * Use `create(B2C_MonsterAttackBaseNotificationSchema)` to create a new message.
+ * Describes the message Protocol.G2C_MonsterAttackBaseNotification.
+ * Use `create(G2C_MonsterAttackBaseNotificationSchema)` to create a new message.
  */
-export const B2C_MonsterAttackBaseNotificationSchema: GenMessage<B2C_MonsterAttackBaseNotification> = /*@__PURE__*/
-  messageDesc(file_monster, 6);
+export const G2C_MonsterAttackBaseNotificationSchema: GenMessage<G2C_MonsterAttackBaseNotification> = /*@__PURE__*/
+  messageDesc(file_monster, 9);
 
 /**
  * 몬스터 체력 업데이트
  *
- * @generated from message Protocol.B2C_MonsterHealthUpdateNotification
+ * @generated from message Protocol.B2G_MonsterHealthUpdateNotification
  */
-export type B2C_MonsterHealthUpdateNotification = Message<"Protocol.B2C_MonsterHealthUpdateNotification"> & {
+export type B2G_MonsterHealthUpdateNotification = Message<"Protocol.B2G_MonsterHealthUpdateNotification"> & {
+  /**
+   * @generated from field: string monsterId = 1;
+   */
+  monsterId: string;
+
+  /**
+   * @generated from field: int32 hp = 2;
+   */
+  hp: number;
+
+  /**
+   * @generated from field: int32 maxHp = 3;
+   */
+  maxHp: number;
+
+  /**
+   * @generated from field: int32 roomId = 4;
+   */
+  roomId: number;
+};
+
+/**
+ * Describes the message Protocol.B2G_MonsterHealthUpdateNotification.
+ * Use `create(B2G_MonsterHealthUpdateNotificationSchema)` to create a new message.
+ */
+export const B2G_MonsterHealthUpdateNotificationSchema: GenMessage<B2G_MonsterHealthUpdateNotification> = /*@__PURE__*/
+  messageDesc(file_monster, 10);
+
+/**
+ * 몬스터 체력 업데이트
+ *
+ * @generated from message Protocol.G2C_MonsterHealthUpdateNotification
+ */
+export type G2C_MonsterHealthUpdateNotification = Message<"Protocol.G2C_MonsterHealthUpdateNotification"> & {
   /**
    * @generated from field: string monsterId = 1;
    */
@@ -213,9 +344,9 @@ export type B2C_MonsterHealthUpdateNotification = Message<"Protocol.B2C_MonsterH
 };
 
 /**
- * Describes the message Protocol.B2C_MonsterHealthUpdateNotification.
- * Use `create(B2C_MonsterHealthUpdateNotificationSchema)` to create a new message.
+ * Describes the message Protocol.G2C_MonsterHealthUpdateNotification.
+ * Use `create(G2C_MonsterHealthUpdateNotificationSchema)` to create a new message.
  */
-export const B2C_MonsterHealthUpdateNotificationSchema: GenMessage<B2C_MonsterHealthUpdateNotification> = /*@__PURE__*/
-  messageDesc(file_monster, 7);
+export const G2C_MonsterHealthUpdateNotificationSchema: GenMessage<G2C_MonsterHealthUpdateNotification> = /*@__PURE__*/
+  messageDesc(file_monster, 11);
 

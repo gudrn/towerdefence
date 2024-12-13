@@ -4,10 +4,10 @@ import { GameRoom } from "../room/gameRoom";
 import { assetManager } from "src/utils/assetManager";
 import { GameObject } from "./gameObject";
 import { PacketUtils } from "ServerCore/utils/packetUtils";
-import { B2C_MonsterDeathNotificationSchema, B2C_MonsterHealthUpdateNotificationSchema } from "src/protocol/monster_pb";
+import { B2G_MonsterDeathNotificationSchema, B2G_MonsterHealthUpdateNotificationSchema } from "src/protocol/monster_pb";
 import { ePacketId } from "ServerCore/network/packetId";
-import { B2C_TowerAttackMonsterNotificationSchema } from 'src/protocol/tower_pb';
 import { Monster } from './monster';
+import { B2G_TowerAttackMonsterNotificationSchema } from 'src/protocol/tower_pb';
 
 
 
@@ -73,79 +73,82 @@ export class Tower extends GameObject {
    */
 
   attackTarget(monsters: Monster[]) {
-    // const currentTime = Date.now();
-    // if (currentTime - this.lastAttackTime > this.attackCoolDown) {
-    //   this.lastAttackTime = currentTime;
+    const currentTime = Date.now();
+    if (currentTime - this.lastAttackTime > this.attackCoolDown) {
+      this.lastAttackTime = currentTime;
 
-    //   const targetData = this.getMonsterInRange(monsters);
+      const targetData = this.getMonsterInRange(monsters);
 
-    //   if (!targetData) return; // 공격 가능한 대상이 없으면 종료
+      if (!targetData) return; // 공격 가능한 대상이 없으면 종료
 
-    //   const { monster: target, distance } = targetData;
+      const { monster: target, distance } = targetData;
 
-    //   const travelTime = (distance / this.bulletSpeed) * 1000; // 이동 시간 (ms)
+      const travelTime = (distance / this.bulletSpeed) * 1000; // 이동 시간 (ms)
 
-    //   // 총알 이동 효과 (애니메이션 대체)
-    //   //console.log(`총알이 ${travelTime.toFixed(0)}ms 동안 날아감.`);
+      // 총알 이동 효과 (애니메이션 대체)
+      //console.log(`총알이 ${travelTime.toFixed(0)}ms 동안 날아감.`);
 
-    //   const attackMotionPacket = create(B2C_TowerAttackMonsterNotificationSchema, {
-    //     towerId: this.getId(),
-    //     monsterPos: target.getPos(),
-    //     travelTime: travelTime,
-    //   });
+      const attackMotionPacket = create(B2G_TowerAttackMonsterNotificationSchema, {
+        towerId: this.getId(),
+        monsterPos: target.getPos(),
+        travelTime: travelTime,
+        roomId: this.room.id
+      });
 
-    //   const attackMotionBuffer = PacketUtils.SerializePacket(
-    //     attackMotionPacket,
-    //     B2C_TowerAttackMonsterNotificationSchema,
-    //     ePacketId.B2C_TowerAttackMonsterNotification,
-    //     0,
-    //   );
-    //   //this.room.broadcast(attackMotionBuffer);
+      const attackMotionBuffer = PacketUtils.SerializePacket(
+        attackMotionPacket,
+        B2G_TowerAttackMonsterNotificationSchema,
+        ePacketId.B2G_TowerAttackMonsterNotification,
+        0,
+      );
+      this.room.broadcast(attackMotionBuffer);
 
-    //   setTimeout(() => {
-    //     // 총알이 도착한 시점에 데미지 처리
-    //     const isDestroyed = target.onDamaged(this.attackDamage);
+      setTimeout(() => {
+        // 총알이 도착한 시점에 데미지 처리
+        const isDestroyed = target.onDamaged(this.attackDamage);
 
-    //     // 2. 클라이언트에 공격 패킷 전송
-    //     const attackPacket = create(B2C_MonsterHealthUpdateNotificationSchema, {
-    //       monsterId: target.getId(),
-    //       hp: target.hp,
-    //       maxHp: target.maxHp,
-    //     });
+        // 2. 클라이언트에 공격 패킷 전송
+        const attackPacket = create(B2G_MonsterHealthUpdateNotificationSchema, {
+          monsterId: target.getId(),
+          hp: target.hp,
+          maxHp: target.maxHp,
+          roomId: this.room.id
+        });
 
-    //     console.log('targetHp: ', target.hp);
-    //     console.log('targetMaxHp: ', target.maxHp);
+        console.log('targetHp: ', target.hp);
+        console.log('targetMaxHp: ', target.maxHp);
 
-    //     const attackBuffer = PacketUtils.SerializePacket(
-    //       attackPacket,
-    //       B2C_MonsterHealthUpdateNotificationSchema,
-    //       ePacketId.B2C_MonsterHealthUpdateNotification,
-    //       0,
-    //     );
-    //     //this.room.broadcast(attackBuffer);
+        const attackBuffer = PacketUtils.SerializePacket(
+          attackPacket,
+          B2G_MonsterHealthUpdateNotificationSchema,
+          ePacketId.B2G_MonsterHealthUpdateNotification,
+          0,
+        );
+        this.room.broadcast(attackBuffer);
 
-    //     // 3. 몬스터 사망 처리
-    //     if (isDestroyed) {
-    //       const monsterScore = target.score;
+        // 3. 몬스터 사망 처리
+        if (isDestroyed) {
+          const monsterScore = target.score;
 
-    //       // 점수를 GameRoom에 추가
-    //       //this.room.addScore(monsterScore);
-    //       const mopnsterDeathPacket = create(B2C_MonsterDeathNotificationSchema, {
-    //         monsterId: target.getId(),
-    //         score: target.score,
-    //       });
+          // 점수를 GameRoom에 추가
+          //this.room.addScore(monsterScore);
+          const mopnsterDeathPacket = create(B2G_MonsterDeathNotificationSchema, {
+            monsterId: target.getId(),
+            score: target.score,
+            roomId: this.room.id
+          });
 
-    //       const monsterDeathBuffer = PacketUtils.SerializePacket(
-    //         mopnsterDeathPacket,
-    //         B2C_MonsterDeathNotificationSchema,
-    //         ePacketId.B2C_MonsterDeathNotification,
-    //         0, //수정 부분
-    //       );
+          const monsterDeathBuffer = PacketUtils.SerializePacket(
+            mopnsterDeathPacket,
+            B2G_MonsterDeathNotificationSchema,
+            ePacketId.B2G_MonsterDeathNotification,
+            0, //수정 부분
+          );
 
-    //       //this.room.broadcast(monsterDeathBuffer);
-    //     }
-    //   }, travelTime); // 총알 이동 시간 이후 실행
-    // }
+          this.room.broadcast(monsterDeathBuffer);
+        }
+      }, travelTime); // 총알 이동 시간 이후 실행
+    }
   }
 
   /**
@@ -162,7 +165,7 @@ export class Tower extends GameObject {
   }
 
   onDeath() {
-    //this.room.removeObject(this.getId());
+    this.room.removeObject(this.getId());
   }
 
   update() {}

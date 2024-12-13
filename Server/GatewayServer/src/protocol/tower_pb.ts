@@ -12,14 +12,14 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file tower.proto.
  */
 export const file_tower: GenFile = /*@__PURE__*/
-  fileDesc("Cgt0b3dlci5wcm90bxIIUHJvdG9jb2wibAoVQzJCX1Rvd2VyQnVpbGRSZXF1ZXN0EiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAkSDgoGcm9vbUlkGAMgASgFEg4KBmNhcmRJZBgEIAEoCSIrChZCMkNfVG93ZXJCdWlsZFJlc3BvbnNlEhEKCWlzU3VjY2VzcxgBIAEoCCJRChpCMkNfVG93ZXJCdWlsZE5vdGlmaWNhdGlvbhIiCgV0b3dlchgBIAEoCzITLlByb3RvY29sLlRvd2VyRGF0YRIPCgdvd25lcklkGAIgASgJInAKIkIyQ19Ub3dlckF0dGFja01vbnN0ZXJOb3RpZmljYXRpb24SDwoHdG93ZXJJZBgBIAEoCRIlCgptb25zdGVyUG9zGAIgASgLMhEuUHJvdG9jb2wuUG9zSW5mbxISCgp0cmF2ZWxUaW1lGAMgASgCIkIKHEIyQ19Ub3dlckRlc3Ryb3lOb3RpZmljYXRpb24SEQoJaXNTdWNjZXNzGAEgASgIEg8KB3Rvd2VySWQYAiABKAkiMgobQjJDX0Jhc2VEZXN0cm95Tm90aWZpY2F0aW9uEhMKC2lzRGVzdHJvaWVkGAEgASgIIk8KIUIyQ19Ub3dlckhlYWx0aFVwZGF0ZU5vdGlmaWNhdGlvbhIPCgd0b3dlcklkGAEgASgJEgoKAmhwGAIgASgFEg0KBW1heEhwGAMgASgFYgZwcm90bzM", [file_struct]);
+  fileDesc("Cgt0b3dlci5wcm90bxIIUHJvdG9jb2wibAoVQzJHX1Rvd2VyQnVpbGRSZXF1ZXN0EiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAkSDgoGcm9vbUlkGAMgASgFEg4KBmNhcmRJZBgEIAEoCSJsChVHMkJfVG93ZXJCdWlsZFJlcXVlc3QSIgoFdG93ZXIYASABKAsyEy5Qcm90b2NvbC5Ub3dlckRhdGESDwoHb3duZXJJZBgCIAEoCRIOCgZyb29tSWQYAyABKAUSDgoGY2FyZElkGAQgASgJImEKGkIyR19Ub3dlckJ1aWxkTm90aWZpY2F0aW9uEiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAkSDgoGcm9vbUlkGAMgASgFIlEKGkcyQ19Ub3dlckJ1aWxkTm90aWZpY2F0aW9uEiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAkigAEKIkIyR19Ub3dlckF0dGFja01vbnN0ZXJOb3RpZmljYXRpb24SDwoHdG93ZXJJZBgBIAEoCRIlCgptb25zdGVyUG9zGAIgASgLMhEuUHJvdG9jb2wuUG9zSW5mbxISCgp0cmF2ZWxUaW1lGAMgASgCEg4KBnJvb21JZBgEIAEoBSJwCiJHMkNfVG93ZXJBdHRhY2tNb25zdGVyTm90aWZpY2F0aW9uEg8KB3Rvd2VySWQYASABKAkSJQoKbW9uc3RlclBvcxgCIAEoCzIRLlByb3RvY29sLlBvc0luZm8SEgoKdHJhdmVsVGltZRgDIAEoAiJSChxCMkdfVG93ZXJEZXN0cm95Tm90aWZpY2F0aW9uEhEKCWlzU3VjY2VzcxgBIAEoCBIPCgd0b3dlcklkGAIgASgJEg4KBnJvb21JZBgDIAEoBSJCChxHMkNfVG93ZXJEZXN0cm95Tm90aWZpY2F0aW9uEhEKCWlzU3VjY2VzcxgBIAEoCBIPCgd0b3dlcklkGAIgASgJIkIKG0IyR19CYXNlRGVzdHJveU5vdGlmaWNhdGlvbhITCgtpc0Rlc3Ryb2llZBgBIAEoCBIOCgZyb29tSWQYAiABKAUiMgobRzJDX0Jhc2VEZXN0cm95Tm90aWZpY2F0aW9uEhMKC2lzRGVzdHJvaWVkGAEgASgIIl8KIUIyR19Ub3dlckhlYWx0aFVwZGF0ZU5vdGlmaWNhdGlvbhIPCgd0b3dlcklkGAEgASgJEgoKAmhwGAIgASgFEg0KBW1heEhwGAMgASgFEg4KBnJvb21JZBgEIAEoBSJPCiFHMkNfVG93ZXJIZWFsdGhVcGRhdGVOb3RpZmljYXRpb24SDwoHdG93ZXJJZBgBIAEoCRIKCgJocBgCIAEoBRINCgVtYXhIcBgDIAEoBWIGcHJvdG8z", [file_struct]);
 
 /**
- * 타워 생성 요청
+ * C->G 타워 생성 요청
  *
- * @generated from message Protocol.C2B_TowerBuildRequest
+ * @generated from message Protocol.C2G_TowerBuildRequest
  */
-export type C2B_TowerBuildRequest = Message<"Protocol.C2B_TowerBuildRequest"> & {
+export type C2G_TowerBuildRequest = Message<"Protocol.C2G_TowerBuildRequest"> & {
   /**
    * 타워 정보
    *
@@ -48,37 +48,89 @@ export type C2B_TowerBuildRequest = Message<"Protocol.C2B_TowerBuildRequest"> & 
 };
 
 /**
- * Describes the message Protocol.C2B_TowerBuildRequest.
- * Use `create(C2B_TowerBuildRequestSchema)` to create a new message.
+ * Describes the message Protocol.C2G_TowerBuildRequest.
+ * Use `create(C2G_TowerBuildRequestSchema)` to create a new message.
  */
-export const C2B_TowerBuildRequestSchema: GenMessage<C2B_TowerBuildRequest> = /*@__PURE__*/
+export const C2G_TowerBuildRequestSchema: GenMessage<C2G_TowerBuildRequest> = /*@__PURE__*/
   messageDesc(file_tower, 0);
 
 /**
- * 타워 생성 응답
+ * G->B 타워 생성 요청청
  *
- * @generated from message Protocol.B2C_TowerBuildResponse
+ * @generated from message Protocol.G2B_TowerBuildRequest
  */
-export type B2C_TowerBuildResponse = Message<"Protocol.B2C_TowerBuildResponse"> & {
+export type G2B_TowerBuildRequest = Message<"Protocol.G2B_TowerBuildRequest"> & {
   /**
-   * @generated from field: bool isSuccess = 1;
+   * 타워 정보
+   *
+   * @generated from field: Protocol.TowerData tower = 1;
    */
-  isSuccess: boolean;
+  tower?: TowerData;
+
+  /**
+   * 타워 정보
+   *
+   * @generated from field: string ownerId = 2;
+   */
+  ownerId: string;
+
+  /**
+   * 타워 정보
+   *
+   * @generated from field: int32 roomId = 3;
+   */
+  roomId: number;
+
+  /**
+   * @generated from field: string cardId = 4;
+   */
+  cardId: string;
 };
 
 /**
- * Describes the message Protocol.B2C_TowerBuildResponse.
- * Use `create(B2C_TowerBuildResponseSchema)` to create a new message.
+ * Describes the message Protocol.G2B_TowerBuildRequest.
+ * Use `create(G2B_TowerBuildRequestSchema)` to create a new message.
  */
-export const B2C_TowerBuildResponseSchema: GenMessage<B2C_TowerBuildResponse> = /*@__PURE__*/
+export const G2B_TowerBuildRequestSchema: GenMessage<G2B_TowerBuildRequest> = /*@__PURE__*/
   messageDesc(file_tower, 1);
 
 /**
  * 타워 생성 알림
  *
- * @generated from message Protocol.B2C_TowerBuildNotification
+ * @generated from message Protocol.B2G_TowerBuildNotification
  */
-export type B2C_TowerBuildNotification = Message<"Protocol.B2C_TowerBuildNotification"> & {
+export type B2G_TowerBuildNotification = Message<"Protocol.B2G_TowerBuildNotification"> & {
+  /**
+   * 생성된 타워 정보
+   *
+   * @generated from field: Protocol.TowerData tower = 1;
+   */
+  tower?: TowerData;
+
+  /**
+   * 타워 생성자 ID
+   *
+   * @generated from field: string ownerId = 2;
+   */
+  ownerId: string;
+
+  /**
+   * @generated from field: int32 roomId = 3;
+   */
+  roomId: number;
+};
+
+/**
+ * Describes the message Protocol.B2G_TowerBuildNotification.
+ * Use `create(B2G_TowerBuildNotificationSchema)` to create a new message.
+ */
+export const B2G_TowerBuildNotificationSchema: GenMessage<B2G_TowerBuildNotification> = /*@__PURE__*/
+  messageDesc(file_tower, 2);
+
+/**
+ * @generated from message Protocol.G2C_TowerBuildNotification
+ */
+export type G2C_TowerBuildNotification = Message<"Protocol.G2C_TowerBuildNotification"> & {
   /**
    * 생성된 타워 정보
    *
@@ -95,18 +147,52 @@ export type B2C_TowerBuildNotification = Message<"Protocol.B2C_TowerBuildNotific
 };
 
 /**
- * Describes the message Protocol.B2C_TowerBuildNotification.
- * Use `create(B2C_TowerBuildNotificationSchema)` to create a new message.
+ * Describes the message Protocol.G2C_TowerBuildNotification.
+ * Use `create(G2C_TowerBuildNotificationSchema)` to create a new message.
  */
-export const B2C_TowerBuildNotificationSchema: GenMessage<B2C_TowerBuildNotification> = /*@__PURE__*/
-  messageDesc(file_tower, 2);
+export const G2C_TowerBuildNotificationSchema: GenMessage<G2C_TowerBuildNotification> = /*@__PURE__*/
+  messageDesc(file_tower, 3);
 
 /**
  * 타워 -> 몬스터 공격 알림
  *
- * @generated from message Protocol.B2C_TowerAttackMonsterNotification
+ * @generated from message Protocol.B2G_TowerAttackMonsterNotification
  */
-export type B2C_TowerAttackMonsterNotification = Message<"Protocol.B2C_TowerAttackMonsterNotification"> & {
+export type B2G_TowerAttackMonsterNotification = Message<"Protocol.B2G_TowerAttackMonsterNotification"> & {
+  /**
+   * @generated from field: string towerId = 1;
+   */
+  towerId: string;
+
+  /**
+   * @generated from field: Protocol.PosInfo monsterPos = 2;
+   */
+  monsterPos?: PosInfo;
+
+  /**
+   * @generated from field: float travelTime = 3;
+   */
+  travelTime: number;
+
+  /**
+   * @generated from field: int32 roomId = 4;
+   */
+  roomId: number;
+};
+
+/**
+ * Describes the message Protocol.B2G_TowerAttackMonsterNotification.
+ * Use `create(B2G_TowerAttackMonsterNotificationSchema)` to create a new message.
+ */
+export const B2G_TowerAttackMonsterNotificationSchema: GenMessage<B2G_TowerAttackMonsterNotification> = /*@__PURE__*/
+  messageDesc(file_tower, 4);
+
+/**
+ * 타워 -> 몬스터 공격 알림
+ *
+ * @generated from message Protocol.G2C_TowerAttackMonsterNotification
+ */
+export type G2C_TowerAttackMonsterNotification = Message<"Protocol.G2C_TowerAttackMonsterNotification"> & {
   /**
    * @generated from field: string towerId = 1;
    */
@@ -124,18 +210,47 @@ export type B2C_TowerAttackMonsterNotification = Message<"Protocol.B2C_TowerAtta
 };
 
 /**
- * Describes the message Protocol.B2C_TowerAttackMonsterNotification.
- * Use `create(B2C_TowerAttackMonsterNotificationSchema)` to create a new message.
+ * Describes the message Protocol.G2C_TowerAttackMonsterNotification.
+ * Use `create(G2C_TowerAttackMonsterNotificationSchema)` to create a new message.
  */
-export const B2C_TowerAttackMonsterNotificationSchema: GenMessage<B2C_TowerAttackMonsterNotification> = /*@__PURE__*/
-  messageDesc(file_tower, 3);
+export const G2C_TowerAttackMonsterNotificationSchema: GenMessage<G2C_TowerAttackMonsterNotification> = /*@__PURE__*/
+  messageDesc(file_tower, 5);
 
 /**
  * 타워 파괴 알림
  *
- * @generated from message Protocol.B2C_TowerDestroyNotification
+ * @generated from message Protocol.B2G_TowerDestroyNotification
  */
-export type B2C_TowerDestroyNotification = Message<"Protocol.B2C_TowerDestroyNotification"> & {
+export type B2G_TowerDestroyNotification = Message<"Protocol.B2G_TowerDestroyNotification"> & {
+  /**
+   * @generated from field: bool isSuccess = 1;
+   */
+  isSuccess: boolean;
+
+  /**
+   * @generated from field: string towerId = 2;
+   */
+  towerId: string;
+
+  /**
+   * @generated from field: int32 roomId = 3;
+   */
+  roomId: number;
+};
+
+/**
+ * Describes the message Protocol.B2G_TowerDestroyNotification.
+ * Use `create(B2G_TowerDestroyNotificationSchema)` to create a new message.
+ */
+export const B2G_TowerDestroyNotificationSchema: GenMessage<B2G_TowerDestroyNotification> = /*@__PURE__*/
+  messageDesc(file_tower, 6);
+
+/**
+ * 타워 파괴 알림
+ *
+ * @generated from message Protocol.G2C_TowerDestroyNotification
+ */
+export type G2C_TowerDestroyNotification = Message<"Protocol.G2C_TowerDestroyNotification"> & {
   /**
    * @generated from field: bool isSuccess = 1;
    */
@@ -148,18 +263,42 @@ export type B2C_TowerDestroyNotification = Message<"Protocol.B2C_TowerDestroyNot
 };
 
 /**
- * Describes the message Protocol.B2C_TowerDestroyNotification.
- * Use `create(B2C_TowerDestroyNotificationSchema)` to create a new message.
+ * Describes the message Protocol.G2C_TowerDestroyNotification.
+ * Use `create(G2C_TowerDestroyNotificationSchema)` to create a new message.
  */
-export const B2C_TowerDestroyNotificationSchema: GenMessage<B2C_TowerDestroyNotification> = /*@__PURE__*/
-  messageDesc(file_tower, 4);
+export const G2C_TowerDestroyNotificationSchema: GenMessage<G2C_TowerDestroyNotification> = /*@__PURE__*/
+  messageDesc(file_tower, 7);
 
 /**
  * 베이스 파괴 알림
  *
- * @generated from message Protocol.B2C_BaseDestroyNotification
+ * @generated from message Protocol.B2G_BaseDestroyNotification
  */
-export type B2C_BaseDestroyNotification = Message<"Protocol.B2C_BaseDestroyNotification"> & {
+export type B2G_BaseDestroyNotification = Message<"Protocol.B2G_BaseDestroyNotification"> & {
+  /**
+   * @generated from field: bool isDestroied = 1;
+   */
+  isDestroied: boolean;
+
+  /**
+   * @generated from field: int32 roomId = 2;
+   */
+  roomId: number;
+};
+
+/**
+ * Describes the message Protocol.B2G_BaseDestroyNotification.
+ * Use `create(B2G_BaseDestroyNotificationSchema)` to create a new message.
+ */
+export const B2G_BaseDestroyNotificationSchema: GenMessage<B2G_BaseDestroyNotification> = /*@__PURE__*/
+  messageDesc(file_tower, 8);
+
+/**
+ * 베이스 파괴 알림
+ *
+ * @generated from message Protocol.G2C_BaseDestroyNotification
+ */
+export type G2C_BaseDestroyNotification = Message<"Protocol.G2C_BaseDestroyNotification"> & {
   /**
    * @generated from field: bool isDestroied = 1;
    */
@@ -167,18 +306,52 @@ export type B2C_BaseDestroyNotification = Message<"Protocol.B2C_BaseDestroyNotif
 };
 
 /**
- * Describes the message Protocol.B2C_BaseDestroyNotification.
- * Use `create(B2C_BaseDestroyNotificationSchema)` to create a new message.
+ * Describes the message Protocol.G2C_BaseDestroyNotification.
+ * Use `create(G2C_BaseDestroyNotificationSchema)` to create a new message.
  */
-export const B2C_BaseDestroyNotificationSchema: GenMessage<B2C_BaseDestroyNotification> = /*@__PURE__*/
-  messageDesc(file_tower, 5);
+export const G2C_BaseDestroyNotificationSchema: GenMessage<G2C_BaseDestroyNotification> = /*@__PURE__*/
+  messageDesc(file_tower, 9);
 
 /**
  * 타워 체력 업데이트 알림
  *
- * @generated from message Protocol.B2C_TowerHealthUpdateNotification
+ * @generated from message Protocol.B2G_TowerHealthUpdateNotification
  */
-export type B2C_TowerHealthUpdateNotification = Message<"Protocol.B2C_TowerHealthUpdateNotification"> & {
+export type B2G_TowerHealthUpdateNotification = Message<"Protocol.B2G_TowerHealthUpdateNotification"> & {
+  /**
+   * @generated from field: string towerId = 1;
+   */
+  towerId: string;
+
+  /**
+   * @generated from field: int32 hp = 2;
+   */
+  hp: number;
+
+  /**
+   * @generated from field: int32 maxHp = 3;
+   */
+  maxHp: number;
+
+  /**
+   * @generated from field: int32 roomId = 4;
+   */
+  roomId: number;
+};
+
+/**
+ * Describes the message Protocol.B2G_TowerHealthUpdateNotification.
+ * Use `create(B2G_TowerHealthUpdateNotificationSchema)` to create a new message.
+ */
+export const B2G_TowerHealthUpdateNotificationSchema: GenMessage<B2G_TowerHealthUpdateNotification> = /*@__PURE__*/
+  messageDesc(file_tower, 10);
+
+/**
+ * 타워 체력 업데이트 알림
+ *
+ * @generated from message Protocol.G2C_TowerHealthUpdateNotification
+ */
+export type G2C_TowerHealthUpdateNotification = Message<"Protocol.G2C_TowerHealthUpdateNotification"> & {
   /**
    * @generated from field: string towerId = 1;
    */
@@ -196,9 +369,9 @@ export type B2C_TowerHealthUpdateNotification = Message<"Protocol.B2C_TowerHealt
 };
 
 /**
- * Describes the message Protocol.B2C_TowerHealthUpdateNotification.
- * Use `create(B2C_TowerHealthUpdateNotificationSchema)` to create a new message.
+ * Describes the message Protocol.G2C_TowerHealthUpdateNotification.
+ * Use `create(G2C_TowerHealthUpdateNotificationSchema)` to create a new message.
  */
-export const B2C_TowerHealthUpdateNotificationSchema: GenMessage<B2C_TowerHealthUpdateNotification> = /*@__PURE__*/
-  messageDesc(file_tower, 6);
+export const G2C_TowerHealthUpdateNotificationSchema: GenMessage<G2C_TowerHealthUpdateNotification> = /*@__PURE__*/
+  messageDesc(file_tower, 11);
 

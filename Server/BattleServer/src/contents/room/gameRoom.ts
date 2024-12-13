@@ -8,14 +8,11 @@ import { MonsterSpawner } from "./monsterSpanwner";
 import { Tile, Tilemap } from "./tilemap";
 import { CustomError } from "ServerCore/utils/error/customError";
 import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
-import { B2C_GameEndNotificationSchema, B2C_increaseWaveNotificationSchema } from "src/protocol/room_pb";
 import { PacketUtils } from "ServerCore/utils/packetUtils";
 import { ePacketId } from "ServerCore/network/packetId";
 import { Tower } from '../game/tower';
 import { Vec2 } from 'ServerCore/utils/vec2';
-import { B2C_UseSkillNotificationSchema } from 'src/protocol/skill_pb';
-import { B2C_MonsterDeathNotificationSchema, B2C_MonsterHealthUpdateNotificationSchema, B2G_SpawnMonsterNotificationSchema } from 'src/protocol/monster_pb';
-import { B2C_TowerBuildNotificationSchema, B2C_TowerBuildResponseSchema, B2C_TowerHealthUpdateNotificationSchema } from 'src/protocol/tower_pb';
+import { B2G_SpawnMonsterNotificationSchema } from 'src/protocol/monster_pb';
 import { gameRoomManager } from './gameRoomManager';
 import { MathUtils } from 'src/utils/mathUtils';
 import { BattleSession } from 'src/main/session/battleSession';
@@ -24,6 +21,8 @@ import { v4 as uuidv4 } from "uuid";
 import { GamePlayer } from '../game/gamePlayer';
 import { B2G_PlayerPositionUpdateNotificationSchema, G2B_PlayerPositionUpdateRequest } from 'src/protocol/character_pb';
 import { sessionManager } from 'src/server';
+import { B2G_TowerBuildNotificationSchema } from 'src/protocol/tower_pb';
+import { SkillManager } from './skillManager';
 interface PQNode {
   cost: number;
   pos: Vec2;
@@ -56,6 +55,7 @@ export class GameRoom {
   private wave = 1; // 현재 웨이브
   public monsterStatusMultiplier = 1; // 몬스터 강화 계수 (wave만으론 강화가 불가능한가요?) --12.06 조정현
   private gameLoopInterval: any = null; //gameLoop를 저장 후 방 제거 시 clear하기 위함
+  private skillManager: SkillManager;
 
   constructor(id: number, maxPlayerCount: number) {
     this.id = id;
@@ -66,6 +66,7 @@ export class GameRoom {
     this.base = new Base(300, create(PosInfoSchema, { x: 16, y: 16 }), this);
     this.maxPlayerCount = maxPlayerCount;
     this.monsterSpawner = new MonsterSpawner(this);
+    this.skillManager = new SkillManager(this);
   }
 
   /*---------------------------------------------
@@ -481,16 +482,139 @@ export class GameRoom {
     return null;
   }
 
+  handleTowerBuild(packet: any, session: BattleSession) {
+    console.log("설치");
+    const { tower, ownerId, cardId } = packet;
+    const user = this.users.get(session.getId());
+    //user?.useCard(cardId); 나중에 카드까지 동기화 후 사용할 코드임 삭제 하지마십시오.
+
+    // 1. 타워 데이터 존재 확인
+    const towerData = assetManager.getTowerData(tower.prefabId);
+    if (!towerData) {
+      return;
+    }
+
+    // 2. 타워 정보 저장
+    const towerPosInfo = create(PosInfoSchema, {
+      uuid: uuidv4(),
+      x: packet.tower.towerPos.x,
+      y: packet.tower.towerPos.y,
+    });
+    const newTower = new Tower(packet.tower.prefabId, towerPosInfo, this);
+    this.addObject(newTower);
+    this.towers.set(newTower.getId(), newTower);
+
+    // 3. 타워 생성 성공 응답
+    //. 구현 어려움
+
+    // 4. 모든 클라이언트에게 타워 추가 알림
+    const towerBuildNotificationPacket = create(B2G_TowerBuildNotificationSchema, {
+      tower: create(TowerDataSchema, {
+        prefabId: tower.prefabId,
+        towerPos: tower.towerPos,
+      }),
+      ownerId: ownerId,
+      roomId:this.id,
+  });
+
+  const towerBuildNotificationBuffer = PacketUtils.SerializePacket(
+      towerBuildNotificationPacket,
+      B2G_TowerBuildNotificationSchema,
+      ePacketId.B2G_TowerBuildNotification,
+      0,
+    );
+    this.broadcast(towerBuildNotificationBuffer);
+  }
+
   public broadcast(buffer: Buffer) {
     //게이트웨이 서버가 2개라면 broadcast하는 방식이 바뀔텐데
-    //아마도 redis에서 roomData를 가져와 userId[]를 가져온 뒤 broadcast
-    //너무 비싼거 아닌가??
+    //아마도 redis에서 roomData를 가져와 userId[]를 가져온 뒤 broadcast...?
 
     const gatewaySession = sessionManager.getRandomSession();
     if(gatewaySession == null) {
       throw new CustomError(ErrorCodes.SERSSION_NOT_FOUND, "게이트웨이 세션을 찾을 수 없습니다.");
     }
-
     gatewaySession.send(buffer);
+  }
+
+  /*---------------------------------------------
+    [addScore]
+    - 점수를 추가하고 웨이브 상태를 확인
+  ---------------------------------------------*/
+  // addScore(monsterScore: number) {
+  //   this.score += monsterScore;
+
+  //   if (this.score >= this.rewardScore) {
+  //     // 여기에 카드 추가 로직
+  //     this.users.forEach((player) => player.addRandomCard());
+  //     console.log(`점수가 달성되어 카드가 지급됩니다.`);
+  //     this.rewardScore += 10;
+  //   }
+
+  //   // 특정 점수 도달 시 웨이브 증가
+  //   const scorePerWave = 10; // 웨이브 증가 기준 점수
+    
+  //   if (this.score >= this.wave * scorePerWave) {
+  //     this.increaseWave();
+  //   }
+  // }
+
+   /*---------------------------------------------
+    [increaseWave]
+    - 웨이브를 증가시키고 몬스터를 강화
+   ---------------------------------------------*/
+  //  increaseWave() {
+  //   this.wave += 1;
+  //   console.log(`웨이브가 ${this.wave}단계로 올랐습니다!`);
+
+  //   this.users.forEach((player) => player.addRandomCard());
+  //   console.log(`웨이브가 올라가서 카드가 지급됩니다.`);
+
+  //   // 강화 계수 증가
+  //   this.monsterStatusMultiplier += 0.1;
+
+  //   const increaseWavePacket = create(B2G_increaseWaveNotificationSchema, {
+  //     isSuccess,
+  //   });
+  
+  //   const increaseWaveBuffer = PacketUtils.SerializePacket(
+  //     increaseWavePacket,
+  //     B2C_increaseWaveNotificationSchema,
+  //     ePacketId.B2G_increaseWaveNotification,
+  //     0, //수정 부분
+  //   );
+
+  //   this.broadcast(increaseWaveBuffer);
+
+  //   if(this.wave%5===0 &&this.wave!==1){
+  //     this.monsterSpawner.spawnEilteMonster();
+  //     console.log('엘리트 몬스터 등장')
+  //   }
+  // }
+
+  // checkBaseHealth() {
+  //   return this.base.getHp() <= 0;
+  // }
+
+  // leaveRoom(playerId: string) {
+  //   this.users.delete(playerId);
+  //   console.log('플레이어 퇴장', playerId);
+  //   console.log('현재 플레이어 수', this.users.size);
+  // }
+
+  // getCurrentUsersCount() {
+  //   return this.users.size;
+  // }
+
+  // destroy() {
+  //   this.monsterSpawner.stopSpawning();
+  //   clearInterval(this.gameLoopInterval);
+  //   this.monsters.clear();
+  //   this.towers.clear();
+  //   this.users.clear();
+  // }
+
+  handleSkill(payload: any, session: BattleSession) {
+    this.skillManager.handleSkill(payload, session);
   }
 }

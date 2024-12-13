@@ -17,7 +17,7 @@ import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
 export class GamePlayer {
     public playerData: GamePlayerData;
     public cardList: Map<string, string> = new Map();
-
+    private isInitCard:Boolean = false;
     constructor(playerData: GamePlayerData) {
         this.playerData = playerData; // 플레이어 데이터 저장
         this.cardList = new Map(); // 카드 목록 초기화
@@ -27,6 +27,8 @@ export class GamePlayer {
     [initCard]
 ---------------------------------------------*/
   initCard() {
+    if(this.isInitCard)return;
+    this.isInitCard=true;
     // 포탑 카드를 무조건 하나 추가
     const mandatoryTowerCard: CardData[] = assetManager.getRandomTowerCards();
     this.cardList.set(mandatoryTowerCard[0].cardId, mandatoryTowerCard[0].prefabId);
@@ -63,13 +65,11 @@ export class GamePlayer {
     gatewaySession.send(sendBuffer); // 초기 카드 데이터 전송
   }
 
-  /**
-   * ---------------------------------------------
-   * [addCard]
-   * - 카드 랜덤으로 하나 추가
-   * ---------------------------------------------
-   */
-  // addRandomCard() {
+  /*---------------------------------------------
+   [addCard]
+     - 카드 랜덤으로 하나 추가
+  ---------------------------------------------*/
+  // public addRandomCard() {
   //   if (this.cardList.size >= 7) {
   //     return; // 카드가 7개 이상이면 종료
   //   }
@@ -84,7 +84,7 @@ export class GamePlayer {
   //   const sendBuffer = PacketUtils.SerializePacket(
   //     packet,
   //     B2C_AddCardSchema,
-  //     ePacketId.B2C_AddCard,
+  //     ePacketId.B2G_AddCard,
   //     this.session.getNextSequence(),
   //   );
 

@@ -12,6 +12,8 @@ const handlerMappings: Record<ePacketId, PacketHandler> | any = {
     gameRoomManager.enterRoomHandler(buffer, session),
   [ePacketId.G2B_PlayerPositionUpdateRequest]: (buffer: Buffer, session: BattleSession) =>
     gameRoomManager.moveHandler(buffer, session),
+  [ePacketId.G2B_TowerBuildRequest]:(buffer:Buffer,session:BattleSession)=>
+    gameRoomManager.towerBuildHandler(buffer, session),
 };
 
 export default handlerMappings;

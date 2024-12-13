@@ -10,6 +10,7 @@ import { ePacketId } from 'ServerCore/network/packetId';
  /*---------------------------------------------
     [초기 카드]
     게임 시작 시 제공받는 카드
+    여러 번 호출되는 버그가 있음
   ---------------------------------------------*/
 export function handleB2G_InitCardData(buffer: Buffer, session: BattleSession) {
     console.log("handleB2G_InitCardData");

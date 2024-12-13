@@ -2,7 +2,6 @@ import { create } from "@bufbuild/protobuf";
 import { ePacketId } from "ServerCore/network/packetId";
 import { PacketUtils } from "ServerCore/utils/packetUtils";
 import { PosInfo } from "src/protocol/struct_pb";
-import { B2C_BaseDestroyNotificationSchema } from "src/protocol/tower_pb";
 import { GameRoom } from "../room/gameRoom";
 
 

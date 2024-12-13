@@ -1,7 +1,7 @@
 import { create } from '@bufbuild/protobuf';
 import { assetManager } from "src/utils/assetManager";
 import { GameObject } from "./gameObject";
-import { B2C_MonsterAttackBaseNotificationSchema, B2C_MonsterAttackTowerNotificationSchema, B2G_MonsterPositionUpdateNotificationSchema } from "src/protocol/monster_pb";
+import { B2G_MonsterAttackBaseNotificationSchema, B2G_MonsterAttackTowerNotificationSchema, B2G_MonsterPositionUpdateNotificationSchema } from "src/protocol/monster_pb";
 import { PosInfo, PosInfoSchema } from 'src/protocol/struct_pb';
 import { OBJECT_STATE_TYPE } from 'src/protocol/enum_pb';
 import { Tower } from './tower';
@@ -11,16 +11,12 @@ import { MonsterSpawner } from '../room/monsterSpanwner';
 import { MathUtils } from 'src/utils/mathUtils';
 import { PacketUtils } from 'ServerCore/utils/packetUtils';
 import { ePacketId } from 'ServerCore/network/packetId';
-import { B2C_BaseDestroyNotificationSchema, B2C_TowerDestroyNotificationSchema } from 'src/protocol/tower_pb';
 import { sessionManager } from 'src/server';
 import { CustomError } from 'ServerCore/utils/error/customError';
 import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
+import { B2G_TowerDestroyNotificationSchema } from 'src/protocol/tower_pb';
 
 
-/**
- * 몬스터를 나타내는 클래스입니다.
- * @extends GameObject
- */
 export class Monster extends GameObject {
   /*---------------------------------------------
     [멤버 변수]
@@ -63,21 +59,20 @@ export class Monster extends GameObject {
     return this.pos;
   }
 
-  /**
-   * 몬스터를 강화하는 메서드
-   * @param {number} multiplier - 강화 배율 0.1이면, 10%가 오름
-   */
-  statusMultiplier(multiplier: number) {
+  /*---------------------------------------------
+    [몬스터 강화]
+---------------------------------------------*/
+  public statusMultiplier(multiplier: number) {
     this.maxHp = Math.floor(this.maxHp * multiplier);
     this.hp = this.maxHp;
     this.attackDamage = Math.floor(this.attackDamage * multiplier);
     console.log(`몬스터가 강화되었습니다. `, this.maxHp);
   }
 
-  /**
-   * 몬스터의 상태를 업데이트합니다.
-   */
-  update() {
+  /*---------------------------------------------
+    [Update]
+---------------------------------------------*/
+  public update() {
     switch (this.state) {
       case OBJECT_STATE_TYPE.IDLE:
         this.UpdateIdle();
@@ -94,7 +89,7 @@ export class Monster extends GameObject {
   /**
    * 몬스터의 IDLE 상태를 업데이트합니다.
    */
-  UpdateIdle() {
+  private UpdateIdle() {
     if (!this.room) return;
 
     // if (!this.target) {
@@ -127,10 +122,10 @@ export class Monster extends GameObject {
     }
   }
 
-  /**
-   * 몬스터의 MOVE 상태를 업데이트합니다.
-   */
-  UpdateMove() {
+  /*---------------------------------------------
+    [몬스터 이동]
+---------------------------------------------*/
+  private UpdateMove() {
     const now = Date.now();
     if (this.waitUntil > now) return;
 
@@ -154,119 +149,121 @@ export class Monster extends GameObject {
     this.setState(OBJECT_STATE_TYPE.IDLE);
   }
 
-  /**
-   * 몬스터의 SKILL 상태를 업데이트합니다.
-   */
-  UpdateSkill() {
-    // const now = Date.now();
-    // if (this.waitUntil > now) return;
+  /*---------------------------------------------
+    [몬스터 공격]
+---------------------------------------------*/
+  private UpdateSkill() {
+    const now = Date.now();
+    if (this.waitUntil > now) return;
 
-    // if (this.target) {
-    //   if (this.target instanceof Tower) {
-    //     this.attackTarget(this.target);
-    //   } else if (this.target instanceof Base) {
-    //     this.attackBase(this.target);
-    //   } else {
-    //     console.log('유효하지 않은 target');
-    //   }
-    // } else {
-    //   console.log('유효하지 않은 target2');
-    // }
+    if (this.target) {
+      if (this.target instanceof Tower) {
+        this.attackTarget(this.target);
+      } else if (this.target instanceof Base) {
+        this.attackBase(this.target);
+      } else {
+        console.log('유효하지 않은 target');
+      }
+    } else {
+      console.log('유효하지 않은 target2');
+    }
 
-    // // 공격 패킷 전송
+    // 공격 패킷 전송
 
-    // this.setState(OBJECT_STATE_TYPE.IDLE);
+    this.setState(OBJECT_STATE_TYPE.IDLE);
   }
 
 
   /*---------------------------------------------
         [타워 공격]
     ---------------------------------------------*/
+  private attackTarget(tower: Tower) {
+    console.log('attack');
+    // 2. 클라이언트에 공격 패킷 전송
+    const attackPacket = create(B2G_MonsterAttackTowerNotificationSchema, {
+      monsterId: this.getId(),
+      targetId: tower.getId(),
+      hp: tower.hp,
+      maxHp: tower.maxHp,
+      roomId: this.room.id
+    });
 
-  attackTarget(tower: Tower) {
-    // console.log('attack');
-    // // 2. 클라이언트에 공격 패킷 전송
-    // const attackPacket = create(B2C_MonsterAttackTowerNotificationSchema, {
-    //   monsterId: this.getId(),
-    //   targetId: tower.getId(),
-    //   hp: tower.hp,
-    //   maxHp: tower.maxHp,
-    // });
+    const attackBuffer = PacketUtils.SerializePacket(
+      attackPacket,
+      B2G_MonsterAttackTowerNotificationSchema,
+      ePacketId.B2G_MonsterAttackTowerNotification,
+      0,
+    );
+    this.room.broadcast(attackBuffer);
 
-    // const attackBuffer = PacketUtils.SerializePacket(
-    //   attackPacket,
-    //   B2C_MonsterAttackTowerNotificationSchema,
-    //   ePacketId.B2C_MonsterAttackTowerNotification,
-    //   0,
-    // );
-    // //this.room.broadcast(attackBuffer);
+    // 타워 데미지 처리
+    const isDestroyed = tower.onDamaged(this.attackDamage);
 
-    // // 타워 데미지 처리
-    // const isDestroyed = tower.onDamaged(this.attackDamage);
+    // 3. 타워 파괴 처리
+    if (isDestroyed) {
+      console.log(`타워 ${tower.getId()}가 파괴되었습니다.`);
+      this.room.removeObject(tower.getId()); // GameRoom에서 타워 제거
 
-    // // 3. 타워 파괴 처리
-    // if (isDestroyed) {
-    //   console.log(`타워 ${tower.getId()}가 파괴되었습니다.`);
-    //   //this.room.removeObject(tower.getId()); // GameRoom에서 타워 제거
+      const towerDestroyedPacket = create(B2G_TowerDestroyNotificationSchema, {
+        isSuccess: true,
+        towerId: tower.getId(),
+        roomId: this.room.id,
+      });
 
-    //   const towerDestroyedPacket = create(B2C_TowerDestroyNotificationSchema, {
-    //     towerId: tower.getId(),
-    //     isSuccess: true,
-    //   });
+      const towerDestroyedBuffer = PacketUtils.SerializePacket(
+        towerDestroyedPacket,
+        B2G_TowerDestroyNotificationSchema,
+        ePacketId.B2G_TowerDestroyNotification,
+        0, //수정 부분
+      );
 
-    //   const towerDestroyedBuffer = PacketUtils.SerializePacket(
-    //     towerDestroyedPacket,
-    //     B2C_TowerDestroyNotificationSchema,
-    //     ePacketId.B2G_TowerDestroyNotification,
-    //     0, //수정 부분
-    //   );
-
-      //this.room.broadcast(towerDestroyedBuffer);
+      this.room.broadcast(towerDestroyedBuffer);
     }
-    //}
+  }
 
-  /**
-   * 기지 공격
-   */
-  //attackBase(base: Base) {
-    // const baseAttackPacket = create(B2C_MonsterAttackBaseNotificationSchema, {
-    //   monsterId: this.getId(),
-    //   attackDamage: this.attackDamage,
-    // });
+  /*---------------------------------------------
+        [타워 공격]
+    ---------------------------------------------*/
+  private attackBase(base: Base) {
+    const baseAttackPacket = create(B2G_MonsterAttackBaseNotificationSchema, {
+      monsterId: this.getId(),
+      attackDamage: this.attackDamage,
+      roomId: this.room.id
+    });
 
-    // const baseAttackBuffer = PacketUtils.SerializePacket(
-    //   baseAttackPacket,
-    //   B2G_MonsterAttackBaseNotificationSchema,
-    //   ePacketId.B2G_MonsterAttackBaseNotification,
-    //   0, //수정 부분
-    // );
-    //this.room.broadcast(baseAttackBuffer);
+    const baseAttackBuffer = PacketUtils.SerializePacket(
+      baseAttackPacket,
+      B2G_MonsterAttackBaseNotificationSchema,
+      ePacketId.B2G_MonsterAttackBaseNotification,
+      0, //수정 부분
+    );
+    this.room.broadcast(baseAttackBuffer);
 
-    // 기지 데미지 처리
-    //const isDestroyed = base.onDamaged(this.attackDamage);
-  //}
+    //기지 데미지 처리
+    const isDestroyed = base.onDamaged(this.attackDamage);
+  }
 
 
   /*---------------------------------------------
     [onDamaged]
      - 몬스터가 데미지를 받았을 때 처리합니다.
 ---------------------------------------------*/
-  // onDamaged(attackDamage: number) {
-  //   this.hp = Math.max(this.hp - attackDamage, 0);
-  //   if (this.hp <= 0) {
-  //     this.onDeath();
-  //     return true; // 몬스터 hp가 0보다 작다면 onDeath 수행
-  //   }
-  //   return false; // 몬스터 hp가 0보다 크다면 공격 수행
-  // }
+  onDamaged(attackDamage: number) {
+    this.hp = Math.max(this.hp - attackDamage, 0);
+    if (this.hp <= 0) {
+      this.onDeath();
+      return true; // 몬스터 hp가 0보다 작다면 onDeath 수행
+    }
+    return false; // 몬스터 hp가 0보다 크다면 공격 수행
+  }
 
-  // /**
-  //  * 몬스터가 죽었을 때 처리합니다.
-  //  * @override
-  //  */
-  // onDeath() {
-  //   console.log(`몬스터 ${this.getId()}가 사망.`);
+  /*---------------------------------------------
+    [onDamaged]
+     - 몬스터가 죽었을 때 처리합니다.
+---------------------------------------------*/
+  onDeath() {
+    console.log(`몬스터 ${this.getId()}가 사망.`);
 
-  //   //this.room.removeObject(this.getId());
-  // }
+    this.room.removeObject(this.getId());
+  }
 }

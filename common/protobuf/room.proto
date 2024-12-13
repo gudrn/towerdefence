@@ -169,9 +169,14 @@ message L2C_LeaveRoomNotification
 }
 
 
-message B2C_increaseWaveNotification
+message B2G_increaseWaveNotification
 {
     bool isSuccess = 1;
+    int32 roomId = 2;
+}
+
+message G2C_increaseWaveNotification{
+    bool isSuccess = 1; 
 }
 
 message B2L_SocketDisconnectedNotification
