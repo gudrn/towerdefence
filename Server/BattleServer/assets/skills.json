@@ -1,0 +1,20 @@
+{
+  "name": "skills",
+  "version": "1.0.0",
+  "data": [
+    {
+      "prefabId": "OrbitalBeam",
+      "attackDamage": 50,
+      "attackRange": 5,
+      "heal": 0,
+      "type": "Attack"
+    },
+    {
+      "prefabId": "TowerRepair",
+      "attackDamage": 0, 
+      "attackRange": 0,
+      "heal": 50,
+      "type": "heal"
+    }
+  ]
+}

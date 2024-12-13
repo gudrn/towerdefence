@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package Protocol;
+
+import "struct.proto";
+
+
+message L2C_Init 
+{
+  bool isSuccess = 1;
+}
+
+// 최초 패킷 구조
+message C2L_Init 
+{
+  string userId = 1;
+  string nickname = 2;
+}
+
+message C2B_Init 
+{
+  GamePlayerData playerData = 1;
+  int32 roomId = 2;
+}
+
+message B2L_Init
+{
+  string serverId = 1; //UUID
+}
+
+message G2L_Init 
+{
+  string serverId = 1;
+}
+
+message G2B_Init 
+{
+  string serverId = 1;
+}
+
+message C2G_Init 
+{
+  string token = 1;
+}

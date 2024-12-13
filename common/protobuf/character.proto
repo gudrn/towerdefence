@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package Protocol;
+
+import "struct.proto";
+import "enum.proto";
+
+// 캐릭터 위치 동기화
+message C2G_PlayerPositionUpdateRequest 
+{
+    PosInfo posInfo = 1;
+    int32 roomId = 2;
+}
+
+message G2B_PlayerPositionUpdateRequest 
+{
+    PosInfo posInfo = 1;
+    int32 roomId = 2;
+}
+
+// 캐릭터 위치 동기화 알림
+message B2G_PlayerPositionUpdateNotification 
+{
+    PosInfo posInfo = 1;
+    int32 roomId = 2;
+}
+
+// 캐릭터 위치 동기화 알림
+message G2C_PlayerPositionUpdateNotification 
+{
+    PosInfo posInfo = 1;
+}
+
+// 카드 사용
+message C2B_UseCardRequest { 
+    int32 roomId = 1;
+    string cardId = 2; 
+}
+

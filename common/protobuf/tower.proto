@@ -1,0 +1,111 @@
+syntax = "proto3";
+
+package Protocol;
+
+import "struct.proto";
+
+// C->G 타워 생성 요청
+message C2G_TowerBuildRequest 
+{
+    TowerData tower = 1; //타워 정보
+    string ownerId = 2; //유저 ID
+    int32 roomId = 3; // 룸 ID
+    string cardId = 4;
+}
+//G->B 타워 생성 요청청
+message G2B_TowerBuildRequest
+{
+    TowerData tower = 1; //타워 정보
+    string ownerId = 2; //타워 정보
+    int32 roomId = 3; //타워 정보
+    string cardId = 4;
+}
+
+// 타워 생성 알림
+message B2G_TowerBuildNotification
+{
+    TowerData tower = 1; //생성된 타워 정보
+    string ownerId = 2; //타워 생성자 ID
+    int32 roomId = 3;
+}
+
+message G2C_TowerBuildNotification
+{
+    TowerData tower = 1; //생성된 타워 정보
+    string ownerId = 2; //타워 생성자 ID
+}
+
+// 타워 -> 몬스터 공격 알림
+message B2G_TowerAttackMonsterNotification
+{
+    string towerId = 1;
+    PosInfo monsterPos = 2;
+    float travelTime = 3;
+    int32 roomId = 4;
+}
+
+// 타워 -> 몬스터 공격 알림
+message G2C_TowerAttackMonsterNotification
+{
+    string towerId = 1;
+    PosInfo monsterPos = 2;
+    float travelTime = 3;
+}
+
+//타워 파괴 알림
+message B2G_TowerDestroyNotification
+{
+    bool isSuccess = 1;
+    string towerId = 2;
+    int32 roomId = 3;
+}
+
+//타워 파괴 알림
+message G2C_TowerDestroyNotification
+{
+    bool isSuccess = 1;
+    string towerId = 2;
+}
+
+// 베이스 파괴 알림
+message B2G_BaseDestroyNotification
+{
+    bool isDestroied = 1;
+    int32 roomId = 2;
+}
+
+// 베이스 파괴 알림
+message G2C_BaseDestroyNotification
+{
+    bool isDestroied = 1;
+}
+
+// 타워 체력 업데이트 알림
+message B2G_TowerHealthUpdateNotification
+{
+    string towerId = 1;
+    int32 hp = 2;
+    int32 maxHp = 3;
+    int32 roomId = 4;
+}
+
+// 타워 체력 업데이트 알림
+message G2C_TowerHealthUpdateNotification
+{
+    string towerId = 1;
+    int32 hp = 2;
+    int32 maxHp = 3;
+}
+
+// 타워 버프 상태 알림
+message B2G_TowerBuffNotification {
+    string towerId = 1;     // 버프 받은/해제된 타워 ID
+    bool isBuffed = 2;      // true: 버프 적용, false: 버프 해제
+    int32 roomId = 3;
+}
+
+// 타워 버프 상태 알림
+message G2C_TowerBuffNotification {
+    string towerId = 1;     // 버프 받은/해제된 타워 ID
+    bool isBuffed = 2;      // true: 버프 적용, false: 버프 해제
+}

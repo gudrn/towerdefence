@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package Protocol;
+
+
+//변경 주의(클라 의존성)
+enum RoomStateType {
+  WAIT = 0;
+  PREPARE = 1;
+  INAGAME = 2;
+}
+
+enum ObjectType {
+	TOWER = 0;
+	PLAYER = 1;
+	MONSTER = 2;
+  	PROJECTILE = 3;
+	ENV = 4;
+}
+
+enum OBJECT_STATE_TYPE
+{
+	IDLE = 0;
+	MOVE = 1;
+	SKILL = 2;
+}
+
+enum CardType {
+	CARD_TYPE_TOWER = 0;
+	CARD_TYPE_SKILL = 1;
+}

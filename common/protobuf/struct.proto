@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package Protocol;
+
+import "enum.proto";
+
+message BaseData {
+	int32 hp = 1; // 현재 체력
+  int32 maxHp = 2; // 최대 체력
+}
+
+message MonsterData {
+    int32 monsterId = 1; // 몬스터 식별 id
+    int32 monsterNumber = 2; // 몬스터 종류 구분하는 번호
+    int32 level = 3; // 레벨
+    PosInfo monsterPos = 4;
+}
+
+// 변경 주의(클라 의존성)
+message UserData {
+  string id = 1; // 유저 식별 id
+  string name = 2; // 닉네임
+  string prefabId = 3;
+}
+
+// 변경 주의(클라 의존성)
+message RoomData {
+  int32 id = 1;                // 방 ID
+  string ownerId = 2;          // 방 소유자 ID
+  string name = 3;             // 방 이름
+  int32 maxUserNum = 4;        // 최대 사용자 수
+  RoomStateType state = 5;     // 방 상태
+  repeated UserData users = 6; // 방에 참여하는 사용자 목록
+}
+
+message PosInfo
+{
+  string uuid = 1;
+	float x = 2;
+	float y = 3;
+}
+
+message GamePlayerData {
+  PosInfo position = 1;
+  string nickname = 2;
+  string prefabId = 3;
+}
+
+message ErrorData
+{
+  int32 responseCode = 1; // 에러코드
+  string message = 2; //에러 내용
+}
+
+message TowerData {
+  string prefabId = 1; // 타워 종류 구분하는 번호
+  PosInfo towerPos = 2;
+}
+
+message SkillData {
+  string prefabId = 1;
+  PosInfo skillPos = 2;
+}
+
+message CardData {
+  string cardId = 1;
+  string prefabId = 2;
+}
+
+message MonsterHealthUpdate {
+  string monsterId = 1;
+  int32 currentHp = 2;
+  int32 maxHp = 3;
+}
