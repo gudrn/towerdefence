@@ -63,4 +63,5 @@ export enum ePacketId {
   B2C_AddCard = 507,
   B2L_SocketDisconnectedNotification = 508,
   B2C_GameEndNotification = 509,
+  B2C_MonsterBuffNotification = 601,
 }

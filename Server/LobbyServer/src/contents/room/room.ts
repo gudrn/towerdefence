@@ -3,7 +3,12 @@ import { ePacketId } from 'ServerCore/network/packetId';
 import { PacketUtils } from 'ServerCore/utils/packetUtils';
 import { LobbySession } from 'src/main/session/lobbySession.js';
 import { RoomStateType } from 'src/protocol/enum_pb';
-import { L2C_JoinRoomNotificationSchema, L2C_JoinRoomResponseSchema, L2C_LeaveRoomNotificationSchema, L2C_LeaveRoomResponseSchema } from 'src/protocol/room_pb';
+import {
+  L2C_JoinRoomNotificationSchema,
+  L2C_JoinRoomResponseSchema,
+  L2C_LeaveRoomNotificationSchema,
+  L2C_LeaveRoomResponseSchema,
+} from 'src/protocol/room_pb';
 import { RoomDataSchema, UserDataSchema } from 'src/protocol/struct_pb';
 
 /**
@@ -27,7 +32,7 @@ export class Room {
     this.users = new Array<LobbySession>();
     this.state = RoomStateType.WAIT; // 'waiting', 'inProgress'
     this.maxPlayerCount = maxPlayerCount;
-    this.score = 0; 
+    this.score = 0;
   }
 
   /*---------------------------------------------
@@ -37,7 +42,7 @@ export class Room {
     // 3.  유저 추가
     // 4. 새 유저 입장 정보를 다른 유저들에게 알리기
 ---------------------------------------------*/
-public enterRoom(newUser: LobbySession): boolean {
+  public enterRoom(newUser: LobbySession): boolean {
     //console.log('Room::enterRoom');
 
     // 1. 방이 가득 찼는지 확인
@@ -54,8 +59,8 @@ public enterRoom(newUser: LobbySession): boolean {
           create(UserDataSchema, {
             id: user.getId(),
             name: user.getNickname(),
-            prefabId: user.getPrefabId()
-          })
+            prefabId: user.getPrefabId(),
+          }),
         );
       }
 
@@ -74,7 +79,7 @@ public enterRoom(newUser: LobbySession): boolean {
         packet,
         L2C_JoinRoomResponseSchema,
         ePacketId.L2C_JoinRoomResponse,
-        newUser.getNextSequence()
+        newUser.getNextSequence(),
       );
 
       console.log('Serialized packet size:', sendBuffer.length);
@@ -92,7 +97,7 @@ public enterRoom(newUser: LobbySession): boolean {
         joinUser: create(UserDataSchema, {
           id: newUser.getId(),
           name: newUser.getNickname(),
-          prefabId: newUser.getPrefabId()
+          prefabId: newUser.getPrefabId(),
         }),
       });
 
@@ -100,7 +105,7 @@ public enterRoom(newUser: LobbySession): boolean {
         packet,
         L2C_JoinRoomNotificationSchema,
         ePacketId.L2C_JoinRoomNotification,
-        0
+        0,
       );
 
       this.broadcast(sendBuffer);
@@ -150,7 +155,7 @@ public enterRoom(newUser: LobbySession): boolean {
 
   // /**
   //  * @param {string} userId 유저 ID
-  //  * 
+  //  *
   //  */
   // sendChat(user: LobbySession, message: string) {
   //   const chatPacket = create(sendChatSchema, {
@@ -182,7 +187,7 @@ public enterRoom(newUser: LobbySession): boolean {
    * 게임 시작
    */
   startGame() {
-    this.state = RoomStateType.INAGAME
+    this.state = RoomStateType.INAGAME;
 
     // TODO: 게임 시작 로직 구현
   }

@@ -16,19 +16,6 @@
       "heal": 50,
       "type": "Heal"
     },
-    {
-      "prefabId": "TowerAllRepair",
-      "attackDamage": 0,
-      "attackRange": 0,
-      "heal": 50,
-      "type": "Heal"
-    },
-    {
-      "prefabId": "Molotov cocktail",
-      "attackDamage": 5,
-      "attackRange": 6,
-      "heal": 0,
-      "type": "Attack"
     }
   ]
 }

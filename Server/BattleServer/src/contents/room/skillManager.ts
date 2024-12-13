@@ -2,7 +2,6 @@ import { GamePlayer } from '../game/gamePlayer';
 import { BattleSession } from 'src/main/session/battleSession';
 import { GameRoom } from './gameRoom';
 import { assetManager } from 'src/utils/assetManager';
-import { Tower } from '../game/tower';
 import { createUserSkill, createDeathMoster, createMosterHpSync } from 'src/packet/gameRoomPacket';
 import { createTowerHealNotificationPacket } from 'src/packet/towerPacket';
 
@@ -32,8 +31,9 @@ export class SkillManager {
       case 'OrbitalBeam':
         this.handleOrbitalBeam(skill, skillPos);
         break;
-      case 'Molotov Cocktail':
-        this.handlerMolotovCocktail(skill, skillPos);
+      // case "Molotov Cocktail":
+      //   this.handlerMolotovCocktail(skill,skillPos);
+      //   break;
       case 'TowerRepair':
         this.handleTowerRepair(skill, skillPos);
         break;
@@ -43,7 +43,7 @@ export class SkillManager {
         return;
     }
 
-    const notificationBuffer = createUserSkill(prefabId, skillPos.x, skillPos.y);
+    const notificationBuffer = createUserSkill(session.getId(), prefabId, skillPos.x, skillPos.y);
     this.gameRoom.broadcast(notificationBuffer);
   }
 
@@ -65,6 +65,8 @@ export class SkillManager {
       if (monster.hp <= 0) {
         const monsterDeathBuffer = createDeathMoster(monster.getId(), monster.score);
         this.gameRoom.broadcast(monsterDeathBuffer);
+        this.gameRoom.addScore(monster.score);
+        this.gameRoom.removeObject(monster.getId());
       } else {
         const attackBuffer = createMosterHpSync(monster.getId(), monster.hp, monster.maxHp);
         this.gameRoom.broadcast(attackBuffer);
@@ -78,7 +80,10 @@ export class SkillManager {
    * @param {any} skillPos - 스킬 위치
    * @returns {void}
    ---------------------------------------------*/
-  private handlerMolotovCocktail(skill: any, skillPos: any) {}
+
+  //  private handlerMolotovCocktail (skill: any, skillPos: any){
+    
+  //  }
 
   /**---------------------------------------------
    * [타워 수리 처리]

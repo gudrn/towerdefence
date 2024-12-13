@@ -49,13 +49,21 @@ export function createGameStart(playerDatas: any[], obstaclePosInfos: any[]) {
   return gameStartBuffer;
 }
 
-export function createPosionUpdate(Id: string, x: any, y: any) {
+export function createPositionUpdate(
+  Id: string,
+  x: any,
+  y: any,
+  parameter: string,
+  state: boolean,
+) {
   const packet = create(B2C_PlayerPositionUpdateNotificationSchema, {
     posInfo: create(PosInfoSchema, {
       uuid: Id,
       x: x,
       y: y,
     }),
+    parameter: parameter,
+    state: state,
   });
 
   const sendBuffer = PacketUtils.SerializePacket(
@@ -68,7 +76,7 @@ export function createPosionUpdate(Id: string, x: any, y: any) {
   return sendBuffer;
 }
 
-export function createUserSkill(prefabId: string, x: number, y: number) {
+export function createUserSkill(uuid: string, prefabId: string, x: number, y: number) {
   const skilldata = create(SkillDataSchema, {
     prefabId: prefabId,
     skillPos: create(PosInfoSchema, {
@@ -78,6 +86,7 @@ export function createUserSkill(prefabId: string, x: number, y: number) {
   });
   //스킬 사용 알림
   const notification = create(B2C_UseSkillNotificationSchema, {
+    ownerId: uuid,
     skill: skilldata,
   });
 

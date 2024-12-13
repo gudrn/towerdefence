@@ -13,7 +13,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file character.proto.
  */
 export const file_character: GenFile = /*@__PURE__*/
-  fileDesc("Cg9jaGFyYWN0ZXIucHJvdG8SCFByb3RvY29sIlUKH0MyQl9QbGF5ZXJQb3NpdGlvblVwZGF0ZVJlcXVlc3QSIgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SDgoGcm9vbUlkGAIgASgFIkoKJEIyQ19QbGF5ZXJQb3NpdGlvblVwZGF0ZU5vdGlmaWNhdGlvbhIiCgdwb3NJbmZvGAEgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyI0ChJDMkJfVXNlQ2FyZFJlcXVlc3QSDgoGcm9vbUlkGAEgASgFEg4KBmNhcmRJZBgCIAEoCWIGcHJvdG8z", [file_struct, file_enum]);
+  fileDesc("Cg9jaGFyYWN0ZXIucHJvdG8SCFByb3RvY29sIncKH0MyQl9QbGF5ZXJQb3NpdGlvblVwZGF0ZVJlcXVlc3QSIgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SEQoJcGFyYW1ldGVyGAIgASgJEg0KBXN0YXRlGAMgASgIEg4KBnJvb21JZBgEIAEoBSJsCiRCMkNfUGxheWVyUG9zaXRpb25VcGRhdGVOb3RpZmljYXRpb24SIgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SEQoJcGFyYW1ldGVyGAIgASgJEg0KBXN0YXRlGAMgASgIIjQKEkMyQl9Vc2VDYXJkUmVxdWVzdBIOCgZyb29tSWQYASABKAUSDgoGY2FyZElkGAIgASgJYgZwcm90bzM", [file_struct, file_enum]);
 
 /**
  * 캐릭터 위치 동기화
@@ -27,7 +27,17 @@ export type C2B_PlayerPositionUpdateRequest = Message<"Protocol.C2B_PlayerPositi
   posInfo?: PosInfo;
 
   /**
-   * @generated from field: int32 roomId = 2;
+   * @generated from field: string parameter = 2;
+   */
+  parameter: string;
+
+  /**
+   * @generated from field: bool state = 3;
+   */
+  state: boolean;
+
+  /**
+   * @generated from field: int32 roomId = 4;
    */
   roomId: number;
 };
@@ -49,6 +59,16 @@ export type B2C_PlayerPositionUpdateNotification = Message<"Protocol.B2C_PlayerP
    * @generated from field: Protocol.PosInfo posInfo = 1;
    */
   posInfo?: PosInfo;
+
+  /**
+   * @generated from field: string parameter = 2;
+   */
+  parameter: string;
+
+  /**
+   * @generated from field: bool state = 3;
+   */
+  state: boolean;
 };
 
 /**

@@ -19,7 +19,8 @@ message B2C_SkillResponse {
 
 //스킬 카드 사용 알림
 message B2C_UseSkillNotification {
-    SkillData skill = 1;
+    string ownerId = 1;
+    SkillData skill = 2;
 }
 
 //카드 추가 알림

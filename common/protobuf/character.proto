@@ -9,13 +9,17 @@ import "enum.proto";
 message C2B_PlayerPositionUpdateRequest 
 {
     PosInfo posInfo = 1;
-    int32 roomId = 2;
+    string parameter = 2;
+    bool state = 3;
+    int32 roomId = 4;
 }
 
 // 캐릭터 위치 동기화 알림
 message B2C_PlayerPositionUpdateNotification 
 {
     PosInfo posInfo = 1;
+    string parameter = 2;
+    bool state = 3;
 }
 
 // 카드 사용

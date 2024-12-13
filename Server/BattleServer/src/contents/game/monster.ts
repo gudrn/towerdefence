@@ -1,14 +1,18 @@
 import { create } from '@bufbuild/protobuf';
-import { assetManager } from "src/utils/assetManager";
-import { GameObject } from "./gameObject";
+import { assetManager } from 'src/utils/assetManager';
+import { GameObject } from './gameObject';
 import { PosInfo, PosInfoSchema } from 'src/protocol/struct_pb';
 import { OBJECT_STATE_TYPE } from 'src/protocol/enum_pb';
 import { Tower } from './tower';
 import { Base } from './base';
 import { GameRoom } from '../room/gameRoom';
 import { MathUtils } from 'src/utils/mathUtils';
-import { createAttackBase, createAttackTarget, createTowerDestroyed, createUpdateMove } from 'src/packet/monsterPacket';
-
+import {
+  createAttackBase,
+  createAttackTarget,
+  createTowerDestroyed,
+  createUpdateMove,
+} from 'src/packet/monsterPacket';
 
 /**
  * 몬스터를 나타내는 클래스입니다.
@@ -26,8 +30,8 @@ export class Monster extends GameObject {
   private attackCoolDown: number = 0; //공격 속도
   protected moveSpeed: number = 0; //공격 속도
   private waitUntil: number = 0; //동작 간 딜레이 시간
-  public score:number = 0; //점수
-  
+  public score: number = 0; //점수
+
   constructor(prefabId: string, pos: PosInfo, room: GameRoom) {
     super(prefabId, pos, room);
 
@@ -45,17 +49,23 @@ export class Monster extends GameObject {
     this.moveSpeed = monsterData.moveSpeed; // 이동 속도
     this.score = monsterData.score; // 점수
     this.waitUntil = 0; // 딜레이 시간
-
-    console.log('------------');
-    console.log('몬스터 스포너');
-    console.log(this.pos.uuid);
-    console.log('------------');
   }
-  
-  getpos(){
+
+  getpos() {
     return this.pos;
   }
-
+  getAttackDamage() {
+    return this.attackDamage;
+  }
+  getAttackCoolDown() {
+    return this.attackCoolDown;
+  }
+  setAttackCoolDown(coolDown: number) {
+    this.attackCoolDown = coolDown;
+  }
+  getRoom() {
+    return this.room;
+  }
   /**
    * 몬스터를 강화하는 메서드
    * @param {number} multiplier - 강화 배율 0.1이면, 10%가 오름
@@ -66,7 +76,6 @@ export class Monster extends GameObject {
     this.attackDamage = Math.floor(this.attackDamage * multiplier);
     console.log(`몬스터가 강화되었습니다. `, this.maxHp);
   }
-
   /**
    * 몬스터의 상태를 업데이트합니다.
    */
@@ -104,10 +113,10 @@ export class Monster extends GameObject {
         this.waitUntil = Date.now() + this.attackCoolDown * 1000;
         this.setState(OBJECT_STATE_TYPE.SKILL);
       } else {
-        const path = this.room.findPath(this.pos, this.target.getPos());
+        const path = this.room.getMonsterManager().findPath(this.pos, this.target.getPos());
         if (path && path.length > 1) {
           const nextPos = path[1];
-          if (this.room.canGo(nextPos)) {
+          if (this.room.getMonsterManager().canGo(nextPos)) {
             //console.log("이동 가능");
             this.setPos(create(PosInfoSchema, { x: nextPos.x, y: nextPos.y }));
             this.waitUntil = Date.now() + 1000;
@@ -127,7 +136,7 @@ export class Monster extends GameObject {
     const now = Date.now();
     if (this.waitUntil > now) return;
 
-    const sendBuffer = createUpdateMove(this.getPos.bind(this))
+    const sendBuffer = createUpdateMove(this.getPos.bind(this));
 
     this.room.broadcast(sendBuffer);
     this.setState(OBJECT_STATE_TYPE.IDLE);
@@ -157,43 +166,43 @@ export class Monster extends GameObject {
     this.setState(OBJECT_STATE_TYPE.IDLE);
   }
 
-
   /*---------------------------------------------
         [타워 공격]
     ---------------------------------------------*/
 
   attackTarget(tower: Tower) {
-    console.log('attack');
-    // 2. 클라이언트에 공격 패킷 전송
-  const attackBuffer = createAttackTarget(this.getId.bind(this), tower);
+    // 1. 타워 데미지 처리
+    const isDestroyed = tower.onDamaged(this.attackDamage); // 버프 상태일 때 더 높은 데미지
 
-    this.room.broadcast(attackBuffer);
-
-    // 타워 데미지 처리
-    const isDestroyed = tower.onDamaged(this.attackDamage);
-
-    // 3. 타워 파괴 처리
+    // 2. 타워 파괴 처리
     if (isDestroyed) {
       console.log(`타워 ${tower.getId()}가 파괴되었습니다.`);
       this.room.removeObject(tower.getId()); // GameRoom에서 타워 제거
-      
+
       const towerDestroyedBuffer = createTowerDestroyed(tower);
       this.room.broadcast(towerDestroyedBuffer);
+      return;
     }
+    // 3. 클라이언트에 공격 패킷 전송
+    const attackBuffer = createAttackTarget(this.getId.bind(this), tower);
+
+    this.room.broadcast(attackBuffer);
   }
 
+  setAttackDamage(damage: number) {
+    this.attackDamage = damage;
+  }
   /**
    * 기지 공격
    */
   attackBase(base: Base) {
-    const baseAttackBuffer = createAttackBase(this.getId.bind(this), this.attackDamage);
+    const baseAttackBuffer = createAttackBase(this.getId.bind(this), this.attackDamage); // 버프 상태일 때 더 높은 데미지
 
     this.room.broadcast(baseAttackBuffer);
 
     // 기지 데미지 처리
-    base.onDamaged(this.attackDamage);
+    base.onDamaged(this.attackDamage); // 버프 상태일 때 더 높은 데미지
   }
-
 
   /*---------------------------------------------
     [onDamaged]
@@ -213,8 +222,6 @@ export class Monster extends GameObject {
    * @override
    */
   onDeath() {
-    console.log(`몬스터 ${this.getId()}가 사망.`);
-
     this.room.removeObject(this.getId());
   }
 }

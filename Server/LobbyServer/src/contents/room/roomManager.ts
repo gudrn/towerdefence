@@ -1,7 +1,18 @@
 import { fromBinary, create } from '@bufbuild/protobuf';
 import { Room } from './room';
 import { PacketUtils } from 'ServerCore/utils/packetUtils';
-import { B2L_CreateGameRoomResponeSchema, B2L_SocketDisconnectedNotificationSchema, C2L_CreateRoomRequestSchema, C2L_GameStartSchema, C2L_JoinRoomRequestSchema, C2L_LeaveRoomRequestSchema, L2B_CreateGameRoomRequestSchema, L2C_CreateRoomResponseSchema, L2C_GameStartSchema, L2C_GetRoomListResponseSchema } from 'src/protocol/room_pb';
+import {
+  B2L_CreateGameRoomResponeSchema,
+  B2L_SocketDisconnectedNotificationSchema,
+  C2L_CreateRoomRequestSchema,
+  C2L_GameStartSchema,
+  C2L_JoinRoomRequestSchema,
+  C2L_LeaveRoomRequestSchema,
+  L2B_CreateGameRoomRequestSchema,
+  L2C_CreateRoomResponseSchema,
+  L2C_GameStartSchema,
+  L2C_GetRoomListResponseSchema,
+} from 'src/protocol/room_pb';
 import { CustomError } from 'ServerCore/utils/error/customError';
 import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
 import { handleError } from 'src/utils/errorHandler';
@@ -12,14 +23,13 @@ import { battleSessionManager } from 'src/server';
 import { lobbyConfig } from 'src/config/config';
 import { BattleSession } from 'src/main/session/battleSession';
 
-
 const MAX_ROOMS_SIZE = 10000;
 
 class RoomManager {
   /*---------------------------------------------
   [멤버 변수]
 ---------------------------------------------*/
-  private rooms: Map<number, Room>  = new Map<number, Room>();
+  private rooms: Map<number, Room> = new Map<number, Room>();
   private availableRoomIds: Array<number>;
 
   constructor() {
@@ -45,7 +55,7 @@ class RoomManager {
     const packet = fromBinary(C2L_CreateRoomRequestSchema, buffer);
     let roomId = this.availableRoomIds.shift();
     if (roomId == undefined) {
-      handleError(session, new CustomError(ErrorCodes.SOCKET_ERROR, "방 id부족"));
+      handleError(session, new CustomError(ErrorCodes.SOCKET_ERROR, '방 id부족'));
       return;
     }
     this.rooms.set(roomId, new Room(roomId, packet.name, packet.maxUserNum));
@@ -55,10 +65,15 @@ class RoomManager {
       room: create(RoomDataSchema, {
         id: roomId,
         name: packet.name,
-      })
+      }),
     });
 
-    const sendBuffer = PacketUtils.SerializePacket(response, L2C_CreateRoomResponseSchema, ePacketId.L2C_CreateRoomResponse, 0);
+    const sendBuffer = PacketUtils.SerializePacket(
+      response,
+      L2C_CreateRoomResponseSchema,
+      ePacketId.L2C_CreateRoomResponse,
+      0,
+    );
     session.send(sendBuffer);
   }
   /**---------------------------------------------
@@ -71,7 +86,11 @@ class RoomManager {
     // 클라이언트가 보낸 패킷 역직렬화
     const packet = fromBinary(C2L_JoinRoomRequestSchema, buffer);
 
-    //방id가 유효한지 검증
+    // 방id가 유효한지 검증
+
+    // 유저의 닉네임과 프리팹 아이디 설정
+    session.setPrefabId(packet.joinUser.prefabId);
+    // session.setNickname();
 
     // 방 ID를 통해 해당 방을 가져오기
     const room = this.rooms.get(packet.roomId);
@@ -97,7 +116,7 @@ class RoomManager {
 
     if (room.getCurrentUsersCount() <= 0) {
       this.freeRoomId(packet.roomId);
-      console.log('방 해제 및 재등록 됨')
+      console.log('방 해제 및 재등록 됨');
     }
   }
 
@@ -118,7 +137,7 @@ class RoomManager {
         id: roomId,
         name: room.getRoomName(),
         maxUserNum: room.getMaxUsersCount(),
-        state: room.getRoomState,
+        state: room.getRoomState(),
       };
       roomsData.push(roomData);
     });
@@ -156,8 +175,7 @@ class RoomManager {
    ---------------------------------------------*/
   gameStartHandler(buffer, session) {
     console.log('gameStartHandler');
-    const battleSession =
-      battleSessionManager.getSessionOrNull('battleServerSession');
+    const battleSession = battleSessionManager.getSessionOrNull('battleServerSession');
 
     if (!battleSession) {
       console.log('!BattleServerSession을 찾을 수 없습니다.');

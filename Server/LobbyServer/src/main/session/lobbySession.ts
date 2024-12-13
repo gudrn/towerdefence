@@ -1,10 +1,10 @@
-import { Session } from "ServerCore/network/session";
-import { CustomError } from "ServerCore/utils/error/customError";
-import { roomManager } from "src/contents/room/roomManager";
-import { lobbySessionManager } from "src/server";
-import { handleError } from "src/utils/errorHandler";
-import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
-import handlerMappings from "../handlerMapping/clientPacketHandler";
+import { Session } from 'ServerCore/network/session';
+import { CustomError } from 'ServerCore/utils/error/customError';
+import { roomManager } from 'src/contents/room/roomManager';
+import { lobbySessionManager } from 'src/server';
+import { handleError } from 'src/utils/errorHandler';
+import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
+import handlerMappings from '../handlerMapping/clientPacketHandler';
 
 export class LobbySession extends Session {
   nickname: string;
@@ -12,7 +12,7 @@ export class LobbySession extends Session {
   constructor(socket) {
     super(socket);
     this.nickname = 'tmpName';
-    this.prefabId = "Red";
+    this.prefabId = 'Red';
   }
 
   /*---------------------------------------------
@@ -25,12 +25,10 @@ export class LobbySession extends Session {
     try {
       roomManager.onSocketDisconnected(this.getId()); // 방에서 플레이어를 제거합니다.
       lobbySessionManager.removeSession(this.getId());
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error);
     }
   }
-  
 
   /*---------------------------------------------
     [onError]
@@ -104,5 +102,12 @@ export class LobbySession extends Session {
   ---------------------------------------------*/
   getPrefabId() {
     return this.prefabId;
+  }
+
+  /*---------------------------------------------
+    [setter]
+  ---------------------------------------------*/
+  setPrefabId(prefabId) {
+    this.prefabId = prefabId;
   }
 }
