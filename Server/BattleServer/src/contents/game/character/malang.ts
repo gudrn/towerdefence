@@ -24,7 +24,7 @@ export class Malang extends Character {
 
     const towers = this.getTowersInRange(this.room, player, range);
 
-    const attackCoolDownBuff = 0.1; // 버프할 공격속도 값
+    const attackCoolDownBuff = 0.9; // 버프할 공격속도 값
     const buffDuration = 3 * 1000; // 버프 지속 시간 (밀리초)
 
     const towersToBuff = towers.map((tower) => {

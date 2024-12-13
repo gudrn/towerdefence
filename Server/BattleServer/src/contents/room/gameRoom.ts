@@ -279,6 +279,19 @@ export class GameRoom {
       console.log(`유효하지 않은 위치. ${clientPacket.posInfo}`);
       return;
     }
+
+    if (clientPacket.posInfo == undefined) {
+      throw new CustomError(ErrorCodes.MISSING_FIELDS, 'ㅇㅇ');
+    }
+
+    const user = this.users.get(clientPacket.posInfo.uuid);
+    if (user == undefined) {
+      throw new CustomError(ErrorCodes.MISSING_FIELDS, 'ㅇㅇ');
+    }
+
+    //유저 위치 최신화
+    user.playerData.position = clientPacket.posInfo;
+
     const sendBuffer = createPositionUpdate(
       session.getId(),
       clientPacket.posInfo?.x,

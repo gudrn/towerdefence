@@ -6,7 +6,8 @@ import { Tower } from '../tower';
 import { BattleSession } from 'src/main/session/battleSession';
 import { C2B_PlayerUseAbilityRequest } from 'src/protocol/character_pb';
 import { assetManager } from 'src/utils/assetManager';
-
+import { CustomError } from 'ServerCore/utils/error/customError';
+import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
 /**
  * 캐릭터 클래스입니다.
  */
@@ -56,13 +57,16 @@ export abstract class Character {
     console.log(`${this.prefabId}의 고유 능력을 발동합니다.`);
     this.activateAbility();
 
+    if (this.player.playerData.position == undefined) {
+      throw new CustomError(ErrorCodes.MISSING_FIELDS, '대충 이유');
+    }
     const playerUseAbilityNotificationbuffer = createPlayerUseAbilityNotification(
-      payload.PosInfo,
-      payload.playerData?.prefabId,
+      this.player.playerData.position,
+      this.player.playerData.prefabId,
       `${this.prefabId}의 고유 능력을 발동합니다.`,
       session.getNextSequence.bind(this),
     );
-
+    this.room.broadcast(playerUseAbilityNotificationbuffer);
     // 쿨다운 시작
     this.startCooldown();
   }
@@ -80,7 +84,7 @@ export abstract class Character {
     setTimeout(() => {
       this.isCooldownActive = false;
       console.log(`${this.prefabId}의 능력이 다시 사용 가능합니다.`);
-    }, this.cooldown * 1000); // 초 단위 쿨다운 설정
+    }, this.cooldown); // 초 단위 쿨다운 설정
   }
 
   /**
@@ -133,13 +137,13 @@ export abstract class Character {
 
   /**---------------------------------------------
    * [몬스터에게 데미지 적용]
-   * @param {any[]} monsters - 몬스터 배열
+   * @param {Monster[]} monsters - 몬스터 배열
    * @param {number} damage - 데미지 양
    * @returns {void}
    ---------------------------------------------*/
-  protected applyDamageToMonsters(monsters: any[], damage: number) {
+  protected applyDamageToMonsters(monsters: Monster[], damage: number) {
     monsters.forEach((monster) => {
-      monster.onDamage(damage); //조정현
+      monster.onDamaged(damage); //조정현
       // monster.hp -= damage;
       // if (monster.hp <= 0) {
       //   monster.onDeath();

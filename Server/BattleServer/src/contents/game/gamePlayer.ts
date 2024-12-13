@@ -169,7 +169,7 @@ export class GamePlayer {
       throw new CustomError(ErrorCodes.MISSING_FIELDS, ' 데이터가 없음.');
     }
     this.character?.useAbility(payload, session);
-    console.log(`캐릭터 -->`, this.character); // null
+
     return;
   }
 

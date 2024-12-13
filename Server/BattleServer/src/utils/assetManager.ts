@@ -42,10 +42,10 @@ class AssetManager {
   async loadGameAssets() {
     try {
       const [monsters, towers, skills, characters] = await Promise.all([
-        ParseUtils.readFileAsync('monsterson'),
-        ParseUtils.readFileAsync('towerson'),
-        ParseUtils.readFileAsync('skillson'),
-        ParseUtils.readFileAsync('characterson'),
+        ParseUtils.readFileAsync('monsters.json'),
+        ParseUtils.readFileAsync('towers.json'),
+        ParseUtils.readFileAsync('skills.json'),
+        ParseUtils.readFileAsync('characters.json'),
       ]);
 
       //몬스터 자원 로드

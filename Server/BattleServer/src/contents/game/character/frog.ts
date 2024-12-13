@@ -26,18 +26,19 @@ export class Frog extends Character {
     const range = 5; // 버프 적용 범위 (단위: 거리)
     const heal = 20; // 회복할 체력 값
 
-    if (this.room == undefined) {
-      return;
-    }
-    const towers = this.getTowersInRange(this.room, player, range);
+    console.log('플레이어 위치');
+    console.log(player.playerData.position);
 
+    const towers = this.getTowersInRange(this.room, player, range);
+    console.log('타워 목록');
+    console.log(towers);
     //?? 머지 외안되
     towers.forEach((tower) => {
       tower.hp = Math.min(tower.hp + heal, tower.maxHp); // 공격력 증가
       console.log(`${tower.prefabId} 타워 체력을 ${heal} 회복했습니다.`);
       const towerId = tower.getId();
-      const towerBuffer = createTowerHealNotificationPacket(towerId, tower);
-      if (this.room != undefined) this.room.broadcast(towerBuffer);
+      const TowerHealBuffer = createTowerHealNotificationPacket(towerId, tower);
+      this.room.broadcast(TowerHealBuffer);
     });
   }
 }
