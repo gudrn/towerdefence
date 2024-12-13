@@ -1,7 +1,11 @@
 import { create } from '@bufbuild/protobuf';
-import { assetManager } from "src/utils/assetManager";
-import { GameObject } from "./gameObject";
-import { B2G_MonsterAttackBaseNotificationSchema, B2G_MonsterAttackTowerNotificationSchema, B2G_MonsterPositionUpdateNotificationSchema } from "src/protocol/monster_pb";
+import { assetManager } from 'src/utils/assetManager';
+import { GameObject } from './gameObject';
+import {
+  B2G_MonsterAttackBaseNotificationSchema,
+  B2G_MonsterAttackTowerNotificationSchema,
+  B2G_MonsterPositionUpdateNotificationSchema,
+} from 'src/protocol/monster_pb';
 import { PosInfo, PosInfoSchema } from 'src/protocol/struct_pb';
 import { OBJECT_STATE_TYPE } from 'src/protocol/enum_pb';
 import { Tower } from './tower';
@@ -16,7 +20,6 @@ import { CustomError } from 'ServerCore/utils/error/customError';
 import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
 import { B2G_TowerDestroyNotificationSchema } from 'src/protocol/tower_pb';
 
-
 export class Monster extends GameObject {
   /*---------------------------------------------
     [멤버 변수]
@@ -29,8 +32,8 @@ export class Monster extends GameObject {
   private attackCoolDown: number = 0; //공격 속도
   protected moveSpeed: number = 0; //공격 속도
   private waitUntil: number = 0; //동작 간 딜레이 시간
-  public score:number = 0; //점수
-  
+  public score: number = 0; //점수
+
   constructor(prefabId: string, pos: PosInfo, room: GameRoom) {
     super(prefabId, pos, room);
 
@@ -54,9 +57,24 @@ export class Monster extends GameObject {
     console.log(this.pos.uuid);
     console.log('------------');
   }
-  
-  getpos(){
+
+  getpos() {
     return this.pos;
+  }
+  getAttackDamage() {
+    return this.attackDamage;
+  }
+  getAttackCoolDown() {
+    return this.attackCoolDown;
+  }
+  setAttackCoolDown(coolDown: number) {
+    this.attackCoolDown = coolDown;
+  }
+  getRoom() {
+    return this.room;
+  }
+  setAttackDamage(damage: number) {
+    this.attackDamage = damage;
   }
 
   /*---------------------------------------------
@@ -93,7 +111,7 @@ export class Monster extends GameObject {
     if (!this.room) return;
 
     // if (!this.target) {
-       this.target = this.room.findCloseBuilding(this.getPos());
+    this.target = this.room.findCloseBuilding(this.getPos());
     // }
 
     if (this.target) {
@@ -131,7 +149,7 @@ export class Monster extends GameObject {
 
     const packet = create(B2G_MonsterPositionUpdateNotificationSchema, {
       posInfo: this.getPos(),
-      roomId: this.room.id
+      roomId: this.room.id,
     });
 
     const sendBuffer = PacketUtils.SerializePacket(
@@ -142,8 +160,8 @@ export class Monster extends GameObject {
     );
 
     const session = sessionManager.getRandomSession();
-    if(session == null){
-      throw new CustomError(ErrorCodes.SERSSION_NOT_FOUND, "배틀 세션을 찾지 못했습니다.");
+    if (session == null) {
+      throw new CustomError(ErrorCodes.SERSSION_NOT_FOUND, '배틀 세션을 찾지 못했습니다.');
     }
     session.send(sendBuffer);
     this.setState(OBJECT_STATE_TYPE.IDLE);
@@ -173,7 +191,6 @@ export class Monster extends GameObject {
     this.setState(OBJECT_STATE_TYPE.IDLE);
   }
 
-
   /*---------------------------------------------
         [타워 공격]
     ---------------------------------------------*/
@@ -185,7 +202,7 @@ export class Monster extends GameObject {
       targetId: tower.getId(),
       hp: tower.hp,
       maxHp: tower.maxHp,
-      roomId: this.room.id
+      roomId: this.room.id,
     });
 
     const attackBuffer = PacketUtils.SerializePacket(
@@ -228,7 +245,7 @@ export class Monster extends GameObject {
     const baseAttackPacket = create(B2G_MonsterAttackBaseNotificationSchema, {
       monsterId: this.getId(),
       attackDamage: this.attackDamage,
-      roomId: this.room.id
+      roomId: this.room.id,
     });
 
     const baseAttackBuffer = PacketUtils.SerializePacket(
@@ -242,7 +259,6 @@ export class Monster extends GameObject {
     //기지 데미지 처리
     const isDestroyed = base.onDamaged(this.attackDamage);
   }
-
 
   /*---------------------------------------------
     [onDamaged]

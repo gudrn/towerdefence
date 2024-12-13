@@ -5,25 +5,48 @@ package Protocol;
 import "enum.proto";
 import "struct.proto";
 
-message C2B_SkillRequest {
+message C2G_SkillRequest {
     SkillData skill = 1;
     int32 roomId = 2; // 룸 ID
     string cardId = 3;
 }
-
+message G2B_SkillRequest {
+    SkillData skill = 1;
+    int32 roomId = 2; // 룸 ID
+    string cardId = 3;
+}
+message B2G_SkillResponse {
+    int32 roomId = 1; // 룸 ID
+    bool isSuccess = 2;
+    string cardId = 3;
+}
 //스킬 카드 사용 응답
-message B2C_SkillResponse {
+message G2C_SkillResponse {
     bool isSuccess = 1;
     string cardId = 2; //카드 사용 요청 -> 서버로부터 응답을 받으면: 패에서 카드 제거거거
 }
 
 //스킬 카드 사용 알림
-message B2C_UseSkillNotification {
-    SkillData skill = 1;
+message B2G_UseSkillNotification {
+    int32 roomId = 1; // 룸 ID
+    string userId = 2;
+    SkillData skill = 3;
+}
+
+message G2C_UseSkillNotification {
+    string userId = 1;
+    SkillData skill = 2;
 }
 
 //카드 추가 알림
-message B2C_AddCard {
+message B2G_AddCard {
+    int32 roomId = 1; // 룸 ID
+    string userId = 2;
+    string cardId = 3;
+    CardData cardData = 4;
+}
+//카드 추가 알림
+message G2C_AddCard {
     string cardId = 1;
     CardData cardData = 2;
 }

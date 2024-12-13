@@ -1,9 +1,9 @@
-import { assetManager } from "src/utils/assetManager";
-import { Monster } from "../game/monster";
-import { create } from "@bufbuild/protobuf";
-import { PosInfoSchema } from "src/protocol/struct_pb";
-import { v4 as uuidv4 } from "uuid";
-import { GameRoom } from "./gameRoom";
+import { assetManager } from 'src/utils/assetManager';
+import { create } from '@bufbuild/protobuf';
+import { PosInfoSchema } from 'src/protocol/struct_pb';
+import { v4 as uuidv4 } from 'uuid';
+import { GameRoom } from './gameRoom';
+import { SkillUseMonster } from '../game/skillUseMonster';
 
 /**
  * 몬스터 스포너 클래스
@@ -14,7 +14,7 @@ export class MonsterSpawner {
   /*---------------------------------------------
     [멤버 변수]
 ---------------------------------------------*/
-  private gameRoom: GameRoom;
+  protected gameRoom: GameRoom;
   private spawnedMonster: number = 0;
   private spawnRate: number = 0; //몬스터 생성 간격
   private spawnTimer: NodeJS.Timeout | undefined; //NodeJS.Timeout
@@ -30,7 +30,7 @@ export class MonsterSpawner {
     return positions[Math.floor(Math.random() * positions.length)];
   }
 
-/*---------------------------------------------
+  /*---------------------------------------------
     [생성자]
 ---------------------------------------------*/
   constructor(gameRoom: GameRoom) {
@@ -47,8 +47,8 @@ export class MonsterSpawner {
     this.spawnRate = 5000; // 몬스터 생성 간격(ms)
 
     this.spawnTimer = setInterval(() => {
-        this.spawnMonster(); // 몬스터 생성
-        this.spawnedMonster += 1;
+      this.spawnMonster(); // 몬스터 생성
+      this.spawnedMonster += 1;
     }, this.spawnRate);
   }
 
@@ -71,7 +71,7 @@ export class MonsterSpawner {
     });
 
     let randomAssetMonster = assetManager.getRandomAssetMonster();
-    const monster = new Monster(randomAssetMonster.prefabId, posInfo, this.gameRoom);
+    const monster = new SkillUseMonster(randomAssetMonster.prefabId, posInfo, this.gameRoom);
     monster.statusMultiplier(this.gameRoom.monsterStatusMultiplier); // 강화 배율 적용
     this.gameRoom.addObject(monster);
   }
