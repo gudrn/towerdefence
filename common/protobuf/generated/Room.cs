@@ -39,18 +39,19 @@ namespace Protocol {
             "eWVyRGF0YRIrChBvYnN0YWNsZVBvc0luZm9zGAIgAygLMhEuUHJvdG9jb2wu",
             "UG9zSW5mbyIYChZDMkxfR2V0Um9vbUxpc3RSZXF1ZXN0IjwKF0wyQ19HZXRS",
             "b29tTGlzdFJlc3BvbnNlEiEKBXJvb21zGAEgAygLMhIuUHJvdG9jb2wuUm9v",
-            "bURhdGEiJQoTQzJMX0pvaW5Sb29tUmVxdWVzdBIOCgZyb29tSWQYASABKAUi",
-            "TwoUTDJDX0pvaW5Sb29tUmVzcG9uc2USEQoJaXNTdWNjZXNzGAEgASgIEiQK",
-            "CHJvb21JbmZvGAIgASgLMhIuUHJvdG9jb2wuUm9vbURhdGEiQAoYTDJDX0pv",
-            "aW5Sb29tTm90aWZpY2F0aW9uEiQKCGpvaW5Vc2VyGAEgASgLMhIuUHJvdG9j",
-            "b2wuVXNlckRhdGEiKAoTQjJDX0pvaW5Sb29tUmVxdWVzdBIRCglpc1N1Y2Nl",
-            "c3MYASABKAgiJgoUQzJMX0xlYXZlUm9vbVJlcXVlc3QSDgoGcm9vbUlkGAEg",
-            "ASgFIioKFUwyQ19MZWF2ZVJvb21SZXNwb25zZRIRCglpc1N1Y2Nlc3MYASAB",
-            "KAgiKwoZTDJDX0xlYXZlUm9vbU5vdGlmaWNhdGlvbhIOCgZ1c2VySWQYASAB",
-            "KAkiMQocQjJDX2luY3JlYXNlV2F2ZU5vdGlmaWNhdGlvbhIRCglpc1N1Y2Nl",
-            "c3MYASABKAgiNwoiQjJMX1NvY2tldERpc2Nvbm5lY3RlZE5vdGlmaWNhdGlv",
-            "bhIRCglzZXNzaW9uSWQYASABKAkiLAoXQjJDX0dhbWVFbmROb3RpZmljYXRp",
-            "b24SEQoJaXNTdWNjZXNzGAEgASgIYgZwcm90bzM="));
+            "bURhdGEiSwoTQzJMX0pvaW5Sb29tUmVxdWVzdBIOCgZyb29tSWQYASABKAUS",
+            "JAoIam9pblVzZXIYAiABKAsyEi5Qcm90b2NvbC5Vc2VyRGF0YSJPChRMMkNf",
+            "Sm9pblJvb21SZXNwb25zZRIRCglpc1N1Y2Nlc3MYASABKAgSJAoIcm9vbUlu",
+            "Zm8YAiABKAsyEi5Qcm90b2NvbC5Sb29tRGF0YSJAChhMMkNfSm9pblJvb21O",
+            "b3RpZmljYXRpb24SJAoIam9pblVzZXIYASABKAsyEi5Qcm90b2NvbC5Vc2Vy",
+            "RGF0YSIoChNCMkNfSm9pblJvb21SZXF1ZXN0EhEKCWlzU3VjY2VzcxgBIAEo",
+            "CCImChRDMkxfTGVhdmVSb29tUmVxdWVzdBIOCgZyb29tSWQYASABKAUiKgoV",
+            "TDJDX0xlYXZlUm9vbVJlc3BvbnNlEhEKCWlzU3VjY2VzcxgBIAEoCCIrChlM",
+            "MkNfTGVhdmVSb29tTm90aWZpY2F0aW9uEg4KBnVzZXJJZBgBIAEoCSIxChxC",
+            "MkNfaW5jcmVhc2VXYXZlTm90aWZpY2F0aW9uEhEKCWlzU3VjY2VzcxgBIAEo",
+            "CCI3CiJCMkxfU29ja2V0RGlzY29ubmVjdGVkTm90aWZpY2F0aW9uEhEKCXNl",
+            "c3Npb25JZBgBIAEoCSIsChdCMkNfR2FtZUVuZE5vdGlmaWNhdGlvbhIRCglp",
+            "c1N1Y2Nlc3MYASABKAhiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Protocol.StructReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -64,7 +65,7 @@ namespace Protocol {
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_GameStartNotification), global::Protocol.B2C_GameStartNotification.Parser, new[]{ "PlayerDatas", "ObstaclePosInfos" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.C2L_GetRoomListRequest), global::Protocol.C2L_GetRoomListRequest.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.L2C_GetRoomListResponse), global::Protocol.L2C_GetRoomListResponse.Parser, new[]{ "Rooms" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.C2L_JoinRoomRequest), global::Protocol.C2L_JoinRoomRequest.Parser, new[]{ "RoomId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.C2L_JoinRoomRequest), global::Protocol.C2L_JoinRoomRequest.Parser, new[]{ "RoomId", "JoinUser" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.L2C_JoinRoomResponse), global::Protocol.L2C_JoinRoomResponse.Parser, new[]{ "IsSuccess", "RoomInfo" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.L2C_JoinRoomNotification), global::Protocol.L2C_JoinRoomNotification.Parser, new[]{ "JoinUser" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_JoinRoomRequest), global::Protocol.B2C_JoinRoomRequest.Parser, new[]{ "IsSuccess" }, null, null, null, null),
@@ -2292,6 +2293,7 @@ namespace Protocol {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public C2L_JoinRoomRequest(C2L_JoinRoomRequest other) : this() {
       roomId_ = other.roomId_;
+      joinUser_ = other.joinUser_ != null ? other.joinUser_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2313,6 +2315,18 @@ namespace Protocol {
       }
     }
 
+    /// <summary>Field number for the "joinUser" field.</summary>
+    public const int JoinUserFieldNumber = 2;
+    private global::Protocol.UserData joinUser_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Protocol.UserData JoinUser {
+      get { return joinUser_; }
+      set {
+        joinUser_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -2329,6 +2343,7 @@ namespace Protocol {
         return true;
       }
       if (RoomId != other.RoomId) return false;
+      if (!object.Equals(JoinUser, other.JoinUser)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -2337,6 +2352,7 @@ namespace Protocol {
     public override int GetHashCode() {
       int hash = 1;
       if (RoomId != 0) hash ^= RoomId.GetHashCode();
+      if (joinUser_ != null) hash ^= JoinUser.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2359,6 +2375,10 @@ namespace Protocol {
         output.WriteRawTag(8);
         output.WriteInt32(RoomId);
       }
+      if (joinUser_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(JoinUser);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2373,6 +2393,10 @@ namespace Protocol {
         output.WriteRawTag(8);
         output.WriteInt32(RoomId);
       }
+      if (joinUser_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(JoinUser);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -2385,6 +2409,9 @@ namespace Protocol {
       int size = 0;
       if (RoomId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(RoomId);
+      }
+      if (joinUser_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(JoinUser);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2400,6 +2427,12 @@ namespace Protocol {
       }
       if (other.RoomId != 0) {
         RoomId = other.RoomId;
+      }
+      if (other.joinUser_ != null) {
+        if (joinUser_ == null) {
+          JoinUser = new global::Protocol.UserData();
+        }
+        JoinUser.MergeFrom(other.JoinUser);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -2420,6 +2453,13 @@ namespace Protocol {
             RoomId = input.ReadInt32();
             break;
           }
+          case 18: {
+            if (joinUser_ == null) {
+              JoinUser = new global::Protocol.UserData();
+            }
+            input.ReadMessage(JoinUser);
+            break;
+          }
         }
       }
     #endif
@@ -2437,6 +2477,13 @@ namespace Protocol {
             break;
           case 8: {
             RoomId = input.ReadInt32();
+            break;
+          }
+          case 18: {
+            if (joinUser_ == null) {
+              JoinUser = new global::Protocol.UserData();
+            }
+            input.ReadMessage(JoinUser);
             break;
           }
         }

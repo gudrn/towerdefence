@@ -86,7 +86,11 @@ class RoomManager {
     // 클라이언트가 보낸 패킷 역직렬화
     const packet = fromBinary(C2L_JoinRoomRequestSchema, buffer);
 
-    //방id가 유효한지 검증
+    // 방id가 유효한지 검증
+
+    // 유저의 닉네임과 프리팹 아이디 설정
+    session.setPrefabId(packet.joinUser.prefabId);
+    // session.setNickname();
 
     // 방 ID를 통해 해당 방을 가져오기
     const room = this.rooms.get(packet.roomId);

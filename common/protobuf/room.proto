@@ -66,6 +66,7 @@ message L2C_GetRoomListResponse
 message C2L_JoinRoomRequest 
 {
     int32 roomId = 1;
+    UserData joinUser = 2;
 }
 
 message L2C_JoinRoomResponse 
