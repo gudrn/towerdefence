@@ -5,7 +5,13 @@ package Protocol;
 import "struct.proto";
 
 // 몬스터 생성 알림
-message B2C_SpawnMonsterNotification {
+message B2G_SpawnMonsterNotification {
+    PosInfo posInfo = 1;
+    string prefabId = 2;
+    int32 roomId = 3;
+}
+
+message G2C_SpawnMonsterNotification {
     PosInfo posInfo = 1;
     string prefabId = 2;
 }
@@ -17,7 +23,13 @@ message B2C_MonsterDeathNotification {
 }
 
 // 몬스터 위치 동기화
-message B2C_MonsterPositionUpdateNotification {
+message B2G_MonsterPositionUpdateNotification {
+    PosInfo posInfo = 1;
+    int32 roomId = 2;
+}
+
+// 몬스터 위치 동기화
+message G2C_MonsterPositionUpdateNotification {
     PosInfo posInfo = 1;
 }
 

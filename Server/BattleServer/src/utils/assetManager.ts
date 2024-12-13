@@ -130,9 +130,6 @@ class AssetManager {
 ---------------------------------------------*/
   getMonsterData(prefabId: string): AssetMonster | null {
     let monster = this.monsters.get(prefabId) || null;
-    
-    console.log('monster 정보');
-    console.log(monster);
     return monster;
   }
 

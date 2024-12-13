@@ -1,3 +1,4 @@
+import { gatewayConfig } from './../../../../GatewayServer/src/config/config';
 
 import { v4 as uuidv4 } from 'uuid';
 import { create } from '@bufbuild/protobuf';
@@ -5,18 +6,19 @@ import { BattleSession } from 'src/main/session/battleSession';
 import { CardData, CardDataSchema, GamePlayerData, SkillDataSchema } from 'src/protocol/struct_pb';
 import { GameRoom } from '../room/gameRoom';
 import { assetManager } from 'src/utils/assetManager';
-import { B2C_AddCardSchema, B2C_InitCardDataSchema, B2C_UseSkillNotificationSchema } from 'src/protocol/skill_pb';
+import { B2C_AddCardSchema, B2G_InitCardDataSchema, B2C_UseSkillNotificationSchema } from 'src/protocol/skill_pb';
 import { PacketUtils } from 'ServerCore/utils/packetUtils';
 import { ePacketId } from 'ServerCore/network/packetId';
+import { sessionManager } from 'src/server';
+import { CustomError } from 'ServerCore/utils/error/customError';
+import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
 
 
 export class GamePlayer {
-    public session: BattleSession;
     public playerData: GamePlayerData;
     public cardList: Map<string, string> = new Map();
 
-    constructor(session: BattleSession, playerData: GamePlayerData) {
-        this.session = session; // 세션 정보 저장
+    constructor(playerData: GamePlayerData) {
         this.playerData = playerData; // 플레이어 데이터 저장
         this.cardList = new Map(); // 카드 목록 초기화
     }
@@ -41,18 +43,24 @@ export class GamePlayer {
       }),
     );
 
-    const packet = create(B2C_InitCardDataSchema, {
+    const packet = create(B2G_InitCardDataSchema, {
       cardData: cardDatas,
+      userId: this.playerData.position?.uuid
     });
 
     const sendBuffer = PacketUtils.SerializePacket(
       packet,
-      B2C_InitCardDataSchema,
-      ePacketId.B2C_InitCardData,
-      this.session.getNextSequence(),
+      B2G_InitCardDataSchema,
+      ePacketId.B2G_InitCardData,
+      0,
     );
 
-    this.session.send(sendBuffer); // 초기 카드 데이터 전송
+    const gatewaySession = sessionManager.getRandomSession();
+    if(gatewaySession == null) {
+      throw new CustomError(ErrorCodes.SERSSION_NOT_FOUND, "게이트웨이 세션을 찾지 못했습니다.");
+    }
+
+    gatewaySession.send(sendBuffer); // 초기 카드 데이터 전송
   }
 
   /**
@@ -61,27 +69,27 @@ export class GamePlayer {
    * - 카드 랜덤으로 하나 추가
    * ---------------------------------------------
    */
-  addRandomCard() {
-    if (this.cardList.size >= 7) {
-      return; // 카드가 7개 이상이면 종료
-    }
+  // addRandomCard() {
+  //   if (this.cardList.size >= 7) {
+  //     return; // 카드가 7개 이상이면 종료
+  //   }
 
-    const card = assetManager.getRandomCards(); // 랜덤 카드 1개 가져오기
-    this.cardList.set(card[0].cardId, card[0].prefabId); // 카드 목록에 추가
+  //   const card = assetManager.getRandomCards(); // 랜덤 카드 1개 가져오기
+  //   this.cardList.set(card[0].cardId, card[0].prefabId); // 카드 목록에 추가
 
-    const packet = create(B2C_AddCardSchema, {
-      cardData: create(CardDataSchema, {cardId: card[0].cardId, prefabId: card[0].prefabId})
-    });
+  //   const packet = create(B2C_AddCardSchema, {
+  //     cardData: create(CardDataSchema, {cardId: card[0].cardId, prefabId: card[0].prefabId})
+  //   });
 
-    const sendBuffer = PacketUtils.SerializePacket(
-      packet,
-      B2C_AddCardSchema,
-      ePacketId.B2C_AddCard,
-      this.session.getNextSequence(),
-    );
+  //   const sendBuffer = PacketUtils.SerializePacket(
+  //     packet,
+  //     B2C_AddCardSchema,
+  //     ePacketId.B2C_AddCard,
+  //     this.session.getNextSequence(),
+  //   );
 
-    this.session.send(sendBuffer); // 카드 추가 데이터 전송
-  }
+  //   this.session.send(sendBuffer); // 카드 추가 데이터 전송
+  // }
 
 //   /**
 //    * 카드 사용 실패시 다시 추가
@@ -120,27 +128,27 @@ export class GamePlayer {
    [useCard]
    ---------------------------------------------*/
 
-  useCard(cardId: string) {
-    const card = this.cardList.get(cardId); // 카드 목록에서 카드 가져오기
-    if (!card) return;
-    this.cardList.delete(cardId); // 카드 목록에서 카드 삭제
-    const responsePacket = create(B2C_UseSkillNotificationSchema, {
-      skill: create(SkillDataSchema, {
-        prefabId: card
-      })
-    });
+  // useCard(cardId: string) {
+  //   const card = this.cardList.get(cardId); // 카드 목록에서 카드 가져오기
+  //   if (!card) return;
+  //   this.cardList.delete(cardId); // 카드 목록에서 카드 삭제
+  //   const responsePacket = create(B2C_UseSkillNotificationSchema, {
+  //     skill: create(SkillDataSchema, {
+  //       prefabId: card
+  //     })
+  //   });
 
-    const sendBuffer = PacketUtils.SerializePacket(
-      responsePacket,
-      B2C_UseSkillNotificationSchema,
-      ePacketId.B2C_SkillResponse,
-      this.session.getNextSequence(),
-    );
+  //   const sendBuffer = PacketUtils.SerializePacket(
+  //     responsePacket,
+  //     B2C_UseSkillNotificationSchema,
+  //     ePacketId.B2C_SkillResponse,
+  //     this.session.getNextSequence(),
+  //   );
 
-    this.session.send(sendBuffer); // 카드 사용 결과 전송
-  }
+  //   this.session.send(sendBuffer); // 카드 사용 결과 전송
+  // }
 
-  public getCardList() {
-    return this.cardList;
-  }
+  // public getCardList() {
+  //   return this.cardList;
+  // }
 }

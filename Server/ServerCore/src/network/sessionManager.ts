@@ -14,7 +14,7 @@ export class SessionManager<T extends Session> {
         클라는 반드시 자신의 uuid를 담아서 패킷을 전송하므로
         빠르게 session을 가져오기 위해 Map선택
 ---------------------------------------------*/
-  private sessions: Map<string, T>;
+  public sessions: Map<string, T>;
   private sessionFactory: SessionFactory<T>;
   private roundRobinIndex: number = 0;
   /*---------------------------------------------
@@ -32,7 +32,6 @@ export class SessionManager<T extends Session> {
     let session = new this.sessionFactory(socket);
     session.setId(uuid);
     this.sessions.set(uuid, session);
-
     return session;
   }
 

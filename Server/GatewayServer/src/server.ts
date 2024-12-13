@@ -18,7 +18,7 @@ const serverId: string = uuidv4();
 const connectToLobbyServers = () => {
     for(let serverConfig of lobbyConfig) {
         const lobbySession: LobbySession = lobbySessionManager.addSession(uuidv4(), new Socket());
-        lobbySession.init(serverConfig.host, serverConfig.port, serverId);
+        lobbySession.init(serverConfig.host, serverConfig.port);
 
         lobbySession.connect(serverConfig.host, serverConfig.port);
     }
@@ -26,9 +26,11 @@ const connectToLobbyServers = () => {
 
 const connectToBattleServers = () => {
   for(let serverConfig of battleConfig) {
-    const battleSession = new BattleSession(new Socket);
-    battleSession.init(serverConfig.host, serverConfig.port, serverId);
-
+    const id = uuidv4();
+    console.log(id);
+    const battleSession: BattleSession = battleSessionManager.addSession(id, new Socket());
+    battleSession.init(serverConfig.host, serverConfig.port);
+    console.log("BattleSessionId", battleSession.getId());
     battleSession.connect(serverConfig.host, serverConfig.port)
   }
 };

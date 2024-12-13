@@ -48,21 +48,21 @@ export class Base {
     [기지 파괴 처리]
 ---------------------------------------------*/
     public onDestroyed(): void {
-        console.log(`기지가 파괴되었습니다.`);
+        // console.log(`기지가 파괴되었습니다.`);
 
-        // 이걸 그냥 게임오버로 만들면 되는게 아닌지.
-        const baseDestroyedPacket = create(B2C_BaseDestroyNotificationSchema, {
-            isDestroied: true
-        });
+        // // 이걸 그냥 게임오버로 만들면 되는게 아닌지.
+        // const baseDestroyedPacket = create(B2C_BaseDestroyNotificationSchema, {
+        //     isDestroied: true
+        // });
 
-        const baseDestroyedBuffer = PacketUtils.SerializePacket(
-            baseDestroyedPacket,
-            B2C_BaseDestroyNotificationSchema,
-            ePacketId.B2C_BaseDestroyNotification,
-            0, //수정 부분
-        );
+        // const baseDestroyedBuffer = PacketUtils.SerializePacket(
+        //     baseDestroyedPacket,
+        //     B2C_BaseDestroyNotificationSchema,
+        //     ePacketId.B2G_BaseDestroyNotification,
+        //     0, //수정 부분
+        // );
 
-        this.room.broadcast(baseDestroyedBuffer);  
+        //this.room.broadcast(baseDestroyedBuffer);  
     }
 
 /*---------------------------------------------

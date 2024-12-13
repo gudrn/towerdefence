@@ -31,8 +31,10 @@ namespace Protocol {
             "BmNhcmRJZBgCIAEoCSI+ChhCMkNfVXNlU2tpbGxOb3RpZmljYXRpb24SIgoF",
             "c2tpbGwYASABKAsyEy5Qcm90b2NvbC5Ta2lsbERhdGEiQwoLQjJDX0FkZENh",
             "cmQSDgoGY2FyZElkGAEgASgJEiQKCGNhcmREYXRhGAIgASgLMhIuUHJvdG9j",
-            "b2wuQ2FyZERhdGEiOAoQQjJDX0luaXRDYXJkRGF0YRIkCghjYXJkRGF0YRgB",
-            "IAMoCzISLlByb3RvY29sLkNhcmREYXRhYgZwcm90bzM="));
+            "b2wuQ2FyZERhdGEiSAoQQjJHX0luaXRDYXJkRGF0YRIkCghjYXJkRGF0YRgB",
+            "IAMoCzISLlByb3RvY29sLkNhcmREYXRhEg4KBnVzZXJJZBgCIAEoCSI4ChBH",
+            "MkNfSW5pdENhcmREYXRhEiQKCGNhcmREYXRhGAEgAygLMhIuUHJvdG9jb2wu",
+            "Q2FyZERhdGFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Protocol.EnumReflection.Descriptor, global::Protocol.StructReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -40,7 +42,8 @@ namespace Protocol {
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_SkillResponse), global::Protocol.B2C_SkillResponse.Parser, new[]{ "IsSuccess", "CardId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_UseSkillNotification), global::Protocol.B2C_UseSkillNotification.Parser, new[]{ "Skill" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_AddCard), global::Protocol.B2C_AddCard.Parser, new[]{ "CardId", "CardData" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_InitCardData), global::Protocol.B2C_InitCardData.Parser, new[]{ "CardData" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2G_InitCardData), global::Protocol.B2G_InitCardData.Parser, new[]{ "CardData", "UserId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.G2C_InitCardData), global::Protocol.G2C_InitCardData.Parser, new[]{ "CardData" }, null, null, null, null)
           }));
     }
     #endregion
@@ -996,16 +999,16 @@ namespace Protocol {
   /// <summary>
   ///초기 카드 데이터 알림
   /// </summary>
-  public sealed partial class B2C_InitCardData : pb::IMessage<B2C_InitCardData>
+  public sealed partial class B2G_InitCardData : pb::IMessage<B2G_InitCardData>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<B2C_InitCardData> _parser = new pb::MessageParser<B2C_InitCardData>(() => new B2C_InitCardData());
+    private static readonly pb::MessageParser<B2G_InitCardData> _parser = new pb::MessageParser<B2G_InitCardData>(() => new B2G_InitCardData());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<B2C_InitCardData> Parser { get { return _parser; } }
+    public static pb::MessageParser<B2G_InitCardData> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1021,7 +1024,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public B2C_InitCardData() {
+    public B2G_InitCardData() {
       OnConstruction();
     }
 
@@ -1029,15 +1032,230 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public B2C_InitCardData(B2C_InitCardData other) : this() {
+    public B2G_InitCardData(B2G_InitCardData other) : this() {
+      cardData_ = other.cardData_.Clone();
+      userId_ = other.userId_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public B2G_InitCardData Clone() {
+      return new B2G_InitCardData(this);
+    }
+
+    /// <summary>Field number for the "cardData" field.</summary>
+    public const int CardDataFieldNumber = 1;
+    private static readonly pb::FieldCodec<global::Protocol.CardData> _repeated_cardData_codec
+        = pb::FieldCodec.ForMessage(10, global::Protocol.CardData.Parser);
+    private readonly pbc::RepeatedField<global::Protocol.CardData> cardData_ = new pbc::RepeatedField<global::Protocol.CardData>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<global::Protocol.CardData> CardData {
+      get { return cardData_; }
+    }
+
+    /// <summary>Field number for the "userId" field.</summary>
+    public const int UserIdFieldNumber = 2;
+    private string userId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string UserId {
+      get { return userId_; }
+      set {
+        userId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as B2G_InitCardData);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(B2G_InitCardData other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if(!cardData_.Equals(other.cardData_)) return false;
+      if (UserId != other.UserId) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      hash ^= cardData_.GetHashCode();
+      if (UserId.Length != 0) hash ^= UserId.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      cardData_.WriteTo(output, _repeated_cardData_codec);
+      if (UserId.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(UserId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      cardData_.WriteTo(ref output, _repeated_cardData_codec);
+      if (UserId.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(UserId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      size += cardData_.CalculateSize(_repeated_cardData_codec);
+      if (UserId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(UserId);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(B2G_InitCardData other) {
+      if (other == null) {
+        return;
+      }
+      cardData_.Add(other.cardData_);
+      if (other.UserId.Length != 0) {
+        UserId = other.UserId;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            cardData_.AddEntriesFrom(input, _repeated_cardData_codec);
+            break;
+          }
+          case 18: {
+            UserId = input.ReadString();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            cardData_.AddEntriesFrom(ref input, _repeated_cardData_codec);
+            break;
+          }
+          case 18: {
+            UserId = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class G2C_InitCardData : pb::IMessage<G2C_InitCardData>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<G2C_InitCardData> _parser = new pb::MessageParser<G2C_InitCardData>(() => new G2C_InitCardData());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<G2C_InitCardData> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Protocol.SkillReflection.Descriptor.MessageTypes[5]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public G2C_InitCardData() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public G2C_InitCardData(G2C_InitCardData other) : this() {
       cardData_ = other.cardData_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public B2C_InitCardData Clone() {
-      return new B2C_InitCardData(this);
+    public G2C_InitCardData Clone() {
+      return new G2C_InitCardData(this);
     }
 
     /// <summary>Field number for the "cardData" field.</summary>
@@ -1054,12 +1272,12 @@ namespace Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as B2C_InitCardData);
+      return Equals(other as G2C_InitCardData);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(B2C_InitCardData other) {
+    public bool Equals(G2C_InitCardData other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -1124,7 +1342,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(B2C_InitCardData other) {
+    public void MergeFrom(G2C_InitCardData other) {
       if (other == null) {
         return;
       }

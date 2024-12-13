@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file room.proto.
  */
 export const file_room: GenFile = /*@__PURE__*/
-  fileDesc("Cgpyb29tLnByb3RvEghQcm90b2NvbCI5ChVDMkdfQ3JlYXRlUm9vbVJlcXVlc3QSDAoEbmFtZRgBIAEoCRISCgptYXhVc2VyTnVtGAIgASgFIkkKFUcyTF9DcmVhdGVSb29tUmVxdWVzdBIMCgRuYW1lGAEgASgJEhIKCm1heFVzZXJOdW0YAiABKAUSDgoGdXNlcklkGAMgASgJIl0KFkwyR19DcmVhdGVSb29tUmVzcG9uc2USEQoJaXNTdWNjZXNzGAEgASgIEiAKBHJvb20YAiABKAsyEi5Qcm90b2NvbC5Sb29tRGF0YRIOCgZ1c2VySWQYAyABKAkiTQoWRzJDX0NyZWF0ZVJvb21SZXNwb25zZRIRCglpc1N1Y2Nlc3MYASABKAgSIAoEcm9vbRgCIAEoCzISLlByb3RvY29sLlJvb21EYXRhIj8KGUwyQl9DcmVhdGVHYW1lUm9vbVJlcXVlc3QSDgoGcm9vbUlkGAEgASgFEhIKCm1heFBsYXllcnMYAiABKAUiPgoZQjJMX0NyZWF0ZUdhbWVSb29tUmVzcG9uZRIRCglpc0NyZWF0ZWQYASABKAgSDgoGcm9vbUlkGAIgASgFIi8KDUMyTF9HYW1lU3RhcnQSDgoGdXNlcklkGAEgASgJEg4KBnJvb21JZBgCIAEoBSI7Cg1MMkNfR2FtZVN0YXJ0EgwKBGhvc3QYASABKAkSDAoEcG9ydBgCIAEoBRIOCgZyb29tSWQYAyABKAUiOAoUTDJCX0dhbWVTdGFydFJlcXVlc3QSDAoEbmFtZRgBIAEoCRISCgptYXhVc2VyTnVtGAIgASgFIncKGUIyQ19HYW1lU3RhcnROb3RpZmljYXRpb24SLQoLcGxheWVyRGF0YXMYASADKAsyGC5Qcm90b2NvbC5HYW1lUGxheWVyRGF0YRIrChBvYnN0YWNsZVBvc0luZm9zGAIgAygLMhEuUHJvdG9jb2wuUG9zSW5mbyIYChZDMkdfR2V0Um9vbUxpc3RSZXF1ZXN0IigKFkcyTF9HZXRSb29tTGlzdFJlcXVlc3QSDgoGdXNlcklkGAEgASgJIkwKF0wyR19HZXRSb29tTGlzdFJlc3BvbnNlEiEKBXJvb21zGAEgAygLMhIuUHJvdG9jb2wuUm9vbURhdGESDgoGdXNlcklkGAIgASgJIjwKF0cyQ19HZXRSb29tTGlzdFJlc3BvbnNlEiEKBXJvb21zGAEgAygLMhIuUHJvdG9jb2wuUm9vbURhdGEiNwoTQzJHX0pvaW5Sb29tUmVxdWVzdBIOCgZyb29tSWQYASABKAUSEAoIbmlja25hbWUYAiABKAkiRwoTRzJMX0pvaW5Sb29tUmVxdWVzdBIOCgZyb29tSWQYASABKAUSEAoIbmlja25hbWUYAiABKAkSDgoGdXNlcklkGAMgASgJIl8KFEwyR19Kb2luUm9vbVJlc3BvbnNlEhEKCWlzU3VjY2VzcxgBIAEoCBIkCghyb29tSW5mbxgCIAEoCzISLlByb3RvY29sLlJvb21EYXRhEg4KBnVzZXJJZBgDIAEoCSJPChRHMkNfSm9pblJvb21SZXNwb25zZRIRCglpc1N1Y2Nlc3MYASABKAgSJAoIcm9vbUluZm8YAiABKAsyEi5Qcm90b2NvbC5Sb29tRGF0YSJQChhMMkdfSm9pblJvb21Ob3RpZmljYXRpb24SJAoIam9pblVzZXIYASABKAsyEi5Qcm90b2NvbC5Vc2VyRGF0YRIOCgZyb29tSWQYAiABKAUiQAoYRzJDX0pvaW5Sb29tTm90aWZpY2F0aW9uEiQKCGpvaW5Vc2VyGAEgASgLMhIuUHJvdG9jb2wuVXNlckRhdGEiKAoTQjJDX0pvaW5Sb29tUmVxdWVzdBIRCglpc1N1Y2Nlc3MYASABKAgiJgoUQzJMX0xlYXZlUm9vbVJlcXVlc3QSDgoGcm9vbUlkGAEgASgFIioKFUwyQ19MZWF2ZVJvb21SZXNwb25zZRIRCglpc1N1Y2Nlc3MYASABKAgiKwoZTDJDX0xlYXZlUm9vbU5vdGlmaWNhdGlvbhIOCgZ1c2VySWQYASABKAkiMQocQjJDX2luY3JlYXNlV2F2ZU5vdGlmaWNhdGlvbhIRCglpc1N1Y2Nlc3MYASABKAgiNwoiQjJMX1NvY2tldERpc2Nvbm5lY3RlZE5vdGlmaWNhdGlvbhIRCglzZXNzaW9uSWQYASABKAkiLAoXQjJDX0dhbWVFbmROb3RpZmljYXRpb24SEQoJaXNTdWNjZXNzGAEgASgIYgZwcm90bzM", [file_struct]);
+  fileDesc("Cgpyb29tLnByb3RvEghQcm90b2NvbCI5ChVDMkdfQ3JlYXRlUm9vbVJlcXVlc3QSDAoEbmFtZRgBIAEoCRISCgptYXhVc2VyTnVtGAIgASgFIkkKFUcyTF9DcmVhdGVSb29tUmVxdWVzdBIMCgRuYW1lGAEgASgJEhIKCm1heFVzZXJOdW0YAiABKAUSDgoGdXNlcklkGAMgASgJIl0KFkwyR19DcmVhdGVSb29tUmVzcG9uc2USEQoJaXNTdWNjZXNzGAEgASgIEiAKBHJvb20YAiABKAsyEi5Qcm90b2NvbC5Sb29tRGF0YRIOCgZ1c2VySWQYAyABKAkiTQoWRzJDX0NyZWF0ZVJvb21SZXNwb25zZRIRCglpc1N1Y2Nlc3MYASABKAgSIAoEcm9vbRgCIAEoCzISLlByb3RvY29sLlJvb21EYXRhIjYKFEMyR19HYW1lU3RhcnRSZXF1ZXN0Eg4KBnJvb21JZBgBIAEoBRIOCgZ1c2VySWQYAiABKAkiNgoURzJMX0dhbWVTdGFydFJlcXVlc3QSDgoGcm9vbUlkGAEgASgFEg4KBnVzZXJJZBgCIAEoCSI/ChlHMkJfQ3JlYXRlR2FtZVJvb21SZXF1ZXN0Eg4KBnJvb21JZBgBIAEoBRISCgptYXhVc2VyTnVtGAIgASgFIiwKGkIyR19DcmVhdGVHYW1lUm9vbVJlc3BvbnNlEg4KBnJvb21JZBgBIAEoBSIyCh5HMkNfQ3JlYXRlR2FtZVJvb21Ob3RpZmljYXRpb24SEAoIc2VydmVySWQYASABKAkiaQoXQzJHX0pvaW5HYW1lUm9vbVJlcXVlc3QSEAoIc2VydmVySWQYASABKAkSLAoKcGxheWVyRGF0YRgCIAEoCzIYLlByb3RvY29sLkdhbWVQbGF5ZXJEYXRhEg4KBnJvb21JZBgDIAEoBSJXChdHMkJfSm9pbkdhbWVSb29tUmVxdWVzdBIsCgpwbGF5ZXJEYXRhGAEgASgLMhguUHJvdG9jb2wuR2FtZVBsYXllckRhdGESDgoGcm9vbUlkGAIgASgFIi0KGEIyR19Kb2luR2FtZVJvb21SZXNwb25zZRIRCglpc1N1Y2Nlc3MYASABKAgihwEKGUIyR19HYW1lU3RhcnROb3RpZmljYXRpb24SLQoLcGxheWVyRGF0YXMYASADKAsyGC5Qcm90b2NvbC5HYW1lUGxheWVyRGF0YRIrChBvYnN0YWNsZVBvc0luZm9zGAIgAygLMhEuUHJvdG9jb2wuUG9zSW5mbxIOCgZyb29tSWQYAyABKAUidwoZRzJDX0dhbWVTdGFydE5vdGlmaWNhdGlvbhItCgtwbGF5ZXJEYXRhcxgBIAMoCzIYLlByb3RvY29sLkdhbWVQbGF5ZXJEYXRhEisKEG9ic3RhY2xlUG9zSW5mb3MYAiADKAsyES5Qcm90b2NvbC5Qb3NJbmZvIhgKFkMyR19HZXRSb29tTGlzdFJlcXVlc3QiKAoWRzJMX0dldFJvb21MaXN0UmVxdWVzdBIOCgZ1c2VySWQYASABKAkiTAoXTDJHX0dldFJvb21MaXN0UmVzcG9uc2USIQoFcm9vbXMYASADKAsyEi5Qcm90b2NvbC5Sb29tRGF0YRIOCgZ1c2VySWQYAiABKAkiPAoXRzJDX0dldFJvb21MaXN0UmVzcG9uc2USIQoFcm9vbXMYASADKAsyEi5Qcm90b2NvbC5Sb29tRGF0YSI3ChNDMkdfSm9pblJvb21SZXF1ZXN0Eg4KBnJvb21JZBgBIAEoBRIQCghuaWNrbmFtZRgCIAEoCSJHChNHMkxfSm9pblJvb21SZXF1ZXN0Eg4KBnJvb21JZBgBIAEoBRIQCghuaWNrbmFtZRgCIAEoCRIOCgZ1c2VySWQYAyABKAkiXwoUTDJHX0pvaW5Sb29tUmVzcG9uc2USEQoJaXNTdWNjZXNzGAEgASgIEiQKCHJvb21JbmZvGAIgASgLMhIuUHJvdG9jb2wuUm9vbURhdGESDgoGdXNlcklkGAMgASgJIk8KFEcyQ19Kb2luUm9vbVJlc3BvbnNlEhEKCWlzU3VjY2VzcxgBIAEoCBIkCghyb29tSW5mbxgCIAEoCzISLlByb3RvY29sLlJvb21EYXRhIlAKGEwyR19Kb2luUm9vbU5vdGlmaWNhdGlvbhIkCghqb2luVXNlchgBIAEoCzISLlByb3RvY29sLlVzZXJEYXRhEg4KBnJvb21JZBgCIAEoBSJAChhHMkNfSm9pblJvb21Ob3RpZmljYXRpb24SJAoIam9pblVzZXIYASABKAsyEi5Qcm90b2NvbC5Vc2VyRGF0YSImChRDMkxfTGVhdmVSb29tUmVxdWVzdBIOCgZyb29tSWQYASABKAUiKgoVTDJDX0xlYXZlUm9vbVJlc3BvbnNlEhEKCWlzU3VjY2VzcxgBIAEoCCIrChlMMkNfTGVhdmVSb29tTm90aWZpY2F0aW9uEg4KBnVzZXJJZBgBIAEoCSIxChxCMkNfaW5jcmVhc2VXYXZlTm90aWZpY2F0aW9uEhEKCWlzU3VjY2VzcxgBIAEoCCI3CiJCMkxfU29ja2V0RGlzY29ubmVjdGVkTm90aWZpY2F0aW9uEhEKCXNlc3Npb25JZBgBIAEoCSIsChdCMkNfR2FtZUVuZE5vdGlmaWNhdGlvbhIRCglpc1N1Y2Nlc3MYASABKAhiBnByb3RvMw", [file_struct]);
 
 /**
  * @generated from message Protocol.C2G_CreateRoomRequest
@@ -113,116 +113,59 @@ export const G2C_CreateRoomResponseSchema: GenMessage<G2C_CreateRoomResponse> = 
   messageDesc(file_room, 3);
 
 /**
- * @generated from message Protocol.L2B_CreateGameRoomRequest
+ * @generated from message Protocol.C2G_GameStartRequest
  */
-export type L2B_CreateGameRoomRequest = Message<"Protocol.L2B_CreateGameRoomRequest"> & {
+export type C2G_GameStartRequest = Message<"Protocol.C2G_GameStartRequest"> & {
   /**
    * @generated from field: int32 roomId = 1;
    */
   roomId: number;
 
   /**
-   * 게임에 참가하는 인원수
-   *
-   * @generated from field: int32 maxPlayers = 2;
+   * @generated from field: string userId = 2;
    */
-  maxPlayers: number;
+  userId: string;
 };
 
 /**
- * Describes the message Protocol.L2B_CreateGameRoomRequest.
- * Use `create(L2B_CreateGameRoomRequestSchema)` to create a new message.
+ * Describes the message Protocol.C2G_GameStartRequest.
+ * Use `create(C2G_GameStartRequestSchema)` to create a new message.
  */
-export const L2B_CreateGameRoomRequestSchema: GenMessage<L2B_CreateGameRoomRequest> = /*@__PURE__*/
+export const C2G_GameStartRequestSchema: GenMessage<C2G_GameStartRequest> = /*@__PURE__*/
   messageDesc(file_room, 4);
 
 /**
- * @generated from message Protocol.B2L_CreateGameRoomRespone
+ * 방 상태 변경 요청
+ *
+ * @generated from message Protocol.G2L_GameStartRequest
  */
-export type B2L_CreateGameRoomRespone = Message<"Protocol.B2L_CreateGameRoomRespone"> & {
+export type G2L_GameStartRequest = Message<"Protocol.G2L_GameStartRequest"> & {
   /**
-   * @generated from field: bool isCreated = 1;
-   */
-  isCreated: boolean;
-
-  /**
-   * @generated from field: int32 roomId = 2;
+   * @generated from field: int32 roomId = 1;
    */
   roomId: number;
+
+  /**
+   * @generated from field: string userId = 2;
+   */
+  userId: string;
 };
 
 /**
- * Describes the message Protocol.B2L_CreateGameRoomRespone.
- * Use `create(B2L_CreateGameRoomResponeSchema)` to create a new message.
+ * Describes the message Protocol.G2L_GameStartRequest.
+ * Use `create(G2L_GameStartRequestSchema)` to create a new message.
  */
-export const B2L_CreateGameRoomResponeSchema: GenMessage<B2L_CreateGameRoomRespone> = /*@__PURE__*/
+export const G2L_GameStartRequestSchema: GenMessage<G2L_GameStartRequest> = /*@__PURE__*/
   messageDesc(file_room, 5);
 
 /**
- * @generated from message Protocol.C2L_GameStart
+ * @generated from message Protocol.G2B_CreateGameRoomRequest
  */
-export type C2L_GameStart = Message<"Protocol.C2L_GameStart"> & {
+export type G2B_CreateGameRoomRequest = Message<"Protocol.G2B_CreateGameRoomRequest"> & {
   /**
-   * 방장(보내는 사람)의 ID
-   *
-   * @generated from field: string userId = 1;
-   */
-  userId: string;
-
-  /**
-   * 입장하려는 Room ID
-   *
-   * @generated from field: int32 roomId = 2;
+   * @generated from field: int32 roomId = 1;
    */
   roomId: number;
-};
-
-/**
- * Describes the message Protocol.C2L_GameStart.
- * Use `create(C2L_GameStartSchema)` to create a new message.
- */
-export const C2L_GameStartSchema: GenMessage<C2L_GameStart> = /*@__PURE__*/
-  messageDesc(file_room, 6);
-
-/**
- * @generated from message Protocol.L2C_GameStart
- */
-export type L2C_GameStart = Message<"Protocol.L2C_GameStart"> & {
-  /**
-   * ex: localhost
-   *
-   * @generated from field: string host = 1;
-   */
-  host: string;
-
-  /**
-   * 포트번호
-   *
-   * @generated from field: int32 port = 2;
-   */
-  port: number;
-
-  /**
-   * @generated from field: int32 roomId = 3;
-   */
-  roomId: number;
-};
-
-/**
- * Describes the message Protocol.L2C_GameStart.
- * Use `create(L2C_GameStartSchema)` to create a new message.
- */
-export const L2C_GameStartSchema: GenMessage<L2C_GameStart> = /*@__PURE__*/
-  messageDesc(file_room, 7);
-
-/**
- * @generated from message Protocol.L2B_GameStartRequest
- */
-export type L2B_GameStartRequest = Message<"Protocol.L2B_GameStartRequest"> & {
-  /**
-   * @generated from field: string name = 1;
-   */
-  name: string;
 
   /**
    * @generated from field: int32 maxUserNum = 2;
@@ -231,16 +174,145 @@ export type L2B_GameStartRequest = Message<"Protocol.L2B_GameStartRequest"> & {
 };
 
 /**
- * Describes the message Protocol.L2B_GameStartRequest.
- * Use `create(L2B_GameStartRequestSchema)` to create a new message.
+ * Describes the message Protocol.G2B_CreateGameRoomRequest.
+ * Use `create(G2B_CreateGameRoomRequestSchema)` to create a new message.
  */
-export const L2B_GameStartRequestSchema: GenMessage<L2B_GameStartRequest> = /*@__PURE__*/
+export const G2B_CreateGameRoomRequestSchema: GenMessage<G2B_CreateGameRoomRequest> = /*@__PURE__*/
+  messageDesc(file_room, 6);
+
+/**
+ * @generated from message Protocol.B2G_CreateGameRoomResponse
+ */
+export type B2G_CreateGameRoomResponse = Message<"Protocol.B2G_CreateGameRoomResponse"> & {
+  /**
+   * @generated from field: int32 roomId = 1;
+   */
+  roomId: number;
+};
+
+/**
+ * Describes the message Protocol.B2G_CreateGameRoomResponse.
+ * Use `create(B2G_CreateGameRoomResponseSchema)` to create a new message.
+ */
+export const B2G_CreateGameRoomResponseSchema: GenMessage<B2G_CreateGameRoomResponse> = /*@__PURE__*/
+  messageDesc(file_room, 7);
+
+/**
+ * @generated from message Protocol.G2C_CreateGameRoomNotification
+ */
+export type G2C_CreateGameRoomNotification = Message<"Protocol.G2C_CreateGameRoomNotification"> & {
+  /**
+   * @generated from field: string serverId = 1;
+   */
+  serverId: string;
+};
+
+/**
+ * Describes the message Protocol.G2C_CreateGameRoomNotification.
+ * Use `create(G2C_CreateGameRoomNotificationSchema)` to create a new message.
+ */
+export const G2C_CreateGameRoomNotificationSchema: GenMessage<G2C_CreateGameRoomNotification> = /*@__PURE__*/
   messageDesc(file_room, 8);
 
 /**
- * @generated from message Protocol.B2C_GameStartNotification
+ * @generated from message Protocol.C2G_JoinGameRoomRequest
  */
-export type B2C_GameStartNotification = Message<"Protocol.B2C_GameStartNotification"> & {
+export type C2G_JoinGameRoomRequest = Message<"Protocol.C2G_JoinGameRoomRequest"> & {
+  /**
+   * @generated from field: string serverId = 1;
+   */
+  serverId: string;
+
+  /**
+   * @generated from field: Protocol.GamePlayerData playerData = 2;
+   */
+  playerData?: GamePlayerData;
+
+  /**
+   * @generated from field: int32 roomId = 3;
+   */
+  roomId: number;
+};
+
+/**
+ * Describes the message Protocol.C2G_JoinGameRoomRequest.
+ * Use `create(C2G_JoinGameRoomRequestSchema)` to create a new message.
+ */
+export const C2G_JoinGameRoomRequestSchema: GenMessage<C2G_JoinGameRoomRequest> = /*@__PURE__*/
+  messageDesc(file_room, 9);
+
+/**
+ * @generated from message Protocol.G2B_JoinGameRoomRequest
+ */
+export type G2B_JoinGameRoomRequest = Message<"Protocol.G2B_JoinGameRoomRequest"> & {
+  /**
+   * @generated from field: Protocol.GamePlayerData playerData = 1;
+   */
+  playerData?: GamePlayerData;
+
+  /**
+   * @generated from field: int32 roomId = 2;
+   */
+  roomId: number;
+};
+
+/**
+ * Describes the message Protocol.G2B_JoinGameRoomRequest.
+ * Use `create(G2B_JoinGameRoomRequestSchema)` to create a new message.
+ */
+export const G2B_JoinGameRoomRequestSchema: GenMessage<G2B_JoinGameRoomRequest> = /*@__PURE__*/
+  messageDesc(file_room, 10);
+
+/**
+ * @generated from message Protocol.B2G_JoinGameRoomResponse
+ */
+export type B2G_JoinGameRoomResponse = Message<"Protocol.B2G_JoinGameRoomResponse"> & {
+  /**
+   * @generated from field: bool isSuccess = 1;
+   */
+  isSuccess: boolean;
+};
+
+/**
+ * Describes the message Protocol.B2G_JoinGameRoomResponse.
+ * Use `create(B2G_JoinGameRoomResponseSchema)` to create a new message.
+ */
+export const B2G_JoinGameRoomResponseSchema: GenMessage<B2G_JoinGameRoomResponse> = /*@__PURE__*/
+  messageDesc(file_room, 11);
+
+/**
+ * 모든 플레이어가 접속 시 전송
+ *
+ * @generated from message Protocol.B2G_GameStartNotification
+ */
+export type B2G_GameStartNotification = Message<"Protocol.B2G_GameStartNotification"> & {
+  /**
+   * @generated from field: repeated Protocol.GamePlayerData playerDatas = 1;
+   */
+  playerDatas: GamePlayerData[];
+
+  /**
+   * @generated from field: repeated Protocol.PosInfo obstaclePosInfos = 2;
+   */
+  obstaclePosInfos: PosInfo[];
+
+  /**
+   * @generated from field: int32 roomId = 3;
+   */
+  roomId: number;
+};
+
+/**
+ * Describes the message Protocol.B2G_GameStartNotification.
+ * Use `create(B2G_GameStartNotificationSchema)` to create a new message.
+ */
+export const B2G_GameStartNotificationSchema: GenMessage<B2G_GameStartNotification> = /*@__PURE__*/
+  messageDesc(file_room, 12);
+
+/**
+ * @generated from message Protocol.G2C_GameStartNotification
+ */
+export type G2C_GameStartNotification = Message<"Protocol.G2C_GameStartNotification"> & {
   /**
    * @generated from field: repeated Protocol.GamePlayerData playerDatas = 1;
    */
@@ -253,11 +325,11 @@ export type B2C_GameStartNotification = Message<"Protocol.B2C_GameStartNotificat
 };
 
 /**
- * Describes the message Protocol.B2C_GameStartNotification.
- * Use `create(B2C_GameStartNotificationSchema)` to create a new message.
+ * Describes the message Protocol.G2C_GameStartNotification.
+ * Use `create(G2C_GameStartNotificationSchema)` to create a new message.
  */
-export const B2C_GameStartNotificationSchema: GenMessage<B2C_GameStartNotification> = /*@__PURE__*/
-  messageDesc(file_room, 9);
+export const G2C_GameStartNotificationSchema: GenMessage<G2C_GameStartNotification> = /*@__PURE__*/
+  messageDesc(file_room, 13);
 
 /**
  * @generated from message Protocol.C2G_GetRoomListRequest
@@ -270,7 +342,7 @@ export type C2G_GetRoomListRequest = Message<"Protocol.C2G_GetRoomListRequest"> 
  * Use `create(C2G_GetRoomListRequestSchema)` to create a new message.
  */
 export const C2G_GetRoomListRequestSchema: GenMessage<C2G_GetRoomListRequest> = /*@__PURE__*/
-  messageDesc(file_room, 10);
+  messageDesc(file_room, 14);
 
 /**
  * GGG
@@ -289,7 +361,7 @@ export type G2L_GetRoomListRequest = Message<"Protocol.G2L_GetRoomListRequest"> 
  * Use `create(G2L_GetRoomListRequestSchema)` to create a new message.
  */
 export const G2L_GetRoomListRequestSchema: GenMessage<G2L_GetRoomListRequest> = /*@__PURE__*/
-  messageDesc(file_room, 11);
+  messageDesc(file_room, 15);
 
 /**
  * GGG
@@ -313,7 +385,7 @@ export type L2G_GetRoomListResponse = Message<"Protocol.L2G_GetRoomListResponse"
  * Use `create(L2G_GetRoomListResponseSchema)` to create a new message.
  */
 export const L2G_GetRoomListResponseSchema: GenMessage<L2G_GetRoomListResponse> = /*@__PURE__*/
-  messageDesc(file_room, 12);
+  messageDesc(file_room, 16);
 
 /**
  * @generated from message Protocol.G2C_GetRoomListResponse
@@ -330,7 +402,7 @@ export type G2C_GetRoomListResponse = Message<"Protocol.G2C_GetRoomListResponse"
  * Use `create(G2C_GetRoomListResponseSchema)` to create a new message.
  */
 export const G2C_GetRoomListResponseSchema: GenMessage<G2C_GetRoomListResponse> = /*@__PURE__*/
-  messageDesc(file_room, 13);
+  messageDesc(file_room, 17);
 
 /**
  * @generated from message Protocol.C2G_JoinRoomRequest
@@ -352,7 +424,7 @@ export type C2G_JoinRoomRequest = Message<"Protocol.C2G_JoinRoomRequest"> & {
  * Use `create(C2G_JoinRoomRequestSchema)` to create a new message.
  */
 export const C2G_JoinRoomRequestSchema: GenMessage<C2G_JoinRoomRequest> = /*@__PURE__*/
-  messageDesc(file_room, 14);
+  messageDesc(file_room, 18);
 
 /**
  * @generated from message Protocol.G2L_JoinRoomRequest
@@ -379,7 +451,7 @@ export type G2L_JoinRoomRequest = Message<"Protocol.G2L_JoinRoomRequest"> & {
  * Use `create(G2L_JoinRoomRequestSchema)` to create a new message.
  */
 export const G2L_JoinRoomRequestSchema: GenMessage<G2L_JoinRoomRequest> = /*@__PURE__*/
-  messageDesc(file_room, 15);
+  messageDesc(file_room, 19);
 
 /**
  * @generated from message Protocol.L2G_JoinRoomResponse
@@ -408,7 +480,7 @@ export type L2G_JoinRoomResponse = Message<"Protocol.L2G_JoinRoomResponse"> & {
  * Use `create(L2G_JoinRoomResponseSchema)` to create a new message.
  */
 export const L2G_JoinRoomResponseSchema: GenMessage<L2G_JoinRoomResponse> = /*@__PURE__*/
-  messageDesc(file_room, 16);
+  messageDesc(file_room, 20);
 
 /**
  * @generated from message Protocol.G2C_JoinRoomResponse
@@ -432,7 +504,7 @@ export type G2C_JoinRoomResponse = Message<"Protocol.G2C_JoinRoomResponse"> & {
  * Use `create(G2C_JoinRoomResponseSchema)` to create a new message.
  */
 export const G2C_JoinRoomResponseSchema: GenMessage<G2C_JoinRoomResponse> = /*@__PURE__*/
-  messageDesc(file_room, 17);
+  messageDesc(file_room, 21);
 
 /**
  * @generated from message Protocol.L2G_JoinRoomNotification
@@ -454,7 +526,7 @@ export type L2G_JoinRoomNotification = Message<"Protocol.L2G_JoinRoomNotificatio
  * Use `create(L2G_JoinRoomNotificationSchema)` to create a new message.
  */
 export const L2G_JoinRoomNotificationSchema: GenMessage<L2G_JoinRoomNotification> = /*@__PURE__*/
-  messageDesc(file_room, 18);
+  messageDesc(file_room, 22);
 
 /**
  * @generated from message Protocol.G2C_JoinRoomNotification
@@ -471,24 +543,7 @@ export type G2C_JoinRoomNotification = Message<"Protocol.G2C_JoinRoomNotificatio
  * Use `create(G2C_JoinRoomNotificationSchema)` to create a new message.
  */
 export const G2C_JoinRoomNotificationSchema: GenMessage<G2C_JoinRoomNotification> = /*@__PURE__*/
-  messageDesc(file_room, 19);
-
-/**
- * @generated from message Protocol.B2C_JoinRoomRequest
- */
-export type B2C_JoinRoomRequest = Message<"Protocol.B2C_JoinRoomRequest"> & {
-  /**
-   * @generated from field: bool isSuccess = 1;
-   */
-  isSuccess: boolean;
-};
-
-/**
- * Describes the message Protocol.B2C_JoinRoomRequest.
- * Use `create(B2C_JoinRoomRequestSchema)` to create a new message.
- */
-export const B2C_JoinRoomRequestSchema: GenMessage<B2C_JoinRoomRequest> = /*@__PURE__*/
-  messageDesc(file_room, 20);
+  messageDesc(file_room, 23);
 
 /**
  * @generated from message Protocol.C2L_LeaveRoomRequest
@@ -505,7 +560,7 @@ export type C2L_LeaveRoomRequest = Message<"Protocol.C2L_LeaveRoomRequest"> & {
  * Use `create(C2L_LeaveRoomRequestSchema)` to create a new message.
  */
 export const C2L_LeaveRoomRequestSchema: GenMessage<C2L_LeaveRoomRequest> = /*@__PURE__*/
-  messageDesc(file_room, 21);
+  messageDesc(file_room, 24);
 
 /**
  * @generated from message Protocol.L2C_LeaveRoomResponse
@@ -522,7 +577,7 @@ export type L2C_LeaveRoomResponse = Message<"Protocol.L2C_LeaveRoomResponse"> & 
  * Use `create(L2C_LeaveRoomResponseSchema)` to create a new message.
  */
 export const L2C_LeaveRoomResponseSchema: GenMessage<L2C_LeaveRoomResponse> = /*@__PURE__*/
-  messageDesc(file_room, 22);
+  messageDesc(file_room, 25);
 
 /**
  * @generated from message Protocol.L2C_LeaveRoomNotification
@@ -539,7 +594,7 @@ export type L2C_LeaveRoomNotification = Message<"Protocol.L2C_LeaveRoomNotificat
  * Use `create(L2C_LeaveRoomNotificationSchema)` to create a new message.
  */
 export const L2C_LeaveRoomNotificationSchema: GenMessage<L2C_LeaveRoomNotification> = /*@__PURE__*/
-  messageDesc(file_room, 23);
+  messageDesc(file_room, 26);
 
 /**
  * @generated from message Protocol.B2C_increaseWaveNotification
@@ -556,7 +611,7 @@ export type B2C_increaseWaveNotification = Message<"Protocol.B2C_increaseWaveNot
  * Use `create(B2C_increaseWaveNotificationSchema)` to create a new message.
  */
 export const B2C_increaseWaveNotificationSchema: GenMessage<B2C_increaseWaveNotification> = /*@__PURE__*/
-  messageDesc(file_room, 24);
+  messageDesc(file_room, 27);
 
 /**
  * @generated from message Protocol.B2L_SocketDisconnectedNotification
@@ -573,7 +628,7 @@ export type B2L_SocketDisconnectedNotification = Message<"Protocol.B2L_SocketDis
  * Use `create(B2L_SocketDisconnectedNotificationSchema)` to create a new message.
  */
 export const B2L_SocketDisconnectedNotificationSchema: GenMessage<B2L_SocketDisconnectedNotification> = /*@__PURE__*/
-  messageDesc(file_room, 25);
+  messageDesc(file_room, 28);
 
 /**
  * @generated from message Protocol.B2C_GameEndNotification
@@ -590,5 +645,5 @@ export type B2C_GameEndNotification = Message<"Protocol.B2C_GameEndNotification"
  * Use `create(B2C_GameEndNotificationSchema)` to create a new message.
  */
 export const B2C_GameEndNotificationSchema: GenMessage<B2C_GameEndNotification> = /*@__PURE__*/
-  messageDesc(file_room, 26);
+  messageDesc(file_room, 29);
 

@@ -1,6 +1,5 @@
 import net, { Server, Socket } from 'net';
 import { SessionManager } from "ServerCore/network/sessionManager";
-import { LobbySession } from "./main/session/lobbySession";
 import { onConnection } from "./main/handler/initPacketHandler";
 import { assetManager } from "./utils/assetManager";
 import { battleConfig } from "./config/config";
@@ -13,12 +12,10 @@ const server: Server = net.createServer(onConnection);
 ---------------------------------------------*/
 export const sessionManager: SessionManager<BattleSession> = new SessionManager(BattleSession);
 
-export let lobbySession: LobbySession = new LobbySession(new Socket());
-
 const initServer = async () => {
   try {
-    //const asset = await assetManager.loadGameAssets();
-    // 다음 작업
+    const asset = await assetManager.loadGameAssets();
+    
   } catch (error: any) {
     console.error(error.message);
     process.exit(1); // 오류 발생 시 프로세스 종료

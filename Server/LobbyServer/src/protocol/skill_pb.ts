@@ -13,7 +13,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file skill.proto.
  */
 export const file_skill: GenFile = /*@__PURE__*/
-  fileDesc("Cgtza2lsbC5wcm90bxIIUHJvdG9jb2wiVgoQQzJCX1NraWxsUmVxdWVzdBIiCgVza2lsbBgBIAEoCzITLlByb3RvY29sLlNraWxsRGF0YRIOCgZyb29tSWQYAiABKAUSDgoGY2FyZElkGAMgASgJIjYKEUIyQ19Ta2lsbFJlc3BvbnNlEhEKCWlzU3VjY2VzcxgBIAEoCBIOCgZjYXJkSWQYAiABKAkiPgoYQjJDX1VzZVNraWxsTm90aWZpY2F0aW9uEiIKBXNraWxsGAEgASgLMhMuUHJvdG9jb2wuU2tpbGxEYXRhIkMKC0IyQ19BZGRDYXJkEg4KBmNhcmRJZBgBIAEoCRIkCghjYXJkRGF0YRgCIAEoCzISLlByb3RvY29sLkNhcmREYXRhIjgKEEIyQ19Jbml0Q2FyZERhdGESJAoIY2FyZERhdGEYASADKAsyEi5Qcm90b2NvbC5DYXJkRGF0YWIGcHJvdG8z", [file_enum, file_struct]);
+  fileDesc("Cgtza2lsbC5wcm90bxIIUHJvdG9jb2wiVgoQQzJCX1NraWxsUmVxdWVzdBIiCgVza2lsbBgBIAEoCzITLlByb3RvY29sLlNraWxsRGF0YRIOCgZyb29tSWQYAiABKAUSDgoGY2FyZElkGAMgASgJIjYKEUIyQ19Ta2lsbFJlc3BvbnNlEhEKCWlzU3VjY2VzcxgBIAEoCBIOCgZjYXJkSWQYAiABKAkiPgoYQjJDX1VzZVNraWxsTm90aWZpY2F0aW9uEiIKBXNraWxsGAEgASgLMhMuUHJvdG9jb2wuU2tpbGxEYXRhIkMKC0IyQ19BZGRDYXJkEg4KBmNhcmRJZBgBIAEoCRIkCghjYXJkRGF0YRgCIAEoCzISLlByb3RvY29sLkNhcmREYXRhIkgKEEIyR19Jbml0Q2FyZERhdGESJAoIY2FyZERhdGEYASADKAsyEi5Qcm90b2NvbC5DYXJkRGF0YRIOCgZ1c2VySWQYAiABKAkiOAoQRzJDX0luaXRDYXJkRGF0YRIkCghjYXJkRGF0YRgBIAMoCzISLlByb3RvY29sLkNhcmREYXRhYgZwcm90bzM", [file_enum, file_struct]);
 
 /**
  * @generated from message Protocol.C2B_SkillRequest
@@ -116,9 +116,31 @@ export const B2C_AddCardSchema: GenMessage<B2C_AddCard> = /*@__PURE__*/
 /**
  * 초기 카드 데이터 알림
  *
- * @generated from message Protocol.B2C_InitCardData
+ * @generated from message Protocol.B2G_InitCardData
  */
-export type B2C_InitCardData = Message<"Protocol.B2C_InitCardData"> & {
+export type B2G_InitCardData = Message<"Protocol.B2G_InitCardData"> & {
+  /**
+   * @generated from field: repeated Protocol.CardData cardData = 1;
+   */
+  cardData: CardData[];
+
+  /**
+   * @generated from field: string userId = 2;
+   */
+  userId: string;
+};
+
+/**
+ * Describes the message Protocol.B2G_InitCardData.
+ * Use `create(B2G_InitCardDataSchema)` to create a new message.
+ */
+export const B2G_InitCardDataSchema: GenMessage<B2G_InitCardData> = /*@__PURE__*/
+  messageDesc(file_skill, 4);
+
+/**
+ * @generated from message Protocol.G2C_InitCardData
+ */
+export type G2C_InitCardData = Message<"Protocol.G2C_InitCardData"> & {
   /**
    * @generated from field: repeated Protocol.CardData cardData = 1;
    */
@@ -126,9 +148,9 @@ export type B2C_InitCardData = Message<"Protocol.B2C_InitCardData"> & {
 };
 
 /**
- * Describes the message Protocol.B2C_InitCardData.
- * Use `create(B2C_InitCardDataSchema)` to create a new message.
+ * Describes the message Protocol.G2C_InitCardData.
+ * Use `create(G2C_InitCardDataSchema)` to create a new message.
  */
-export const B2C_InitCardDataSchema: GenMessage<B2C_InitCardData> = /*@__PURE__*/
-  messageDesc(file_skill, 4);
+export const G2C_InitCardDataSchema: GenMessage<G2C_InitCardData> = /*@__PURE__*/
+  messageDesc(file_skill, 5);
 

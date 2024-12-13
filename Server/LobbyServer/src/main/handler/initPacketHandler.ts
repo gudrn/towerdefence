@@ -32,10 +32,6 @@ export const onConnection = (socket: Socket): void => {
     const packet = buffer.subarray(config.packet.sizeOfHeader, header.size);
 
     switch (header.id) {
-      case ePacketId.C2L_Init:
-        console.log('클라 접속');
-        initialHandler(packet, socket, ePacketId.C2L_Init);
-        break;
       case ePacketId.G2L_Init:
         console.log('게이트웨이 서버 접속');
         initialHandler(packet, socket, ePacketId.G2L_Init);

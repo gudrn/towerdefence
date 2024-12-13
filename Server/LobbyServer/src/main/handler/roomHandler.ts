@@ -1,7 +1,7 @@
 import { create, fromBinary, toBinary } from "@bufbuild/protobuf";
 import { CustomError } from "ServerCore/utils/error/customError";
 import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
-import { G2L_CreateRoomRequestSchema, G2L_GetRoomListRequestSchema, G2L_JoinRoomRequestSchema, L2G_CreateRoomResponseSchema, L2G_GetRoomListResponseSchema, L2G_JoinRoomNotificationSchema, L2G_JoinRoomResponseSchema } from "src/protocol/room_pb";
+import { G2L_CreateRoomRequestSchema, G2L_GameStartRequestSchema, G2L_GetRoomListRequestSchema, G2L_JoinRoomRequestSchema, L2G_CreateRoomResponseSchema, L2G_GetRoomListResponseSchema, L2G_JoinRoomNotificationSchema, L2G_JoinRoomResponseSchema } from "src/protocol/room_pb";
 import { handleError } from "src/utils/errorHandler";
 import { redis } from "src/utils/redis/redis";
 import { LobbySession } from "../session/lobbySession";
@@ -9,13 +9,13 @@ import { lobbyConfig, roomConfig } from "src/config/config";
 import { RoomData, RoomDataSchema, UserDataSchema } from "src/protocol/struct_pb";
 import { PacketUtils } from "ServerCore/utils/packetUtils";
 import { ePacketId } from "ServerCore/network/packetId";
+import { RoomStateType } from "src/protocol/enum_pb";
 
 
 /*---------------------------------------------
     [방 생성]
 ---------------------------------------------*/
 export async function createRoomHandler(buffer: Buffer, session: LobbySession): Promise<void> {
-    console.log("createRoomHandler");
 
     try {
         const packet = fromBinary(G2L_CreateRoomRequestSchema, buffer);
@@ -96,9 +96,10 @@ export async function getRoomsHandler(buffer: Buffer, session: LobbySession): Pr
    [방 입장]
 ---------------------------------------------*/
 export async function enterRoomHandler(buffer: Buffer, session: LobbySession): Promise<void> {
-    console.log('enterRoomHandler');
     // 클라이언트가 보낸 패킷 역직렬화
     const packet = fromBinary(G2L_JoinRoomRequestSchema, buffer);
+    console.log('enterRoomHandler');
+    console.log(packet.roomId);
     
     // 1. 방 ID를 통해 해당 방을 가져오기
     const roomKey = `${roomConfig.ROOM_KEY}${packet.roomId}`;
@@ -156,4 +157,33 @@ export async function enterRoomHandler(buffer: Buffer, session: LobbySession): P
         const sendBuffer = PacketUtils.SerializePacket(notificationPacket, L2G_JoinRoomNotificationSchema, ePacketId.L2G_JoinRoomNotification, 0);
         session.send(sendBuffer);
     }
+}
+
+ /*---------------------------------------------
+   [게임 시작]
+   방 상태 변경
+---------------------------------------------*/
+export async function gameStartHandler(buffer: Buffer, session: LobbySession): Promise<void> {
+    console.log('gameStartHandler');
+
+    // 클라이언트가 보낸 패킷 역직렬화
+    const packet = fromBinary(G2L_GameStartRequestSchema, buffer);
+    
+    // 1. 방 ID를 통해 해당 방을 가져오기
+    const roomKey = `${roomConfig.ROOM_KEY}${packet.roomId}`;
+    const serializedRoomData = await redis.getBuffer(roomKey);
+
+    //유효성 검증
+    if (!serializedRoomData) {
+        handleError(session, new CustomError(ErrorCodes.INVALID_ROOM_ID, "유효하지 않은 방 ID입니다."));
+        return;
+    }
+
+    // 2. 방 상태 변경
+    let roomData: RoomData = fromBinary(RoomDataSchema, serializedRoomData);
+    roomData.state = RoomStateType.INAGAME;
+
+    // 업데이트된 방 데이터를 Redis에 저장
+    const updatedSerializedRoomData = Buffer.from(toBinary(RoomDataSchema, roomData));
+    await redis.set(roomKey, updatedSerializedRoomData);
 }

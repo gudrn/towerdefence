@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package Protocol;
 
-import 'struct.proto';
+import "struct.proto";
 
 message C2G_CreateRoomRequest 
 {
@@ -31,18 +31,6 @@ message G2C_CreateRoomResponse
     RoomData room = 2;
 }
 
-message L2B_CreateGameRoomRequest 
-{
-  int32 roomId = 1;
-  int32 maxPlayers = 2; //게임에 참가하는 인원수
-}
-
-message B2L_CreateGameRoomRespone 
-{
-  bool isCreated = 1;
-  int32 roomId = 2;
-}
-
 message C2G_GameStartRequest
 {
     int32 roomId = 1;       
@@ -64,12 +52,30 @@ message G2B_CreateGameRoomRequest
 
 message B2G_CreateGameRoomResponse
 {
+    int32 roomId = 1;
+}
+
+message G2C_CreateGameRoomNotification
+{
     string serverId = 1;
 }
 
-message G2C_GameStartResponse
+message C2G_JoinGameRoomRequest 
 {
+    string serverId = 1;
+    GamePlayerData playerData = 2;
+    int32 roomId = 3;
+}
 
+message G2B_JoinGameRoomRequest
+{
+    GamePlayerData playerData = 1;
+    int32 roomId = 2;
+}
+
+message B2G_JoinGameRoomResponse 
+{
+    bool isSuccess = 1;
 }
 
 //모든 플레이어가 접속 시 전송
@@ -77,9 +83,10 @@ message B2G_GameStartNotification
 {
     repeated GamePlayerData playerDatas = 1;
     repeated PosInfo obstaclePosInfos = 2;
+    int32 roomId = 3;
 }
 
-message B2C_GameStartNotification  
+message G2C_GameStartNotification  
 {
     repeated GamePlayerData playerDatas = 1;
     repeated PosInfo obstaclePosInfos = 2;
@@ -144,11 +151,6 @@ message L2G_JoinRoomNotification
 message G2C_JoinRoomNotification 
 {
     UserData joinUser = 1;
-}
-
-message B2C_JoinRoomRequest
-{
-    bool isSuccess = 1;
 }
 
 message C2L_LeaveRoomRequest 

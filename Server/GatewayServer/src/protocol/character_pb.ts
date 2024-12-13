@@ -13,14 +13,14 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file character.proto.
  */
 export const file_character: GenFile = /*@__PURE__*/
-  fileDesc("Cg9jaGFyYWN0ZXIucHJvdG8SCFByb3RvY29sIlUKH0MyQl9QbGF5ZXJQb3NpdGlvblVwZGF0ZVJlcXVlc3QSIgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SDgoGcm9vbUlkGAIgASgFIkoKJEIyQ19QbGF5ZXJQb3NpdGlvblVwZGF0ZU5vdGlmaWNhdGlvbhIiCgdwb3NJbmZvGAEgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyI0ChJDMkJfVXNlQ2FyZFJlcXVlc3QSDgoGcm9vbUlkGAEgASgFEg4KBmNhcmRJZBgCIAEoCWIGcHJvdG8z", [file_struct, file_enum]);
+  fileDesc("Cg9jaGFyYWN0ZXIucHJvdG8SCFByb3RvY29sIlUKH0MyR19QbGF5ZXJQb3NpdGlvblVwZGF0ZVJlcXVlc3QSIgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SDgoGcm9vbUlkGAIgASgFIlUKH0cyQl9QbGF5ZXJQb3NpdGlvblVwZGF0ZVJlcXVlc3QSIgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SDgoGcm9vbUlkGAIgASgFIloKJEIyR19QbGF5ZXJQb3NpdGlvblVwZGF0ZU5vdGlmaWNhdGlvbhIiCgdwb3NJbmZvGAEgASgLMhEuUHJvdG9jb2wuUG9zSW5mbxIOCgZyb29tSWQYAiABKAUiSgokRzJDX1BsYXllclBvc2l0aW9uVXBkYXRlTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvIjQKEkMyQl9Vc2VDYXJkUmVxdWVzdBIOCgZyb29tSWQYASABKAUSDgoGY2FyZElkGAIgASgJYgZwcm90bzM", [file_struct, file_enum]);
 
 /**
  * 캐릭터 위치 동기화
  *
- * @generated from message Protocol.C2B_PlayerPositionUpdateRequest
+ * @generated from message Protocol.C2G_PlayerPositionUpdateRequest
  */
-export type C2B_PlayerPositionUpdateRequest = Message<"Protocol.C2B_PlayerPositionUpdateRequest"> & {
+export type C2G_PlayerPositionUpdateRequest = Message<"Protocol.C2G_PlayerPositionUpdateRequest"> & {
   /**
    * @generated from field: Protocol.PosInfo posInfo = 1;
    */
@@ -33,18 +33,64 @@ export type C2B_PlayerPositionUpdateRequest = Message<"Protocol.C2B_PlayerPositi
 };
 
 /**
- * Describes the message Protocol.C2B_PlayerPositionUpdateRequest.
- * Use `create(C2B_PlayerPositionUpdateRequestSchema)` to create a new message.
+ * Describes the message Protocol.C2G_PlayerPositionUpdateRequest.
+ * Use `create(C2G_PlayerPositionUpdateRequestSchema)` to create a new message.
  */
-export const C2B_PlayerPositionUpdateRequestSchema: GenMessage<C2B_PlayerPositionUpdateRequest> = /*@__PURE__*/
+export const C2G_PlayerPositionUpdateRequestSchema: GenMessage<C2G_PlayerPositionUpdateRequest> = /*@__PURE__*/
   messageDesc(file_character, 0);
+
+/**
+ * @generated from message Protocol.G2B_PlayerPositionUpdateRequest
+ */
+export type G2B_PlayerPositionUpdateRequest = Message<"Protocol.G2B_PlayerPositionUpdateRequest"> & {
+  /**
+   * @generated from field: Protocol.PosInfo posInfo = 1;
+   */
+  posInfo?: PosInfo;
+
+  /**
+   * @generated from field: int32 roomId = 2;
+   */
+  roomId: number;
+};
+
+/**
+ * Describes the message Protocol.G2B_PlayerPositionUpdateRequest.
+ * Use `create(G2B_PlayerPositionUpdateRequestSchema)` to create a new message.
+ */
+export const G2B_PlayerPositionUpdateRequestSchema: GenMessage<G2B_PlayerPositionUpdateRequest> = /*@__PURE__*/
+  messageDesc(file_character, 1);
 
 /**
  * 캐릭터 위치 동기화 알림
  *
- * @generated from message Protocol.B2C_PlayerPositionUpdateNotification
+ * @generated from message Protocol.B2G_PlayerPositionUpdateNotification
  */
-export type B2C_PlayerPositionUpdateNotification = Message<"Protocol.B2C_PlayerPositionUpdateNotification"> & {
+export type B2G_PlayerPositionUpdateNotification = Message<"Protocol.B2G_PlayerPositionUpdateNotification"> & {
+  /**
+   * @generated from field: Protocol.PosInfo posInfo = 1;
+   */
+  posInfo?: PosInfo;
+
+  /**
+   * @generated from field: int32 roomId = 2;
+   */
+  roomId: number;
+};
+
+/**
+ * Describes the message Protocol.B2G_PlayerPositionUpdateNotification.
+ * Use `create(B2G_PlayerPositionUpdateNotificationSchema)` to create a new message.
+ */
+export const B2G_PlayerPositionUpdateNotificationSchema: GenMessage<B2G_PlayerPositionUpdateNotification> = /*@__PURE__*/
+  messageDesc(file_character, 2);
+
+/**
+ * 캐릭터 위치 동기화 알림
+ *
+ * @generated from message Protocol.G2C_PlayerPositionUpdateNotification
+ */
+export type G2C_PlayerPositionUpdateNotification = Message<"Protocol.G2C_PlayerPositionUpdateNotification"> & {
   /**
    * @generated from field: Protocol.PosInfo posInfo = 1;
    */
@@ -52,11 +98,11 @@ export type B2C_PlayerPositionUpdateNotification = Message<"Protocol.B2C_PlayerP
 };
 
 /**
- * Describes the message Protocol.B2C_PlayerPositionUpdateNotification.
- * Use `create(B2C_PlayerPositionUpdateNotificationSchema)` to create a new message.
+ * Describes the message Protocol.G2C_PlayerPositionUpdateNotification.
+ * Use `create(G2C_PlayerPositionUpdateNotificationSchema)` to create a new message.
  */
-export const B2C_PlayerPositionUpdateNotificationSchema: GenMessage<B2C_PlayerPositionUpdateNotification> = /*@__PURE__*/
-  messageDesc(file_character, 1);
+export const G2C_PlayerPositionUpdateNotificationSchema: GenMessage<G2C_PlayerPositionUpdateNotification> = /*@__PURE__*/
+  messageDesc(file_character, 3);
 
 /**
  * 카드 사용
@@ -80,5 +126,5 @@ export type C2B_UseCardRequest = Message<"Protocol.C2B_UseCardRequest"> & {
  * Use `create(C2B_UseCardRequestSchema)` to create a new message.
  */
 export const C2B_UseCardRequestSchema: GenMessage<C2B_UseCardRequest> = /*@__PURE__*/
-  messageDesc(file_character, 2);
+  messageDesc(file_character, 4);
 

@@ -1,7 +1,7 @@
 import { create } from '@bufbuild/protobuf';
 import { assetManager } from "src/utils/assetManager";
 import { GameObject } from "./gameObject";
-import { B2C_MonsterAttackBaseNotificationSchema, B2C_MonsterAttackTowerNotificationSchema, B2C_MonsterPositionUpdateNotificationSchema } from "src/protocol/monster_pb";
+import { B2C_MonsterAttackBaseNotificationSchema, B2C_MonsterAttackTowerNotificationSchema, B2G_MonsterPositionUpdateNotificationSchema } from "src/protocol/monster_pb";
 import { PosInfo, PosInfoSchema } from 'src/protocol/struct_pb';
 import { OBJECT_STATE_TYPE } from 'src/protocol/enum_pb';
 import { Tower } from './tower';
@@ -12,6 +12,9 @@ import { MathUtils } from 'src/utils/mathUtils';
 import { PacketUtils } from 'ServerCore/utils/packetUtils';
 import { ePacketId } from 'ServerCore/network/packetId';
 import { B2C_BaseDestroyNotificationSchema, B2C_TowerDestroyNotificationSchema } from 'src/protocol/tower_pb';
+import { sessionManager } from 'src/server';
+import { CustomError } from 'ServerCore/utils/error/customError';
+import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
 
 
 /**
@@ -94,9 +97,9 @@ export class Monster extends GameObject {
   UpdateIdle() {
     if (!this.room) return;
 
-    //if (!this.target) {
-    this.target = this.room.findCloseBuilding(this.getPos());
-    //}
+    // if (!this.target) {
+       this.target = this.room.findCloseBuilding(this.getPos());
+    // }
 
     if (this.target) {
       const pos = MathUtils.calcPosDiff(this.target.getPos(), this.getPos());
@@ -131,18 +134,23 @@ export class Monster extends GameObject {
     const now = Date.now();
     if (this.waitUntil > now) return;
 
-    const packet = create(B2C_MonsterPositionUpdateNotificationSchema, {
+    const packet = create(B2G_MonsterPositionUpdateNotificationSchema, {
       posInfo: this.getPos(),
+      roomId: this.room.id
     });
 
     const sendBuffer = PacketUtils.SerializePacket(
       packet,
-      B2C_MonsterPositionUpdateNotificationSchema,
-      ePacketId.B2C_MonsterPositionUpdateNotification,
+      B2G_MonsterPositionUpdateNotificationSchema,
+      ePacketId.B2G_MonsterPositionUpdateNotification,
       0,
     );
 
-    this.room.broadcast(sendBuffer);
+    const session = sessionManager.getRandomSession();
+    if(session == null){
+      throw new CustomError(ErrorCodes.SERSSION_NOT_FOUND, "배틀 세션을 찾지 못했습니다.");
+    }
+    session.send(sendBuffer);
     this.setState(OBJECT_STATE_TYPE.IDLE);
   }
 
@@ -150,24 +158,24 @@ export class Monster extends GameObject {
    * 몬스터의 SKILL 상태를 업데이트합니다.
    */
   UpdateSkill() {
-    const now = Date.now();
-    if (this.waitUntil > now) return;
+    // const now = Date.now();
+    // if (this.waitUntil > now) return;
 
-    if (this.target) {
-      if (this.target instanceof Tower) {
-        this.attackTarget(this.target);
-      } else if (this.target instanceof Base) {
-        this.attackBase(this.target);
-      } else {
-        console.log('유효하지 않은 target');
-      }
-    } else {
-      console.log('유효하지 않은 target2');
-    }
+    // if (this.target) {
+    //   if (this.target instanceof Tower) {
+    //     this.attackTarget(this.target);
+    //   } else if (this.target instanceof Base) {
+    //     this.attackBase(this.target);
+    //   } else {
+    //     console.log('유효하지 않은 target');
+    //   }
+    // } else {
+    //   console.log('유효하지 않은 target2');
+    // }
 
-    // 공격 패킷 전송
+    // // 공격 패킷 전송
 
-    this.setState(OBJECT_STATE_TYPE.IDLE);
+    // this.setState(OBJECT_STATE_TYPE.IDLE);
   }
 
 
@@ -176,90 +184,89 @@ export class Monster extends GameObject {
     ---------------------------------------------*/
 
   attackTarget(tower: Tower) {
-    console.log('attack');
-    // 2. 클라이언트에 공격 패킷 전송
-    const attackPacket = create(B2C_MonsterAttackTowerNotificationSchema, {
-      monsterId: this.getId(),
-      targetId: tower.getId(),
-      hp: tower.hp,
-      maxHp: tower.maxHp,
-    });
+    // console.log('attack');
+    // // 2. 클라이언트에 공격 패킷 전송
+    // const attackPacket = create(B2C_MonsterAttackTowerNotificationSchema, {
+    //   monsterId: this.getId(),
+    //   targetId: tower.getId(),
+    //   hp: tower.hp,
+    //   maxHp: tower.maxHp,
+    // });
 
-    const attackBuffer = PacketUtils.SerializePacket(
-      attackPacket,
-      B2C_MonsterAttackTowerNotificationSchema,
-      ePacketId.B2C_MonsterAttackTowerNotification,
-      0,
-    );
-    this.room.broadcast(attackBuffer);
+    // const attackBuffer = PacketUtils.SerializePacket(
+    //   attackPacket,
+    //   B2C_MonsterAttackTowerNotificationSchema,
+    //   ePacketId.B2C_MonsterAttackTowerNotification,
+    //   0,
+    // );
+    // //this.room.broadcast(attackBuffer);
 
-    // 타워 데미지 처리
-    const isDestroyed = tower.onDamaged(this.attackDamage);
+    // // 타워 데미지 처리
+    // const isDestroyed = tower.onDamaged(this.attackDamage);
 
-    // 3. 타워 파괴 처리
-    if (isDestroyed) {
-      console.log(`타워 ${tower.getId()}가 파괴되었습니다.`);
-      this.room.removeObject(tower.getId()); // GameRoom에서 타워 제거
+    // // 3. 타워 파괴 처리
+    // if (isDestroyed) {
+    //   console.log(`타워 ${tower.getId()}가 파괴되었습니다.`);
+    //   //this.room.removeObject(tower.getId()); // GameRoom에서 타워 제거
 
-      const towerDestroyedPacket = create(B2C_TowerDestroyNotificationSchema, {
-        towerId: tower.getId(),
-        isSuccess: true,
-      });
+    //   const towerDestroyedPacket = create(B2C_TowerDestroyNotificationSchema, {
+    //     towerId: tower.getId(),
+    //     isSuccess: true,
+    //   });
 
-      const towerDestroyedBuffer = PacketUtils.SerializePacket(
-        towerDestroyedPacket,
-        B2C_TowerDestroyNotificationSchema,
-        ePacketId.B2C_TowerDestroyNotification,
-        0, //수정 부분
-      );
+    //   const towerDestroyedBuffer = PacketUtils.SerializePacket(
+    //     towerDestroyedPacket,
+    //     B2C_TowerDestroyNotificationSchema,
+    //     ePacketId.B2G_TowerDestroyNotification,
+    //     0, //수정 부분
+    //   );
 
-      this.room.broadcast(towerDestroyedBuffer);
+      //this.room.broadcast(towerDestroyedBuffer);
     }
     //}
-  }
 
   /**
    * 기지 공격
    */
-  attackBase(base: Base) {
-    const baseAttackPacket = create(B2C_MonsterAttackBaseNotificationSchema, {
-      monsterId: this.getId(),
-      attackDamage: this.attackDamage,
-    });
+  //attackBase(base: Base) {
+    // const baseAttackPacket = create(B2C_MonsterAttackBaseNotificationSchema, {
+    //   monsterId: this.getId(),
+    //   attackDamage: this.attackDamage,
+    // });
 
-    const baseAttackBuffer = PacketUtils.SerializePacket(
-      baseAttackPacket,
-      B2C_MonsterAttackBaseNotificationSchema,
-      ePacketId.B2C_MonsterAttackBaseNotification,
-      0, //수정 부분
-    );
-    this.room.broadcast(baseAttackBuffer);
+    // const baseAttackBuffer = PacketUtils.SerializePacket(
+    //   baseAttackPacket,
+    //   B2G_MonsterAttackBaseNotificationSchema,
+    //   ePacketId.B2G_MonsterAttackBaseNotification,
+    //   0, //수정 부분
+    // );
+    //this.room.broadcast(baseAttackBuffer);
 
     // 기지 데미지 처리
-    const isDestroyed = base.onDamaged(this.attackDamage);
-  }
+    //const isDestroyed = base.onDamaged(this.attackDamage);
+  //}
 
 
   /*---------------------------------------------
     [onDamaged]
      - 몬스터가 데미지를 받았을 때 처리합니다.
 ---------------------------------------------*/
-  onDamaged(attackDamage: number) {
-    this.hp = Math.max(this.hp - attackDamage, 0);
-    if (this.hp <= 0) {
-      this.onDeath();
-      return true; // 몬스터 hp가 0보다 작다면 onDeath 수행
-    }
-    return false; // 몬스터 hp가 0보다 크다면 공격 수행
-  }
+  // onDamaged(attackDamage: number) {
+  //   this.hp = Math.max(this.hp - attackDamage, 0);
+  //   if (this.hp <= 0) {
+  //     this.onDeath();
+  //     return true; // 몬스터 hp가 0보다 작다면 onDeath 수행
+  //   }
+  //   return false; // 몬스터 hp가 0보다 크다면 공격 수행
+  // }
 
-  /**
-   * 몬스터가 죽었을 때 처리합니다.
-   * @override
-   */
-  onDeath() {
-    console.log(`몬스터 ${this.getId()}가 사망.`);
+  // /**
+  //  * 몬스터가 죽었을 때 처리합니다.
+  //  * @override
+  //  */
+  // onDeath() {
+  //   console.log(`몬스터 ${this.getId()}가 사망.`);
 
-    this.room.removeObject(this.getId());
-  }
+  //   //this.room.removeObject(this.getId());
+  // }
 }

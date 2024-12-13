@@ -29,6 +29,11 @@ message B2C_AddCard {
 }
 
 //초기 카드 데이터 알림
-message B2C_InitCardData {
+message B2G_InitCardData {
+    repeated CardData cardData = 1;
+    string userId = 2;
+}
+
+message G2C_InitCardData {
     repeated CardData cardData = 1;
 }

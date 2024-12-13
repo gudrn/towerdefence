@@ -24,25 +24,31 @@ namespace Protocol {
     static MonsterReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cg1tb25zdGVyLnByb3RvEghQcm90b2NvbBoMc3RydWN0LnByb3RvIlQKHEIy",
-            "Q19TcGF3bk1vbnN0ZXJOb3RpZmljYXRpb24SIgoHcG9zSW5mbxgBIAEoCzIR",
-            "LlByb3RvY29sLlBvc0luZm8SEAoIcHJlZmFiSWQYAiABKAkiQAocQjJDX01v",
-            "bnN0ZXJEZWF0aE5vdGlmaWNhdGlvbhIRCgltb25zdGVySWQYASABKAkSDQoF",
-            "c2NvcmUYAiABKAUiSwolQjJDX01vbnN0ZXJQb3NpdGlvblVwZGF0ZU5vdGlm",
-            "aWNhdGlvbhIiCgdwb3NJbmZvGAEgASgLMhEuUHJvdG9jb2wuUG9zSW5mbyJk",
-            "CiJCMkNfTW9uc3RlckF0dGFja1Rvd2VyTm90aWZpY2F0aW9uEhEKCW1vbnN0",
-            "ZXJJZBgBIAEoCRIQCgh0YXJnZXRJZBgCIAEoCRIKCgJocBgDIAEoBRINCgVt",
-            "YXhIcBgEIAEoBSJMCiFCMkNfTW9uc3RlckF0dGFja0Jhc2VOb3RpZmljYXRp",
-            "b24SEQoJbW9uc3RlcklkGAEgASgJEhQKDGF0dGFja0RhbWFnZRgCIAEoBSJT",
-            "CiNCMkNfTW9uc3RlckhlYWx0aFVwZGF0ZU5vdGlmaWNhdGlvbhIRCgltb25z",
-            "dGVySWQYASABKAkSCgoCaHAYAiABKAUSDQoFbWF4SHAYAyABKAViBnByb3Rv",
-            "Mw=="));
+            "Cg1tb25zdGVyLnByb3RvEghQcm90b2NvbBoMc3RydWN0LnByb3RvImQKHEIy",
+            "R19TcGF3bk1vbnN0ZXJOb3RpZmljYXRpb24SIgoHcG9zSW5mbxgBIAEoCzIR",
+            "LlByb3RvY29sLlBvc0luZm8SEAoIcHJlZmFiSWQYAiABKAkSDgoGcm9vbUlk",
+            "GAMgASgFIlQKHEcyQ19TcGF3bk1vbnN0ZXJOb3RpZmljYXRpb24SIgoHcG9z",
+            "SW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SEAoIcHJlZmFiSWQYAiAB",
+            "KAkiQAocQjJDX01vbnN0ZXJEZWF0aE5vdGlmaWNhdGlvbhIRCgltb25zdGVy",
+            "SWQYASABKAkSDQoFc2NvcmUYAiABKAUiWwolQjJHX01vbnN0ZXJQb3NpdGlv",
+            "blVwZGF0ZU5vdGlmaWNhdGlvbhIiCgdwb3NJbmZvGAEgASgLMhEuUHJvdG9j",
+            "b2wuUG9zSW5mbxIOCgZyb29tSWQYAiABKAUiSwolRzJDX01vbnN0ZXJQb3Np",
+            "dGlvblVwZGF0ZU5vdGlmaWNhdGlvbhIiCgdwb3NJbmZvGAEgASgLMhEuUHJv",
+            "dG9jb2wuUG9zSW5mbyJkCiJCMkNfTW9uc3RlckF0dGFja1Rvd2VyTm90aWZp",
+            "Y2F0aW9uEhEKCW1vbnN0ZXJJZBgBIAEoCRIQCgh0YXJnZXRJZBgCIAEoCRIK",
+            "CgJocBgDIAEoBRINCgVtYXhIcBgEIAEoBSJMCiFCMkNfTW9uc3RlckF0dGFj",
+            "a0Jhc2VOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEhQKDGF0dGFj",
+            "a0RhbWFnZRgCIAEoBSJTCiNCMkNfTW9uc3RlckhlYWx0aFVwZGF0ZU5vdGlm",
+            "aWNhdGlvbhIRCgltb25zdGVySWQYASABKAkSCgoCaHAYAiABKAUSDQoFbWF4",
+            "SHAYAyABKAViBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Protocol.StructReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_SpawnMonsterNotification), global::Protocol.B2C_SpawnMonsterNotification.Parser, new[]{ "PosInfo", "PrefabId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2G_SpawnMonsterNotification), global::Protocol.B2G_SpawnMonsterNotification.Parser, new[]{ "PosInfo", "PrefabId", "RoomId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.G2C_SpawnMonsterNotification), global::Protocol.G2C_SpawnMonsterNotification.Parser, new[]{ "PosInfo", "PrefabId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_MonsterDeathNotification), global::Protocol.B2C_MonsterDeathNotification.Parser, new[]{ "MonsterId", "Score" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_MonsterPositionUpdateNotification), global::Protocol.B2C_MonsterPositionUpdateNotification.Parser, new[]{ "PosInfo" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2G_MonsterPositionUpdateNotification), global::Protocol.B2G_MonsterPositionUpdateNotification.Parser, new[]{ "PosInfo", "RoomId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.G2C_MonsterPositionUpdateNotification), global::Protocol.G2C_MonsterPositionUpdateNotification.Parser, new[]{ "PosInfo" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_MonsterAttackTowerNotification), global::Protocol.B2C_MonsterAttackTowerNotification.Parser, new[]{ "MonsterId", "TargetId", "Hp", "MaxHp" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_MonsterAttackBaseNotification), global::Protocol.B2C_MonsterAttackBaseNotification.Parser, new[]{ "MonsterId", "AttackDamage" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2C_MonsterHealthUpdateNotification), global::Protocol.B2C_MonsterHealthUpdateNotification.Parser, new[]{ "MonsterId", "Hp", "MaxHp" }, null, null, null, null)
@@ -55,16 +61,16 @@ namespace Protocol {
   /// <summary>
   /// 몬스터 생성 알림
   /// </summary>
-  public sealed partial class B2C_SpawnMonsterNotification : pb::IMessage<B2C_SpawnMonsterNotification>
+  public sealed partial class B2G_SpawnMonsterNotification : pb::IMessage<B2G_SpawnMonsterNotification>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<B2C_SpawnMonsterNotification> _parser = new pb::MessageParser<B2C_SpawnMonsterNotification>(() => new B2C_SpawnMonsterNotification());
+    private static readonly pb::MessageParser<B2G_SpawnMonsterNotification> _parser = new pb::MessageParser<B2G_SpawnMonsterNotification>(() => new B2G_SpawnMonsterNotification());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<B2C_SpawnMonsterNotification> Parser { get { return _parser; } }
+    public static pb::MessageParser<B2G_SpawnMonsterNotification> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -80,7 +86,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public B2C_SpawnMonsterNotification() {
+    public B2G_SpawnMonsterNotification() {
       OnConstruction();
     }
 
@@ -88,7 +94,279 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public B2C_SpawnMonsterNotification(B2C_SpawnMonsterNotification other) : this() {
+    public B2G_SpawnMonsterNotification(B2G_SpawnMonsterNotification other) : this() {
+      posInfo_ = other.posInfo_ != null ? other.posInfo_.Clone() : null;
+      prefabId_ = other.prefabId_;
+      roomId_ = other.roomId_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public B2G_SpawnMonsterNotification Clone() {
+      return new B2G_SpawnMonsterNotification(this);
+    }
+
+    /// <summary>Field number for the "posInfo" field.</summary>
+    public const int PosInfoFieldNumber = 1;
+    private global::Protocol.PosInfo posInfo_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Protocol.PosInfo PosInfo {
+      get { return posInfo_; }
+      set {
+        posInfo_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "prefabId" field.</summary>
+    public const int PrefabIdFieldNumber = 2;
+    private string prefabId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string PrefabId {
+      get { return prefabId_; }
+      set {
+        prefabId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "roomId" field.</summary>
+    public const int RoomIdFieldNumber = 3;
+    private int roomId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int RoomId {
+      get { return roomId_; }
+      set {
+        roomId_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as B2G_SpawnMonsterNotification);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(B2G_SpawnMonsterNotification other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(PosInfo, other.PosInfo)) return false;
+      if (PrefabId != other.PrefabId) return false;
+      if (RoomId != other.RoomId) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (posInfo_ != null) hash ^= PosInfo.GetHashCode();
+      if (PrefabId.Length != 0) hash ^= PrefabId.GetHashCode();
+      if (RoomId != 0) hash ^= RoomId.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (posInfo_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(PosInfo);
+      }
+      if (PrefabId.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(PrefabId);
+      }
+      if (RoomId != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(RoomId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (posInfo_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(PosInfo);
+      }
+      if (PrefabId.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(PrefabId);
+      }
+      if (RoomId != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(RoomId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (posInfo_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(PosInfo);
+      }
+      if (PrefabId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(PrefabId);
+      }
+      if (RoomId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(RoomId);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(B2G_SpawnMonsterNotification other) {
+      if (other == null) {
+        return;
+      }
+      if (other.posInfo_ != null) {
+        if (posInfo_ == null) {
+          PosInfo = new global::Protocol.PosInfo();
+        }
+        PosInfo.MergeFrom(other.PosInfo);
+      }
+      if (other.PrefabId.Length != 0) {
+        PrefabId = other.PrefabId;
+      }
+      if (other.RoomId != 0) {
+        RoomId = other.RoomId;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (posInfo_ == null) {
+              PosInfo = new global::Protocol.PosInfo();
+            }
+            input.ReadMessage(PosInfo);
+            break;
+          }
+          case 18: {
+            PrefabId = input.ReadString();
+            break;
+          }
+          case 24: {
+            RoomId = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            if (posInfo_ == null) {
+              PosInfo = new global::Protocol.PosInfo();
+            }
+            input.ReadMessage(PosInfo);
+            break;
+          }
+          case 18: {
+            PrefabId = input.ReadString();
+            break;
+          }
+          case 24: {
+            RoomId = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class G2C_SpawnMonsterNotification : pb::IMessage<G2C_SpawnMonsterNotification>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<G2C_SpawnMonsterNotification> _parser = new pb::MessageParser<G2C_SpawnMonsterNotification>(() => new G2C_SpawnMonsterNotification());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<G2C_SpawnMonsterNotification> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Protocol.MonsterReflection.Descriptor.MessageTypes[1]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public G2C_SpawnMonsterNotification() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public G2C_SpawnMonsterNotification(G2C_SpawnMonsterNotification other) : this() {
       posInfo_ = other.posInfo_ != null ? other.posInfo_.Clone() : null;
       prefabId_ = other.prefabId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -96,8 +374,8 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public B2C_SpawnMonsterNotification Clone() {
-      return new B2C_SpawnMonsterNotification(this);
+    public G2C_SpawnMonsterNotification Clone() {
+      return new G2C_SpawnMonsterNotification(this);
     }
 
     /// <summary>Field number for the "posInfo" field.</summary>
@@ -127,12 +405,12 @@ namespace Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as B2C_SpawnMonsterNotification);
+      return Equals(other as G2C_SpawnMonsterNotification);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(B2C_SpawnMonsterNotification other) {
+    public bool Equals(G2C_SpawnMonsterNotification other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -218,7 +496,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(B2C_SpawnMonsterNotification other) {
+    public void MergeFrom(G2C_SpawnMonsterNotification other) {
       if (other == null) {
         return;
       }
@@ -307,7 +585,7 @@ namespace Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.MonsterReflection.Descriptor.MessageTypes[1]; }
+      get { return global::Protocol.MonsterReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -522,21 +800,21 @@ namespace Protocol {
   /// <summary>
   /// 몬스터 위치 동기화
   /// </summary>
-  public sealed partial class B2C_MonsterPositionUpdateNotification : pb::IMessage<B2C_MonsterPositionUpdateNotification>
+  public sealed partial class B2G_MonsterPositionUpdateNotification : pb::IMessage<B2G_MonsterPositionUpdateNotification>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<B2C_MonsterPositionUpdateNotification> _parser = new pb::MessageParser<B2C_MonsterPositionUpdateNotification>(() => new B2C_MonsterPositionUpdateNotification());
+    private static readonly pb::MessageParser<B2G_MonsterPositionUpdateNotification> _parser = new pb::MessageParser<B2G_MonsterPositionUpdateNotification>(() => new B2G_MonsterPositionUpdateNotification());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<B2C_MonsterPositionUpdateNotification> Parser { get { return _parser; } }
+    public static pb::MessageParser<B2G_MonsterPositionUpdateNotification> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.MonsterReflection.Descriptor.MessageTypes[2]; }
+      get { return global::Protocol.MonsterReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -547,7 +825,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public B2C_MonsterPositionUpdateNotification() {
+    public B2G_MonsterPositionUpdateNotification() {
       OnConstruction();
     }
 
@@ -555,15 +833,253 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public B2C_MonsterPositionUpdateNotification(B2C_MonsterPositionUpdateNotification other) : this() {
+    public B2G_MonsterPositionUpdateNotification(B2G_MonsterPositionUpdateNotification other) : this() {
+      posInfo_ = other.posInfo_ != null ? other.posInfo_.Clone() : null;
+      roomId_ = other.roomId_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public B2G_MonsterPositionUpdateNotification Clone() {
+      return new B2G_MonsterPositionUpdateNotification(this);
+    }
+
+    /// <summary>Field number for the "posInfo" field.</summary>
+    public const int PosInfoFieldNumber = 1;
+    private global::Protocol.PosInfo posInfo_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Protocol.PosInfo PosInfo {
+      get { return posInfo_; }
+      set {
+        posInfo_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "roomId" field.</summary>
+    public const int RoomIdFieldNumber = 2;
+    private int roomId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int RoomId {
+      get { return roomId_; }
+      set {
+        roomId_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as B2G_MonsterPositionUpdateNotification);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(B2G_MonsterPositionUpdateNotification other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(PosInfo, other.PosInfo)) return false;
+      if (RoomId != other.RoomId) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (posInfo_ != null) hash ^= PosInfo.GetHashCode();
+      if (RoomId != 0) hash ^= RoomId.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (posInfo_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(PosInfo);
+      }
+      if (RoomId != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(RoomId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (posInfo_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(PosInfo);
+      }
+      if (RoomId != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(RoomId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (posInfo_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(PosInfo);
+      }
+      if (RoomId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(RoomId);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(B2G_MonsterPositionUpdateNotification other) {
+      if (other == null) {
+        return;
+      }
+      if (other.posInfo_ != null) {
+        if (posInfo_ == null) {
+          PosInfo = new global::Protocol.PosInfo();
+        }
+        PosInfo.MergeFrom(other.PosInfo);
+      }
+      if (other.RoomId != 0) {
+        RoomId = other.RoomId;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (posInfo_ == null) {
+              PosInfo = new global::Protocol.PosInfo();
+            }
+            input.ReadMessage(PosInfo);
+            break;
+          }
+          case 16: {
+            RoomId = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            if (posInfo_ == null) {
+              PosInfo = new global::Protocol.PosInfo();
+            }
+            input.ReadMessage(PosInfo);
+            break;
+          }
+          case 16: {
+            RoomId = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// 몬스터 위치 동기화
+  /// </summary>
+  public sealed partial class G2C_MonsterPositionUpdateNotification : pb::IMessage<G2C_MonsterPositionUpdateNotification>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<G2C_MonsterPositionUpdateNotification> _parser = new pb::MessageParser<G2C_MonsterPositionUpdateNotification>(() => new G2C_MonsterPositionUpdateNotification());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<G2C_MonsterPositionUpdateNotification> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Protocol.MonsterReflection.Descriptor.MessageTypes[4]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public G2C_MonsterPositionUpdateNotification() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public G2C_MonsterPositionUpdateNotification(G2C_MonsterPositionUpdateNotification other) : this() {
       posInfo_ = other.posInfo_ != null ? other.posInfo_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public B2C_MonsterPositionUpdateNotification Clone() {
-      return new B2C_MonsterPositionUpdateNotification(this);
+    public G2C_MonsterPositionUpdateNotification Clone() {
+      return new G2C_MonsterPositionUpdateNotification(this);
     }
 
     /// <summary>Field number for the "posInfo" field.</summary>
@@ -581,12 +1097,12 @@ namespace Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as B2C_MonsterPositionUpdateNotification);
+      return Equals(other as G2C_MonsterPositionUpdateNotification);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(B2C_MonsterPositionUpdateNotification other) {
+    public bool Equals(G2C_MonsterPositionUpdateNotification other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -659,7 +1175,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(B2C_MonsterPositionUpdateNotification other) {
+    public void MergeFrom(G2C_MonsterPositionUpdateNotification other) {
       if (other == null) {
         return;
       }
@@ -737,7 +1253,7 @@ namespace Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.MonsterReflection.Descriptor.MessageTypes[3]; }
+      get { return global::Protocol.MonsterReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1040,7 +1556,7 @@ namespace Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.MonsterReflection.Descriptor.MessageTypes[4]; }
+      get { return global::Protocol.MonsterReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1269,7 +1785,7 @@ namespace Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.MonsterReflection.Descriptor.MessageTypes[5]; }
+      get { return global::Protocol.MonsterReflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

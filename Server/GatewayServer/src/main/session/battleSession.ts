@@ -88,10 +88,9 @@ export class BattleSession extends Session {
   }
 
 
-  public init(host: string, port: number, id: string) {
+  public init(host: string, port: number) {
     this.host = host;
     this.port = port;
-    this.setId(id);
   }
 
   private reConnect() {
