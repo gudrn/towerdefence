@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file monster.proto.
  */
 export const file_monster: GenFile = /*@__PURE__*/
-  fileDesc("Cg1tb25zdGVyLnByb3RvEghQcm90b2NvbCJUChxCMkNfU3Bhd25Nb25zdGVyTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhAKCHByZWZhYklkGAIgASgJIkAKHEIyQ19Nb25zdGVyRGVhdGhOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEg0KBXNjb3JlGAIgASgFIksKJUIyQ19Nb25zdGVyUG9zaXRpb25VcGRhdGVOb3RpZmljYXRpb24SIgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8iZAoiQjJDX01vbnN0ZXJBdHRhY2tUb3dlck5vdGlmaWNhdGlvbhIRCgltb25zdGVySWQYASABKAkSEAoIdGFyZ2V0SWQYAiABKAkSCgoCaHAYAyABKAUSDQoFbWF4SHAYBCABKAUiTAohQjJDX01vbnN0ZXJBdHRhY2tCYXNlTm90aWZpY2F0aW9uEhEKCW1vbnN0ZXJJZBgBIAEoCRIUCgxhdHRhY2tEYW1hZ2UYAiABKAUiUwojQjJDX01vbnN0ZXJIZWFsdGhVcGRhdGVOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEgoKAmhwGAIgASgFEg0KBW1heEhwGAMgASgFIj4KG0IyQ19Nb25zdGVyQnVmZk5vdGlmaWNhdGlvbhIQCghidWZmVHlwZRgBIAEoCRINCgVzdGF0ZRgCIAEoCGIGcHJvdG8z", [file_struct]);
+  fileDesc("Cg1tb25zdGVyLnByb3RvEghQcm90b2NvbCJUChxCMkNfU3Bhd25Nb25zdGVyTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhAKCHByZWZhYklkGAIgASgJIkAKHEIyQ19Nb25zdGVyRGVhdGhOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEg0KBXNjb3JlGAIgASgFIksKJUIyQ19Nb25zdGVyUG9zaXRpb25VcGRhdGVOb3RpZmljYXRpb24SIgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8iZAoiQjJDX01vbnN0ZXJBdHRhY2tUb3dlck5vdGlmaWNhdGlvbhIRCgltb25zdGVySWQYASABKAkSEAoIdGFyZ2V0SWQYAiABKAkSCgoCaHAYAyABKAUSDQoFbWF4SHAYBCABKAUiTAohQjJDX01vbnN0ZXJBdHRhY2tCYXNlTm90aWZpY2F0aW9uEhEKCW1vbnN0ZXJJZBgBIAEoCRIUCgxhdHRhY2tEYW1hZ2UYAiABKAUiUwojQjJDX01vbnN0ZXJIZWFsdGhVcGRhdGVOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEgoKAmhwGAIgASgFEg0KBW1heEhwGAMgASgFIj4KG0IyQ19Nb25zdGVyQnVmZk5vdGlmaWNhdGlvbhIQCghidWZmVHlwZRgBIAEoCRINCgVzdGF0ZRgCIAEoCCJICiFCMkNfTW9uc3RlclNsb3dFZmZlY3ROb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEhAKCGlzU2xvd2VkGAIgASgIYgZwcm90bzM", [file_struct]);
 
 /**
  * 몬스터 생성 알림
@@ -189,4 +189,30 @@ export type B2C_MonsterBuffNotification = Message<"Protocol.B2C_MonsterBuffNotif
  */
 export const B2C_MonsterBuffNotificationSchema: GenMessage<B2C_MonsterBuffNotification> = /*@__PURE__*/
   messageDesc(file_monster, 6);
+
+/**
+ * 몬스터 슬로우 효과 알림
+ *
+ * @generated from message Protocol.B2C_MonsterSlowEffectNotification
+ */
+export type B2C_MonsterSlowEffectNotification = Message<"Protocol.B2C_MonsterSlowEffectNotification"> & {
+  /**
+   * @generated from field: string monsterId = 1;
+   */
+  monsterId: string;
+
+  /**
+   * true: 슬로우 적용, false: 슬로우 해제
+   *
+   * @generated from field: bool isSlowed = 2;
+   */
+  isSlowed: boolean;
+};
+
+/**
+ * Describes the message Protocol.B2C_MonsterSlowEffectNotification.
+ * Use `create(B2C_MonsterSlowEffectNotificationSchema)` to create a new message.
+ */
+export const B2C_MonsterSlowEffectNotificationSchema: GenMessage<B2C_MonsterSlowEffectNotification> = /*@__PURE__*/
+  messageDesc(file_monster, 7);
 

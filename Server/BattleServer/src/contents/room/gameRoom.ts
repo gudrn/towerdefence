@@ -27,6 +27,7 @@ import { createTowerBuildNotificationPacket, createTowerBuildPacket } from 'src/
 import { SkillManager } from './skillManager';
 import { MonsterManager } from './monsterManager';
 import { SkillUseMonster } from '../game/skillUseMonster';
+import { TowerManager } from '../game/towerManager';
 
 interface PQNode {
   cost: number;
@@ -60,6 +61,7 @@ export class GameRoom {
   public monsterStatusMultiplier = 1; // 몬스터 강화 계수 (wave만으론 강화가 불가능한가요?) --12.06 조정현
   private gameLoopInterval: any = null; //gameLoop를 저장 후 방 제거 시 clear하기 위함
   private skillManager: SkillManager;
+  private towerManager: TowerManager;
 
 
   constructor(id: number, maxPlayerCount: number) {
@@ -71,6 +73,7 @@ export class GameRoom {
     this.base = new Base(300, create(PosInfoSchema, { x: 16, y: 16 }), this);
     this.maxPlayerCount = maxPlayerCount;
     this.skillManager = new SkillManager(this);
+    this.towerManager = new TowerManager(this);
 
   }
 
@@ -374,9 +377,12 @@ export class GameRoom {
     // 몬스터 업데이트
     this.monsterManager.updateMonsters();
 
-    for (const [uuid, tower] of this.towers) {
-      tower.attackTarget(Array.from(this.monsterManager.getMonsters().values()));
-    }
+    // 타워 업데이트
+    // for (const [uuid, tower] of this.towers) {
+    //   tower.update();
+    // }
+    this.towerManager.updateTowers();
+
     //베이스캠프 체력 0 일시 게임 종료
     if (this.checkBaseHealth()) {
       const endBuffer = createEndGame(false);
