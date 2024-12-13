@@ -2,7 +2,6 @@ import { PosInfo } from 'src/protocol/struct_pb';
 import { GameRoom } from '../room/gameRoom';
 import { assetManager } from 'src/utils/assetManager';
 import { GameObject } from './gameObject';
-import { Monster } from './monster';
 import {
   createTowerAttackMotionPacket,
   createTowerAttackNotificationPacket,
@@ -45,9 +44,21 @@ export class Tower extends GameObject {
     this.lastAttackTime = 0; // 마지막 공격 시간
 
     if (prefabId === 'BuffTower') {
+      // 버프 타워인 경우, 주변 타워들에게 버프 적용
       const towersInRange = this.getTowersInRange(Array.from(this.room.getTowers().values()));
       towersInRange.forEach((tower) => {
-        tower.increaseAttackDamage(this.getId()); // 범위 내의 각 타워에게 버프 적용
+        tower.increaseAttackDamage(this.getId());
+      });
+    } else {
+      // 일반 타워인 경우, 주변 버프 타워에게서 버프 받기
+      const buffTowers = Array.from(this.room.getTowers().values())
+        .filter(t => t.getPrefabId() === 'BuffTower');
+
+      buffTowers.forEach(buffTower => {
+        const inRangeTowers = buffTower.getTowersInRange([this]);
+        if (inRangeTowers.length > 0) {
+          this.increaseAttackDamage(buffTower.getId());
+        }
       });
     }
   }
@@ -130,7 +141,7 @@ export class Tower extends GameObject {
     }
   }
   /**---------------------------------------------
-     * [범위 내 타워 찾기]
+     * [버프 타워 범위 내 타워 찾기]
      * @param {Tower[]} towers - 전체 타워 배열
      * @returns {Tower[]} - 범위 내 타워 배열
      ---------------------------------------------*/
