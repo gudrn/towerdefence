@@ -33,7 +33,7 @@ export class Monster extends GameObject {
   protected moveSpeed: number = 0; //이동 속도
   private waitUntil: number = 0; //동작 간 딜레이 시간
   public score: number = 0; //점수
-  private isSlowed: boolean = false;  // 슬로우 상태 체크용
+  private isSlowed: boolean = false; // 슬로우 상태 체크용
   private slowEffectEndTime: number = 0; //슬로우 효과 종료 시간
 
   constructor(prefabId: string, pos: PosInfo, room: GameRoom) {
@@ -215,14 +215,14 @@ export class Monster extends GameObject {
 
   /*---------------------------------------------
     [슬로우 효과 적용]
-    - 몬스터의 이동속도를 감소시킵니다.
+    - 몬스터의 이동속도를 50% 감소시킵니다.
   ---------------------------------------------*/
-  applySlowEffect(duration: number) {
+  applySlowEffect(duration: number, slowAmount: number = 0.5) {
     // 이미 슬로우 상태면 중복 방지
     if (this.isSlowed) return;
 
     this.isSlowed = true;
-    this.moveSpeed = this.originalMoveSpeed * 0.5; // 50% 감속
+    this.moveSpeed = this.originalMoveSpeed * (1 - slowAmount); // 50% 감속
     this.slowEffectEndTime = Date.now() + duration; // 슬로우 효과 종료 시간
 
     // 클라이언트에 슬로우 효과 패킷 전송
@@ -231,7 +231,6 @@ export class Monster extends GameObject {
       true, // 슬로우 적용
     );
     this.room.broadcast(slowEffectBuffer);
-
   }
 
   /*---------------------------------------------
@@ -244,10 +243,7 @@ export class Monster extends GameObject {
     this.slowEffectEndTime = 0;
 
     // 클라이언트에 슬로우 효과 해제 패킷 전송
-    const removeSlowEffectBuffer = createMonsterSlowEffect(
-      this.getId(),
-      false
-    );
+    const removeSlowEffectBuffer = createMonsterSlowEffect(this.getId(), false);
     this.room.broadcast(removeSlowEffectBuffer);
   }
 

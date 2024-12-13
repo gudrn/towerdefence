@@ -1,4 +1,5 @@
 import { GameRoom } from '../room/gameRoom';
+import { Tower } from '../game/tower';
 
 export class TowerManager {
   private gameRoom: GameRoom;
@@ -9,19 +10,24 @@ export class TowerManager {
     this.gameRoom = gameRoom;
   }
 
+  /**
+   * 모든 타워의 상태를 업데이트합니다
+   */
   updateTowers() {
     const currentTime = Date.now();
     if (currentTime - this.lastUpdateTime < this.UPDATE_INTERVAL) return;
     
     this.lastUpdateTime = currentTime;
     
-    // 한 번에 몬스터 목록 가져오기
+    // 몬스터가 없으면 타워 업데이트 불필요
     const monsters = Array.from(this.gameRoom.getMonsters().values());
-    if (monsters.length === 0) return; // 몬스터가 없으면 처리하지 않음
+    if (monsters.length === 0) return;
 
-    // 각 타워의 update() 호출
-    for (const tower of this.gameRoom.getTowers().values()) {
-      tower.update();
-    }
+    // 타워 목록도 한 번에 가져오기
+    const towers = Array.from(this.gameRoom.getTowers().values());
+    if (towers.length === 0) return;
+
+    // 각 타워 업데이트
+    towers.forEach(tower => tower.update());
   }
 }

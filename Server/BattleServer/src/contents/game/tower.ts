@@ -10,30 +10,41 @@ import {
 import { createDeathMoster } from 'src/packet/gameRoomPacket';
 import { SkillUseMonster } from './skillUseMonster';
 
+/**
+ * 타워 클래스
+ * 게임 내의 모든 타워들의 기본 기능을 구현합니다.
+ */
 export class Tower extends GameObject {
   /*---------------------------------------------
     [멤버 변수]
   ---------------------------------------------*/
-  private originalAttackDamage: number = 0;  // 원래 공격력 (버프 적용 전)
-  private attackDamage: number = 0;          // 현재 공격력 (버프 적용 후)
-  private attackRange: number = 0;           // 공격 범위
-  private attackCoolDown: number = 0;        // 공격 쿨다운 시간 
-  public hp: number = 0;                     // 현재 체력
-  public maxHp: number = 0;                  // 최대 체력
-  private bulletSpeed = 0;                   // 투사체 속도 
-  public target: null | undefined;           // 현재 타겟 
-  public lastAttackTime: number = 0;         // 마지막 공격 시간
-  private buffedBy: Set<string> = new Set(); // 버프를 받은 타워들의 ID 목록
+  private originalAttackDamage: number = 0; // 기본 공격력 (버프 적용 전)
+  private attackDamage: number = 0; // 현재 공격력 (버프 적용 후)
+  private attackRange: number = 0; // 공격 범위
+  private attackCoolDown: number = 0; // 공격 쿨다운 시간
+  public hp: number = 0; // 현재 체력
+  public maxHp: number = 0; // 최대 체력
+  private bulletSpeed = 0; // 투사체 속도
+  public target: null | undefined; // 현재 타겟
+  public lastAttackTime: number = 0; // 마지막 공격 시간
+  private buffedBy: Set<string> = new Set(); // 버프를 주고 있는 타워 ID 목록
+
+  // 특수 능력치들
+  private buffAmount: number = 0; // 버프 타워의 공격력 증가량
+  private slowDuration: number = 0; // 얼음 타워의 슬로우 지속시간
+  private slowAmount: number = 0; // 얼음 타워의 슬로우량
+  private explosionRadius: number = 0; // 미사일 타워의 폭발 범위
 
   /**
    * 타워 생성자
-   * @param prefabId 타워 프리팹 ID
-   * @param pos 타워 위치
+   * @param prefabId 타워의 고유 ID
+   * @param pos 타워의 위치
    * @param room 게임룸 인스턴스
    */
   constructor(prefabId: string, pos: PosInfo, room: GameRoom) {
     super(prefabId, pos, room);
 
+    // 타워 데이터 로드
     const towerData = assetManager.getTowerData(prefabId);
     if (towerData == null) {
       console.log('[Tower constructor] 유효하지 않은 prefabId');
@@ -41,16 +52,23 @@ export class Tower extends GameObject {
     }
 
     this.target = null; // 타겟
-    this.attackDamage = towerData?.attackDamage;
+    // 기본 스탯 초기화
+    this.attackDamage = towerData.attackDamage;
     this.originalAttackDamage = this.attackDamage;
-    this.attackRange = towerData?.attackRange;
-    this.attackCoolDown = towerData?.attackCoolDown;
-    this.hp = this.maxHp = towerData?.maxHp;
-    this.bulletSpeed = 15; // 총알 속도 (픽셀/초)
-    this.lastAttackTime = 0; // 마지막 공격 시간
+    this.attackRange = towerData.attackRange;
+    this.attackCoolDown = towerData.attackCoolDown;
+    this.hp = this.maxHp = towerData.maxHp;
+    this.bulletSpeed = 15;
+    this.lastAttackTime = 0;
 
+    // 특수 능력치 초기화 (?? 연산자로 기본값 0 설정)
+    this.buffAmount = towerData.buffAmount ?? 0; // 버프 타워
+    this.slowDuration = towerData.slowDuration ?? 0; // 얼음 타워
+    this.slowAmount = towerData.slowAmount ?? 0; // 얼음 타워
+    this.explosionRadius = towerData.explosionRadius ?? 0; // 미사일 타워
+
+    // 버프 타워인 경우 주변 타워들에게 버프 적용
     if (prefabId === 'BuffTower') {
-      // 버프 타워인 경우, 주변 타워들에게 버프 적용
       const towersInRange = this.getTowersInRange(Array.from(this.room.getTowers().values()));
       towersInRange.forEach((tower) => {
         tower.increaseAttackDamage(this.getId());
@@ -71,8 +89,8 @@ export class Tower extends GameObject {
   }
 
   /**
-   * 공격 가능한 가장 가까운 몬스터를 찾음
-   * @param monsters 현재 존재하는 몬스터 배열
+   * 공격 범위 내의 가장 가까운 몬스터를 찾습니다
+   * @param monsters 현재 맵에 있는 모든 몬스터 배열
    * @returns 가장 가까운 몬스터와 그 거리, 없으면 null
    */
   private getMonsterInRange(
@@ -96,15 +114,15 @@ export class Tower extends GameObject {
   }
 
   /**
-   * 타워가 공격
+   * 타워의 공격 처리
    * @param targetData 타겟 몬스터와 거리 정보
    */
-
   private attackTarget(targetData: { monster: SkillUseMonster; distance: number }) {
     this.lastAttackTime = Date.now();
     const { monster: target, distance } = targetData;
-    if (!targetData) return; // 공격 가능한 대상이 없으면 종료
+    if (!targetData) return;
 
+    // 투사체 이동 시간 계산
     const travelTime = (distance / this.bulletSpeed) * 1000;
 
     // 공격 모션 패킷 전송
@@ -115,13 +133,12 @@ export class Tower extends GameObject {
     );
     this.room.broadcast(attackMotionBuffer);
 
+    // 투사체 이동 시간 후 데미지 처리
     setTimeout(() => {
-      const isDestroyed = target.onDamaged(this.attackDamage);
+      // 타워 타입에 따른 공격 처리
+      this.processAttack(target);
 
-      if (this.getPrefabId() === 'IceTower') {
-        target.applySlowEffect(3000);
-      }
-
+      // 공격 결과 패킷 전송
       const attackBuffer = createTowerAttackNotificationPacket(
         target.getId(),
         target.hp,
@@ -129,7 +146,8 @@ export class Tower extends GameObject {
       );
       this.room.broadcast(attackBuffer);
 
-      if (isDestroyed) {
+      // 몬스터 처치 처리
+      if (target.hp <= 0) {
         const monsterScore = target.score;
         this.room.addScore(monsterScore);
         const monsterDeathBuffer = createDeathMoster(target.getId(), target.score);
@@ -137,21 +155,70 @@ export class Tower extends GameObject {
       }
     }, travelTime);
   }
-  /**---------------------------------------------
-     * [버프 타워 범위 내 타워 찾기]
-     * @param {Tower[]} towers - 전체 타워 배열
-     * @returns {Tower[]} - 범위 내 타워 배열
-     ---------------------------------------------*/
+
+  /**
+   * 타워 타입별 공격 처리
+   * @param target 타겟 몬스터
+   */
+  private processAttack(target: SkillUseMonster) {
+    switch (this.getPrefabId()) {
+      case 'BasicTower':
+        // 기본 타워: 단일 타겟 기본 공격
+        target.onDamaged(this.attackDamage);
+        break;
+  
+      case 'BuffTower':
+        // 버프 타워: 주변 타워 버프 + 단일 타겟 기본 공격
+        target.onDamaged(this.attackDamage);
+        break;
+  
+      case 'IceTower':
+        // 얼음 타워: 단일 타겟 공격 + 이동속도 감소 효과
+        target.onDamaged(this.attackDamage);
+        target.applySlowEffect(this.slowDuration, this.slowAmount);
+        break;
+  
+      case 'MissileTower':
+        // 미사일 타워: 주 타겟 공격 + 범위 폭발 데미지
+        target.onDamaged(this.attackDamage);
+        this.splashDamage(target);
+        break;
+  
+      case 'StrongTower':
+        // 강력한 타워: 높은 데미지의 단일 타겟 공격
+        target.onDamaged(this.attackDamage);
+        break;
+  
+      case 'TankTower':
+        // 탱크 타워: 높은 체력 + 단일 타겟 기본 공격
+        target.onDamaged(this.attackDamage);
+        break;
+  
+      case 'ThunderTower':
+        // 번개 타워: 다중 타겟 공격 (3개정도..?)
+        target.onDamaged(this.attackDamage);
+        break;
+  
+      default:
+        // 알 수 없는 타워 타입일 경우 일단 기본 공격 실행
+        console.log(`알 수 없는 타워: ${this.getPrefabId()}`);
+        target.onDamaged(this.attackDamage);
+    }
+  }
+  /**
+   * 버프 타워 범위 내 타워 찾기
+   * @param towers 전체 타워 배열
+   * @returns 범위 내 타워 배열
+   */
   getTowersInRange(towers: Tower[]): Tower[] {
     // 범위 내 타워 배열 생성
     const towersInRange: Tower[] = [];
 
-    // 모든 타워를 순회하면서 검사하고
     for (const tower of towers) {
-      // 본인은 제외
+      // 자기 자신은 제외
       if (tower.getId() === this.getId()) continue;
 
-      // 타워 간 거리 계산
+      // 거리 계산 (제곱 상태로 비교하여 최적화)
       const distance =
         (this.pos.x - tower.pos.x) * (this.pos.x - tower.pos.x) +
         (this.pos.y - tower.pos.y) * (this.pos.y - tower.pos.y);
@@ -165,43 +232,45 @@ export class Tower extends GameObject {
     return towersInRange;
   }
 
-  /**---------------------------------------------
-   * [공격력 버프 적용]
+  /**
+   * 공격력 버프
    * @param buffTowerId 버프를 주는 타워의 ID
-  ---------------------------------------------*/
+   */
   increaseAttackDamage(buffTowerId: string) {
-    if (this.buffedBy.size > 0) return; // 버프 중복 방지
+    // 이미 버프 받고 있으면 중복 방지
+    if (this.buffedBy.size > 0) return;
 
-    // 버프가 없을 때만 새로운 버프 적용
     this.buffedBy.add(buffTowerId);
-    this.attackDamage = this.originalAttackDamage + this.buffedBy.size * 5;
 
-    console.log(`${this.getPrefabId()}: ${this.originalAttackDamage} -> ${this.attackDamage}`);
+    // 공격력 증가
+    this.attackDamage = this.originalAttackDamage + this.buffedBy.size * this.buffAmount;
+
     // 버프 적용 패킷 전송
-    const buffApplyPacket = createTowerBuffNotificationPacket(this.getId(), true); // 버프 적용
+    const buffApplyPacket = createTowerBuffNotificationPacket(this.getId(), true);
     this.room.broadcast(buffApplyPacket);
   }
-  /**---------------------------------------------
-   * [공격력 버프 해제]
+
+  /**
+   * 특정 버프 타워의 버프를 제거
    * @param buffTowerId 제거할 버프 타워의 ID
-  ---------------------------------------------*/
+   */
   removeBuffFromTower(buffTowerId: string) {
     if (this.buffedBy.has(buffTowerId)) {
       this.buffedBy.delete(buffTowerId);
-
+      // 공격력 원래대로 복구
       this.attackDamage = this.originalAttackDamage;
 
       // 버프 해제 패킷 전송
-      const buffRemovePacket = createTowerBuffNotificationPacket(this.getId(), false); // 버프 해제
+      const buffRemovePacket = createTowerBuffNotificationPacket(this.getId(), false);
       this.room.broadcast(buffRemovePacket);
     }
   }
-  /**---------------------------------------------
-   * [버프 타워 파괴 시 주변타워 해당 버프 제거]
-   ---------------------------------------------*/
-   removeAllBuffsFromTower() {
+
+  /**
+   * 버프 타워 파괴 시 모든 버프를 제거
+   */
+  removeAllBuffsFromTower() {
     if (this.getPrefabId() === 'BuffTower') {
-      // 현재 버프 타워의 범위 내에 있는 타워들만 버프 해제
       const towersInRange = this.getTowersInRange(Array.from(this.room.getTowers().values()));
       towersInRange.forEach((tower) => {
         tower.removeBuffFromTower(this.getId());
@@ -209,44 +278,74 @@ export class Tower extends GameObject {
     }
   }
 
-  /*---------------------------------------------
-    [타워가 데미지 받을 시 처리]
-   * @param {number} attackDamage - 가하는 데미지
-   * @return {boolean} - 몬스터 사망 여부
-  ---------------------------------------------*/
+  /**
+   * 미사일 타워의 범위 피해 처리
+   */
+  private splashDamage(target: SkillUseMonster) {
+    const monsters = Array.from(this.room.getMonsters().values());
+    for (const monster of monsters) {
+      
+      // 주 타겟은 제외(주변 몬스터만 피해 처리)
+      if (monster.getId() === target.getId()) continue;
+  
+      const dx = target.pos.x - monster.pos.x;
+      const dy = target.pos.y - monster.pos.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+  
+      if (distance <= this.explosionRadius) {
+        monster.onDamaged(this.attackDamage);
+        
+        // 범위 피해 패킷만 전송
+        const splashDamageBuffer = createTowerAttackNotificationPacket(
+          monster.getId(),
+          monster.hp,
+          monster.maxHp
+        );
+        this.room.broadcast(splashDamageBuffer);
+      }
+    }
+  }
+
+  /**
+   * 타워 데미지 처리
+   * @param attackDamage 받은 데미지
+   * @returns 타워가 파괴되었는지 여부
+   */
   onDamaged(attackDamage: number): boolean {
     this.hp = Math.max(this.hp - attackDamage, 0);
     if (this.hp <= 0) {
       this.onDeath();
-      return true; // 타워 hp가 0보다 작다면 onDeath 수행
+      return true;
     }
-    return false; // 타워 hp가 0보다 크다면 공격 수행
+    return false;
   }
 
-  /*---------------------------------------------
-    [타워 파괴 시 처리]
-  ---------------------------------------------*/
+  /**
+   * 타워 파괴 처리
+   */
   onDeath() {
     if (this.getPrefabId() === 'BuffTower') {
-      this.removeAllBuffsFromTower(); // 버프 타워 파괴시 버프 해제
+      // 버프 타워가 파괴되면, 버프 받던 모든 타워들의 버프 해제
+      this.removeAllBuffsFromTower();
     }
+    // 타워가 파괴되면 게임에서 제거
     this.room.removeObject(this.getId());
   }
-  
-  /*---------------------------------------------
-    [타워 업데이트]
-  ---------------------------------------------*/
+
+  /**
+   * 타워의 상태 업데이트
+   */
   update() {
-    // 타워가 파괴되었다면 업데이트 하지 않음
+    // 타워가 파괴되었으면 업데이트 하지 않음
     if (this.hp <= 0) return;
 
-    // 공격 쿨다운 체크
+    // 공격 쿨다운 체크 후 공격 가능하면 공격
     const currentTime = Date.now();
     if (currentTime - this.lastAttackTime > this.attackCoolDown) {
       const monsters = Array.from(this.room.getMonsters().values());
       const targetData = this.getMonsterInRange(monsters);
       if (targetData) {
-        this.attackTarget(targetData); 
+        this.attackTarget(targetData);
       }
     }
   }
