@@ -17,13 +17,17 @@ export class Tower extends GameObject {
   private originalAttackDamage: number = 0;
   private attackDamage: number = 0;
   private attackRange: number = 0;
-  private attackCoolDown: number = 0;
+  public attackCoolDown: number = 0;
   public hp: number = 0;
   public maxHp: number = 0;
   private bulletSpeed = 0;
   public target: null | undefined;
   public lastAttackTime: number = 0;
   private buffedBy: Set<string> = new Set();
+
+  /*---------------------------------------------
+    [생성자]
+---------------------------------------------*/
 
   constructor(prefabId: string, pos: PosInfo, room: GameRoom) {
     super(prefabId, pos, room);

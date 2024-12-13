@@ -28,3 +28,34 @@ message C2B_UseCardRequest {
     string cardId = 2; 
 }
 
+message B2C_PlayerUseAbility {
+    PosInfo position = 1;
+    string prefabId = 2;
+    string message = 3;
+}
+
+message C2B_PlayerUseAbilityRequest 
+{
+  GamePlayerData playerData = 1;
+  int32 roomId = 2;
+}
+
+message B2C_AttackCoolDownBuffNotification
+{
+  string towerId = 1;
+  int32 buffAttackCoolDown = 2;
+  bool buffActive = 3;
+}
+
+message B2C_CooldownNotificationPacket 
+{
+  string prefabId = 1;
+  int32 cooldown = 2;
+}
+
+message B2C_PlayerUseAbility 
+{
+  PosInfo position = 1;
+  int32 prefabId = 2;
+  string message = 3;
+}

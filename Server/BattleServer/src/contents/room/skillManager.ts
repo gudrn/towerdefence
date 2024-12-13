@@ -33,6 +33,7 @@ export class SkillManager {
         break;
       // case "Molotov Cocktail":
       //   this.handlerMolotovCocktail(skill,skillPos);
+      //   break;
       case 'TowerRepair':
         this.handleTowerRepair(skill, skillPos);
         break;
@@ -79,6 +80,7 @@ export class SkillManager {
    * @param {any} skillPos - 스킬 위치
    * @returns {void}
    ---------------------------------------------*/
+
   //  private handlerMolotovCocktail (skill: any, skillPos: any){
     
   //  }

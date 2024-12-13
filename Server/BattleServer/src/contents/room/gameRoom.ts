@@ -60,6 +60,7 @@ export class GameRoom {
   public monsterStatusMultiplier = 1; // 몬스터 강화 계수 (wave만으론 강화가 불가능한가요?) --12.06 조정현
   private gameLoopInterval: any = null; //gameLoop를 저장 후 방 제거 시 clear하기 위함
   private skillManager: SkillManager;
+  private player: GamePlayer | null = null;
 
 
   constructor(id: number, maxPlayerCount: number) {
@@ -101,6 +102,7 @@ export class GameRoom {
   getTowers() {
     return this.towers;
   }
+
 
   getMonsterManager() {
     return this.monsterManager;
@@ -294,6 +296,14 @@ export class GameRoom {
    ---------------------------------------------*/
   handleSkill(payload: any, session: BattleSession) {
     this.skillManager.handleSkill(payload, session);
+  }
+
+  /**---------------------------------------------
+   * [어빌리티 사용 동기화]
+   * @param {Buffer} buffer - 스킬 사용 패킷 데이터
+   ---------------------------------------------*/
+  handleAbility(payload: any, session: BattleSession) {
+    this.player?.useAbility(payload, session);
   }
 
   /**---------------------------------------------

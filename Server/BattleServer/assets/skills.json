@@ -15,6 +15,7 @@
       "attackRange": 0,
       "heal": 50,
       "type": "Heal"
+    },
     }
   ]
 }

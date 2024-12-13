@@ -3,17 +3,24 @@ import { BattleSession } from 'src/main/session/battleSession';
 import { CardData, CardDataSchema, GamePlayerData, SkillDataSchema } from 'src/protocol/struct_pb';
 import { assetManager } from 'src/utils/assetManager';
 import { createAddRandomCard, createInitCard, createUseCard } from 'src/packet/gamePlayerPacket';
+import { Character } from './character/character';
+import { GameRoom } from '../room/gameRoom.js';
+import { eCharacterId } from 'ServerCore/utils/characterId';
+import { CreateCharacter } from './character/createCharcter';
 
 export class GamePlayer {
   public session: BattleSession;
   public playerData: GamePlayerData;
   public cardList: Map<string, string> = new Map();
+  public character: Character | null = null; // 플레이어와 연결된 캐릭터
+
 
   constructor(session: BattleSession, playerData: GamePlayerData) {
     this.session = session; // 세션 정보 저장
     this.playerData = playerData; // 플레이어 데이터 저장
     this.cardList = new Map(); // 카드 목록 초기화
   }
+
 
   /*---------------------------------------------
     [initCard]
@@ -34,6 +41,7 @@ export class GamePlayer {
         prefabId: prefabId,
       }),
     );
+
     const sendBuffer = createInitCard(cardDatas, this.session.getNextSequence.bind(this));
     this.session.send(sendBuffer); // 초기 카드 데이터 전송
   }
@@ -55,6 +63,7 @@ export class GamePlayer {
     const sendBuffer = createAddRandomCard(card, this.session.getNextSequence.bind(this));
     this.session.send(sendBuffer); // 카드 추가 데이터 전송
   }
+
 
   //   /**
   //    * 카드 사용 실패시 다시 추가
@@ -109,5 +118,10 @@ export class GamePlayer {
 
   public getCardList() {
     return this.cardList;
+  }
+
+  public useAbility(payload: any, session: BattleSession) {
+    this.character?.useAbility(payload, session);
+    return;
   }
 }
