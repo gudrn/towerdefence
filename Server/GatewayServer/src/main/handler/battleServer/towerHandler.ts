@@ -18,20 +18,6 @@ export function handleB2G_TowerBuildNotification(buffer: Buffer, session: Battle
         tower: packet.tower
     });
 
-    if(packet.tower == undefined) {
-        console.log("sibal");
-    }
-    else
-    {
-        if(packet.tower.towerPos == undefined) {
-            console.log("ddddddddddd");
-        }
-        else
-        {
-            console.log(packet.tower.towerPos.uuid);
-        }
-    }
-
     const sendBuffer = PacketUtils.SerializePacket(
         notificationPacket,
         G2C_TowerBuildNotificationSchema,
@@ -104,13 +90,8 @@ export function handleB2G_TowerHealthUpdateNotification(buffer: Buffer, session:
     [타워->몬스터 공격 알림]
   ---------------------------------------------*/
 export function handleB2G_TowerAttackMonsterNotification(buffer: Buffer, session: BattleSession) {
-    console.log("handleB2G_TowerAttackMonsterNotification");
-    let packet;
-    try {
-        packet = fromBinary(B2G_TowerAttackMonsterNotificationSchema, buffer);
-    } catch (err) {
-        throw new CustomError(ErrorCodes.INVALID_PACKET, `[handleB2G_TowerAttackMonsterNotification] 패킷 파싱 오류: ${err}`);
-    }
+    const packet = fromBinary(B2G_TowerAttackMonsterNotificationSchema, buffer);
+
     const notificationPacket = create(G2C_TowerAttackMonsterNotificationSchema, {
         towerId: packet.towerId,
         monsterPos: packet.monsterPos,

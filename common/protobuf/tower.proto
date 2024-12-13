@@ -96,3 +96,16 @@ message G2C_TowerHealthUpdateNotification
     int32 hp = 2;
     int32 maxHp = 3;
 }
+
+// 타워 버프 상태 알림
+message B2G_TowerBuffNotification {
+    string towerId = 1;     // 버프 받은/해제된 타워 ID
+    bool isBuffed = 2;      // true: 버프 적용, false: 버프 해제
+    int32 roomId = 3;
+}
+
+// 타워 버프 상태 알림
+message G2C_TowerBuffNotification {
+    string towerId = 1;     // 버프 받은/해제된 타워 ID
+    bool isBuffed = 2;      // true: 버프 적용, false: 버프 해제
+}

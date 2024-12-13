@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file monster.proto.
  */
 export const file_monster: GenFile = /*@__PURE__*/
-  fileDesc("Cg1tb25zdGVyLnByb3RvEghQcm90b2NvbCJkChxCMkdfU3Bhd25Nb25zdGVyTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhAKCHByZWZhYklkGAIgASgJEg4KBnJvb21JZBgDIAEoBSJUChxHMkNfU3Bhd25Nb25zdGVyTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhAKCHByZWZhYklkGAIgASgJIlAKHEIyR19Nb25zdGVyRGVhdGhOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEg0KBXNjb3JlGAIgASgFEg4KBnJvb21JZBgDIAEoBSJAChxHMkNfTW9uc3RlckRlYXRoTm90aWZpY2F0aW9uEhEKCW1vbnN0ZXJJZBgBIAEoCRINCgVzY29yZRgCIAEoBSJbCiVCMkdfTW9uc3RlclBvc2l0aW9uVXBkYXRlTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEg4KBnJvb21JZBgCIAEoBSJLCiVHMkNfTW9uc3RlclBvc2l0aW9uVXBkYXRlTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvInQKIkIyR19Nb25zdGVyQXR0YWNrVG93ZXJOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEhAKCHRhcmdldElkGAIgASgJEgoKAmhwGAMgASgFEg0KBW1heEhwGAQgASgFEg4KBnJvb21JZBgFIAEoBSJkCiJHMkNfTW9uc3RlckF0dGFja1Rvd2VyTm90aWZpY2F0aW9uEhEKCW1vbnN0ZXJJZBgBIAEoCRIQCgh0YXJnZXRJZBgCIAEoCRIKCgJocBgDIAEoBRINCgVtYXhIcBgEIAEoBSJcCiFCMkdfTW9uc3RlckF0dGFja0Jhc2VOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEhQKDGF0dGFja0RhbWFnZRgCIAEoBRIOCgZyb29tSWQYAyABKAUiTAohRzJDX01vbnN0ZXJBdHRhY2tCYXNlTm90aWZpY2F0aW9uEhEKCW1vbnN0ZXJJZBgBIAEoCRIUCgxhdHRhY2tEYW1hZ2UYAiABKAUiYwojQjJHX01vbnN0ZXJIZWFsdGhVcGRhdGVOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEgoKAmhwGAIgASgFEg0KBW1heEhwGAMgASgFEg4KBnJvb21JZBgEIAEoBSJTCiNHMkNfTW9uc3RlckhlYWx0aFVwZGF0ZU5vdGlmaWNhdGlvbhIRCgltb25zdGVySWQYASABKAkSCgoCaHAYAiABKAUSDQoFbWF4SHAYAyABKAViBnByb3RvMw", [file_struct]);
+  fileDesc("Cg1tb25zdGVyLnByb3RvEghQcm90b2NvbCJkChxCMkdfU3Bhd25Nb25zdGVyTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhAKCHByZWZhYklkGAIgASgJEg4KBnJvb21JZBgDIAEoBSJUChxHMkNfU3Bhd25Nb25zdGVyTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhAKCHByZWZhYklkGAIgASgJIlAKHEIyR19Nb25zdGVyRGVhdGhOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEg0KBXNjb3JlGAIgASgFEg4KBnJvb21JZBgDIAEoBSJAChxHMkNfTW9uc3RlckRlYXRoTm90aWZpY2F0aW9uEhEKCW1vbnN0ZXJJZBgBIAEoCRINCgVzY29yZRgCIAEoBSJbCiVCMkdfTW9uc3RlclBvc2l0aW9uVXBkYXRlTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEg4KBnJvb21JZBgCIAEoBSJLCiVHMkNfTW9uc3RlclBvc2l0aW9uVXBkYXRlTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvInQKIkIyR19Nb25zdGVyQXR0YWNrVG93ZXJOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEhAKCHRhcmdldElkGAIgASgJEgoKAmhwGAMgASgFEg0KBW1heEhwGAQgASgFEg4KBnJvb21JZBgFIAEoBSJkCiJHMkNfTW9uc3RlckF0dGFja1Rvd2VyTm90aWZpY2F0aW9uEhEKCW1vbnN0ZXJJZBgBIAEoCRIQCgh0YXJnZXRJZBgCIAEoCRIKCgJocBgDIAEoBRINCgVtYXhIcBgEIAEoBSJcCiFCMkdfTW9uc3RlckF0dGFja0Jhc2VOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEhQKDGF0dGFja0RhbWFnZRgCIAEoBRIOCgZyb29tSWQYAyABKAUiTAohRzJDX01vbnN0ZXJBdHRhY2tCYXNlTm90aWZpY2F0aW9uEhEKCW1vbnN0ZXJJZBgBIAEoCRIUCgxhdHRhY2tEYW1hZ2UYAiABKAUiYwojQjJHX01vbnN0ZXJIZWFsdGhVcGRhdGVOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEgoKAmhwGAIgASgFEg0KBW1heEhwGAMgASgFEg4KBnJvb21JZBgEIAEoBSJTCiNHMkNfTW9uc3RlckhlYWx0aFVwZGF0ZU5vdGlmaWNhdGlvbhIRCgltb25zdGVySWQYASABKAkSCgoCaHAYAiABKAUSDQoFbWF4SHAYAyABKAUiTgobQjJHX01vbnN0ZXJCdWZmTm90aWZpY2F0aW9uEhAKCGJ1ZmZUeXBlGAEgASgJEg0KBXN0YXRlGAIgASgIEg4KBnJvb21JZBgDIAEoBSI+ChtHMkNfTW9uc3RlckJ1ZmZOb3RpZmljYXRpb24SEAoIYnVmZlR5cGUYASABKAkSDQoFc3RhdGUYAiABKAhiBnByb3RvMw", [file_struct]);
 
 /**
  * 몬스터 생성 알림
@@ -349,4 +349,57 @@ export type G2C_MonsterHealthUpdateNotification = Message<"Protocol.G2C_MonsterH
  */
 export const G2C_MonsterHealthUpdateNotificationSchema: GenMessage<G2C_MonsterHealthUpdateNotification> = /*@__PURE__*/
   messageDesc(file_monster, 11);
+
+/**
+ * 몬스터 버프 상태 알림
+ *
+ * @generated from message Protocol.B2G_MonsterBuffNotification
+ */
+export type B2G_MonsterBuffNotification = Message<"Protocol.B2G_MonsterBuffNotification"> & {
+  /**
+   * @generated from field: string buffType = 1;
+   */
+  buffType: string;
+
+  /**
+   * @generated from field: bool state = 2;
+   */
+  state: boolean;
+
+  /**
+   * @generated from field: int32 roomId = 3;
+   */
+  roomId: number;
+};
+
+/**
+ * Describes the message Protocol.B2G_MonsterBuffNotification.
+ * Use `create(B2G_MonsterBuffNotificationSchema)` to create a new message.
+ */
+export const B2G_MonsterBuffNotificationSchema: GenMessage<B2G_MonsterBuffNotification> = /*@__PURE__*/
+  messageDesc(file_monster, 12);
+
+/**
+ * 몬스터 버프 상태 알림
+ *
+ * @generated from message Protocol.G2C_MonsterBuffNotification
+ */
+export type G2C_MonsterBuffNotification = Message<"Protocol.G2C_MonsterBuffNotification"> & {
+  /**
+   * @generated from field: string buffType = 1;
+   */
+  buffType: string;
+
+  /**
+   * @generated from field: bool state = 2;
+   */
+  state: boolean;
+};
+
+/**
+ * Describes the message Protocol.G2C_MonsterBuffNotification.
+ * Use `create(G2C_MonsterBuffNotificationSchema)` to create a new message.
+ */
+export const G2C_MonsterBuffNotificationSchema: GenMessage<G2C_MonsterBuffNotification> = /*@__PURE__*/
+  messageDesc(file_monster, 13);
 

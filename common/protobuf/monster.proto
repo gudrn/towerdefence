@@ -89,4 +89,16 @@ message G2C_MonsterHealthUpdateNotification {
     int32 maxHp = 3;
 }
 
+// 몬스터 버프 상태 알림
+message B2G_MonsterBuffNotification{
+    string buffType = 1;
+    bool state = 2;
+    int32 roomId = 3;
+}
+
+// 몬스터 버프 상태 알림
+message G2C_MonsterBuffNotification {
+    string buffType = 1;
+    bool state = 2;
+}
 

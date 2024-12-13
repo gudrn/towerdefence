@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file tower.proto.
  */
 export const file_tower: GenFile = /*@__PURE__*/
-  fileDesc("Cgt0b3dlci5wcm90bxIIUHJvdG9jb2wibAoVQzJHX1Rvd2VyQnVpbGRSZXF1ZXN0EiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAkSDgoGcm9vbUlkGAMgASgFEg4KBmNhcmRJZBgEIAEoCSJsChVHMkJfVG93ZXJCdWlsZFJlcXVlc3QSIgoFdG93ZXIYASABKAsyEy5Qcm90b2NvbC5Ub3dlckRhdGESDwoHb3duZXJJZBgCIAEoCRIOCgZyb29tSWQYAyABKAUSDgoGY2FyZElkGAQgASgJImEKGkIyR19Ub3dlckJ1aWxkTm90aWZpY2F0aW9uEiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAkSDgoGcm9vbUlkGAMgASgFIlEKGkcyQ19Ub3dlckJ1aWxkTm90aWZpY2F0aW9uEiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAkigAEKIkIyR19Ub3dlckF0dGFja01vbnN0ZXJOb3RpZmljYXRpb24SDwoHdG93ZXJJZBgBIAEoCRIlCgptb25zdGVyUG9zGAIgASgLMhEuUHJvdG9jb2wuUG9zSW5mbxISCgp0cmF2ZWxUaW1lGAMgASgCEg4KBnJvb21JZBgEIAEoBSJwCiJHMkNfVG93ZXJBdHRhY2tNb25zdGVyTm90aWZpY2F0aW9uEg8KB3Rvd2VySWQYASABKAkSJQoKbW9uc3RlclBvcxgCIAEoCzIRLlByb3RvY29sLlBvc0luZm8SEgoKdHJhdmVsVGltZRgDIAEoAiJSChxCMkdfVG93ZXJEZXN0cm95Tm90aWZpY2F0aW9uEhEKCWlzU3VjY2VzcxgBIAEoCBIPCgd0b3dlcklkGAIgASgJEg4KBnJvb21JZBgDIAEoBSJCChxHMkNfVG93ZXJEZXN0cm95Tm90aWZpY2F0aW9uEhEKCWlzU3VjY2VzcxgBIAEoCBIPCgd0b3dlcklkGAIgASgJIkIKG0IyR19CYXNlRGVzdHJveU5vdGlmaWNhdGlvbhITCgtpc0Rlc3Ryb2llZBgBIAEoCBIOCgZyb29tSWQYAiABKAUiMgobRzJDX0Jhc2VEZXN0cm95Tm90aWZpY2F0aW9uEhMKC2lzRGVzdHJvaWVkGAEgASgIIl8KIUIyR19Ub3dlckhlYWx0aFVwZGF0ZU5vdGlmaWNhdGlvbhIPCgd0b3dlcklkGAEgASgJEgoKAmhwGAIgASgFEg0KBW1heEhwGAMgASgFEg4KBnJvb21JZBgEIAEoBSJPCiFHMkNfVG93ZXJIZWFsdGhVcGRhdGVOb3RpZmljYXRpb24SDwoHdG93ZXJJZBgBIAEoCRIKCgJocBgCIAEoBRINCgVtYXhIcBgDIAEoBWIGcHJvdG8z", [file_struct]);
+  fileDesc("Cgt0b3dlci5wcm90bxIIUHJvdG9jb2wibAoVQzJHX1Rvd2VyQnVpbGRSZXF1ZXN0EiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAkSDgoGcm9vbUlkGAMgASgFEg4KBmNhcmRJZBgEIAEoCSJsChVHMkJfVG93ZXJCdWlsZFJlcXVlc3QSIgoFdG93ZXIYASABKAsyEy5Qcm90b2NvbC5Ub3dlckRhdGESDwoHb3duZXJJZBgCIAEoCRIOCgZyb29tSWQYAyABKAUSDgoGY2FyZElkGAQgASgJImEKGkIyR19Ub3dlckJ1aWxkTm90aWZpY2F0aW9uEiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAkSDgoGcm9vbUlkGAMgASgFIlEKGkcyQ19Ub3dlckJ1aWxkTm90aWZpY2F0aW9uEiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAkigAEKIkIyR19Ub3dlckF0dGFja01vbnN0ZXJOb3RpZmljYXRpb24SDwoHdG93ZXJJZBgBIAEoCRIlCgptb25zdGVyUG9zGAIgASgLMhEuUHJvdG9jb2wuUG9zSW5mbxISCgp0cmF2ZWxUaW1lGAMgASgCEg4KBnJvb21JZBgEIAEoBSJwCiJHMkNfVG93ZXJBdHRhY2tNb25zdGVyTm90aWZpY2F0aW9uEg8KB3Rvd2VySWQYASABKAkSJQoKbW9uc3RlclBvcxgCIAEoCzIRLlByb3RvY29sLlBvc0luZm8SEgoKdHJhdmVsVGltZRgDIAEoAiJSChxCMkdfVG93ZXJEZXN0cm95Tm90aWZpY2F0aW9uEhEKCWlzU3VjY2VzcxgBIAEoCBIPCgd0b3dlcklkGAIgASgJEg4KBnJvb21JZBgDIAEoBSJCChxHMkNfVG93ZXJEZXN0cm95Tm90aWZpY2F0aW9uEhEKCWlzU3VjY2VzcxgBIAEoCBIPCgd0b3dlcklkGAIgASgJIkIKG0IyR19CYXNlRGVzdHJveU5vdGlmaWNhdGlvbhITCgtpc0Rlc3Ryb2llZBgBIAEoCBIOCgZyb29tSWQYAiABKAUiMgobRzJDX0Jhc2VEZXN0cm95Tm90aWZpY2F0aW9uEhMKC2lzRGVzdHJvaWVkGAEgASgIIl8KIUIyR19Ub3dlckhlYWx0aFVwZGF0ZU5vdGlmaWNhdGlvbhIPCgd0b3dlcklkGAEgASgJEgoKAmhwGAIgASgFEg0KBW1heEhwGAMgASgFEg4KBnJvb21JZBgEIAEoBSJPCiFHMkNfVG93ZXJIZWFsdGhVcGRhdGVOb3RpZmljYXRpb24SDwoHdG93ZXJJZBgBIAEoCRIKCgJocBgCIAEoBRINCgVtYXhIcBgDIAEoBSJOChlCMkdfVG93ZXJCdWZmTm90aWZpY2F0aW9uEg8KB3Rvd2VySWQYASABKAkSEAoIaXNCdWZmZWQYAiABKAgSDgoGcm9vbUlkGAMgASgFIj4KGUcyQ19Ub3dlckJ1ZmZOb3RpZmljYXRpb24SDwoHdG93ZXJJZBgBIAEoCRIQCghpc0J1ZmZlZBgCIAEoCGIGcHJvdG8z", [file_struct]);
 
 /**
  * C->G 타워 생성 요청
@@ -374,4 +374,65 @@ export type G2C_TowerHealthUpdateNotification = Message<"Protocol.G2C_TowerHealt
  */
 export const G2C_TowerHealthUpdateNotificationSchema: GenMessage<G2C_TowerHealthUpdateNotification> = /*@__PURE__*/
   messageDesc(file_tower, 11);
+
+/**
+ * 타워 버프 상태 알림
+ *
+ * @generated from message Protocol.B2G_TowerBuffNotification
+ */
+export type B2G_TowerBuffNotification = Message<"Protocol.B2G_TowerBuffNotification"> & {
+  /**
+   * 버프 받은/해제된 타워 ID
+   *
+   * @generated from field: string towerId = 1;
+   */
+  towerId: string;
+
+  /**
+   * true: 버프 적용, false: 버프 해제
+   *
+   * @generated from field: bool isBuffed = 2;
+   */
+  isBuffed: boolean;
+
+  /**
+   * @generated from field: int32 roomId = 3;
+   */
+  roomId: number;
+};
+
+/**
+ * Describes the message Protocol.B2G_TowerBuffNotification.
+ * Use `create(B2G_TowerBuffNotificationSchema)` to create a new message.
+ */
+export const B2G_TowerBuffNotificationSchema: GenMessage<B2G_TowerBuffNotification> = /*@__PURE__*/
+  messageDesc(file_tower, 12);
+
+/**
+ * 타워 버프 상태 알림
+ *
+ * @generated from message Protocol.G2C_TowerBuffNotification
+ */
+export type G2C_TowerBuffNotification = Message<"Protocol.G2C_TowerBuffNotification"> & {
+  /**
+   * 버프 받은/해제된 타워 ID
+   *
+   * @generated from field: string towerId = 1;
+   */
+  towerId: string;
+
+  /**
+   * true: 버프 적용, false: 버프 해제
+   *
+   * @generated from field: bool isBuffed = 2;
+   */
+  isBuffed: boolean;
+};
+
+/**
+ * Describes the message Protocol.G2C_TowerBuffNotification.
+ * Use `create(G2C_TowerBuffNotificationSchema)` to create a new message.
+ */
+export const G2C_TowerBuffNotificationSchema: GenMessage<G2C_TowerBuffNotification> = /*@__PURE__*/
+  messageDesc(file_tower, 13);
 

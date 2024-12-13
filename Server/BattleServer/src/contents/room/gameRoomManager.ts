@@ -1,17 +1,18 @@
 import { GameRoom } from './gameRoom';
 import { create, fromBinary } from '@bufbuild/protobuf';
 import { ePacketId } from 'ServerCore/network/packetId';
-import { PacketUtils } from "ServerCore/utils/packetUtils";
-import { B2G_CreateGameRoomResponseSchema, G2B_CreateGameRoomRequestSchema, G2B_JoinGameRoomRequestSchema } from "src/protocol/room_pb";
+import { PacketUtils } from 'ServerCore/utils/packetUtils';
+import {
+  B2G_CreateGameRoomResponseSchema,
+  G2B_CreateGameRoomRequestSchema,
+  G2B_JoinGameRoomRequestSchema,
+} from 'src/protocol/room_pb';
 import { CustomError } from 'ServerCore/utils/error/customError';
 import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
 import { BattleSession } from 'src/main/session/battleSession';
-import { C2B_SkillRequestSchema } from 'src/protocol/skill_pb';
 import { GamePlayer } from '../game/gamePlayer';
-import { battleConfig } from 'src/config/config';
 import { G2B_PlayerPositionUpdateRequestSchema } from 'src/protocol/character_pb';
 import { G2B_TowerBuildRequestSchema } from 'src/protocol/tower_pb';
-
 
 const MAX_ROOMS_SIZE = 10000;
 
@@ -29,7 +30,7 @@ class GameRoomManager {
     -클라에게 B2C_EnterRoom패킷 전송
 ---------------------------------------------*/
   enterRoomHandler(buffer: Buffer, session: BattleSession) {
-     console.log('enterRoomHandler 호출됨');
+    console.log('enterRoomHandler 호출됨');
 
     const packet = fromBinary(G2B_JoinGameRoomRequestSchema, buffer);
     // 1. 유효성 검사: roomId 확인
@@ -39,8 +40,11 @@ class GameRoomManager {
       return;
     }
 
-    if(packet.playerData == undefined) {
-      throw new CustomError(ErrorCodes.MISSING_FIELDS, "[enterRoomHandler] GamePlayerData가 누락됨");
+    if (packet.playerData == undefined) {
+      throw new CustomError(
+        ErrorCodes.MISSING_FIELDS,
+        '[enterRoomHandler] GamePlayerData가 누락됨',
+      );
     }
 
     const player = new GamePlayer(packet.playerData);
@@ -70,7 +74,7 @@ class GameRoomManager {
 
     // 4. 성공 응답 패킷 생성 및 전송
     const createGameRoomPacket = create(B2G_CreateGameRoomResponseSchema, {
-      roomId: packet.roomId
+      roomId: packet.roomId,
     });
 
     const createGameRoomBuffer = PacketUtils.SerializePacket(
@@ -85,7 +89,7 @@ class GameRoomManager {
   /*---------------------------------------------
    [이동 동기화]
   ---------------------------------------------*/
-   moveHandler(buffer: Buffer, session: BattleSession) {
+  moveHandler(buffer: Buffer, session: BattleSession) {
     const packet = fromBinary(G2B_PlayerPositionUpdateRequestSchema, buffer);
 
     const room = this.rooms.get(packet.roomId);
@@ -99,16 +103,16 @@ class GameRoomManager {
   /*---------------------------------------------
    [타워 설치]
   ---------------------------------------------*/
-  towerBuildHandler(buffer:Buffer,session:BattleSession){
-    console.log("towerBuildHandler");
-    const packet = fromBinary(G2B_TowerBuildRequestSchema,buffer);
+  towerBuildHandler(buffer: Buffer, session: BattleSession) {
+    console.log('towerBuildHandler');
+    const packet = fromBinary(G2B_TowerBuildRequestSchema, buffer);
     const room = this.rooms.get(packet.roomId);
 
-    if(room == undefined){
+    if (room == undefined) {
       console.log('유효하지 않은 roomId');
       throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
     }
-    room.handleTowerBuild(packet,session);
+    room.handleTowerBuild(packet, session);
   }
 }
 export const gameRoomManager = new GameRoomManager();
