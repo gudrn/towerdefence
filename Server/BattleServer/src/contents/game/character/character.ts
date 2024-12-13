@@ -1,12 +1,15 @@
+import { createCooldownNotification } from 'src/packet/characterPacket.js';
 import { GameRoom } from '../../room/gameRoom.js';
 import { GamePlayer } from '../gamePlayer.js';
 import { Monster } from '../monster.js';
 import { Tower } from '../tower.js';
+import { BattleSession } from 'src/main/session/battleSession.js';
 
 /**
  * 캐릭터 클래스입니다.
  */
-export class Character {
+//export class Character {
+export abstract class Character {
   public prefabId: string;
   public cooldown: number; // 능력 카드의 쿨다운 시간 (초 단위)
   private isCooldownActive: boolean = false;
@@ -24,9 +27,17 @@ export class Character {
    * 고유 능력 사용
    * - 쿨다운 상태라면 사용 불가
    */
-  useAbility() {
+  public useAbility(payload: any, session: BattleSession) {
     if (this.isCooldownActive) {
       console.log(`${this.prefabId}의 능력은 재사용 대기 중입니다.`);
+
+      // 쿨다운 상태를 알리는 패킷 생성 및 전송
+      const cooldownNotificationPacketBuffer = createCooldownNotification(
+        payload.prefabId,
+        this.cooldown,
+        session.getNextSequence.bind(this),
+      );
+      this.player.session.send(cooldownNotificationPacketBuffer);
       return;
     }
 
@@ -41,10 +52,7 @@ export class Character {
   /**
    * 고유 능력 발동 (상속받는 캐릭터 클래스에서 구현 가능)
    */
-  protected activateAbility() {
-    console.log(`${this.prefabId}의 기본 능력이 발동되었습니다.`);
-    // 각 캐릭터의 구체적인 능력 로직은 하위 클래스에서 구현
-  }
+  protected abstract activateAbility(): void;
 
   /**
    * 쿨다운 시작
@@ -113,10 +121,11 @@ export class Character {
    ---------------------------------------------*/
   protected applyDamageToMonsters(monsters: any[], damage: number) {
     monsters.forEach((monster) => {
-      monster.hp -= damage;
-      if (monster.hp <= 0) {
-        monster.onDeath();
-      }
+      monster.onDamage(damage); //조정현
+      // monster.hp -= damage;
+      // if (monster.hp <= 0) {
+      //   monster.onDeath();
+      // }
     });
   }
 }

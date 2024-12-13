@@ -23,7 +23,7 @@ export class Tower extends GameObject {
 ---------------------------------------------*/
   public attackDamage: number = 0;
   private attackRange: number = 0;
-  private attackCoolDown: number = 0;
+  public attackCoolDown: number = 0;
   public hp: number = 0;
   public maxHp: number = 0;
   private bulletSpeed = 0;

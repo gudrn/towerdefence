@@ -8,7 +8,7 @@ export class MaskMan extends Character {
     super(eCharacterId.maskman, 3, room, player); // 3초 쿨다운
   }
 
-  protected activateAbility() {
+  protected override activateAbility(): void {
     console.log('MaskMan 고유 능력');
     // 구체적인 스킬 로직 구현
   }

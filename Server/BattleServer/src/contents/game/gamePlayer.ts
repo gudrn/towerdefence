@@ -12,64 +12,72 @@ export class GamePlayer {
   public session: BattleSession;
   public playerData: GamePlayerData;
   public cardList: Map<string, string> = new Map();
-  public character?: Character; // 플레이어와 연결된 캐릭터
+  public character: Character | null = null; // 플레이어와 연결된 캐릭터
 
-  constructor(session: BattleSession, playerData: GamePlayerData, room: GameRoom) {
+  constructor(session: BattleSession, playerData: GamePlayerData) {
     this.session = session; // 세션 정보 저장
     this.playerData = playerData; // 플레이어 데이터 저장
     this.cardList = new Map(); // 카드 목록 초기화
-    this.initCharacter(room); // 게임 방에서 캐릭터를 생성하여 플레이어와 연결
+    // this.initCharacter(room); // 게임 방에서 캐릭터를 생성하여 플레이어와 연결
   }
 
-  /**
-   * prefabId로 GamePlayer 가져오기
-   * @param {string} prefabId - 캐릭터 ID
-   * @returns {GamePlayer | undefined} - 해당 플레이어 반환
-   */
+  // /**
+  //  * prefabId로 GamePlayer 가져오기
+  //  * @param {string} prefabId - 캐릭터 ID
+  //  * @returns {GamePlayer | undefined} - 해당 플레이어 반환
+  //  */
+
+  // /**
+  //  * 캐릭터 초기화 및 생성
+  //  * @param {GameRoom} room - 게임 방 객체
+  //  */
+  // private initCharacter(room: GameRoom) {
+  //   const prefabId = this.playerData.prefabId; // 플레이어 데이터에 저장된 캐릭터 ID
+
+  //   // 캐릭터 ID를 기반으로 캐릭터 생성
+  //   switch (prefabId) {
+  //     case eCharacterId.red:
+  //       this.character = CreateCharacter.createChar(eCharacterId.red, room, this);
+  //       break;
+  //     case eCharacterId.Malang:
+  //       this.character = CreateCharacter.createChar(eCharacterId.Malang, room, this);
+  //       break;
+  //     case eCharacterId.shark:
+  //       this.character = CreateCharacter.createChar(eCharacterId.shark, room, this);
+  //       break;
+  //     case eCharacterId.frog:
+  //       this.character = CreateCharacter.createChar(eCharacterId.frog, room, this);
+  //       break;
+  //     // 다른 캐릭터 추가 가능
+  //     default:
+  //       console.log('알 수 없는 캐릭터 ID입니다.');
+  //       break;
+  //   }
+
+  //   if (this.character) {
+  //     console.log(`${this.character.prefabId} 캐릭터가 생성되었습니다.`);
+  //   }
+  // }
 
   /**
-   * 캐릭터 초기화 및 생성
-   * @param {GameRoom} room - 게임 방 객체
+   * 플레이어의 캐릭터를 반환
+   * @returns {Character} 플레이어의 캐릭터
    */
-  private initCharacter(room: GameRoom) {
-    const prefabId = this.playerData.prefabId; // 플레이어 데이터에 저장된 캐릭터 ID
-
-    // 캐릭터 ID를 기반으로 캐릭터 생성
-    switch (prefabId) {
-      case eCharacterId.red:
-        this.character = CreateCharacter.createChar(eCharacterId.red, room, this);
-        break;
-      case eCharacterId.Malang:
-        this.character = CreateCharacter.createChar(eCharacterId.Malang, room, this);
-        break;
-      case eCharacterId.shark:
-        this.character = CreateCharacter.createChar(eCharacterId.shark, room, this);
-        break;
-      case eCharacterId.frog:
-        this.character = CreateCharacter.createChar(eCharacterId.frog, room, this);
-        break;
-      // 다른 캐릭터 추가 가능
-      default:
-        console.log('알 수 없는 캐릭터 ID입니다.');
-        break;
-    }
-
-    if (this.character) {
-      console.log(`${this.character.prefabId} 캐릭터가 생성되었습니다.`);
-    }
+  getCharacter(): Character | null {
+    return this.character;
   }
 
-  /**
-   * 캐릭터의 고유 능력 발동
-   */
-  useCharacterAbility() {
-    if (!this.character) {
-      console.log('캐릭터가 설정되지 않았습니다.');
-      return;
-    }
+  // /**
+  //  * 캐릭터의 고유 능력 발동
+  //  */
+  // useCharacterAbility() {
+  //   if (!this.character) {
+  //     console.log('캐릭터가 설정되지 않았습니다.');
+  //     return;
+  //   }
 
-    this.character.useAbility(); // 연결된 캐릭터의 고유 능력 발동
-  }
+  //   this.character.useAbility(this.session); // 연결된 캐릭터의 고유 능력 발동
+  // }
 
   /*---------------------------------------------
     [initCard]
@@ -136,5 +144,10 @@ export class GamePlayer {
 
   public getCardList() {
     return this.cardList;
+  }
+
+  public useAbility(payload: any, session: BattleSession) {
+    this.character?.useAbility(payload, session);
+    return;
   }
 }

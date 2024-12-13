@@ -11,8 +11,7 @@ export class BombMan extends Character {
     super(eCharacterId.bombman, 3, room, player); // 3초 쿨다운
   }
 
-  protected activateAbility() {
-    console.log('BombMan 고유 능력');
-    // 구체적인 스킬 로직 구현
+  protected override activateAbility(): void {
+    //고유 로직
   }
 }

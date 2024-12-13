@@ -9,7 +9,7 @@ export class Shark extends Character {
     super(eCharacterId.shark, 3, room, player); // 3초 쿨다운
   }
 
-  protected activateAbility() {
+  protected override activateAbility(): void {
     // 현재 캐릭터에 연결된 플레이어를 가져옵니다.
     const player: GamePlayer | undefined = this.player;
     if (!player) {

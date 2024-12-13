@@ -2,7 +2,6 @@ import { eCharacterId } from 'ServerCore/utils/characterId.js';
 import { GameRoom } from '../../room/gameRoom.js';
 import { Character } from './character.js';
 import { GamePlayer } from '../gamePlayer.js';
-import { Tower } from '../tower.js';
 import { createTowerHealNotificationPacket } from 'src/packet/towerPacket.js';
 
 /**
@@ -13,7 +12,7 @@ export class Frog extends Character {
     super(eCharacterId.frog, 3, room, player); // 3초 쿨다운
   }
 
-  protected activateAbility() {
+  protected override activateAbility(): void {
     // 현재 캐릭터에 연결된 플레이어를 가져옵니다.
     const player: GamePlayer | undefined = this.player;
     if (!player) {

@@ -11,7 +11,7 @@ export class Dino extends Character {
     super(eCharacterId.dino, 3, room, player); // 3초 쿨다운
   }
 
-  protected activateAbility() {
+  protected override activateAbility(): void {
     console.log('Dino 고유 능력');
     // 구체적인 스킬 로직 구현
   }

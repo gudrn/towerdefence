@@ -14,6 +14,7 @@ import { BattleSession } from 'src/main/session/battleSession';
 import { C2B_TowerBuildRequestSchema } from 'src/protocol/tower_pb';
 import { C2B_SkillRequestSchema } from 'src/protocol/skill_pb';
 import { GamePlayer } from '../game/gamePlayer';
+import { C2B_InitSchema } from 'src/protocol/init_pb.js';
 
 const MAX_ROOMS_SIZE = 10000;
 
@@ -110,6 +111,23 @@ class GameRoomManager {
       throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
     }
     room.handleSkill(payload, session);
+  }
+
+  /**
+   * [스킬 사용 동기화]
+   * @param {Buffer} buffer - 스킬 사용 패킷 데이터
+   * @param {BattleSession} session - 요청을 보낸 세션
+   */
+  abilityHandler(buffer: Buffer, session: BattleSession) {
+    const payload = fromBinary(C2B_PlayerUseAbilityRequestSchema, buffer); // 요청 디코딩
+    const room = this.rooms.get(payload.roomId); // 방 찾기
+
+    if (!room) {
+      console.error('유효하지 않은 roomId');
+      throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
+    }
+
+    room.handleAbility(payload, session); // 어빌리티 처리 요청
   }
 
   /**---------------------------------------------
