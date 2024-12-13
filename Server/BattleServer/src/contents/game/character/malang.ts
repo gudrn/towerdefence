@@ -1,13 +1,13 @@
-import { GameRoom } from 'src/contents/room/gameRoom.js';
-import { Character } from './character.js';
-import { eCharacterId } from 'ServerCore/utils/characterId.js';
-import { GamePlayer } from '../gamePlayer.js';
-import { Tower } from '../tower.js';
-import { createAttackCoolDownBuffNotification } from 'src/packet/characterPacket.js';
+import { GameRoom } from 'src/contents/room/gameRoom';
+import { Character } from './character';
+import { eCharacterId } from 'ServerCore/utils/characterId';
+import { GamePlayer } from '../gamePlayer';
+import { Tower } from '../tower';
+import { createTowerBuffNotificationPacket } from 'src/packet/towerPacket';
 
 export class Malang extends Character {
   constructor(room: GameRoom, player: GamePlayer) {
-    super(eCharacterId.Malang, 4, room, player); // 4초 쿨다운
+    super(eCharacterId.Malang, room, player); // 4초 쿨다운
   }
 
   protected override activateAbility(): void {
@@ -24,35 +24,55 @@ export class Malang extends Character {
 
     const towers = this.getTowersInRange(this.room, player, range);
 
-    towers.forEach((tower) => {
-      const attackCoolDownBuff = tower.attackCoolDown * 0.1; // 버프할 공격속도 값
-      const buffDuration = 3 * 1000; // 버프 지속 시간 (밀리초)
-      const currentAttackCoolDown = tower.attackCoolDown; // 원래 공격속도 저장
-      tower.attackCoolDown -= attackCoolDownBuff; // 공격속도 증가
-      console.log(`${tower.prefabId} 타워 공격력이 ${attackCoolDownBuff} 증가했습니다.`);
-      this.towerBuff(tower, attackCoolDownBuff, true);
+    const attackCoolDownBuff = 0.1; // 버프할 공격속도 값
+    const buffDuration = 3 * 1000; // 버프 지속 시간 (밀리초)
 
-      // 버프 종료 타이머 설정
-      setTimeout(() => {
-        tower.attackCoolDown = currentAttackCoolDown; // 원래 공격속도로 복원
-        console.log(`${tower.prefabId} 타워 공격력이 복원되었습니다.`);
-        this.towerBuff(tower, attackCoolDownBuff, false);
-      }, buffDuration);
+    const towersToBuff = towers.map((tower) => {
+      const currentAttackCoolDown = tower.attackCoolDown; // 원래 공격속도 저장
+      const buffAmount = tower.attackCoolDown * attackCoolDownBuff; // 공격속도 증가수치
+
+      tower.attackCoolDown -= buffAmount; // 공격속도 증가
+      console.log(`${tower.prefabId} 타워 공격속도가 ${attackCoolDownBuff} 증가했습니다.`);
+
+      return {
+        tower,
+        buffAmount,
+        currentAttackCoolDown,
+      };
     });
+
+    this.towerBuff(
+      towersToBuff.map((entry) => entry.tower),
+      'asBuff',
+      true,
+    );
+
+    setTimeout(() => {
+      towersToBuff.forEach(({ tower, currentAttackCoolDown }) => {
+        tower.attackCoolDown = currentAttackCoolDown;
+        console.log(`${tower.prefabId} 타워 공격력이 복원되었습니다.`);
+      });
+
+      this.towerBuff(
+        towersToBuff.map((entry) => entry.tower),
+        'asBuff',
+        false,
+      );
+    }, buffDuration);
   }
 
   /**
    * 버프 알림을 전송하는 메서드
    * @param tower 버프를 적용받은 타워
-   * @param attackCoolDownBuff 증가된 공격속도
+   * @param buffType 증가된 공격속도
    * @param isBuffActive 버프 적용 여부 (true: 적용, false: 해제)
    */
-  private towerBuff(tower: Tower, attackCoolDownBuff: number, isBuffActive: boolean) {
-    const attackCoolDownBuffNotificationBuffer = createAttackCoolDownBuffNotification(
+  private towerBuff(tower: Tower[], buffType: string, isBuffActive: boolean) {
+    const towerBuffNotificationBuffer = createTowerBuffNotificationPacket(
       tower,
-      attackCoolDownBuff,
+      buffType,
       isBuffActive,
     );
-    this.room.broadcast(attackCoolDownBuffNotificationBuffer);
+    this.room.broadcast(towerBuffNotificationBuffer);
   }
 }

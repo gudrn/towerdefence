@@ -1,7 +1,6 @@
-import { ePacketId } from "ServerCore/network/packetId";
-import { BattleSession } from "../session/battleSession";
-import { gameRoomManager } from "src/contents/room/gameRoomManager";
-
+import { ePacketId } from 'ServerCore/network/packetId';
+import { BattleSession } from '../session/battleSession';
+import { gameRoomManager } from 'src/contents/room/gameRoomManager';
 
 type PacketHandler = (buffer: Buffer, session: BattleSession) => void;
 
@@ -14,6 +13,8 @@ const handlerMappings: Record<ePacketId, PacketHandler> | any = {
     gameRoomManager.skillHandler(buffer, session),
   // [ePacketId.C2B_UseCardRequest]: (buffer: Buffer, session: BattleSession) =>
   //   gameRoomManager.useCardHandler(buffer, session),
+  [ePacketId.C2B_PlayerUseAbilityRequest]: (buffer: Buffer, session: BattleSession) =>
+    gameRoomManager.abilityHandler(buffer, session),
   [ePacketId.S2C_Error]: (buffer: Buffer, session: BattleSession) => {
     console.log('에러 ㅇㅇ');
   },

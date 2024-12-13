@@ -1,0 +1,30 @@
+{
+  "name": "characters",
+  "version": "1.0.0",
+  "data": [
+    {
+      "prefabId": "Red",
+      "cooldown": 3000,
+      "cardAmount": 1
+    },
+    {
+      "prefabId": "Shark",
+      "cooldown": 3000,
+      "range": 5,
+      "attackDamage": 50
+    },
+    {
+      "prefabId": "Malang",
+      "cooldown": 5000,
+      "range": 5,
+      "buffDuration": 3000,
+      "attackCoolDownBuff": 0.1
+    },
+    {
+      "prefabId": "Frog",
+      "cooldown": 3000,
+      "range": 5,
+      "heal": 50
+    }
+  ]
+}

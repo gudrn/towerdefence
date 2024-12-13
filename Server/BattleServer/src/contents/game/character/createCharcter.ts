@@ -1,15 +1,15 @@
-import { GameRoom } from 'src/contents/room/gameRoom.js';
-import { Character } from './character.js';
-import { eCharacterId } from 'ServerCore/utils/characterId.js';
-import { Red } from './red.js';
-import { Shark } from './shark.js';
-import { Malang } from './malang.js';
-import { Frog } from './frog.js';
-import { BombMan } from './bombMan.js';
-import { SlowMan } from './slowMan.js';
-import { MaskMan } from './maskMan.js';
-import { Dino } from './dino.js';
-import { GamePlayer } from '../gamePlayer.js';
+import { GameRoom } from 'src/contents/room/gameRoom';
+import { Character } from './character';
+import { eCharacterId } from 'ServerCore/utils/characterId';
+import { Red } from './red';
+import { Shark } from './shark';
+import { Malang } from './malang';
+import { Frog } from './frog';
+import { BombMan } from './bombMan';
+import { SlowMan } from './slowMan';
+import { MaskMan } from './maskMan';
+import { Dino } from './dino';
+import { GamePlayer } from '../gamePlayer';
 
 /**
  * 캐릭터 등록

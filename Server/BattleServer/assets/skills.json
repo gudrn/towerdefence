@@ -6,7 +6,6 @@
       "prefabId": "OrbitalBeam",
       "attackDamage": 50,
       "attackRange": 5,
-      "heal": 0,
       "type": "Attack"
     },
     {
@@ -15,7 +14,6 @@
       "attackRange": 0,
       "heal": 50,
       "type": "Heal"
-    },
     }
   ]
 }

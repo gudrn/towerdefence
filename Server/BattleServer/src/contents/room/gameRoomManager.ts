@@ -2,7 +2,10 @@ import { GameRoom } from './gameRoom';
 import { create, fromBinary } from '@bufbuild/protobuf';
 import { ePacketId } from 'ServerCore/network/packetId';
 import { PacketUtils } from 'ServerCore/utils/packetUtils';
-import { C2B_PlayerPositionUpdateRequestSchema } from 'src/protocol/character_pb';
+import {
+  C2B_PlayerPositionUpdateRequestSchema,
+  C2B_PlayerUseAbilityRequestSchema,
+} from 'src/protocol/character_pb';
 import {
   B2L_CreateGameRoomResponeSchema,
   L2B_CreateGameRoomRequestSchema,
@@ -14,7 +17,7 @@ import { BattleSession } from 'src/main/session/battleSession';
 import { C2B_TowerBuildRequestSchema } from 'src/protocol/tower_pb';
 import { C2B_SkillRequestSchema } from 'src/protocol/skill_pb';
 import { GamePlayer } from '../game/gamePlayer';
-import { C2B_InitSchema } from 'src/protocol/init_pb.js';
+import { C2B_InitSchema } from 'src/protocol/init_pb';
 
 const MAX_ROOMS_SIZE = 10000;
 
@@ -188,6 +191,10 @@ class GameRoomManager {
     room.destroy();
     this.rooms.delete(roomId);
     this.availableRoomIds.push(roomId);
+  }
+
+  getRoom(roomId: number) {
+    return this.rooms.get(roomId);
   }
 }
 export const gameRoomManager = new GameRoomManager();

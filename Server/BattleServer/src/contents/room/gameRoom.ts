@@ -12,7 +12,10 @@ import { gameRoomManager } from './gameRoomManager';
 import { MathUtils } from 'src/utils/mathUtils';
 import { BattleSession } from 'src/main/session/battleSession';
 import { assetManager } from 'src/utils/assetManager';
-import { C2B_PlayerPositionUpdateRequest } from 'src/protocol/character_pb';
+import {
+  C2B_PlayerPositionUpdateRequest,
+  C2B_PlayerUseAbilityRequest,
+} from 'src/protocol/character_pb';
 import { v4 as uuidv4 } from 'uuid';
 import { GamePlayer } from '../game/gamePlayer';
 import {
@@ -27,6 +30,7 @@ import { createTowerBuildNotificationPacket, createTowerBuildPacket } from 'src/
 import { SkillManager } from './skillManager';
 import { MonsterManager } from './monsterManager';
 import { SkillUseMonster } from '../game/skillUseMonster';
+import { Red } from '../game/character/red';
 
 interface PQNode {
   cost: number;
@@ -60,8 +64,6 @@ export class GameRoom {
   public monsterStatusMultiplier = 1; // 몬스터 강화 계수 (wave만으론 강화가 불가능한가요?) --12.06 조정현
   private gameLoopInterval: any = null; //gameLoop를 저장 후 방 제거 시 clear하기 위함
   private skillManager: SkillManager;
-  private player: GamePlayer | null = null;
-
 
   constructor(id: number, maxPlayerCount: number) {
     this.id = id;
@@ -72,7 +74,6 @@ export class GameRoom {
     this.base = new Base(300, create(PosInfoSchema, { x: 16, y: 16 }), this);
     this.maxPlayerCount = maxPlayerCount;
     this.skillManager = new SkillManager(this);
-
   }
 
   /**
@@ -102,7 +103,6 @@ export class GameRoom {
   getTowers() {
     return this.towers;
   }
-
 
   getMonsterManager() {
     return this.monsterManager;
@@ -302,8 +302,16 @@ export class GameRoom {
    * [어빌리티 사용 동기화]
    * @param {Buffer} buffer - 스킬 사용 패킷 데이터
    ---------------------------------------------*/
-  handleAbility(payload: any, session: BattleSession) {
-    this.player?.useAbility(payload, session);
+  handleAbility(payload: C2B_PlayerUseAbilityRequest, session: BattleSession) {
+    if (payload.playerData == undefined || payload.playerData.position == undefined) {
+      throw new CustomError(ErrorCodes.MISSING_FIELDS, '플레이어 데이터가 없음.');
+    }
+    const user = this.users.get(payload.playerData.position.uuid);
+
+    if (user == undefined) {
+      throw new CustomError(ErrorCodes.MISSING_FIELDS, ' 데이터가 없음.');
+    }
+    user.useAbility(payload, session);
   }
 
   /**---------------------------------------------
@@ -408,7 +416,6 @@ export class GameRoom {
       const sendBuffer = createAddObject(object);
       this.broadcast(sendBuffer);
     }
-    
   }
 
   /**---------------------------------------------

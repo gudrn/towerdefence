@@ -1,49 +1,67 @@
-import { createCooldownNotification } from 'src/packet/characterPacket.js';
-import { GameRoom } from '../../room/gameRoom.js';
-import { GamePlayer } from '../gamePlayer.js';
-import { Monster } from '../monster.js';
-import { Tower } from '../tower.js';
-import { BattleSession } from 'src/main/session/battleSession.js';
+import { createPlayerUseAbilityNotification } from 'src/packet/characterPacket';
+import { GameRoom } from '../../room/gameRoom';
+import { GamePlayer } from '../gamePlayer';
+import { Monster } from '../monster';
+import { Tower } from '../tower';
+import { BattleSession } from 'src/main/session/battleSession';
+import { C2B_PlayerUseAbilityRequest } from 'src/protocol/character_pb';
+import { assetManager } from 'src/utils/assetManager';
 
 /**
  * 캐릭터 클래스입니다.
  */
-//export class Character {
+
+//캐릭터의 생성자에서는 prefabId...GamePlayer까지지
 export abstract class Character {
   public prefabId: string;
-  public cooldown: number; // 능력 카드의 쿨다운 시간 (초 단위)
+  public cooldown: number = -1; // 능력 카드의 쿨다운 시간 (초 단위)
   private isCooldownActive: boolean = false;
-  public room: GameRoom;
   public player: GamePlayer; // 플레이어 참조 추가
+  public room: GameRoom;
 
-  constructor(prefabId: string, cooldown: number, room: GameRoom, player: GamePlayer) {
+  //constructor(prefabId: string, cooldown: number, player: GamePlayer) {
+  constructor(prefabId: string, room: GameRoom, player: GamePlayer) {
     this.prefabId = prefabId;
-    this.cooldown = cooldown;
-    this.room = room;
     this.player = player; // 전달받은 GamePlayer를 저장
+    this.room = room;
+    const characterData = assetManager.getCharacterData(prefabId);
+    if (characterData == null) {
+      console.log('[Character constructor] 유효하지 않은 prefabId');
+      return;
+    }
+
+    this.cooldown = characterData.cooldown;
   }
 
   /**
    * 고유 능력 사용
    * - 쿨다운 상태라면 사용 불가
    */
-  public useAbility(payload: any, session: BattleSession) {
+  public useAbility(payload: C2B_PlayerUseAbilityRequest, session: BattleSession) {
     if (this.isCooldownActive) {
       console.log(`${this.prefabId}의 능력은 재사용 대기 중입니다.`);
-
-      // 쿨다운 상태를 알리는 패킷 생성 및 전송
-      const cooldownNotificationPacketBuffer = createCooldownNotification(
-        payload.prefabId,
-        this.cooldown,
-        session.getNextSequence.bind(this),
-      );
-      this.player.session.send(cooldownNotificationPacketBuffer);
       return;
+
+      // // 쿨다운 상태를 알리는 패킷 생성 및 전송
+      // const cooldownNotificationPacketBuffer = createCooldownNotification(
+      //   payload.prefabId,
+      //   this.cooldown,
+      //   session.getNextSequence.bind(this),
+      // );
+      // this.player.session.send(cooldownNotificationPacketBuffer);
+      // return;
     }
 
     // 능력 발동 로직
     console.log(`${this.prefabId}의 고유 능력을 발동합니다.`);
     this.activateAbility();
+
+    const playerUseAbilityNotificationbuffer = createPlayerUseAbilityNotification(
+      payload.PosInfo,
+      payload.playerData?.prefabId,
+      `${this.prefabId}의 고유 능력을 발동합니다.`,
+      session.getNextSequence.bind(this),
+    );
 
     // 쿨다운 시작
     this.startCooldown();

@@ -1,12 +1,14 @@
-import { GameRoom } from 'src/contents/room/gameRoom.js';
-import { Character } from './character.js';
-import { eCharacterId } from 'ServerCore/utils/characterId.js';
-import { GamePlayer } from '../gamePlayer.js';
-import { createDeathMoster, createMosterHpSync } from 'src/packet/gameRoomPacket.js';
-
+import { GameRoom } from 'src/contents/room/gameRoom';
+import { Character } from './character';
+import { eCharacterId } from 'ServerCore/utils/characterId';
+import { GamePlayer } from '../gamePlayer';
+import { createDeathMoster, createMosterHpSync } from 'src/packet/gameRoomPacket';
+import { gameRoomManager } from 'src/contents/room/gameRoomManager';
+import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
+import { CustomError } from 'ServerCore/utils/error/customError';
 export class Shark extends Character {
   constructor(room: GameRoom, player: GamePlayer) {
-    super(eCharacterId.shark, 3, room, player); // 3초 쿨다운
+    super(eCharacterId.shark, room, player); // 3초 쿨다운
   }
 
   protected override activateAbility(): void {

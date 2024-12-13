@@ -10,7 +10,7 @@ import { sessionManager } from 'src/server';
 import { BattleSession } from '../session/battleSession';
 import { GamePlayer } from 'src/contents/game/gamePlayer';
 import { gameRoomManager } from 'src/contents/room/gameRoomManager';
-import { GameRoom } from 'src/contents/room/gameRoom.js';
+import { GameRoom } from 'src/contents/room/gameRoom';
 
 export const onConnection = (socket: Socket): void => {
   console.log('새로운 연결이 감지되었습니다:', socket.remoteAddress, socket.remotePort);
@@ -71,7 +71,7 @@ const initialHandler = async (buffer: Buffer, socket: Socket) => {
     .getSessionOrNull(packet.playerData.position!.uuid)
     ?.setNickname(packet.playerData.nickname);
 
-  const player = new GamePlayer(session, packet.playerData);
+  const player = new GamePlayer(session, packet.playerData, packet.roomId);
   gameRoomManager.enterRoomHandler(packet.roomId, player);
 };
 

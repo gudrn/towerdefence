@@ -23,7 +23,8 @@ export class Tower extends GameObject {
   private bulletSpeed = 0;
   public target: null | undefined;
   public lastAttackTime: number = 0;
-  private buffedBy: Set<string> = new Set();
+  // private buffedBy: Set<string> = new Set();
+  private buffedBy: string[] = [];
 
   /*---------------------------------------------
     [생성자]
@@ -51,17 +52,18 @@ export class Tower extends GameObject {
       // 버프 타워인 경우, 주변 타워들에게 버프 적용
       const towersInRange = this.getTowersInRange(Array.from(this.room.getTowers().values()));
       towersInRange.forEach((tower) => {
-        tower.increaseAttackDamage(this.getId());
+        tower.increaseAttackDamage([this]);
       });
     } else {
       // 일반 타워인 경우, 주변 버프 타워에게서 버프 받기
-      const buffTowers = Array.from(this.room.getTowers().values())
-        .filter(t => t.getPrefabId() === 'BuffTower');
+      const buffTowers = Array.from(this.room.getTowers().values()).filter(
+        (t) => t.getPrefabId() === 'BuffTower',
+      );
 
-      buffTowers.forEach(buffTower => {
+      buffTowers.forEach((buffTower) => {
         const inRangeTowers = buffTower.getTowersInRange([this]);
         if (inRangeTowers.length > 0) {
-          this.increaseAttackDamage(buffTower.getId());
+          this.increaseAttackDamage([buffTower]);
         }
       });
     }
@@ -175,41 +177,62 @@ export class Tower extends GameObject {
   /**---------------------------------------------
    * [공격력 증가]
    ---------------------------------------------*/
-  increaseAttackDamage(buffTowerId: string) {
-    // 해당 버프가 없을 때만 버프 목록에 해당 버프타워 ID 추가
-    if (!this.buffedBy.has(buffTowerId)) {
-      this.buffedBy.add(buffTowerId);
+  increaseAttackDamage(towers: Tower[]) {
+    // towers 배열의 각 요소에 대해 처리
+    towers.forEach((tower) => {
+      const towerId = tower.getId(); // 예시로 타워 ID를 가져온다고 가정
 
-      // 버프량
-      this.attackDamage = this.originalAttackDamage + this.buffedBy.size * 5;
+      // 해당 버프가 없을 때만 추가
+      if (!this.buffedBy.includes(towerId)) {
+        this.buffedBy.push(towerId);
 
-      console.log(`${this.getPrefabId()}: ${this.originalAttackDamage} -> ${this.attackDamage}`);
-      // 버프 적용 패킷 전송
-      const buffApplyPacket = createTowerBuffNotificationPacket(this.getId(), true); // 버프 적용
-      this.room.broadcast(buffApplyPacket);
-    }
+        // 버프량 갱신
+        this.attackDamage = this.originalAttackDamage + this.buffedBy.length * 5;
+
+        console.log(`${this.getPrefabId()}: ${this.originalAttackDamage} -> ${this.attackDamage}`);
+
+        // 버프 적용 패킷 전송
+        const buffApplyPacket = createTowerBuffNotificationPacket(
+          [{ getId: () => towerId }],
+          'atkBuff',
+          true,
+        ); // 버프 적용
+        this.room.broadcast(buffApplyPacket);
+      }
+    });
   }
   /**---------------------------------------------
    * [버프 해제]
    ---------------------------------------------*/
-  removeBuffFromTower(buffTowerId: string) {
-    if (this.buffedBy.has(buffTowerId)) {
-      this.buffedBy.delete(buffTowerId);
+  removeBuffFromTower(towers: Tower[]) {
+    towers.forEach((tower) => {
+      const towerId = tower.getId(); // 타워의 ID를 가져옴
 
-      this.attackDamage = this.originalAttackDamage;
+      if (this.buffedBy.includes(towerId)) {
+        // 배열에서 타워 ID 제거
+        this.buffedBy = this.buffedBy.filter((id) => id !== towerId);
 
-      // 버프 해제 패킷 전송
-      const buffRemovePacket = createTowerBuffNotificationPacket(this.getId(), false); // 버프 해제
-      this.room.broadcast(buffRemovePacket);
-    }
+        // 공격력 원래 값으로 복원
+        this.attackDamage = this.originalAttackDamage;
+
+        // 버프 해제 패킷 전송
+        const buffRemovePacket = createTowerBuffNotificationPacket(
+          [{ getId: () => towerId }],
+          'atkBuff',
+          false,
+        ); // 버프 해제
+        this.room.broadcast(buffRemovePacket);
+      }
+    });
   }
   /**---------------------------------------------
    * [모든 타워에서 해당 버프 제거]
    ---------------------------------------------*/
   removeAllBuffsFromTower() {
     if (this.getPrefabId() === 'BuffTower') {
-      Array.from(this.room.getTowers().values()).forEach((tower) => {
-        tower.removeBuffFromTower(this.getId());
+      const towers = Array.from(this.room.getTowers().values());
+      towers.forEach((tower) => {
+        tower.removeBuffFromTower(towers);
       });
     }
   }
