@@ -21,7 +21,7 @@ import { v4 as uuidv4 } from "uuid";
 import { GamePlayer } from '../game/gamePlayer';
 import { B2G_PlayerPositionUpdateNotificationSchema, G2B_PlayerPositionUpdateRequest } from 'src/protocol/character_pb';
 import { sessionManager } from 'src/server';
-import { B2G_TowerBuildNotificationSchema } from 'src/protocol/tower_pb';
+import { B2G_TowerBuildNotificationSchema, G2B_TowerBuildRequest } from 'src/protocol/tower_pb';
 import { SkillManager } from './skillManager';
 interface PQNode {
   cost: number;
@@ -482,36 +482,42 @@ export class GameRoom {
     return null;
   }
 
-  handleTowerBuild(packet: any, session: BattleSession) {
-    console.log("설치");
+  handleTowerBuild(packet: G2B_TowerBuildRequest, session: BattleSession) {
     const { tower, ownerId, cardId } = packet;
     const user = this.users.get(session.getId());
     //user?.useCard(cardId); 나중에 카드까지 동기화 후 사용할 코드임 삭제 하지마십시오.
 
-    // 1. 타워 데이터 존재 확인
-    const towerData = assetManager.getTowerData(tower.prefabId);
+    //1. 타워 데이터 존재 확인
+    if(packet.tower == undefined) {
+      console.log("[handleTowerBuild] 타워 데이터가 유효하지 않습니다.");
+      throw new CustomError(ErrorCodes.SOCKET_ERROR, "유효하지 않은 타워");
+    }
+    const towerData = assetManager.getTowerData(packet.tower.prefabId);
     if (!towerData) {
-      return;
+      throw new CustomError(ErrorCodes.SOCKET_ERROR, "유효하지 않은 타워");
     }
 
     // 2. 타워 정보 저장
+    if(packet.tower.towerPos == undefined) {
+      console.log("[handleTowerBuild] towerPos가 유효하지 않습니다.");
+      throw new CustomError(ErrorCodes.SOCKET_ERROR, "유효하지 않은 towerPos");
+    }
+
     const towerPosInfo = create(PosInfoSchema, {
       uuid: uuidv4(),
       x: packet.tower.towerPos.x,
       y: packet.tower.towerPos.y,
     });
     const newTower = new Tower(packet.tower.prefabId, towerPosInfo, this);
-    this.addObject(newTower);
     this.towers.set(newTower.getId(), newTower);
-
     // 3. 타워 생성 성공 응답
-    //. 구현 어려움
+    
 
     // 4. 모든 클라이언트에게 타워 추가 알림
     const towerBuildNotificationPacket = create(B2G_TowerBuildNotificationSchema, {
       tower: create(TowerDataSchema, {
-        prefabId: tower.prefabId,
-        towerPos: tower.towerPos,
+        prefabId: packet.tower.prefabId,
+        towerPos: towerPosInfo
       }),
       ownerId: ownerId,
       roomId:this.id,
@@ -614,7 +620,7 @@ export class GameRoom {
   //   this.users.clear();
   // }
 
-  handleSkill(payload: any, session: BattleSession) {
-    this.skillManager.handleSkill(payload, session);
-  }
+  // handleSkill(payload: any, session: BattleSession) {
+  //   this.skillManager.handleSkill(payload, session);
+  // }
 }

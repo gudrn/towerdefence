@@ -69,7 +69,7 @@ export function handleB2G_MonsterAttackTowerNotification(buffer: Buffer, session
         maxHp: packet.maxHp
     });
 
-    const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_MonsterAttackTowerNotificationSchema, ePacketId.G2C_MonsterPositionUpdateNotification, 0);
+    const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_MonsterAttackTowerNotificationSchema, ePacketId.G2C_MonsterAttackTowerNotification, 0);
     room.broadcast(sendBuffer);
 }
 
@@ -91,7 +91,7 @@ export function handleB2G_MonsterAttackBaseNotification(buffer: Buffer, session:
         attackDamage: packet.attackDamage
     });
 
-    const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_MonsterAttackBaseNotificationSchema, ePacketId.G2C_MonsterPositionUpdateNotification, 0);
+    const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_MonsterAttackBaseNotificationSchema, ePacketId.G2C_MonsterAttackBaseNotification, 0);
     room.broadcast(sendBuffer);
 }
 
@@ -99,7 +99,6 @@ export function handleB2G_MonsterAttackBaseNotification(buffer: Buffer, session:
     [몬스터 체력 업데이트]
   ---------------------------------------------*/
 export function handleB2G_MonsterHealthUpdateNotification(buffer: Buffer, session: BattleSession) {
-    console.log("handleB2G_MonsterHealthUpdateNotification");
 
     const packet = fromBinary(B2G_MonsterHealthUpdateNotificationSchema, buffer);
 
@@ -118,7 +117,7 @@ export function handleB2G_MonsterHealthUpdateNotification(buffer: Buffer, sessio
         maxHp: packet.maxHp
     });
 
-    const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_MonsterHealthUpdateNotificationSchema, ePacketId.G2C_MonsterPositionUpdateNotification, 0);
+    const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_MonsterHealthUpdateNotificationSchema, ePacketId.G2C_MonsterHealthUpdateNotification, 0);
     room.broadcast(sendBuffer);
 }
 
