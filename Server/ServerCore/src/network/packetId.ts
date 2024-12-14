@@ -39,6 +39,7 @@ export enum ePacketId {
   B2C_MonsterAttackTowerNotification = 203,
   B2C_MonsterAttackBaseNotification = 204,
   B2C_MonsterDeathNotification = 205,
+  B2C_MonsterSlowEffectNotification = 206,
   C2B_TowerBuildRequest = 301,
   B2C_TowerBuildResponse = 302,
   B2C_TowerBuildNotification = 303,

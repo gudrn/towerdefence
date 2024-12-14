@@ -48,3 +48,9 @@ message B2C_MonsterBuffNotification{
     string buffType = 1;
     bool state = 2;
 }
+
+// 몬스터 슬로우 효과 알림
+message B2C_MonsterSlowEffectNotification {
+    string monsterId = 1;
+    bool isSlowed = 2;    // true: 슬로우 적용, false: 슬로우 해제
+  }

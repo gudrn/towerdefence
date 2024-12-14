@@ -6,6 +6,7 @@ import {
   B2C_MonsterAttackTowerNotificationSchema,
   B2C_MonsterPositionUpdateNotificationSchema,
   B2C_MonsterBuffNotificationSchema,
+  B2C_MonsterSlowEffectNotificationSchema,
 } from 'src/protocol/monster_pb';
 import { B2C_TowerDestroyNotificationSchema } from 'src/protocol/tower_pb';
 
@@ -86,4 +87,19 @@ export const createAttackBuff = (buff: string, onoff: boolean) => {
     0,
   );
   return createAttackBuffBuffer;
+};
+
+export const createMonsterSlowEffect = (monsterId: string, isSlowed: boolean) => {
+  const createMonsterSlowEffectPacket = create(B2C_MonsterSlowEffectNotificationSchema, {
+    monsterId,
+    isSlowed,
+  });
+
+  const createMonsterSlowEffectBuffer = PacketUtils.SerializePacket(
+    createMonsterSlowEffectPacket,
+    B2C_MonsterSlowEffectNotificationSchema,
+    ePacketId.B2C_MonsterSlowEffectNotification,
+    0,
+  );  
+  return createMonsterSlowEffectBuffer;
 };

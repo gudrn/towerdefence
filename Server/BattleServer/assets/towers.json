@@ -14,21 +14,25 @@
       "attackDamage": 10,
       "attackRange": 5,
       "attackCoolDown": 1000,
-      "maxHp": 100
+      "maxHp": 100,
+      "buffAmount": 5
     },
     {
       "prefabId": "IceTower",
       "attackDamage": 10,
       "attackRange": 5,
       "attackCoolDown": 1000,
-      "maxHp": 100
+      "maxHp": 100,
+      "slowDuration": 3000,
+      "slowAmount": 0.5
     },
     {
       "prefabId": "MissileTower",
       "attackDamage": 20,
       "attackRange": 8,
       "attackCoolDown": 1000,
-      "maxHp": 100
+      "maxHp": 100,
+      "explosionRadius": 3
     },
     {
       "prefabId": "StrongTower",
