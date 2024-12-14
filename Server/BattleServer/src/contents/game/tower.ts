@@ -98,13 +98,15 @@ export class Tower extends GameObject {
   ): { monster: SkillUseMonster; distance: number } | null {
     let closestMonster: SkillUseMonster | null = null;
     let minDistance = Infinity;
-
+  
     for (const monster of monsters) {
-      const distance = Math.sqrt(
-        Math.pow(this.pos.x - monster.pos.x, 2) + Math.pow(this.pos.y - monster.pos.y, 2),
-      );
-
-      if (distance <= this.attackRange && distance < minDistance) {
+      // 거리 계산
+      const distance = 
+        (this.pos.x - monster.pos.x) * (this.pos.x - monster.pos.x) +
+        (this.pos.y - monster.pos.y) * (this.pos.y - monster.pos.y);
+  
+      // 범위 내에서 가장 가까운 몬스터 찾기
+      if (distance <= this.attackRange * this.attackRange && distance < minDistance) {
         minDistance = distance;
         closestMonster = monster;
       }
@@ -166,39 +168,40 @@ export class Tower extends GameObject {
         // 기본 타워: 단일 타겟 기본 공격
         target.onDamaged(this.attackDamage);
         break;
-  
+
       case 'BuffTower':
         // 버프 타워: 주변 타워 버프 + 단일 타겟 기본 공격
         target.onDamaged(this.attackDamage);
         break;
-  
+
       case 'IceTower':
         // 얼음 타워: 단일 타겟 공격 + 이동속도 감소 효과
         target.onDamaged(this.attackDamage);
         target.applySlowEffect(this.slowDuration, this.slowAmount);
         break;
-  
+
       case 'MissileTower':
         // 미사일 타워: 주 타겟 공격 + 범위 폭발 데미지
         target.onDamaged(this.attackDamage);
         this.splashDamage(target);
         break;
-  
+
       case 'StrongTower':
         // 강력한 타워: 높은 데미지의 단일 타겟 공격
         target.onDamaged(this.attackDamage);
         break;
-  
+
       case 'TankTower':
         // 탱크 타워: 높은 체력 + 단일 타겟 기본 공격
         target.onDamaged(this.attackDamage);
         break;
-  
+
       case 'ThunderTower':
-        // 번개 타워: 다중 타겟 공격 (3개정도..?)
+        // 번개 타워: 다중 타겟 공격 (최대 3타겟 동시 공격)
         target.onDamaged(this.attackDamage);
+        this.multipleThunderAttack(target);
         break;
-  
+
       default:
         // 알 수 없는 타워 타입일 경우 일단 기본 공격 실행
         console.log(`알 수 없는 타워: ${this.getPrefabId()}`);
@@ -282,28 +285,67 @@ export class Tower extends GameObject {
    * 미사일 타워의 범위 피해 처리
    */
   private splashDamage(target: SkillUseMonster) {
+    // 범위 내 몬스터 찾기
     const monsters = Array.from(this.room.getMonsters().values());
     for (const monster of monsters) {
-      
-      // 주 타겟은 제외(주변 몬스터만 피해 처리)
+      // 주 타겟은 제외
       if (monster.getId() === target.getId()) continue;
-  
-      const dx = target.pos.x - monster.pos.x;
-      const dy = target.pos.y - monster.pos.y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-  
-      if (distance <= this.explosionRadius) {
+
+      // 거리 계산
+      const distance =
+        (target.pos.x - monster.pos.x) * (target.pos.x - monster.pos.x) +
+        (target.pos.y - monster.pos.y) * (target.pos.y - monster.pos.y);
+
+      // 폭발 범위 내에 있으면 데미지 처리
+      if (distance <= this.explosionRadius * this.explosionRadius) {
         monster.onDamaged(this.attackDamage);
-        
-        // 범위 피해 패킷만 전송
+
         const splashDamageBuffer = createTowerAttackNotificationPacket(
           monster.getId(),
           monster.hp,
-          monster.maxHp
+          monster.maxHp,
         );
         this.room.broadcast(splashDamageBuffer);
       }
     }
+  }
+
+  /**
+   * 번개 타워의 다중 공격을 처리
+   */
+  private multipleThunderAttack(target: SkillUseMonster) {
+    const MAX_TARGETS = 3; // 최대 타겟 수
+
+    // 타워 범위 내 몬스터 찾기
+    const monsters = Array.from(this.room.getMonsters().values());
+    const nearbyMonsters = [];
+
+    for (const monster of monsters) {
+      // 주 타겟은 제외
+      if (monster.getId() === target.getId()) continue;
+
+      // 거리 계산 (제곱 상태로 비교하여 최적화)
+      const distance =
+        (this.pos.x - monster.pos.x) * (this.pos.x - monster.pos.x) +
+        (this.pos.y - monster.pos.y) * (this.pos.y - monster.pos.y);
+
+      // 타워 범위 내에 있으면 배열에 추가
+      if (distance <= this.attackRange * this.attackRange) {
+        nearbyMonsters.push(monster);
+        // 최대 타겟 수에 도달하면 중단
+        if (nearbyMonsters.length >= MAX_TARGETS - 1) break;
+      }
+    }
+    // 추가 타겟 공격
+    nearbyMonsters.forEach((monster) => {
+      monster.onDamaged(this.attackDamage);
+      const attackBuffer = createTowerAttackNotificationPacket(
+        monster.getId(),
+        monster.hp,
+        monster.maxHp,
+      );
+      this.room.broadcast(attackBuffer);
+    });
   }
 
   /**
