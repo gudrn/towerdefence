@@ -28,3 +28,14 @@ message C2B_UseCardRequest {
     string cardId = 2; 
 }
 
+message C2B_PlayerUseAbilityRequest 
+{
+  GamePlayerData playerData = 1;
+  int32 roomId = 2;
+}
+
+message B2C_PlayerUseAbilityNotification {
+    PosInfo position = 1;
+    string prefabId = 2;
+    string message = 3;
+}

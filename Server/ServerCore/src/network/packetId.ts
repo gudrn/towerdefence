@@ -52,6 +52,8 @@ export enum ePacketId {
   C2B_SkillRequest = 401,
   B2C_SkillResponse = 402,
   B2C_SkillNotify = 403,
+  C2B_PlayerUseAbilityRequest = 404,
+  B2C_PlayerUseAbilityNotification = 405,
   C2B_PositionUpdateRequest = 501,
   B2C_PlayerPositionUpdateNotification = 502,
   C2B_UseCardRequest = 503,

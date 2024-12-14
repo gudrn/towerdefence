@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file tower.proto.
  */
 export const file_tower: GenFile = /*@__PURE__*/
-  fileDesc("Cgt0b3dlci5wcm90bxIIUHJvdG9jb2wibAoVQzJCX1Rvd2VyQnVpbGRSZXF1ZXN0EiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAkSDgoGcm9vbUlkGAMgASgFEg4KBmNhcmRJZBgEIAEoCSIrChZCMkNfVG93ZXJCdWlsZFJlc3BvbnNlEhEKCWlzU3VjY2VzcxgBIAEoCCJRChpCMkNfVG93ZXJCdWlsZE5vdGlmaWNhdGlvbhIiCgV0b3dlchgBIAEoCzITLlByb3RvY29sLlRvd2VyRGF0YRIPCgdvd25lcklkGAIgASgJInAKIkIyQ19Ub3dlckF0dGFja01vbnN0ZXJOb3RpZmljYXRpb24SDwoHdG93ZXJJZBgBIAEoCRIlCgptb25zdGVyUG9zGAIgASgLMhEuUHJvdG9jb2wuUG9zSW5mbxISCgp0cmF2ZWxUaW1lGAMgASgCIkIKHEIyQ19Ub3dlckRlc3Ryb3lOb3RpZmljYXRpb24SEQoJaXNTdWNjZXNzGAEgASgIEg8KB3Rvd2VySWQYAiABKAkiMgobQjJDX0Jhc2VEZXN0cm95Tm90aWZpY2F0aW9uEhMKC2lzRGVzdHJvaWVkGAEgASgIIk8KIUIyQ19Ub3dlckhlYWx0aFVwZGF0ZU5vdGlmaWNhdGlvbhIPCgd0b3dlcklkGAEgASgJEgoKAmhwGAIgASgFEg0KBW1heEhwGAMgASgFIj4KGUIyQ19Ub3dlckJ1ZmZOb3RpZmljYXRpb24SDwoHdG93ZXJJZBgBIAEoCRIQCghpc0J1ZmZlZBgCIAEoCGIGcHJvdG8z", [file_struct]);
+  fileDesc("Cgt0b3dlci5wcm90bxIIUHJvdG9jb2wibAoVQzJCX1Rvd2VyQnVpbGRSZXF1ZXN0EiIKBXRvd2VyGAEgASgLMhMuUHJvdG9jb2wuVG93ZXJEYXRhEg8KB293bmVySWQYAiABKAkSDgoGcm9vbUlkGAMgASgFEg4KBmNhcmRJZBgEIAEoCSIrChZCMkNfVG93ZXJCdWlsZFJlc3BvbnNlEhEKCWlzU3VjY2VzcxgBIAEoCCJRChpCMkNfVG93ZXJCdWlsZE5vdGlmaWNhdGlvbhIiCgV0b3dlchgBIAEoCzITLlByb3RvY29sLlRvd2VyRGF0YRIPCgdvd25lcklkGAIgASgJInAKIkIyQ19Ub3dlckF0dGFja01vbnN0ZXJOb3RpZmljYXRpb24SDwoHdG93ZXJJZBgBIAEoCRIlCgptb25zdGVyUG9zGAIgASgLMhEuUHJvdG9jb2wuUG9zSW5mbxISCgp0cmF2ZWxUaW1lGAMgASgCIkIKHEIyQ19Ub3dlckRlc3Ryb3lOb3RpZmljYXRpb24SEQoJaXNTdWNjZXNzGAEgASgIEg8KB3Rvd2VySWQYAiABKAkiMgobQjJDX0Jhc2VEZXN0cm95Tm90aWZpY2F0aW9uEhMKC2lzRGVzdHJvaWVkGAEgASgIIk8KIUIyQ19Ub3dlckhlYWx0aFVwZGF0ZU5vdGlmaWNhdGlvbhIPCgd0b3dlcklkGAEgASgJEgoKAmhwGAIgASgFEg0KBW1heEhwGAMgASgFIlAKGUIyQ19Ub3dlckJ1ZmZOb3RpZmljYXRpb24SDwoHdG93ZXJJZBgBIAMoCRIQCghidWZmVHlwZRgCIAEoCRIQCghpc0J1ZmZlZBgDIAEoCGIGcHJvdG8z", [file_struct]);
 
 /**
  * 타워 생성 요청
@@ -211,14 +211,21 @@ export type B2C_TowerBuffNotification = Message<"Protocol.B2C_TowerBuffNotificat
   /**
    * 버프 받은/해제된 타워 ID
    *
-   * @generated from field: string towerId = 1;
+   * @generated from field: repeated string towerId = 1;
    */
-  towerId: string;
+  towerId: string[];
+
+  /**
+   * "atkBuff", "asBuff"
+   *
+   * @generated from field: string buffType = 2;
+   */
+  buffType: string;
 
   /**
    * true: 버프 적용, false: 버프 해제
    *
-   * @generated from field: bool isBuffed = 2;
+   * @generated from field: bool isBuffed = 3;
    */
   isBuffed: boolean;
 };

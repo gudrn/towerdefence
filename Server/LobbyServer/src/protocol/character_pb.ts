@@ -4,7 +4,7 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import type { PosInfo } from "./struct_pb";
+import type { GamePlayerData, PosInfo } from "./struct_pb";
 import { file_struct } from "./struct_pb";
 import { file_enum } from "./enum_pb";
 import type { Message } from "@bufbuild/protobuf";
@@ -13,7 +13,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file character.proto.
  */
 export const file_character: GenFile = /*@__PURE__*/
-  fileDesc("Cg9jaGFyYWN0ZXIucHJvdG8SCFByb3RvY29sIncKH0MyQl9QbGF5ZXJQb3NpdGlvblVwZGF0ZVJlcXVlc3QSIgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SEQoJcGFyYW1ldGVyGAIgASgJEg0KBXN0YXRlGAMgASgIEg4KBnJvb21JZBgEIAEoBSJsCiRCMkNfUGxheWVyUG9zaXRpb25VcGRhdGVOb3RpZmljYXRpb24SIgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SEQoJcGFyYW1ldGVyGAIgASgJEg0KBXN0YXRlGAMgASgIIjQKEkMyQl9Vc2VDYXJkUmVxdWVzdBIOCgZyb29tSWQYASABKAUSDgoGY2FyZElkGAIgASgJYgZwcm90bzM", [file_struct, file_enum]);
+  fileDesc("Cg9jaGFyYWN0ZXIucHJvdG8SCFByb3RvY29sIncKH0MyQl9QbGF5ZXJQb3NpdGlvblVwZGF0ZVJlcXVlc3QSIgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SEQoJcGFyYW1ldGVyGAIgASgJEg0KBXN0YXRlGAMgASgIEg4KBnJvb21JZBgEIAEoBSJsCiRCMkNfUGxheWVyUG9zaXRpb25VcGRhdGVOb3RpZmljYXRpb24SIgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SEQoJcGFyYW1ldGVyGAIgASgJEg0KBXN0YXRlGAMgASgIIjQKEkMyQl9Vc2VDYXJkUmVxdWVzdBIOCgZyb29tSWQYASABKAUSDgoGY2FyZElkGAIgASgJIlsKG0MyQl9QbGF5ZXJVc2VBYmlsaXR5UmVxdWVzdBIsCgpwbGF5ZXJEYXRhGAEgASgLMhguUHJvdG9jb2wuR2FtZVBsYXllckRhdGESDgoGcm9vbUlkGAIgASgFImoKIEIyQ19QbGF5ZXJVc2VBYmlsaXR5Tm90aWZpY2F0aW9uEiMKCHBvc2l0aW9uGAEgASgLMhEuUHJvdG9jb2wuUG9zSW5mbxIQCghwcmVmYWJJZBgCIAEoCRIPCgdtZXNzYWdlGAMgASgJYgZwcm90bzM", [file_struct, file_enum]);
 
 /**
  * 캐릭터 위치 동기화
@@ -101,4 +101,53 @@ export type C2B_UseCardRequest = Message<"Protocol.C2B_UseCardRequest"> & {
  */
 export const C2B_UseCardRequestSchema: GenMessage<C2B_UseCardRequest> = /*@__PURE__*/
   messageDesc(file_character, 2);
+
+/**
+ * @generated from message Protocol.C2B_PlayerUseAbilityRequest
+ */
+export type C2B_PlayerUseAbilityRequest = Message<"Protocol.C2B_PlayerUseAbilityRequest"> & {
+  /**
+   * @generated from field: Protocol.GamePlayerData playerData = 1;
+   */
+  playerData?: GamePlayerData;
+
+  /**
+   * @generated from field: int32 roomId = 2;
+   */
+  roomId: number;
+};
+
+/**
+ * Describes the message Protocol.C2B_PlayerUseAbilityRequest.
+ * Use `create(C2B_PlayerUseAbilityRequestSchema)` to create a new message.
+ */
+export const C2B_PlayerUseAbilityRequestSchema: GenMessage<C2B_PlayerUseAbilityRequest> = /*@__PURE__*/
+  messageDesc(file_character, 3);
+
+/**
+ * @generated from message Protocol.B2C_PlayerUseAbilityNotification
+ */
+export type B2C_PlayerUseAbilityNotification = Message<"Protocol.B2C_PlayerUseAbilityNotification"> & {
+  /**
+   * @generated from field: Protocol.PosInfo position = 1;
+   */
+  position?: PosInfo;
+
+  /**
+   * @generated from field: string prefabId = 2;
+   */
+  prefabId: string;
+
+  /**
+   * @generated from field: string message = 3;
+   */
+  message: string;
+};
+
+/**
+ * Describes the message Protocol.B2C_PlayerUseAbilityNotification.
+ * Use `create(B2C_PlayerUseAbilityNotificationSchema)` to create a new message.
+ */
+export const B2C_PlayerUseAbilityNotificationSchema: GenMessage<B2C_PlayerUseAbilityNotification> = /*@__PURE__*/
+  messageDesc(file_character, 4);
 

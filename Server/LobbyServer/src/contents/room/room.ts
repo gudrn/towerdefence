@@ -1,7 +1,7 @@
 import { create, toBinary } from '@bufbuild/protobuf';
 import { ePacketId } from 'ServerCore/network/packetId';
 import { PacketUtils } from 'ServerCore/utils/packetUtils';
-import { LobbySession } from 'src/main/session/lobbySession.js';
+import { LobbySession } from 'src/main/session/lobbySession';
 import { RoomStateType } from 'src/protocol/enum_pb';
 import {
   L2C_JoinRoomNotificationSchema,

@@ -12,7 +12,10 @@ import { gameRoomManager } from './gameRoomManager';
 import { MathUtils } from 'src/utils/mathUtils';
 import { BattleSession } from 'src/main/session/battleSession';
 import { assetManager } from 'src/utils/assetManager';
-import { C2B_PlayerPositionUpdateRequest } from 'src/protocol/character_pb';
+import {
+  C2B_PlayerPositionUpdateRequest,
+  C2B_PlayerUseAbilityRequest,
+} from 'src/protocol/character_pb';
 import { v4 as uuidv4 } from 'uuid';
 import { GamePlayer } from '../game/gamePlayer';
 import {
@@ -28,6 +31,7 @@ import { SkillManager } from './skillManager';
 import { MonsterManager } from './monsterManager';
 import { SkillUseMonster } from '../game/skillUseMonster';
 import { TowerManager } from '../game/towerManager';
+
 
 interface PQNode {
   cost: number;
@@ -63,7 +67,6 @@ export class GameRoom {
   private skillManager: SkillManager;
   private towerManager: TowerManager;
 
-
   constructor(id: number, maxPlayerCount: number) {
     this.id = id;
     this.users = new Map<string, GamePlayer>();
@@ -74,6 +77,7 @@ export class GameRoom {
     this.maxPlayerCount = maxPlayerCount;
     this.skillManager = new SkillManager(this);
     this.towerManager = new TowerManager(this);
+
 
   }
 
@@ -280,6 +284,19 @@ export class GameRoom {
       console.log(`유효하지 않은 위치. ${clientPacket.posInfo}`);
       return;
     }
+
+    if (clientPacket.posInfo == undefined) {
+      throw new CustomError(ErrorCodes.MISSING_FIELDS, 'ㅇㅇ');
+    }
+
+    const user = this.users.get(clientPacket.posInfo.uuid);
+    if (user == undefined) {
+      throw new CustomError(ErrorCodes.MISSING_FIELDS, 'ㅇㅇ');
+    }
+
+    //유저 위치 최신화
+    user.playerData.position = clientPacket.posInfo;
+
     const sendBuffer = createPositionUpdate(
       session.getId(),
       clientPacket.posInfo?.x,
@@ -297,6 +314,22 @@ export class GameRoom {
    ---------------------------------------------*/
   handleSkill(payload: any, session: BattleSession) {
     this.skillManager.handleSkill(payload, session);
+  }
+
+  /**---------------------------------------------
+   * [어빌리티 사용 동기화]
+   * @param {Buffer} buffer - 스킬 사용 패킷 데이터
+   ---------------------------------------------*/
+  handleAbility(payload: C2B_PlayerUseAbilityRequest, session: BattleSession) {
+    if (payload.playerData == undefined || payload.playerData.position == undefined) {
+      throw new CustomError(ErrorCodes.MISSING_FIELDS, '플레이어 데이터가 없음.');
+    }
+    const user = this.users.get(payload.playerData.position.uuid);
+
+    if (user == undefined) {
+      throw new CustomError(ErrorCodes.MISSING_FIELDS, ' 데이터가 없음.');
+    }
+    user.useAbility(payload, session);
   }
 
   /**---------------------------------------------
@@ -404,7 +437,6 @@ export class GameRoom {
       const sendBuffer = createAddObject(object);
       this.broadcast(sendBuffer);
     }
-    
   }
 
   /**---------------------------------------------

@@ -3,16 +3,35 @@ import { BattleSession } from 'src/main/session/battleSession';
 import { CardData, CardDataSchema, GamePlayerData, SkillDataSchema } from 'src/protocol/struct_pb';
 import { assetManager } from 'src/utils/assetManager';
 import { createAddRandomCard, createInitCard, createUseCard } from 'src/packet/gamePlayerPacket';
+import { Character } from './character/character';
+import { GameRoom } from '../room/gameRoom';
+import { eCharacterId } from 'ServerCore/utils/characterId';
+import { CreateCharacter } from './character/createCharcter';
+import { C2B_PlayerUseAbilityRequest } from 'src/protocol/character_pb';
+import { CustomError } from 'ServerCore/utils/error/customError';
+import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
+import { Red } from './character/red';
+import { Shark } from './character/shark';
+import { gameRoomManager } from '../room/gameRoomManager';
 
 export class GamePlayer {
   public session: BattleSession;
   public playerData: GamePlayerData;
   public cardList: Map<string, string> = new Map();
+  public character: Character | null = null; // 플레이어와 연결된 캐릭터
+  public roomId: number;
 
-  constructor(session: BattleSession, playerData: GamePlayerData) {
+  constructor(session: BattleSession, playerData: GamePlayerData, roomId: number) {
     this.session = session; // 세션 정보 저장
     this.playerData = playerData; // 플레이어 데이터 저장
+    this.roomId = roomId;
     this.cardList = new Map(); // 카드 목록 초기화
+
+    const room = gameRoomManager.getRoom(roomId);
+    if (room == undefined) {
+      throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, `유효하지 않은 roomID ${roomId}`);
+    }
+    this.character = CreateCharacter.createChar(playerData.prefabId, room, this);
   }
 
   /*---------------------------------------------
@@ -34,6 +53,7 @@ export class GamePlayer {
         prefabId: prefabId,
       }),
     );
+
     const sendBuffer = createInitCard(cardDatas, this.session.getNextSequence.bind(this));
     this.session.send(sendBuffer); // 초기 카드 데이터 전송
   }
@@ -109,5 +129,51 @@ export class GamePlayer {
 
   public getCardList() {
     return this.cardList;
+  }
+
+  /**
+   * 플레이어의 캐릭터를 반환
+   * @returns {Character} 플레이어의 캐릭터
+   */
+  getCharacter(): Character | null {
+    return this.character;
+  }
+
+  getCharacterId(): string {
+    return this.playerData.prefabId;
+  }
+
+  //팩토리 패턴(디자인 패턴)
+  public useAbility(payload: C2B_PlayerUseAbilityRequest, session: BattleSession) {
+    // switch (this.playerData.prefabId) {
+    //   case 'Red':
+
+    //     break;
+    //   case 'Shark':
+    //     this.character = new Shark();
+    //     break;
+    //   case 'Malang':
+    //     break;
+    //   case 'Frog':
+    //     break;
+    // }
+
+    // this.character = CreateCharacter.createChar(this.playerData.prefabId, GameRoom);
+
+    if (payload.playerData?.prefabId == undefined) {
+      throw new CustomError(ErrorCodes.MISSING_FIELDS, '캐릭터 데이터가 없음.');
+    }
+    // const character = payload.playerData.prefabId;
+
+    if (this.character == null) {
+      throw new CustomError(ErrorCodes.MISSING_FIELDS, ' 데이터가 없음.');
+    }
+    this.character?.useAbility(payload, session);
+
+    return;
+  }
+
+  public getRoomId() {
+    return this.roomId;
   }
 }

@@ -1,9 +1,15 @@
 import { GameRoom } from './gameRoom';
 import { create, fromBinary } from '@bufbuild/protobuf';
 import { ePacketId } from 'ServerCore/network/packetId';
-import { PacketUtils } from "ServerCore/utils/packetUtils";
-import { C2B_PlayerPositionUpdateRequestSchema } from 'src/protocol/character_pb';
-import { B2L_CreateGameRoomResponeSchema, L2B_CreateGameRoomRequestSchema } from "src/protocol/room_pb";
+import { PacketUtils } from 'ServerCore/utils/packetUtils';
+import {
+  C2B_PlayerPositionUpdateRequestSchema,
+  C2B_PlayerUseAbilityRequestSchema,
+} from 'src/protocol/character_pb';
+import {
+  B2L_CreateGameRoomResponeSchema,
+  L2B_CreateGameRoomRequestSchema,
+} from 'src/protocol/room_pb';
 import { LobbySession } from 'src/main/session/lobbySession';
 import { CustomError } from 'ServerCore/utils/error/customError';
 import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
@@ -11,7 +17,7 @@ import { BattleSession } from 'src/main/session/battleSession';
 import { C2B_TowerBuildRequestSchema } from 'src/protocol/tower_pb';
 import { C2B_SkillRequestSchema } from 'src/protocol/skill_pb';
 import { GamePlayer } from '../game/gamePlayer';
-
+import { C2B_InitSchema } from 'src/protocol/init_pb';
 
 const MAX_ROOMS_SIZE = 10000;
 
@@ -110,6 +116,23 @@ class GameRoomManager {
     room.handleSkill(payload, session);
   }
 
+  /**
+   * [스킬 사용 동기화]
+   * @param {Buffer} buffer - 스킬 사용 패킷 데이터
+   * @param {BattleSession} session - 요청을 보낸 세션
+   */
+  abilityHandler(buffer: Buffer, session: BattleSession) {
+    const payload = fromBinary(C2B_PlayerUseAbilityRequestSchema, buffer); // 요청 디코딩
+    const room = this.rooms.get(payload.roomId); // 방 찾기
+
+    if (!room) {
+      console.error('유효하지 않은 roomId');
+      throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
+    }
+
+    room.handleAbility(payload, session); // 어빌리티 처리 요청
+  }
+
   /**---------------------------------------------
    * [타워 생성 동기화]
    * @param {Buffer} buffer - 타워 생성 패킷 데이터
@@ -135,101 +158,12 @@ class GameRoomManager {
     room.handleTowerBuild(packet, session);
   }
 
-  // /**---------------------------------------------
-  //  * [타워 공격 동기화]
-  //  * @param {Buffer} buffer - 타워 공격 패킷 데이터
-  //  * @param {BattleSession} session - 타워 공격 요청을 보낸 세션
-  //  ---------------------------------------------*/
-  // towerAttackHandler(buffer, session) {
-  //   console.log('towerAttackHandler');
-
-  //   // 1. 패킷 역직렬화
-  //   const packet = fromBinary(B2C_TowerAttackRequestSchema, buffer);
-
-  //   // 2. 세션에서 roomId 가져오기
-  //   const roomId = session.roomId;
-  //   const room = this.rooms.get(roomId);
-
-  //   if (room == undefined) {
-  //     console.log('유효하지 않은 roomId');
-  //     throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
-  //   }
-
-  //   room.handleTowerAttack(packet, session);
-  // }
-
-  // /**---------------------------------------------
-  //  * [타워 파괴 동기화]
-  //  * @param {Buffer} buffer - 타워 파괴 패킷 데이터
-  //  * @param {BattleSession} session - 타워 파괴 요청을 보낸 세션
-  //  ---------------------------------------------*/
-  // towerDestroyHandler(buffer, session) {
-  //   console.log('towerDestroyHandler');
-
-  //   // 1. 패킷 역직렬화
-  //   const packet = fromBinary(C2B_TowerDestroyRequestSchema, buffer);
-
-  //   // 2. 세션에서 roomId 가져오기
-  //   const roomId = session.roomId;
-  //   const room = this.rooms.get(roomId);
-
-  //   if (room == undefined) {
-  //     console.log('유효하지 않은 roomId');
-  //     throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
-  //   }
-
-  //   room.handleTowerDestroy(packet, session);
-  // }
-
-  /**---------------------------------------------
-   * [몬스터 타워 공격 동기화]
-   * @param {Buffer} buffer - 몬스터 타워 공격 패킷 데이터
-   * @param {BattleSession} session - 몬스터 타워 공격 요청을 보낸 세션
-   ---------------------------------------------*/
-  monsterAttackTowerHandler(buffer: Buffer, session: BattleSession) { }
-
-  /**---------------------------------------------
-   * [타워 HP 동기화]
-   * @param {Buffer} buffer - 타워 HP 패킷 데이터
-   * @param {BattleSession} session - 타워 HP 요청을 보낸 세션
-   ---------------------------------------------*/
-  updateTowerHPHandler(buffer: Buffer, session: BattleSession) { }
-
-  /*---------------------------------------------
-  [몬스터 기지 공격 동기화]
----------------------------------------------*/
-  monsterAttackBaseHandler(buffer: Buffer, session: BattleSession) { }
-
-  // /**---------------------------------------------
-  //  * [몬스터 사망 동기화]
-  //  * @param {Buffer} buffer - 몬스터 사망 패킷 데이터
-  //  * @param {BattleSession} session - 몬스터 사망 요청을 보낸 세션
-  //  ---------------------------------------------*/
-  // monsterDeathHandler(buffer, session) {
-  //   fromBinary(C2B_MonsterDeathRequestSchema, buffer);
-  //   const { monsterId } = buffer;
-
-  //   session.removeMonster(monsterId);
-
-  //   // 3. 클라이언트에 전송할 데이터 생성
-  //   const notificationPacket = create(B2C_MonsterDeathNotificationSchema, {
-  //     monsterId: monsterId,
-  //   });
-
-  //   // 4. 패킷 직렬화
-  //   const notificationBuffer = PacketUtils.SerializePacket(
-  //     notificationPacket,
-  //     B2C_MonsterDeathNotificationSchema,
-  //     ePacketId.B2C_MonsterDeathNotification,
-  //     session.getNextSequence(),
-  //   );
-  //   this.broadcast(notificationBuffer);
-  // }
-
   onSocketDisconnected(playerId: string) {
     console.log('onSocketDisconnected');
     for (const room of this.rooms.values()) {
-      const player = Array.from(room.users.values()).find((user) => user.session.getId() === playerId);
+      const player = Array.from(room.users.values()).find(
+        (user) => user.session.getId() === playerId,
+      );
       if (player) {
         room.leaveRoom(player.session.getId());
 
@@ -250,13 +184,17 @@ class GameRoomManager {
       throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomID');
     }
     const room = this.rooms.get(roomId);
-    if(room == null){
+    if (room == null) {
       console.log('유효하지 않은 room');
       return;
     }
     room.destroy();
     this.rooms.delete(roomId);
     this.availableRoomIds.push(roomId);
+  }
+
+  getRoom(roomId: number) {
+    return this.rooms.get(roomId);
   }
 }
 export const gameRoomManager = new GameRoomManager();

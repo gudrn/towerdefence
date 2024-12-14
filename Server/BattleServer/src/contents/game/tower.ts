@@ -35,6 +35,7 @@ export class Tower extends GameObject {
   private slowAmount: number = 0; // 얼음 타워의 슬로우량
   private explosionRadius: number = 0; // 미사일 타워의 폭발 범위
 
+
   /**
    * 타워 생성자
    * @param prefabId 타워의 고유 ID
@@ -71,7 +72,7 @@ export class Tower extends GameObject {
     if (prefabId === 'BuffTower') {
       const towersInRange = this.getTowersInRange(Array.from(this.room.getTowers().values()));
       towersInRange.forEach((tower) => {
-        tower.increaseAttackDamage(this.getId());
+        tower.increaseAttackDamage([this]);
       });
     } else {
       // 일반 타워인 경우, 주변 버프 타워에게서 버프 받기
@@ -82,7 +83,7 @@ export class Tower extends GameObject {
       buffTowers.forEach((buffTower) => {
         const inRangeTowers = buffTower.getTowersInRange([this]);
         if (inRangeTowers.length > 0) {
-          this.increaseAttackDamage(buffTower.getId());
+          this.increaseAttackDamage([buffTower]);
         }
       });
     }
@@ -235,38 +236,57 @@ export class Tower extends GameObject {
     return towersInRange;
   }
 
-  /**
-   * 공격력 버프
-   * @param buffTowerId 버프를 주는 타워의 ID
-   */
-  increaseAttackDamage(buffTowerId: string) {
-    // 이미 버프 받고 있으면 중복 방지
-    if (this.buffedBy.size > 0) return;
 
-    this.buffedBy.add(buffTowerId);
+  /**---------------------------------------------
+   * [공격력 증가]
+   ---------------------------------------------*/
+  increaseAttackDamage(towers: Tower[]) {
+    // towers 배열의 각 요소에 대해 처리
+    towers.forEach((tower) => {
+      const towerId = tower.getId(); // 예시로 타워 ID를 가져온다고 가정
 
-    // 공격력 증가
-    this.attackDamage = this.originalAttackDamage + this.buffedBy.size * this.buffAmount;
+      // 해당 버프가 없을 때만 추가
+      if (!this.buffedBy.includes(towerId)) {
+        this.buffedBy.push(towerId);
 
-    // 버프 적용 패킷 전송
-    const buffApplyPacket = createTowerBuffNotificationPacket(this.getId(), true);
-    this.room.broadcast(buffApplyPacket);
+        // 버프량 갱신
+        this.attackDamage = this.originalAttackDamage + this.buffedBy.length * 5;
+
+        console.log(`${this.getPrefabId()}: ${this.originalAttackDamage} -> ${this.attackDamage}`);
+
+        // 버프 적용 패킷 전송
+        const buffApplyPacket = createTowerBuffNotificationPacket(
+          [{ getId: () => towerId }],
+          'atkBuff',
+          true,
+        ); // 버프 적용
+        this.room.broadcast(buffApplyPacket);
+      }
+    });
   }
+  /**---------------------------------------------
+   * [버프 해제]
+   ---------------------------------------------*/
+  removeBuffFromTower(towers: Tower[]) {
+    towers.forEach((tower) => {
+      const towerId = tower.getId(); // 타워의 ID를 가져옴
 
-  /**
-   * 특정 버프 타워의 버프를 제거
-   * @param buffTowerId 제거할 버프 타워의 ID
-   */
-  removeBuffFromTower(buffTowerId: string) {
-    if (this.buffedBy.has(buffTowerId)) {
-      this.buffedBy.delete(buffTowerId);
-      // 공격력 원래대로 복구
-      this.attackDamage = this.originalAttackDamage;
+      if (this.buffedBy.includes(towerId)) {
+        // 배열에서 타워 ID 제거
+        this.buffedBy = this.buffedBy.filter((id) => id !== towerId);
 
-      // 버프 해제 패킷 전송
-      const buffRemovePacket = createTowerBuffNotificationPacket(this.getId(), false);
-      this.room.broadcast(buffRemovePacket);
-    }
+        // 공격력 원래 값으로 복원
+        this.attackDamage = this.originalAttackDamage;
+
+        // 버프 해제 패킷 전송
+        const buffRemovePacket = createTowerBuffNotificationPacket(
+          [{ getId: () => towerId }],
+          'atkBuff',
+          false,
+        ); // 버프 해제
+        this.room.broadcast(buffRemovePacket);
+      }
+    });
   }
 
   /**
@@ -274,9 +294,9 @@ export class Tower extends GameObject {
    */
   removeAllBuffsFromTower() {
     if (this.getPrefabId() === 'BuffTower') {
-      const towersInRange = this.getTowersInRange(Array.from(this.room.getTowers().values()));
-      towersInRange.forEach((tower) => {
-        tower.removeBuffFromTower(this.getId());
+      const towers = Array.from(this.room.getTowers().values());
+      towers.forEach((tower) => {
+        tower.removeBuffFromTower(towers);
       });
     }
   }
