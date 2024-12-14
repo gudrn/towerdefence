@@ -119,9 +119,9 @@ class AssetManager {
    * @returns {Object} 랜덤 몬스터 데이터
    */
   getRandomAssetMonster(): AssetMonster {
-    console.log('----------');
-    console.log(this.monsters.get('Robot5'));
-    console.log('----------');
+    // console.log('----------');
+    // console.log(this.monsters.get('Robot5'));
+    // console.log('----------');
     const random = Math.floor(Math.random() * this.normalMoster.length);
     return this.normalMoster[random];
   }
@@ -136,8 +136,8 @@ class AssetManager {
    */
   getTowerData(prefabId: string) {
     let tower = this.towers.get(prefabId) || null; // Map의 get() 메서드 사용
-    console.log('tower정보');
-    console.log(tower);
+    // console.log('tower정보');
+    // console.log(tower);
     return tower;
   }
 

@@ -1,5 +1,5 @@
 export interface AssetTower {
-  prefabId: number;
+  prefabId: string;
   attackDamage: number;
   attackRange: number;
   attackCoolDown: number;

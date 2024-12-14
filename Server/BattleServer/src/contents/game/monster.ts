@@ -78,7 +78,7 @@ export class Monster extends GameObject {
     this.maxHp = Math.floor(this.maxHp * multiplier);
     this.hp = this.maxHp;
     this.attackDamage = Math.floor(this.attackDamage * multiplier);
-    console.log(`몬스터가 강화되었습니다. `, this.maxHp);
+    // console.log(`몬스터가 강화되었습니다. `, this.maxHp);
   }
   /**
    * 몬스터의 상태를 업데이트합니다.
@@ -118,7 +118,7 @@ export class Monster extends GameObject {
       const attackRange = this.target instanceof Base ? this.attackRange + 1.5 : this.attackRange;
 
       if (dist <= attackRange) {
-        console.log('monsterAttack: ', this.getId());
+        // console.log('monsterAttack: ', this.getId());
         this.waitUntil = Date.now() + this.attackCoolDown * 1000;
         this.setState(OBJECT_STATE_TYPE.SKILL);
       } else {

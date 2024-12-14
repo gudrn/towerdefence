@@ -32,7 +32,6 @@ import { MonsterManager } from './monsterManager';
 import { SkillUseMonster } from '../game/skillUseMonster';
 import { TowerManager } from '../game/towerManager';
 
-
 interface PQNode {
   cost: number;
   pos: Vec2;
@@ -77,8 +76,6 @@ export class GameRoom {
     this.maxPlayerCount = maxPlayerCount;
     this.skillManager = new SkillManager(this);
     this.towerManager = new TowerManager(this);
-
-
   }
 
   /**
@@ -358,6 +355,7 @@ export class GameRoom {
     });
     const newTower = new Tower(packet.tower.prefabId, towerPosInfo, this);
     this.addObject(newTower);
+
     this.towers.set(newTower.getId(), newTower);
 
     // 3. 타워 생성 성공 응답
@@ -374,6 +372,13 @@ export class GameRoom {
       0,
     );
     this.broadcast(notificationBuffer);
+
+    // 버프 적용
+    if (newTower.getPrefabId() === 'BuffTower') {
+      newTower.buffTowersInRange();
+    } else if (newTower.isBuffTowerInRange()) {
+      newTower.applyAttackBuff();
+    }
   }
 
   /*---------------------------------------------
@@ -411,10 +416,10 @@ export class GameRoom {
     this.monsterManager.updateMonsters();
 
     // 타워 업데이트
-    // for (const [uuid, tower] of this.towers) {
-    //   tower.update();
-    // }
-    this.towerManager.updateTowers();
+    for (const [uuid, tower] of this.towers) {
+      tower.update();
+    }
+    // this.towerManager.updateTowers();
 
     //베이스캠프 체력 0 일시 게임 종료
     if (this.checkBaseHealth()) {

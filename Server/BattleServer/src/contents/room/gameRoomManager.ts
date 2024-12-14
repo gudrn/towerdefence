@@ -139,7 +139,7 @@ class GameRoomManager {
    * @param {BattleSession} session - 타워 생성 요청을 보낸 세션
    ---------------------------------------------*/
   towerBuildHandler(buffer: Buffer, session: BattleSession) {
-    console.log('towerBuildHandler');
+    // console.log('towerBuildHandler');
 
     // 1. 패킷 역직렬화
     const packet = fromBinary(C2B_TowerBuildRequestSchema, buffer);
@@ -148,7 +148,7 @@ class GameRoomManager {
     const roomId = packet.roomId;
     const room = this.rooms.get(roomId);
 
-    console.log('roomId', roomId);
+    // console.log('roomId', roomId);
 
     if (room == undefined) {
       console.log('유효하지 않은 roomId');
