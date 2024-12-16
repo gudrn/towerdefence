@@ -52,10 +52,10 @@ export class Monster extends GameObject {
     this.score = monsterData.score; // 점수
     this.waitUntil = 0; // 딜레이 시간
 
-    console.log('------------');
-    console.log('몬스터 스포너');
-    console.log(this.pos.uuid);
-    console.log('------------');
+    // console.log('------------');
+    // console.log('몬스터 스포너');
+    // console.log(this.pos.uuid);
+    // console.log('------------');
   }
 
   getpos() {
@@ -120,7 +120,7 @@ export class Monster extends GameObject {
       const attackRange = this.target instanceof Base ? this.attackRange + 1.5 : this.attackRange;
 
       if (dist <= attackRange) {
-        console.log('monsterAttack: ', this.getId());
+        //console.log('monsterAttack: ', this.getId());
         this.waitUntil = Date.now() + this.attackCoolDown * 1000;
         this.setState(OBJECT_STATE_TYPE.SKILL);
       } else {
@@ -195,7 +195,7 @@ export class Monster extends GameObject {
         [타워 공격]
     ---------------------------------------------*/
   private attackTarget(tower: Tower) {
-    console.log('attack');
+    //console.log('attack');
     // 2. 클라이언트에 공격 패킷 전송
     const attackPacket = create(B2G_MonsterAttackTowerNotificationSchema, {
       monsterId: this.getId(),

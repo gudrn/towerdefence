@@ -9,11 +9,11 @@ import {
   B2G_MonsterHealthUpdateNotificationSchema,
 } from 'src/protocol/monster_pb';
 import { ePacketId } from 'ServerCore/network/packetId';
-import { Monster } from './monster';
 import {
   B2G_TowerAttackMonsterNotificationSchema,
   B2G_TowerBuffNotificationSchema,
 } from 'src/protocol/tower_pb';
+import { SkillUseMonster } from './skillUseMonster';
 
 export class Tower extends GameObject {
   /*---------------------------------------------
@@ -22,13 +22,13 @@ export class Tower extends GameObject {
   private originalAttackDamage: number = 0;
   private attackDamage: number = 0;
   private attackRange: number = 0;
-  private attackCoolDown: number = 0;
+  public attackCoolDown: number = 0;
   public hp: number = 0;
   public maxHp: number = 0;
   private bulletSpeed = 0;
   public target: null | undefined;
   public lastAttackTime: number = 0;
-  private buffedBy: Set<string> = new Set();
+  private buffedBy: string[] = [];
 
   /*---------------------------------------------
     [생성자]
@@ -56,8 +56,8 @@ export class Tower extends GameObject {
    * 타워가 공격할 몬스터를 선택
    * @param {Array} monsters - 몬스터 배열
    */
-  private getMonsterInRange(monsters: Monster[]): { monster: Monster; distance: number } | null {
-    let closestMonster: Monster | null = null;
+  private getMonsterInRange(monsters: SkillUseMonster[]): { monster: SkillUseMonster; distance: number } | null {
+    let closestMonster: SkillUseMonster | null = null;
     let minDistance = Infinity;
 
     for (const monster of monsters) {
@@ -79,7 +79,7 @@ export class Tower extends GameObject {
    * @param {object} monsters - 몬스터 객체 { id, x, y }
    */
 
-  attackTarget(monsters: Monster[]) {
+  attackTarget(monsters: SkillUseMonster[]) {
     const currentTime = Date.now();
     if (currentTime - this.lastAttackTime > this.attackCoolDown) {
       this.lastAttackTime = currentTime;
@@ -187,28 +187,32 @@ export class Tower extends GameObject {
   /**---------------------------------------------
    * [공격력 증가]
    ---------------------------------------------*/
-  increaseAttackDamage(buffTowerId: string) {
-    // 해당 버프가 없을 때만 버프 목록에 해당 버프타워 ID 추가
-    if (!this.buffedBy.has(buffTowerId)) {
-      this.buffedBy.add(buffTowerId);
+   increaseAttackDamage(towers: Tower[]) {
+    // towers 배열의 각 요소에 대해 처리
+    towers.forEach((tower) => {
+      const towerId = tower.getId(); // 예시로 타워 ID를 가져온다고 가정
 
-      // 버프량
-      this.attackDamage = this.originalAttackDamage + this.buffedBy.size * 5;
+      // 해당 버프가 없을 때만 추가
+      if (!this.buffedBy.includes(towerId)) {
+        this.buffedBy.push(towerId);
 
-      // 버프 적용 패킷 전송
-      const buffApplyPacket = create(B2G_TowerBuffNotificationSchema, {
-        towerId: this.getId(),
-        isBuffed: true,
-      });
+        // 버프량 갱신
+        this.attackDamage = this.originalAttackDamage + this.buffedBy.length * 5;
 
-      const TowerBuffNotificationBuffer = PacketUtils.SerializePacket(
-        buffApplyPacket,
-        B2G_TowerBuffNotificationSchema,
-        ePacketId.B2G_TowerBuffNotification,
-        0,
-      ); // 버프 적용
-      this.room.broadcast(TowerBuffNotificationBuffer);
-    }
+        console.log(`${this.getPrefabId()}: ${this.originalAttackDamage} -> ${this.attackDamage}`);
+
+        // 버프 적용 패킷 전송
+        const buffApplyPacket = create(B2G_TowerBuffNotificationSchema, {
+          towerId: towers.map((tower) => tower.getId()),
+          buffType: "atkBuff",
+          isBuffed: true,
+          roomId: this.room.id
+        });
+
+        const sendBuffer = PacketUtils.SerializePacket(buffApplyPacket, B2G_TowerBuffNotificationSchema, ePacketId.G2C_TowerBuffNotification, 0);
+        this.room.broadcast(sendBuffer);
+      }
+    });
   }
 
   /**

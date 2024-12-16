@@ -3,6 +3,7 @@ import { GameRoom } from '../room/gameRoom'; // 게임 룸 클래스 임포트
 import { PosInfo, PosInfoSchema } from 'src/protocol/struct_pb'; // 위치 정보 구조체 임포트
 import { v4 as uuidv4 } from 'uuid';
 import { create } from '@bufbuild/protobuf';
+
 // 스킬을 사용하는 몬스터 클래스 정의
 export class SkillUseMonster extends Monster {
   private cloneInterval: NodeJS.Timeout | null = null; // 클론 생성 간격
@@ -90,7 +91,7 @@ export class SkillUseMonster extends Monster {
   // }
 
   // 몬스터가 죽었을 때 호출되는 메서드
-  public onDeath() {
+  public override onDeath() {
     if (this.cloneInterval) {
       clearInterval(this.cloneInterval);
     }

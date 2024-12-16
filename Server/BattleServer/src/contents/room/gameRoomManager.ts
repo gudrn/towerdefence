@@ -11,8 +11,9 @@ import { CustomError } from 'ServerCore/utils/error/customError';
 import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
 import { BattleSession } from 'src/main/session/battleSession';
 import { GamePlayer } from '../game/gamePlayer';
-import { G2B_PlayerPositionUpdateRequestSchema } from 'src/protocol/character_pb';
+import { G2B_PlayerPositionUpdateRequestSchema, G2B_PlayerUseAbilityRequestSchema } from 'src/protocol/character_pb';
 import { G2B_TowerBuildRequestSchema } from 'src/protocol/tower_pb';
+import { G2B_UseSkillRequest, G2B_UseSkillRequestSchema } from 'src/protocol/skill_pb';
 
 const MAX_ROOMS_SIZE = 10000;
 
@@ -29,7 +30,7 @@ class GameRoomManager {
     [방 입장]
     -클라에게 B2C_EnterRoom패킷 전송
 ---------------------------------------------*/
-  enterRoomHandler(buffer: Buffer, session: BattleSession) {
+  public enterRoomHandler(buffer: Buffer, session: BattleSession) {
     console.log('enterRoomHandler 호출됨');
 
     const packet = fromBinary(G2B_JoinGameRoomRequestSchema, buffer);
@@ -47,14 +48,14 @@ class GameRoomManager {
       );
     }
 
-    const player = new GamePlayer(packet.playerData);
+    const player = new GamePlayer(packet.playerData, packet.roomId);
     room.enterRoom(player, session);
   }
 
   /*---------------------------------------------
    [방 생성]
    ---------------------------------------------*/
-  createGameRoomHandler(buffer: Buffer, session: BattleSession) {
+  public createGameRoomHandler(buffer: Buffer, session: BattleSession) {
     console.log('createGameRoomHandler');
     // 1. 로비 서버 요청 패킷 역직렬화
     const packet = fromBinary(G2B_CreateGameRoomRequestSchema, buffer);
@@ -89,7 +90,7 @@ class GameRoomManager {
   /*---------------------------------------------
    [이동 동기화]
   ---------------------------------------------*/
-  moveHandler(buffer: Buffer, session: BattleSession) {
+  public moveHandler(buffer: Buffer, session: BattleSession) {
     const packet = fromBinary(G2B_PlayerPositionUpdateRequestSchema, buffer);
 
     const room = this.rooms.get(packet.roomId);
@@ -103,7 +104,7 @@ class GameRoomManager {
   /*---------------------------------------------
    [타워 설치]
   ---------------------------------------------*/
-  towerBuildHandler(buffer: Buffer, session: BattleSession) {
+  public towerBuildHandler(buffer: Buffer, session: BattleSession) {
     console.log('towerBuildHandler');
     const packet = fromBinary(G2B_TowerBuildRequestSchema, buffer);
     const room = this.rooms.get(packet.roomId);
@@ -113,6 +114,38 @@ class GameRoomManager {
       throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
     }
     room.handleTowerBuild(packet, session);
+  }
+
+  /*---------------------------------------------
+   [스킬 카드 사용 동기화]
+  ---------------------------------------------*/
+  public skillHandler(buffer: Buffer, session: BattleSession) {
+    const packet: G2B_UseSkillRequest = fromBinary(G2B_UseSkillRequestSchema, buffer);
+    const room = this.rooms.get(packet.roomId);
+    if (room == undefined) {
+      console.log('유효하지 않은 roomId');
+      throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
+    }
+    room.handleSkill(packet, session);
+  }
+
+  /*---------------------------------------------
+   [캐릭터 고유 능력 사용 동기화]
+  ---------------------------------------------*/
+  abilityHandler(buffer: Buffer, session: BattleSession) {
+    const payload = fromBinary(G2B_PlayerUseAbilityRequestSchema, buffer); // 요청 디코딩
+    const room: GameRoom | undefined = this.rooms.get(payload.roomId); // 방 찾기
+
+    if (!room) {
+      console.error('유효하지 않은 roomId');
+      throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 roomId');
+    }
+
+    room.handleAbility(payload, session); // 어빌리티 처리 요청
+  }
+
+  public getRoom(roomId: number) {
+    return this.rooms.get(roomId);
   }
 }
 export const gameRoomManager = new GameRoomManager();

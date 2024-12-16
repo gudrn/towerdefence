@@ -86,7 +86,8 @@ export function handleC2G_JoinRoomRequest(buffer: Buffer, session: GatewaySessio
     const requestPacket = create(G2L_JoinRoomRequestSchema, {
         roomId: packet.roomId,
         nickname: packet.nickname,
-        userId: session.getId()
+        prefabId: packet.prefabId,
+        userId: session.getId(),
     });
 
     const sendBuffer = PacketUtils.SerializePacket(requestPacket, G2L_JoinRoomRequestSchema, ePacketId.G2L_JoinRoomRequest, 0);
@@ -106,7 +107,7 @@ export function handleC2G_JoinRoomRequest(buffer: Buffer, session: GatewaySessio
     2. 배틀 서버에게 방 생성 요청
   ---------------------------------------------*/
 export function handleC2G_GameStartRequest(buffer: Buffer, session: GatewaySession) {
-    console.log("handleC2G_GameStartRequest");
+    //console.log("handleC2G_GameStartRequest");
 
     const packet: C2G_JoinRoomRequest = fromBinary(C2G_JoinRoomRequestSchema, buffer);
     const room = roomManager.getRoom(packet.roomId);

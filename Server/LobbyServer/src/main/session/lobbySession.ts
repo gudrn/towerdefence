@@ -4,6 +4,7 @@ import { lobbySessionManager } from "src/server";
 import { handleError } from "src/utils/errorHandler";
 import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
 import handlerMappings from "../handlerMapping/clientPacketHandler";
+import { onSocketDisconnected } from "../handler/roomHandler";
 
 export class LobbySession extends Session {
   nickname: string;
@@ -21,6 +22,7 @@ export class LobbySession extends Session {
   ---------------------------------------------*/
   onEnd() {
     console.log('[LobbySession] 클라이언트 연결이 종료되었습니다.');
+    onSocketDisconnected(this.getId());
   }
   
 
@@ -33,6 +35,7 @@ export class LobbySession extends Session {
   ---------------------------------------------*/
   onError(error) {
     console.error('소켓 오류:', error);
+    onSocketDisconnected(this.getId());
     handleError(this, new CustomError(500, `소켓 오류: ${error.message}`));
   }
 

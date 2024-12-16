@@ -28,12 +28,10 @@ export class MonsterManager extends MonsterSpawner {
 
   public updateMonsters() {
     let hasRobot5 = false;
-    let hasRobot2 = false;
 
     for (const monster of this.monsters.values()) {
       monster.update();
-      hasRobot5 ||= monster.getPrefabId() === 'Robot5';
-      hasRobot2 ||= monster.getPrefabId() === 'Robot2';
+      hasRobot5 ||= monster.getPrefabId() === 'Robot5'; //??
     }
     let packet;
     for (const monster of this.monsters.values()) {

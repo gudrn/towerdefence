@@ -5,7 +5,7 @@ import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
 import { PacketUtils } from "ServerCore/utils/packetUtils";
 import { roomManager } from "src/contents/roomManager";
 import { BattleSession } from "src/main/session/battleSession";
-import { B2G_TowerAttackMonsterNotificationSchema, B2G_TowerBuildNotificationSchema, B2G_TowerDestroyNotificationSchema, B2G_TowerHealthUpdateNotificationSchema, G2C_TowerAttackMonsterNotificationSchema, G2C_TowerBuildNotificationSchema, G2C_TowerDestroyNotificationSchema, G2C_TowerHealthUpdateNotificationSchema } from "src/protocol/tower_pb";
+import { B2G_TowerAttackMonsterNotificationSchema, B2G_TowerBuffNotificationSchema, B2G_TowerBuildNotificationSchema, B2G_TowerDestroyNotificationSchema, B2G_TowerHealthUpdateNotificationSchema, G2C_TowerAttackMonsterNotificationSchema, G2C_TowerBuffNotificationSchema, G2C_TowerBuildNotificationSchema, G2C_TowerDestroyNotificationSchema, G2C_TowerHealthUpdateNotificationSchema } from "src/protocol/tower_pb";
 
 /*---------------------------------------------
     [타워 생성 알림]
@@ -17,6 +17,20 @@ export function handleB2G_TowerBuildNotification(buffer: Buffer, session: Battle
         ownerId: packet.ownerId,
         tower: packet.tower
     });
+
+    if(packet.tower == undefined) {
+        console.log("sibal");
+    }
+    else
+    {
+        if(packet.tower.towerPos == undefined) {
+            console.log("ddddddddddd");
+        }
+        else
+        {
+            console.log(packet.tower.towerPos.uuid);
+        }
+    }
 
     const sendBuffer = PacketUtils.SerializePacket(
         notificationPacket,
@@ -90,8 +104,13 @@ export function handleB2G_TowerHealthUpdateNotification(buffer: Buffer, session:
     [타워->몬스터 공격 알림]
   ---------------------------------------------*/
 export function handleB2G_TowerAttackMonsterNotification(buffer: Buffer, session: BattleSession) {
-    const packet = fromBinary(B2G_TowerAttackMonsterNotificationSchema, buffer);
-
+    //console.log("handleB2G_TowerAttackMonsterNotification");
+    let packet;
+    try {
+        packet = fromBinary(B2G_TowerAttackMonsterNotificationSchema, buffer);
+    } catch (err) {
+        throw new CustomError(ErrorCodes.INVALID_PACKET, `[handleB2G_TowerAttackMonsterNotification] 패킷 파싱 오류: ${err}`);
+    }
     const notificationPacket = create(G2C_TowerAttackMonsterNotificationSchema, {
         towerId: packet.towerId,
         monsterPos: packet.monsterPos,
@@ -108,6 +127,30 @@ export function handleB2G_TowerAttackMonsterNotification(buffer: Buffer, session
     const room = roomManager.getRoom(packet.roomId);
     if(room == undefined) {
         throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, "[handleB2G_TowerAttackMonsterNotification] 방을 찾지 못했습니다.");
+    }
+
+    room.broadcast(sendBuffer);
+}
+
+export function handleB2G_TowerBuffNotification(buffer: Buffer, session: BattleSession) {
+    const packet = fromBinary(B2G_TowerBuffNotificationSchema, buffer);
+
+    const notificationPacket = create(G2C_TowerBuffNotificationSchema, {
+        towerId: packet.towerId,
+        buffType: packet.buffType,
+        isBuffed: packet.isBuffed
+    });
+
+    const sendBuffer = PacketUtils.SerializePacket(
+        notificationPacket,
+        G2C_TowerBuffNotificationSchema,
+        ePacketId.G2C_TowerBuffNotification,
+        0
+    );
+
+    const room = roomManager.getRoom(packet.roomId);
+    if(room == undefined) {
+        throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, `방을 찾지 못했습니다 ${packet.roomId}`);
     }
 
     room.broadcast(sendBuffer);

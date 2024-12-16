@@ -16,14 +16,26 @@ import { ePacketId } from 'ServerCore/network/packetId';
 import { sessionManager } from 'src/server';
 import { CustomError } from 'ServerCore/utils/error/customError';
 import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
+import { G2B_PlayerUseAbilityRequest } from 'src/protocol/character_pb';
+import { Character } from './character/character';
+import { gameRoomManager } from '../room/gameRoomManager';
+import { CreateCharacter } from './character/createCharcter';
 
 export class GamePlayer {
   public playerData: GamePlayerData;
   public cardList: Map<string, string> = new Map();
   private isInitCard: Boolean = false;
-  constructor(playerData: GamePlayerData) {
+  public character: Character | null = null; // 플레이어와 연결된 캐릭터
+
+  constructor(playerData: GamePlayerData, roomId: number) {
     this.playerData = playerData; // 플레이어 데이터 저장
     this.cardList = new Map(); // 카드 목록 초기화
+
+    const room = gameRoomManager.getRoom(roomId);
+    if (room == undefined) {
+      throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, `유효하지 않은 roomID ${roomId}`);
+    }
+    this.character = CreateCharacter.createChar(playerData.prefabId, room, this);
   }
 
   /*---------------------------------------------
@@ -142,7 +154,7 @@ export class GamePlayer {
     this.cardList.delete(cardId); // 카드 목록에서 카드 삭제
     const responsePacket = create(B2G_UseSkillNotificationSchema, {
       roomId: roomId,
-      userId: this.playerData.position?.uuid,
+      ownerId: this.playerData.position?.uuid,
       skill: create(SkillDataSchema, {
         prefabId: card,
       }),
@@ -164,5 +176,12 @@ export class GamePlayer {
 
   public getCardList() {
     return this.cardList;
+  }
+
+  public useAbility() {
+    if (this.character == null) {
+      throw new CustomError(ErrorCodes.MISSING_FIELDS, ' 데이터가 없음.');
+    }
+    this.character.useAbility();
   }
 }

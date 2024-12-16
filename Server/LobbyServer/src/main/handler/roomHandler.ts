@@ -139,7 +139,7 @@ export async function enterRoomHandler(buffer: Buffer, session: LobbySession): P
     const newUserData = create(UserDataSchema, {
         id: packet.userId,
         name: packet.nickname,
-        prefabId: "Red"
+        prefabId: packet.prefabId
     })
     roomData.users.push(newUserData);
 
@@ -186,4 +186,23 @@ export async function gameStartHandler(buffer: Buffer, session: LobbySession): P
     // 업데이트된 방 데이터를 Redis에 저장
     const updatedSerializedRoomData = Buffer.from(toBinary(RoomDataSchema, roomData));
     await redis.set(roomKey, updatedSerializedRoomData);
+}
+
+export async function onSocketDisconnected(playerId:string){
+    const keys = await redis.keys(`${roomConfig.ROOM_KEY}*`);
+
+    for (const key of keys) {
+        const serializedRoomData = await redis.getBuffer(key);
+        if (serializedRoomData) {
+          const redisRoomData: RoomData = fromBinary(RoomDataSchema, serializedRoomData);
+          redisRoomData.users = redisRoomData.users.filter((user)=>user.id!==playerId);
+          if(redisRoomData.users.length===0){
+            await redis.del(`${roomConfig.ROOM_KEY}${key}`)
+          }else{
+            const updatedSerializedRoomData = Buffer.from(toBinary(RoomDataSchema, redisRoomData));
+            await redis.set(key,updatedSerializedRoomData);
+          }
+        }
+      }
+
 }

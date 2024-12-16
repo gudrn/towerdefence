@@ -14,6 +14,10 @@ const handlerMappings: Record<ePacketId, PacketHandler> | any = {
     gameRoomManager.moveHandler(buffer, session),
   [ePacketId.G2B_TowerBuildRequest]:(buffer:Buffer,session:BattleSession)=>
     gameRoomManager.towerBuildHandler(buffer, session),
+  [ePacketId.G2B_UseSkillRequest]:(buffer:Buffer,session:BattleSession)=>
+    gameRoomManager.skillHandler(buffer, session),
+  [ePacketId.G2B_PlayerUseAbilityRequest]:(buffer:Buffer,session:BattleSession)=>
+    gameRoomManager.abilityHandler(buffer, session),
 };
 
 export default handlerMappings;

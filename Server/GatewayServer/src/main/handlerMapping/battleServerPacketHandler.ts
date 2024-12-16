@@ -2,9 +2,9 @@ import { ePacketId } from "ServerCore/network/packetId";
 import { BattleSession } from "../session/battleSession";
 import { handleB2G_CreateGameRoomResponse, handleB2G_GameStartNotification, handleB2G_JoinGameRoomResponse } from "../handler/battleServer/roomHandler";
 import { handleB2G_InitCardData } from "../handler/battleServer/cardHandler";
-import { handleB2G_PlayerPositionUpdateNotification } from "../handler/battleServer/playerHandler";
-import { handleB2G_MonsterAttackBaseNotification, handleB2G_MonsterAttackTowerNotification, handleB2G_MonsterDeathNotification, handleB2G_MonsterHealthUpdateNotification, handleB2G_MonsterPositionUpdateNotification, handleB2G_SpawnMonsterNotification } from "../handler/battleServer/monsterHandler";
-import { handleB2G_TowerAttackMonsterNotification, handleB2G_TowerBuildNotification, handleB2G_TowerDestroyNotification, handleB2G_TowerHealthUpdateNotification } from "../handler/battleServer/towerHandler";
+import { handleB2G_PlayerPositionUpdateNotification, handleB2G_PlayerUseAbilityNotification, handleB2G_UseSkillNotification } from "../handler/battleServer/playerHandler";
+import { handleB2G_MonsterAttackBaseNotification, handleB2G_MonsterAttackTowerNotification, handleB2G_MonsterBuffNotification, handleB2G_MonsterDeathNotification, handleB2G_MonsterHealthUpdateNotification, handleB2G_MonsterPositionUpdateNotification, handleB2G_SpawnMonsterNotification } from "../handler/battleServer/monsterHandler";
+import { handleB2G_TowerAttackMonsterNotification, handleB2G_TowerBuffNotification, handleB2G_TowerBuildNotification, handleB2G_TowerDestroyNotification, handleB2G_TowerHealthUpdateNotification } from "../handler/battleServer/towerHandler";
 
 type PacketHandler = (buffer: Buffer, session: BattleSession) => void;
 
@@ -25,7 +25,11 @@ const battleHandlerMappings: Record<ePacketId, PacketHandler> | any = {
     [ePacketId.B2G_TowerAttackMonsterNotification]:(buffer: Buffer, session: BattleSession) => handleB2G_TowerAttackMonsterNotification(buffer, session),
     [ePacketId.B2G_TowerBuildNotification]:(buffer: Buffer, session: BattleSession) => handleB2G_TowerBuildNotification(buffer, session),
     [ePacketId.B2G_TowerDestroyNotification]:(buffer: Buffer, session: BattleSession) => handleB2G_TowerDestroyNotification(buffer, session),
+    [ePacketId.B2G_TowerBuffNotification]:(buffer: Buffer, session: BattleSession) => handleB2G_TowerBuffNotification(buffer, session),
     [ePacketId.B2G_TowerHealthUpdateNotification]:(buffer: Buffer, session: BattleSession) => handleB2G_TowerHealthUpdateNotification(buffer, session),
+    [ePacketId.B2G_UseSkillNotification]: (buffer: Buffer, session: BattleSession) => handleB2G_UseSkillNotification(buffer, session),
+    [ePacketId.B2G_MonsterBuffNotification]: (buffer: Buffer, session: BattleSession) => handleB2G_MonsterBuffNotification(buffer, session),
+    [ePacketId.B2G_PlayerUseAbilityNotification]: (buffer: Buffer, session: BattleSession) => handleB2G_PlayerUseAbilityNotification(buffer, session),
 
 
 

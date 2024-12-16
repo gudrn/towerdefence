@@ -49,7 +49,11 @@ namespace Protocol {
             "aW9uEg8KB3Rvd2VySWQYASABKAkSCgoCaHAYAiABKAUSDQoFbWF4SHAYAyAB",
             "KAUSDgoGcm9vbUlkGAQgASgFIk8KIUcyQ19Ub3dlckhlYWx0aFVwZGF0ZU5v",
             "dGlmaWNhdGlvbhIPCgd0b3dlcklkGAEgASgJEgoKAmhwGAIgASgFEg0KBW1h",
-            "eEhwGAMgASgFYgZwcm90bzM="));
+            "eEhwGAMgASgFImAKGUIyR19Ub3dlckJ1ZmZOb3RpZmljYXRpb24SDwoHdG93",
+            "ZXJJZBgBIAMoCRIQCghidWZmVHlwZRgCIAEoCRIQCghpc0J1ZmZlZBgDIAEo",
+            "CBIOCgZyb29tSWQYBCABKAUiUAoZRzJDX1Rvd2VyQnVmZk5vdGlmaWNhdGlv",
+            "bhIPCgd0b3dlcklkGAEgAygJEhAKCGJ1ZmZUeXBlGAIgASgJEhAKCGlzQnVm",
+            "ZmVkGAMgASgIYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Protocol.StructReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -64,7 +68,9 @@ namespace Protocol {
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2G_BaseDestroyNotification), global::Protocol.B2G_BaseDestroyNotification.Parser, new[]{ "IsDestroied", "RoomId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.G2C_BaseDestroyNotification), global::Protocol.G2C_BaseDestroyNotification.Parser, new[]{ "IsDestroied" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2G_TowerHealthUpdateNotification), global::Protocol.B2G_TowerHealthUpdateNotification.Parser, new[]{ "TowerId", "Hp", "MaxHp", "RoomId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.G2C_TowerHealthUpdateNotification), global::Protocol.G2C_TowerHealthUpdateNotification.Parser, new[]{ "TowerId", "Hp", "MaxHp" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.G2C_TowerHealthUpdateNotification), global::Protocol.G2C_TowerHealthUpdateNotification.Parser, new[]{ "TowerId", "Hp", "MaxHp" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2G_TowerBuffNotification), global::Protocol.B2G_TowerBuffNotification.Parser, new[]{ "TowerId", "BuffType", "IsBuffed", "RoomId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.G2C_TowerBuffNotification), global::Protocol.G2C_TowerBuffNotification.Parser, new[]{ "TowerId", "BuffType", "IsBuffed" }, null, null, null, null)
           }));
     }
     #endregion
@@ -3298,6 +3304,565 @@ namespace Protocol {
           }
           case 24: {
             MaxHp = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// 타워 버프 상태 알림
+  /// </summary>
+  public sealed partial class B2G_TowerBuffNotification : pb::IMessage<B2G_TowerBuffNotification>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<B2G_TowerBuffNotification> _parser = new pb::MessageParser<B2G_TowerBuffNotification>(() => new B2G_TowerBuffNotification());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<B2G_TowerBuffNotification> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Protocol.TowerReflection.Descriptor.MessageTypes[12]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public B2G_TowerBuffNotification() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public B2G_TowerBuffNotification(B2G_TowerBuffNotification other) : this() {
+      towerId_ = other.towerId_.Clone();
+      buffType_ = other.buffType_;
+      isBuffed_ = other.isBuffed_;
+      roomId_ = other.roomId_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public B2G_TowerBuffNotification Clone() {
+      return new B2G_TowerBuffNotification(this);
+    }
+
+    /// <summary>Field number for the "towerId" field.</summary>
+    public const int TowerIdFieldNumber = 1;
+    private static readonly pb::FieldCodec<string> _repeated_towerId_codec
+        = pb::FieldCodec.ForString(10);
+    private readonly pbc::RepeatedField<string> towerId_ = new pbc::RepeatedField<string>();
+    /// <summary>
+    /// 버프 받은/해제된 타워 ID
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<string> TowerId {
+      get { return towerId_; }
+    }
+
+    /// <summary>Field number for the "buffType" field.</summary>
+    public const int BuffTypeFieldNumber = 2;
+    private string buffType_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string BuffType {
+      get { return buffType_; }
+      set {
+        buffType_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "isBuffed" field.</summary>
+    public const int IsBuffedFieldNumber = 3;
+    private bool isBuffed_;
+    /// <summary>
+    /// true: 버프 적용, false: 버프 해제
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool IsBuffed {
+      get { return isBuffed_; }
+      set {
+        isBuffed_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "roomId" field.</summary>
+    public const int RoomIdFieldNumber = 4;
+    private int roomId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int RoomId {
+      get { return roomId_; }
+      set {
+        roomId_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as B2G_TowerBuffNotification);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(B2G_TowerBuffNotification other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if(!towerId_.Equals(other.towerId_)) return false;
+      if (BuffType != other.BuffType) return false;
+      if (IsBuffed != other.IsBuffed) return false;
+      if (RoomId != other.RoomId) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      hash ^= towerId_.GetHashCode();
+      if (BuffType.Length != 0) hash ^= BuffType.GetHashCode();
+      if (IsBuffed != false) hash ^= IsBuffed.GetHashCode();
+      if (RoomId != 0) hash ^= RoomId.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      towerId_.WriteTo(output, _repeated_towerId_codec);
+      if (BuffType.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(BuffType);
+      }
+      if (IsBuffed != false) {
+        output.WriteRawTag(24);
+        output.WriteBool(IsBuffed);
+      }
+      if (RoomId != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(RoomId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      towerId_.WriteTo(ref output, _repeated_towerId_codec);
+      if (BuffType.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(BuffType);
+      }
+      if (IsBuffed != false) {
+        output.WriteRawTag(24);
+        output.WriteBool(IsBuffed);
+      }
+      if (RoomId != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(RoomId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      size += towerId_.CalculateSize(_repeated_towerId_codec);
+      if (BuffType.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(BuffType);
+      }
+      if (IsBuffed != false) {
+        size += 1 + 1;
+      }
+      if (RoomId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(RoomId);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(B2G_TowerBuffNotification other) {
+      if (other == null) {
+        return;
+      }
+      towerId_.Add(other.towerId_);
+      if (other.BuffType.Length != 0) {
+        BuffType = other.BuffType;
+      }
+      if (other.IsBuffed != false) {
+        IsBuffed = other.IsBuffed;
+      }
+      if (other.RoomId != 0) {
+        RoomId = other.RoomId;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            towerId_.AddEntriesFrom(input, _repeated_towerId_codec);
+            break;
+          }
+          case 18: {
+            BuffType = input.ReadString();
+            break;
+          }
+          case 24: {
+            IsBuffed = input.ReadBool();
+            break;
+          }
+          case 32: {
+            RoomId = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            towerId_.AddEntriesFrom(ref input, _repeated_towerId_codec);
+            break;
+          }
+          case 18: {
+            BuffType = input.ReadString();
+            break;
+          }
+          case 24: {
+            IsBuffed = input.ReadBool();
+            break;
+          }
+          case 32: {
+            RoomId = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// 타워 버프 상태 알림
+  /// </summary>
+  public sealed partial class G2C_TowerBuffNotification : pb::IMessage<G2C_TowerBuffNotification>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<G2C_TowerBuffNotification> _parser = new pb::MessageParser<G2C_TowerBuffNotification>(() => new G2C_TowerBuffNotification());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<G2C_TowerBuffNotification> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Protocol.TowerReflection.Descriptor.MessageTypes[13]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public G2C_TowerBuffNotification() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public G2C_TowerBuffNotification(G2C_TowerBuffNotification other) : this() {
+      towerId_ = other.towerId_.Clone();
+      buffType_ = other.buffType_;
+      isBuffed_ = other.isBuffed_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public G2C_TowerBuffNotification Clone() {
+      return new G2C_TowerBuffNotification(this);
+    }
+
+    /// <summary>Field number for the "towerId" field.</summary>
+    public const int TowerIdFieldNumber = 1;
+    private static readonly pb::FieldCodec<string> _repeated_towerId_codec
+        = pb::FieldCodec.ForString(10);
+    private readonly pbc::RepeatedField<string> towerId_ = new pbc::RepeatedField<string>();
+    /// <summary>
+    /// 버프 받은/해제된 타워 ID
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<string> TowerId {
+      get { return towerId_; }
+    }
+
+    /// <summary>Field number for the "buffType" field.</summary>
+    public const int BuffTypeFieldNumber = 2;
+    private string buffType_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string BuffType {
+      get { return buffType_; }
+      set {
+        buffType_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "isBuffed" field.</summary>
+    public const int IsBuffedFieldNumber = 3;
+    private bool isBuffed_;
+    /// <summary>
+    /// true: 버프 적용, false: 버프 해제
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool IsBuffed {
+      get { return isBuffed_; }
+      set {
+        isBuffed_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as G2C_TowerBuffNotification);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(G2C_TowerBuffNotification other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if(!towerId_.Equals(other.towerId_)) return false;
+      if (BuffType != other.BuffType) return false;
+      if (IsBuffed != other.IsBuffed) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      hash ^= towerId_.GetHashCode();
+      if (BuffType.Length != 0) hash ^= BuffType.GetHashCode();
+      if (IsBuffed != false) hash ^= IsBuffed.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      towerId_.WriteTo(output, _repeated_towerId_codec);
+      if (BuffType.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(BuffType);
+      }
+      if (IsBuffed != false) {
+        output.WriteRawTag(24);
+        output.WriteBool(IsBuffed);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      towerId_.WriteTo(ref output, _repeated_towerId_codec);
+      if (BuffType.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(BuffType);
+      }
+      if (IsBuffed != false) {
+        output.WriteRawTag(24);
+        output.WriteBool(IsBuffed);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      size += towerId_.CalculateSize(_repeated_towerId_codec);
+      if (BuffType.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(BuffType);
+      }
+      if (IsBuffed != false) {
+        size += 1 + 1;
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(G2C_TowerBuffNotification other) {
+      if (other == null) {
+        return;
+      }
+      towerId_.Add(other.towerId_);
+      if (other.BuffType.Length != 0) {
+        BuffType = other.BuffType;
+      }
+      if (other.IsBuffed != false) {
+        IsBuffed = other.IsBuffed;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            towerId_.AddEntriesFrom(input, _repeated_towerId_codec);
+            break;
+          }
+          case 18: {
+            BuffType = input.ReadString();
+            break;
+          }
+          case 24: {
+            IsBuffed = input.ReadBool();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            towerId_.AddEntriesFrom(ref input, _repeated_towerId_codec);
+            break;
+          }
+          case 18: {
+            BuffType = input.ReadString();
+            break;
+          }
+          case 24: {
+            IsBuffed = input.ReadBool();
             break;
           }
         }

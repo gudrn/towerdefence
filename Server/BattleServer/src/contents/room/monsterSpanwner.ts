@@ -47,34 +47,75 @@ export class MonsterSpawner {
     this.spawnRate = 5000; // 몬스터 생성 간격(ms)
 
     this.spawnTimer = setInterval(() => {
-      this.spawnMonster(); // 몬스터 생성
+      this.spawnNomalMonster(); // 몬스터 생성
       this.spawnedMonster += 1;
     }, this.spawnRate);
   }
 
-  /**
-   * 몬스터 스폰
-   *
+  startSpawningElite() {
+    this.spawnEilteMonster(); // 엘리트 몬스터 생성
+    this.spawnedMonster += 1;
+  }
+
+/*---------------------------------------------
+   * 노말 몬스터 스폰
    * - 지정된 위치에 몬스터를 생성하고 게임 방에 추가
-   */
-  spawnMonster() {
+  ---------------------------------------------*/
+  spawnNomalMonster() {
+    // 랜덤 위치 선택
     const randomSpawnPos = this.getRandomSpawnPosition();
-    console.log(randomSpawnPos);
 
+    // 몬스터 uuid 생성
     const newUuid = uuidv4();
-    console.log('Generated UUID:', newUuid);
 
+    // 위치 정보 생성
     const posInfo = create(PosInfoSchema, {
       uuid: newUuid,
       x: randomSpawnPos.x,
       y: randomSpawnPos.y,
     });
 
+    // 1~4번 몬스터 중 랜덤
     let randomAssetMonster = assetManager.getRandomAssetMonster();
     const monster = new SkillUseMonster(randomAssetMonster.prefabId, posInfo, this.gameRoom);
     monster.statusMultiplier(this.gameRoom.monsterStatusMultiplier); // 강화 배율 적용
     this.gameRoom.addObject(monster);
   }
+
+  /*---------------------------------------------
+   * 엘리트 몬스터 스폰
+   * - 지정된 위치에 몬스터를 생성하고 게임 방에 추가
+   * - 점수를 기준으로 
+  ---------------------------------------------*/
+  spawnEilteMonster() {
+    // 랜덤 위치 선택
+    const randomSpawnPos = this.getRandomSpawnPosition();
+
+    // 몬스터 uuid 생성
+    const newUuid = uuidv4();
+
+    // 위치 정보 생성
+    const posInfo = create(PosInfoSchema, {
+      uuid: newUuid,
+      x: randomSpawnPos.x,
+      y: randomSpawnPos.y,
+    });
+
+    // 엘리트 몬스터 가져오기
+    let eliteAssetMonster = assetManager.getMonsterData('Robot5');
+
+    // null인지 확인하기
+    if (!eliteAssetMonster) {
+      console.log('엘리트 몬스터 못 찾음');
+      return;
+    }
+
+    const monster = new SkillUseMonster(eliteAssetMonster.prefabId, posInfo, this.gameRoom);
+    monster.statusMultiplier(this.gameRoom.monsterStatusMultiplier); // 강화 배율 적용
+    this.gameRoom.addObject(monster);
+  }
+
+
 
   /**
    * 스폰 중지

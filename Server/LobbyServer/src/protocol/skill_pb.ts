@@ -13,12 +13,12 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file skill.proto.
  */
 export const file_skill: GenFile = /*@__PURE__*/
-  fileDesc("Cgtza2lsbC5wcm90bxIIUHJvdG9jb2wiVgoQQzJHX1NraWxsUmVxdWVzdBIiCgVza2lsbBgBIAEoCzITLlByb3RvY29sLlNraWxsRGF0YRIOCgZyb29tSWQYAiABKAUSDgoGY2FyZElkGAMgASgJIlYKEEcyQl9Ta2lsbFJlcXVlc3QSIgoFc2tpbGwYASABKAsyEy5Qcm90b2NvbC5Ta2lsbERhdGESDgoGcm9vbUlkGAIgASgFEg4KBmNhcmRJZBgDIAEoCSJGChFCMkdfU2tpbGxSZXNwb25zZRIOCgZyb29tSWQYASABKAUSEQoJaXNTdWNjZXNzGAIgASgIEg4KBmNhcmRJZBgDIAEoCSI2ChFHMkNfU2tpbGxSZXNwb25zZRIRCglpc1N1Y2Nlc3MYASABKAgSDgoGY2FyZElkGAIgASgJIl4KGEIyR19Vc2VTa2lsbE5vdGlmaWNhdGlvbhIOCgZyb29tSWQYASABKAUSDgoGdXNlcklkGAIgASgJEiIKBXNraWxsGAMgASgLMhMuUHJvdG9jb2wuU2tpbGxEYXRhIk4KGEcyQ19Vc2VTa2lsbE5vdGlmaWNhdGlvbhIOCgZ1c2VySWQYASABKAkSIgoFc2tpbGwYAiABKAsyEy5Qcm90b2NvbC5Ta2lsbERhdGEiYwoLQjJHX0FkZENhcmQSDgoGcm9vbUlkGAEgASgFEg4KBnVzZXJJZBgCIAEoCRIOCgZjYXJkSWQYAyABKAkSJAoIY2FyZERhdGEYBCABKAsyEi5Qcm90b2NvbC5DYXJkRGF0YSJDCgtHMkNfQWRkQ2FyZBIOCgZjYXJkSWQYASABKAkSJAoIY2FyZERhdGEYAiABKAsyEi5Qcm90b2NvbC5DYXJkRGF0YSJIChBCMkdfSW5pdENhcmREYXRhEiQKCGNhcmREYXRhGAEgAygLMhIuUHJvdG9jb2wuQ2FyZERhdGESDgoGdXNlcklkGAIgASgJIjgKEEcyQ19Jbml0Q2FyZERhdGESJAoIY2FyZERhdGEYASADKAsyEi5Qcm90b2NvbC5DYXJkRGF0YWIGcHJvdG8z", [file_enum, file_struct]);
+  fileDesc("Cgtza2lsbC5wcm90bxIIUHJvdG9jb2wiWQoTQzJHX1VzZVNraWxsUmVxdWVzdBIiCgVza2lsbBgBIAEoCzITLlByb3RvY29sLlNraWxsRGF0YRIOCgZyb29tSWQYAiABKAUSDgoGY2FyZElkGAMgASgJImkKE0cyQl9Vc2VTa2lsbFJlcXVlc3QSIgoFc2tpbGwYASABKAsyEy5Qcm90b2NvbC5Ta2lsbERhdGESDgoGcm9vbUlkGAIgASgFEg4KBmNhcmRJZBgDIAEoCRIOCgZ1c2VySWQYBCABKAkiSQoUQjJHX1VzZVNraWxsUmVzcG9uc2USDgoGcm9vbUlkGAEgASgFEhEKCWlzU3VjY2VzcxgCIAEoCBIOCgZjYXJkSWQYAyABKAkiOQoURzJDX1VzZVNraWxsUmVzcG9uc2USEQoJaXNTdWNjZXNzGAEgASgIEg4KBmNhcmRJZBgCIAEoCSJfChhCMkdfVXNlU2tpbGxOb3RpZmljYXRpb24SDgoGcm9vbUlkGAEgASgFEg8KB293bmVySWQYAiABKAkSIgoFc2tpbGwYAyABKAsyEy5Qcm90b2NvbC5Ta2lsbERhdGEiTwoYRzJDX1VzZVNraWxsTm90aWZpY2F0aW9uEg8KB293bmVySWQYASABKAkSIgoFc2tpbGwYAiABKAsyEy5Qcm90b2NvbC5Ta2lsbERhdGEiYwoLQjJHX0FkZENhcmQSDgoGcm9vbUlkGAEgASgFEg4KBnVzZXJJZBgCIAEoCRIOCgZjYXJkSWQYAyABKAkSJAoIY2FyZERhdGEYBCABKAsyEi5Qcm90b2NvbC5DYXJkRGF0YSJDCgtHMkNfQWRkQ2FyZBIOCgZjYXJkSWQYASABKAkSJAoIY2FyZERhdGEYAiABKAsyEi5Qcm90b2NvbC5DYXJkRGF0YSJIChBCMkdfSW5pdENhcmREYXRhEiQKCGNhcmREYXRhGAEgAygLMhIuUHJvdG9jb2wuQ2FyZERhdGESDgoGdXNlcklkGAIgASgJIjgKEEcyQ19Jbml0Q2FyZERhdGESJAoIY2FyZERhdGEYASADKAsyEi5Qcm90b2NvbC5DYXJkRGF0YWIGcHJvdG8z", [file_enum, file_struct]);
 
 /**
- * @generated from message Protocol.C2G_SkillRequest
+ * @generated from message Protocol.C2G_UseSkillRequest
  */
-export type C2G_SkillRequest = Message<"Protocol.C2G_SkillRequest"> & {
+export type C2G_UseSkillRequest = Message<"Protocol.C2G_UseSkillRequest"> & {
   /**
    * @generated from field: Protocol.SkillData skill = 1;
    */
@@ -38,16 +38,16 @@ export type C2G_SkillRequest = Message<"Protocol.C2G_SkillRequest"> & {
 };
 
 /**
- * Describes the message Protocol.C2G_SkillRequest.
- * Use `create(C2G_SkillRequestSchema)` to create a new message.
+ * Describes the message Protocol.C2G_UseSkillRequest.
+ * Use `create(C2G_UseSkillRequestSchema)` to create a new message.
  */
-export const C2G_SkillRequestSchema: GenMessage<C2G_SkillRequest> = /*@__PURE__*/
+export const C2G_UseSkillRequestSchema: GenMessage<C2G_UseSkillRequest> = /*@__PURE__*/
   messageDesc(file_skill, 0);
 
 /**
- * @generated from message Protocol.G2B_SkillRequest
+ * @generated from message Protocol.G2B_UseSkillRequest
  */
-export type G2B_SkillRequest = Message<"Protocol.G2B_SkillRequest"> & {
+export type G2B_UseSkillRequest = Message<"Protocol.G2B_UseSkillRequest"> & {
   /**
    * @generated from field: Protocol.SkillData skill = 1;
    */
@@ -64,19 +64,24 @@ export type G2B_SkillRequest = Message<"Protocol.G2B_SkillRequest"> & {
    * @generated from field: string cardId = 3;
    */
   cardId: string;
+
+  /**
+   * @generated from field: string userId = 4;
+   */
+  userId: string;
 };
 
 /**
- * Describes the message Protocol.G2B_SkillRequest.
- * Use `create(G2B_SkillRequestSchema)` to create a new message.
+ * Describes the message Protocol.G2B_UseSkillRequest.
+ * Use `create(G2B_UseSkillRequestSchema)` to create a new message.
  */
-export const G2B_SkillRequestSchema: GenMessage<G2B_SkillRequest> = /*@__PURE__*/
+export const G2B_UseSkillRequestSchema: GenMessage<G2B_UseSkillRequest> = /*@__PURE__*/
   messageDesc(file_skill, 1);
 
 /**
- * @generated from message Protocol.B2G_SkillResponse
+ * @generated from message Protocol.B2G_UseSkillResponse
  */
-export type B2G_SkillResponse = Message<"Protocol.B2G_SkillResponse"> & {
+export type B2G_UseSkillResponse = Message<"Protocol.B2G_UseSkillResponse"> & {
   /**
    * 룸 ID
    *
@@ -96,18 +101,18 @@ export type B2G_SkillResponse = Message<"Protocol.B2G_SkillResponse"> & {
 };
 
 /**
- * Describes the message Protocol.B2G_SkillResponse.
- * Use `create(B2G_SkillResponseSchema)` to create a new message.
+ * Describes the message Protocol.B2G_UseSkillResponse.
+ * Use `create(B2G_UseSkillResponseSchema)` to create a new message.
  */
-export const B2G_SkillResponseSchema: GenMessage<B2G_SkillResponse> = /*@__PURE__*/
+export const B2G_UseSkillResponseSchema: GenMessage<B2G_UseSkillResponse> = /*@__PURE__*/
   messageDesc(file_skill, 2);
 
 /**
  * 스킬 카드 사용 응답
  *
- * @generated from message Protocol.G2C_SkillResponse
+ * @generated from message Protocol.G2C_UseSkillResponse
  */
-export type G2C_SkillResponse = Message<"Protocol.G2C_SkillResponse"> & {
+export type G2C_UseSkillResponse = Message<"Protocol.G2C_UseSkillResponse"> & {
   /**
    * @generated from field: bool isSuccess = 1;
    */
@@ -122,10 +127,10 @@ export type G2C_SkillResponse = Message<"Protocol.G2C_SkillResponse"> & {
 };
 
 /**
- * Describes the message Protocol.G2C_SkillResponse.
- * Use `create(G2C_SkillResponseSchema)` to create a new message.
+ * Describes the message Protocol.G2C_UseSkillResponse.
+ * Use `create(G2C_UseSkillResponseSchema)` to create a new message.
  */
-export const G2C_SkillResponseSchema: GenMessage<G2C_SkillResponse> = /*@__PURE__*/
+export const G2C_UseSkillResponseSchema: GenMessage<G2C_UseSkillResponse> = /*@__PURE__*/
   messageDesc(file_skill, 3);
 
 /**
@@ -142,9 +147,9 @@ export type B2G_UseSkillNotification = Message<"Protocol.B2G_UseSkillNotificatio
   roomId: number;
 
   /**
-   * @generated from field: string userId = 2;
+   * @generated from field: string ownerId = 2;
    */
-  userId: string;
+  ownerId: string;
 
   /**
    * @generated from field: Protocol.SkillData skill = 3;
@@ -164,9 +169,9 @@ export const B2G_UseSkillNotificationSchema: GenMessage<B2G_UseSkillNotification
  */
 export type G2C_UseSkillNotification = Message<"Protocol.G2C_UseSkillNotification"> & {
   /**
-   * @generated from field: string userId = 1;
+   * @generated from field: string ownerId = 1;
    */
-  userId: string;
+  ownerId: string;
 
   /**
    * @generated from field: Protocol.SkillData skill = 2;

@@ -5,7 +5,7 @@ import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
 import { PacketUtils } from "ServerCore/utils/packetUtils";
 import { roomManager } from "src/contents/roomManager";
 import { BattleSession } from "src/main/session/battleSession";
-import { B2G_MonsterAttackBaseNotificationSchema, B2G_MonsterAttackTowerNotificationSchema, B2G_MonsterDeathNotificationSchema, B2G_MonsterHealthUpdateNotificationSchema, B2G_MonsterPositionUpdateNotificationSchema, B2G_SpawnMonsterNotificationSchema, G2C_MonsterAttackBaseNotificationSchema, G2C_MonsterAttackTowerNotificationSchema, G2C_MonsterDeathNotificationSchema, G2C_MonsterHealthUpdateNotificationSchema, G2C_MonsterPositionUpdateNotificationSchema, G2C_SpawnMonsterNotificationSchema } from "src/protocol/monster_pb";
+import { B2G_MonsterAttackBaseNotificationSchema, B2G_MonsterAttackTowerNotificationSchema, B2G_MonsterBuffNotificationSchema, B2G_MonsterDeathNotificationSchema, B2G_MonsterHealthUpdateNotificationSchema, B2G_MonsterPositionUpdateNotificationSchema, B2G_SpawnMonsterNotificationSchema, G2C_MonsterAttackBaseNotificationSchema, G2C_MonsterAttackTowerNotificationSchema, G2C_MonsterBuffNotificationSchema, G2C_MonsterDeathNotificationSchema, G2C_MonsterHealthUpdateNotificationSchema, G2C_MonsterPositionUpdateNotificationSchema, G2C_SpawnMonsterNotificationSchema } from "src/protocol/monster_pb";
 
  /*---------------------------------------------
     [몬스터 스폰]
@@ -69,7 +69,7 @@ export function handleB2G_MonsterAttackTowerNotification(buffer: Buffer, session
         maxHp: packet.maxHp
     });
 
-    const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_MonsterAttackTowerNotificationSchema, ePacketId.G2C_MonsterPositionUpdateNotification, 0);
+    const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_MonsterAttackTowerNotificationSchema, ePacketId.G2C_MonsterAttackTowerNotification, 0);
     room.broadcast(sendBuffer);
 }
 
@@ -77,7 +77,7 @@ export function handleB2G_MonsterAttackTowerNotification(buffer: Buffer, session
     [몬스터-> 베이스 공격 동기화]
   ---------------------------------------------*/
 export function handleB2G_MonsterAttackBaseNotification(buffer: Buffer, session: BattleSession) {
-    console.log("handleB2G_MonsterAttackBaseNotification");
+    //console.log("handleB2G_MonsterAttackBaseNotification");
 
     const packet = fromBinary(B2G_MonsterAttackBaseNotificationSchema, buffer);
 
@@ -91,7 +91,7 @@ export function handleB2G_MonsterAttackBaseNotification(buffer: Buffer, session:
         attackDamage: packet.attackDamage
     });
 
-    const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_MonsterAttackBaseNotificationSchema, ePacketId.G2C_MonsterPositionUpdateNotification, 0);
+    const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_MonsterAttackBaseNotificationSchema, ePacketId.G2C_MonsterAttackBaseNotification, 0);
     room.broadcast(sendBuffer);
 }
 
@@ -99,7 +99,6 @@ export function handleB2G_MonsterAttackBaseNotification(buffer: Buffer, session:
     [몬스터 체력 업데이트]
   ---------------------------------------------*/
 export function handleB2G_MonsterHealthUpdateNotification(buffer: Buffer, session: BattleSession) {
-    console.log("handleB2G_MonsterHealthUpdateNotification");
 
     const packet = fromBinary(B2G_MonsterHealthUpdateNotificationSchema, buffer);
 
@@ -118,7 +117,7 @@ export function handleB2G_MonsterHealthUpdateNotification(buffer: Buffer, sessio
         maxHp: packet.maxHp
     });
 
-    const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_MonsterHealthUpdateNotificationSchema, ePacketId.G2C_MonsterPositionUpdateNotification, 0);
+    const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_MonsterHealthUpdateNotificationSchema, ePacketId.G2C_MonsterHealthUpdateNotification, 0);
     room.broadcast(sendBuffer);
 }
 
@@ -126,7 +125,7 @@ export function handleB2G_MonsterHealthUpdateNotification(buffer: Buffer, sessio
     [몬스터 처치 알림]
   ---------------------------------------------*/
 export function handleB2G_MonsterDeathNotification(buffer: Buffer, session: BattleSession) {
-    console.log("handleB2G_MonsterDeathNotification");
+    //console.log("handleB2G_MonsterDeathNotification");
 
     const packet = fromBinary(B2G_MonsterDeathNotificationSchema, buffer);
 
@@ -144,3 +143,24 @@ export function handleB2G_MonsterDeathNotification(buffer: Buffer, session: Batt
     room.broadcast(sendBuffer);
 }
 
+/*---------------------------------------------
+    [몬스터 버프 알림]
+  ---------------------------------------------*/
+  export function handleB2G_MonsterBuffNotification(buffer: Buffer, session: BattleSession) {
+    //console.log("handleB2G_MonsterBuffNotification");
+
+    const packet = fromBinary(B2G_MonsterBuffNotificationSchema, buffer);
+
+    const room = roomManager.getRoom(packet.roomId);
+    if(room == undefined) {
+        throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, `방을 찾지 못했습니다 ${packet.roomId}`);
+    }
+
+    const notificationPacket = create(G2C_MonsterBuffNotificationSchema, {
+        buffType: packet.buffType,
+        state: packet.state,
+    });
+
+    const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_MonsterBuffNotificationSchema, ePacketId.G2C_MonsterBuffNotification, 0);
+    room.broadcast(sendBuffer);
+  }

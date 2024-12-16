@@ -1,40 +1,11 @@
 import { ParseUtils } from './parseUtils';
 import { v4 as uuidv4 } from 'uuid';
-import { CardDataSchema } from 'src/protocol/struct_pb';
+import { CardData, CardDataSchema } from 'src/protocol/struct_pb';
 import { create } from '@bufbuild/protobuf';
 import { AssetMonster } from './interfaces/assetMonster';
 import { AssetTower } from './interfaces/assetTower';
-
-interface CardData {
-  cardId: string;
-  prefabId: string;
-}
-
-interface Monster {
-  prefabId: string;
-  maxHp: number;
-  attackRange: number;
-  attackDamage: number;
-  attackCoolDown: number;
-  moveSpeed: number;
-  score: number;
-}
-
-interface Skill {
-  prefabId: string; // 스킬의 고유 ID
-  type: 'Attack' | 'heal'; // 스킬 유형: "Attack" 또는 "heal"
-  attackDamage: number; // 공격력 (Attack 타입일 때만 있음)
-  attackRange: number; // 공격 범위 (Attack 타입일 때만 있음)
-  heal: number; // 회복량 (heal 타입일 때만 있음)
-}
-
-interface Tower {
-  prefabId: string; // 타워의 고유 ID
-  attackDamage: number; // 공격력
-  attackRange: number; // 공격 범위
-  attackCoolDown: number; // 공격 쿨다운 시간 (ms)
-  maxHp: number; // 최대 체력
-}
+import { AssetSkill } from './interfaces/assetSkill';
+import { AssetCharacter } from './interfaces/assetCharacter';
 
 /**
  * ---------------------------------------------
@@ -47,66 +18,76 @@ interface Tower {
 class AssetManager {
   private monsters: Map<string, AssetMonster>;
   private towers: Map<string, AssetTower>;
-  private skills: Map<string, Skill>;
+  private skills: Map<string, AssetSkill>;
+  private characters: Map<string, AssetCharacter>;
 
-  private cards: Map<string, CardData>;
   private towerPrefabIdCaches: Array<string>;
   private skillPrefabIdCaches: Array<string>;
+  private normalMoster: Array<AssetMonster>; 
 
   constructor() {
     this.monsters = new Map<string, AssetMonster>();
     this.towers = new Map<string, AssetTower>();
     this.skills = new Map();
-
-    this.cards = new Map();
+    this.characters = new Map<string, AssetCharacter>();
 
     this.towerPrefabIdCaches = new Array<string>();
     this.skillPrefabIdCaches = new Array<string>();
+    //this.normalMoster = new Array<Monster>();
+    this.normalMoster = new Array<AssetMonster>();
   }
 
   /*---------------------------------------------
     [게임 에셋 불러오기]
 ---------------------------------------------*/
-  async loadGameAssets() {
-    try {
-      const [monsters, towers, skills] = await Promise.all([
-        ParseUtils.readFileAsync('monsters.json'),
-        ParseUtils.readFileAsync('towers.json'),
-        ParseUtils.readFileAsync('skills.json'),
-      ]);
+async loadGameAssets() {
+  try {
+    const [monsters, towers, skills, characters] = await Promise.all([
+      ParseUtils.readFileAsync('monsters.json'),
+      ParseUtils.readFileAsync('towers.json'),
+      ParseUtils.readFileAsync('skills.json'),
+      ParseUtils.readFileAsync('characters.json'),
+    ]);
 
-      //몬스터 자원 로드
-      this.monsters = new Map(
-        monsters.data.map((monster: AssetMonster) => [monster.prefabId, monster]), // prefabId를 키로 사용
-      );
+    //몬스터 자원 로드
+    this.monsters = new Map(
+      monsters.data.map((monster: AssetMonster) => [monster.prefabId, monster]), // prefabId를 키로 사용
+    );
 
-      //타워 자원 로드
-      this.towers = new Map(
-        towers.data.map((tower: AssetTower) => [tower.prefabId, tower]), // prefabId를 키로 사용
-      );
-      //타워 자원 로드2
-      this.towerPrefabIdCaches = towers.data.map((tower: AssetTower) => tower.prefabId);
+    this.normalMoster = Array.from(this.monsters.values()).filter(
+      (monster) => monster.prefabId !== 'Robot5',
+    );
 
-      //스킬 자원 로드
-      this.skills = new Map(
-        skills.data.map((skill: Skill) => [skill.prefabId, skill]), // prefabId를 키로 사용
-      );
-      //스킬 자원 로드2
-      this.skillPrefabIdCaches = skills.data.map((skill: Skill) => skill.prefabId);
+    //타워 자원 로드
+    this.towers = new Map(
+      towers.data.map((tower: AssetTower) => [tower.prefabId, tower]), // prefabId를 키로 사용
+    );
+    //타워 자원 로드2
+    this.towerPrefabIdCaches = towers.data.map((tower: AssetTower) => tower.prefabId);
 
-      if (!this.monsters || this.towers.size === 0) throw new Error('asset is null');
+    //스킬 자원 로드
+    this.skills = new Map(
+      skills.data.map((skill: AssetSkill) => [skill.prefabId, skill]), // prefabId를 키로 사용
+    );
+    //스킬 자원 로드2
+    this.skillPrefabIdCaches = skills.data.map((skill: AssetSkill) => skill.prefabId);
 
-      return {
-        monsters: Array.from(this.monsters.values()),
-        towers: Array.from(this.towers.values()), // Map 데이터를 배열로 변환
-        cards: Array.from(this.cards.values()), // Map 데이터를 배열로 변환
-      };
-    } catch (error) {
-      console.log(error);
-      throw new Error('Failed to load game assets');
-    }
+    //캐릭터 자원 로드
+    this.characters = new Map(
+      characters.data.map((character: AssetCharacter) => [character.prefabId, character]), // prefabId를 키로 사용
+    );
+
+    if (!this.monsters || this.towers.size === 0) throw new Error('asset is null');
+
+    return {
+      monsters: Array.from(this.monsters.values()),
+      towers: Array.from(this.towers.values()), // Map 데이터를 배열로 변환
+    };
+  } catch (error) {
+    console.log(error);
+    throw new Error('Failed to load game assets');
   }
-
+}
   /**
    * ---------------------------------------------
    * [getGameAssets]
@@ -118,7 +99,7 @@ class AssetManager {
     return {
       monsters: this.monsters,
       towers: this.towers,
-      cards: this.cards,
+      skills:this.skills
     };
   }
 
@@ -164,16 +145,19 @@ class AssetManager {
 
   /**
    * ---------------------------------------------
-   * [getCardDataByPrefabId]
-   * - 특정 카드의 데이터를 가져옵니다.
+   * [getCharacterData]
+   * - 특정 캐릭터의 데이터를 가져옵니다.
    * ---------------------------------------------
-   * @param {string} cardPrefabId 카드 prefabId
-   * @returns {Object|null} 해당 카드 데이터 또는 null
+   * @param {string} prefabId 캐릭터 prefabId
+   * @returns {Object|null} 해당 캐릭터 데이터 또는 null
    */
-  getSkillsDataByPrefabId(skillPrefabId: string) {
-    let skill = this.skills.get(skillPrefabId) || null;
-    return skill;
+  getCharacterData(prefabId: string): AssetCharacter | null {
+    let character = this.characters.get(prefabId) || null;
+    console.log('character정보');
+    console.log(character);
+    return character;
   }
+  
   /**
    * ---------------------------------------------
    * [getCardDataByPrefabId]
@@ -182,8 +166,9 @@ class AssetManager {
    * @param {string} cardPrefabId 카드 prefabId
    * @returns {Object|null} 해당 카드 데이터 또는 null
    */
-  getCardDataByPrefabId(prefabId: string): CardData | null {
-    return this.cards.get(prefabId) || null;
+  getSkillsDataByPrefabId(skillPrefabId: string): AssetSkill | null {
+    let skill = this.skills.get(skillPrefabId) || null;
+    return skill;
   }
 
   /**
