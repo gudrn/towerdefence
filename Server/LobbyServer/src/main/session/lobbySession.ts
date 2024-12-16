@@ -5,6 +5,7 @@ import { handleError } from "src/utils/errorHandler";
 import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
 import handlerMappings from "../handlerMapping/clientPacketHandler";
 import { onSocketDisconnected } from "../handler/roomHandler";
+import { PacketHeader } from "ServerCore/network/packetHeader";
 
 export class LobbySession extends Session {
   nickname: string;
@@ -20,7 +21,7 @@ export class LobbySession extends Session {
     - 발생 조건: 상대방이 FIN패킷을 보냈을 때 
     - 목적: 자원을 정리하거나 로그를 남기기
   ---------------------------------------------*/
-  onEnd() {
+  protected onEnd() {
     console.log('[LobbySession] 클라이언트 연결이 종료되었습니다.');
     onSocketDisconnected(this.getId());
   }
@@ -33,7 +34,7 @@ export class LobbySession extends Session {
     
     - 이 이벤트 이후 곧바로 close이벤트 호출
   ---------------------------------------------*/
-  onError(error) {
+  protected onError(error: any) {
     console.error('소켓 오류:', error);
     onSocketDisconnected(this.getId());
     handleError(this, new CustomError(500, `소켓 오류: ${error.message}`));
@@ -48,7 +49,7 @@ export class LobbySession extends Session {
       2-1. 핸들러가 존재하지 않을 경우 오류 출력
     3. 핸들러 호출
   ---------------------------------------------*/
-  async handlePacket(packet, header) {
+  protected async handlePacket(packet: Buffer, header: PacketHeader): Promise<void> {
     //console.log('핸들러 호출');
     try {
       // 1. sequence 검증
@@ -88,7 +89,7 @@ export class LobbySession extends Session {
   /*---------------------------------------------
     [setter]
   ---------------------------------------------*/
-  setNickname(nickname) {
+  setNickname(nickname: string) {
     this.nickname = nickname;
   }
   /*---------------------------------------------
