@@ -23,7 +23,7 @@ class AssetManager {
 
   private towerPrefabIdCaches: Array<string>;
   private skillPrefabIdCaches: Array<string>;
-  private normalMoster: Array<AssetMonster>; 
+  private normalMoster: Array<AssetMonster>;
 
   constructor() {
     this.monsters = new Map<string, AssetMonster>();
@@ -40,54 +40,54 @@ class AssetManager {
   /*---------------------------------------------
     [게임 에셋 불러오기]
 ---------------------------------------------*/
-async loadGameAssets() {
-  try {
-    const [monsters, towers, skills, characters] = await Promise.all([
-      ParseUtils.readFileAsync('monsters.json'),
-      ParseUtils.readFileAsync('towers.json'),
-      ParseUtils.readFileAsync('skills.json'),
-      ParseUtils.readFileAsync('characters.json'),
-    ]);
+  async loadGameAssets() {
+    try {
+      const [monsters, towers, skills, characters] = await Promise.all([
+        ParseUtils.readFileAsync('monsters.json'),
+        ParseUtils.readFileAsync('towers.json'),
+        ParseUtils.readFileAsync('skills.json'),
+        ParseUtils.readFileAsync('characters.json'),
+      ]);
 
-    //몬스터 자원 로드
-    this.monsters = new Map(
-      monsters.data.map((monster: AssetMonster) => [monster.prefabId, monster]), // prefabId를 키로 사용
-    );
+      //몬스터 자원 로드
+      this.monsters = new Map(
+        monsters.data.map((monster: AssetMonster) => [monster.prefabId, monster]), // prefabId를 키로 사용
+      );
 
-    this.normalMoster = Array.from(this.monsters.values()).filter(
-      (monster) => monster.prefabId !== 'Robot5',
-    );
+      this.normalMoster = Array.from(this.monsters.values()).filter(
+        (monster) => monster.prefabId !== 'Robot5',
+      );
 
-    //타워 자원 로드
-    this.towers = new Map(
-      towers.data.map((tower: AssetTower) => [tower.prefabId, tower]), // prefabId를 키로 사용
-    );
-    //타워 자원 로드2
-    this.towerPrefabIdCaches = towers.data.map((tower: AssetTower) => tower.prefabId);
+      //타워 자원 로드
+      this.towers = new Map(
+        towers.data.map((tower: AssetTower) => [tower.prefabId, tower]), // prefabId를 키로 사용
+      );
+      //타워 자원 로드2
+      this.towerPrefabIdCaches = towers.data.map((tower: AssetTower) => tower.prefabId);
 
-    //스킬 자원 로드
-    this.skills = new Map(
-      skills.data.map((skill: AssetSkill) => [skill.prefabId, skill]), // prefabId를 키로 사용
-    );
-    //스킬 자원 로드2
-    this.skillPrefabIdCaches = skills.data.map((skill: AssetSkill) => skill.prefabId);
+      //스킬 자원 로드
+      this.skills = new Map(
+        skills.data.map((skill: AssetSkill) => [skill.prefabId, skill]), // prefabId를 키로 사용
+      );
+      //스킬 자원 로드2
+      this.skillPrefabIdCaches = skills.data.map((skill: AssetSkill) => skill.prefabId);
 
-    //캐릭터 자원 로드
-    this.characters = new Map(
-      characters.data.map((character: AssetCharacter) => [character.prefabId, character]), // prefabId를 키로 사용
-    );
+      //캐릭터 자원 로드
+      this.characters = new Map(
+        characters.data.map((character: AssetCharacter) => [character.prefabId, character]), // prefabId를 키로 사용
+      );
 
-    if (!this.monsters || this.towers.size === 0) throw new Error('asset is null');
+      if (!this.monsters || this.towers.size === 0) throw new Error('asset is null');
 
-    return {
-      monsters: Array.from(this.monsters.values()),
-      towers: Array.from(this.towers.values()), // Map 데이터를 배열로 변환
-    };
-  } catch (error) {
-    console.log(error);
-    throw new Error('Failed to load game assets');
+      return {
+        monsters: Array.from(this.monsters.values()),
+        towers: Array.from(this.towers.values()), // Map 데이터를 배열로 변환
+      };
+    } catch (error) {
+      console.log(error);
+      throw new Error('Failed to load game assets');
+    }
   }
-}
   /**
    * ---------------------------------------------
    * [getGameAssets]
@@ -99,7 +99,7 @@ async loadGameAssets() {
     return {
       monsters: this.monsters,
       towers: this.towers,
-      skills:this.skills
+      skills: this.skills,
     };
   }
 
@@ -120,10 +120,7 @@ async loadGameAssets() {
    * @returns {Object} 랜덤 몬스터 데이터
    */
   getRandomAssetMonster() {
-    const monstersArray = Array.from(this.monsters.values());
-    console.log('----------');
-    console.log(this.monsters.get('Robot1'));
-    console.log('----------');
+    const monstersArray = Array.from(this.normalMoster.values());
     const random = Math.floor(Math.random() * monstersArray.length);
     return monstersArray[random];
   }
@@ -157,7 +154,7 @@ async loadGameAssets() {
     console.log(character);
     return character;
   }
-  
+
   /**
    * ---------------------------------------------
    * [getCardDataByPrefabId]
