@@ -169,7 +169,7 @@ app.get('/friendsList/email/:email', async (req: Request<{ email: string }>, res
       friends: friendsRows,
     });
   } catch (error) {
-    console.error('오류 발생:', error);
+    console.error('오류 발생:', error);  
     res.status(500).json({ message: '서버에서 문제가 발생했습니다.', error });
   }
 });

@@ -8,9 +8,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.redisManager = exports.redisClient = void 0;
-exports.redisClient = new Redis(config.redisClient.host);
+const ioredis_1 = __importDefault(require("ioredis"));
+const config_1 = require("../config/config"); // 로컬 선언과 충돌 방지를 위해 config 이름 변경
+// Redis 클라이언트 초기화
+if (!config_1.config.redisClient || !config_1.config.redisClient.host) {
+    throw new Error('Redis 클라이언트 호스트가 설정되지 않았습니다. appConfig.redisClient.host를 확인하세요.');
+}
+// Redis 설정 확인 및 기본값 제공
+const redisConfig = {
+    host: config_1.config.redisClient.host,
+    port: config_1.config.redisClient.port !== undefined ? Number(config_1.config.redisClient.port) : 6379, // 기본 포트를 6379로 설정
+};
+// Redis 클라이언트 생성
+exports.redisClient = new ioredis_1.default({
+    host: redisConfig.host,
+    port: redisConfig.port,
+});
 exports.redisClient.on('error', (err) => console.error('Redis 클라이언트 오류:', err));
 const connectRedis = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -23,7 +41,10 @@ const connectRedis = () => __awaiter(void 0, void 0, void 0, function* () {
         console.error('Redis에 연결할 수 없습니다:', error);
     }
 });
-await connectRedis();
+const initializeRedis = () => __awaiter(void 0, void 0, void 0, function* () {
+    yield connectRedis();
+});
+initializeRedis();
 exports.redisManager = {
     setCache: (key_1, value_1, ...args_1) => __awaiter(void 0, [key_1, value_1, ...args_1], void 0, function* (key, value, expiration = 3600) {
         try {

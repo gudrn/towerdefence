@@ -14,7 +14,16 @@ export const config = {
   },
 };
 
-const createPool = (dbConfig) => {
+// DB 설정 타입 정의
+interface DbConfig {
+  host: string;
+  port: number;
+  user: string;
+  password: string;
+  name: string;
+}
+
+const createPool = (dbConfig: DbConfig) => {
   const pool = mysql.createPool({
     host: dbConfig.host,
     port: dbConfig.port,
