@@ -155,17 +155,29 @@ message G2C_JoinRoomNotification
     UserData joinUser = 1;
 }
 
-message C2L_LeaveRoomRequest 
+message C2G_LeaveRoomRequest 
 {
     int32 roomId = 1;
 }
 
-message L2C_LeaveRoomResponse 
+message G2L_LeaveRoomRequest 
+{
+    int32 roomId = 1;
+    string userId = 2;
+}
+
+message L2G_LeaveRoomResponse 
 {
     bool isSuccess = 1;
 }
 
-message L2C_LeaveRoomNotification 
+message L2G_LeaveRoomNotification 
+{
+    string userId = 1;
+    int32 roomId = 2;
+}
+
+message G2C_LeaveRoomNotification 
 {
     string userId = 1;
 }

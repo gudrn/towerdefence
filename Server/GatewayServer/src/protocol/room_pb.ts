@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file room.proto.
  */
 export const file_room: GenFile = /*@__PURE__*/
-  fileDesc("Cgpyb29tLnByb3RvEghQcm90b2NvbCI5ChVDMkdfQ3JlYXRlUm9vbVJlcXVlc3QSDAoEbmFtZRgBIAEoCRISCgptYXhVc2VyTnVtGAIgASgFIkkKFUcyTF9DcmVhdGVSb29tUmVxdWVzdBIMCgRuYW1lGAEgASgJEhIKCm1heFVzZXJOdW0YAiABKAUSDgoGdXNlcklkGAMgASgJIl0KFkwyR19DcmVhdGVSb29tUmVzcG9uc2USEQoJaXNTdWNjZXNzGAEgASgIEiAKBHJvb20YAiABKAsyEi5Qcm90b2NvbC5Sb29tRGF0YRIOCgZ1c2VySWQYAyABKAkiTQoWRzJDX0NyZWF0ZVJvb21SZXNwb25zZRIRCglpc1N1Y2Nlc3MYASABKAgSIAoEcm9vbRgCIAEoCzISLlByb3RvY29sLlJvb21EYXRhIjYKFEMyR19HYW1lU3RhcnRSZXF1ZXN0Eg4KBnJvb21JZBgBIAEoBRIOCgZ1c2VySWQYAiABKAkiNgoURzJMX0dhbWVTdGFydFJlcXVlc3QSDgoGcm9vbUlkGAEgASgFEg4KBnVzZXJJZBgCIAEoCSI/ChlHMkJfQ3JlYXRlR2FtZVJvb21SZXF1ZXN0Eg4KBnJvb21JZBgBIAEoBRISCgptYXhVc2VyTnVtGAIgASgFIiwKGkIyR19DcmVhdGVHYW1lUm9vbVJlc3BvbnNlEg4KBnJvb21JZBgBIAEoBSIyCh5HMkNfQ3JlYXRlR2FtZVJvb21Ob3RpZmljYXRpb24SEAoIc2VydmVySWQYASABKAkiaQoXQzJHX0pvaW5HYW1lUm9vbVJlcXVlc3QSEAoIc2VydmVySWQYASABKAkSLAoKcGxheWVyRGF0YRgCIAEoCzIYLlByb3RvY29sLkdhbWVQbGF5ZXJEYXRhEg4KBnJvb21JZBgDIAEoBSJXChdHMkJfSm9pbkdhbWVSb29tUmVxdWVzdBIsCgpwbGF5ZXJEYXRhGAEgASgLMhguUHJvdG9jb2wuR2FtZVBsYXllckRhdGESDgoGcm9vbUlkGAIgASgFIi0KGEIyR19Kb2luR2FtZVJvb21SZXNwb25zZRIRCglpc1N1Y2Nlc3MYASABKAgihwEKGUIyR19HYW1lU3RhcnROb3RpZmljYXRpb24SLQoLcGxheWVyRGF0YXMYASADKAsyGC5Qcm90b2NvbC5HYW1lUGxheWVyRGF0YRIrChBvYnN0YWNsZVBvc0luZm9zGAIgAygLMhEuUHJvdG9jb2wuUG9zSW5mbxIOCgZyb29tSWQYAyABKAUidwoZRzJDX0dhbWVTdGFydE5vdGlmaWNhdGlvbhItCgtwbGF5ZXJEYXRhcxgBIAMoCzIYLlByb3RvY29sLkdhbWVQbGF5ZXJEYXRhEisKEG9ic3RhY2xlUG9zSW5mb3MYAiADKAsyES5Qcm90b2NvbC5Qb3NJbmZvIhgKFkMyR19HZXRSb29tTGlzdFJlcXVlc3QiKAoWRzJMX0dldFJvb21MaXN0UmVxdWVzdBIOCgZ1c2VySWQYASABKAkiTAoXTDJHX0dldFJvb21MaXN0UmVzcG9uc2USIQoFcm9vbXMYASADKAsyEi5Qcm90b2NvbC5Sb29tRGF0YRIOCgZ1c2VySWQYAiABKAkiPAoXRzJDX0dldFJvb21MaXN0UmVzcG9uc2USIQoFcm9vbXMYASADKAsyEi5Qcm90b2NvbC5Sb29tRGF0YSJJChNDMkdfSm9pblJvb21SZXF1ZXN0Eg4KBnJvb21JZBgBIAEoBRIQCghuaWNrbmFtZRgCIAEoCRIQCghwcmVmYWJJZBgDIAEoCSJZChNHMkxfSm9pblJvb21SZXF1ZXN0Eg4KBnJvb21JZBgBIAEoBRIQCghuaWNrbmFtZRgCIAEoCRIQCghwcmVmYWJJZBgDIAEoCRIOCgZ1c2VySWQYBCABKAkiXwoUTDJHX0pvaW5Sb29tUmVzcG9uc2USEQoJaXNTdWNjZXNzGAEgASgIEiQKCHJvb21JbmZvGAIgASgLMhIuUHJvdG9jb2wuUm9vbURhdGESDgoGdXNlcklkGAMgASgJIk8KFEcyQ19Kb2luUm9vbVJlc3BvbnNlEhEKCWlzU3VjY2VzcxgBIAEoCBIkCghyb29tSW5mbxgCIAEoCzISLlByb3RvY29sLlJvb21EYXRhIlAKGEwyR19Kb2luUm9vbU5vdGlmaWNhdGlvbhIkCghqb2luVXNlchgBIAEoCzISLlByb3RvY29sLlVzZXJEYXRhEg4KBnJvb21JZBgCIAEoBSJAChhHMkNfSm9pblJvb21Ob3RpZmljYXRpb24SJAoIam9pblVzZXIYASABKAsyEi5Qcm90b2NvbC5Vc2VyRGF0YSImChRDMkxfTGVhdmVSb29tUmVxdWVzdBIOCgZyb29tSWQYASABKAUiKgoVTDJDX0xlYXZlUm9vbVJlc3BvbnNlEhEKCWlzU3VjY2VzcxgBIAEoCCIrChlMMkNfTGVhdmVSb29tTm90aWZpY2F0aW9uEg4KBnVzZXJJZBgBIAEoCSJBChxCMkdfSW5jcmVhc2VXYXZlTm90aWZpY2F0aW9uEhEKCWlzU3VjY2VzcxgBIAEoCBIOCgZyb29tSWQYAiABKAUiMQocRzJDX0luY3JlYXNlV2F2ZU5vdGlmaWNhdGlvbhIRCglpc1N1Y2Nlc3MYASABKAgiNwoiQjJMX1NvY2tldERpc2Nvbm5lY3RlZE5vdGlmaWNhdGlvbhIRCglzZXNzaW9uSWQYASABKAkiLAoXQjJDX0dhbWVFbmROb3RpZmljYXRpb24SEQoJaXNTdWNjZXNzGAEgASgIIisKGUIyR19EZWxldGVHYW1lUm9vbVJlcXVlc3QSDgoGcm9vbUlkGAEgASgFIisKGUcyTF9EZWxldGVHYW1lUm9vbVJlcXVlc3QSDgoGcm9vbUlkGAEgASgFIjkKFkMyR19DaGF0TWVzc2FnZVJlcXVlc3QSDwoHbWVzc2FnZRgBIAEoCRIOCgZyb29tSWQYAiABKAUiPgobRzJDX0NoYXRNZXNzYWdlTm90aWZpY2F0aW9uEg4KBnVzZXJJZBgBIAEoCRIPCgdtZXNzYWdlGAIgASgJYgZwcm90bzM", [file_struct]);
+  fileDesc("Cgpyb29tLnByb3RvEghQcm90b2NvbCI5ChVDMkdfQ3JlYXRlUm9vbVJlcXVlc3QSDAoEbmFtZRgBIAEoCRISCgptYXhVc2VyTnVtGAIgASgFIkkKFUcyTF9DcmVhdGVSb29tUmVxdWVzdBIMCgRuYW1lGAEgASgJEhIKCm1heFVzZXJOdW0YAiABKAUSDgoGdXNlcklkGAMgASgJIl0KFkwyR19DcmVhdGVSb29tUmVzcG9uc2USEQoJaXNTdWNjZXNzGAEgASgIEiAKBHJvb20YAiABKAsyEi5Qcm90b2NvbC5Sb29tRGF0YRIOCgZ1c2VySWQYAyABKAkiTQoWRzJDX0NyZWF0ZVJvb21SZXNwb25zZRIRCglpc1N1Y2Nlc3MYASABKAgSIAoEcm9vbRgCIAEoCzISLlByb3RvY29sLlJvb21EYXRhIjYKFEMyR19HYW1lU3RhcnRSZXF1ZXN0Eg4KBnJvb21JZBgBIAEoBRIOCgZ1c2VySWQYAiABKAkiNgoURzJMX0dhbWVTdGFydFJlcXVlc3QSDgoGcm9vbUlkGAEgASgFEg4KBnVzZXJJZBgCIAEoCSI/ChlHMkJfQ3JlYXRlR2FtZVJvb21SZXF1ZXN0Eg4KBnJvb21JZBgBIAEoBRISCgptYXhVc2VyTnVtGAIgASgFIiwKGkIyR19DcmVhdGVHYW1lUm9vbVJlc3BvbnNlEg4KBnJvb21JZBgBIAEoBSIyCh5HMkNfQ3JlYXRlR2FtZVJvb21Ob3RpZmljYXRpb24SEAoIc2VydmVySWQYASABKAkiaQoXQzJHX0pvaW5HYW1lUm9vbVJlcXVlc3QSEAoIc2VydmVySWQYASABKAkSLAoKcGxheWVyRGF0YRgCIAEoCzIYLlByb3RvY29sLkdhbWVQbGF5ZXJEYXRhEg4KBnJvb21JZBgDIAEoBSJXChdHMkJfSm9pbkdhbWVSb29tUmVxdWVzdBIsCgpwbGF5ZXJEYXRhGAEgASgLMhguUHJvdG9jb2wuR2FtZVBsYXllckRhdGESDgoGcm9vbUlkGAIgASgFIi0KGEIyR19Kb2luR2FtZVJvb21SZXNwb25zZRIRCglpc1N1Y2Nlc3MYASABKAgihwEKGUIyR19HYW1lU3RhcnROb3RpZmljYXRpb24SLQoLcGxheWVyRGF0YXMYASADKAsyGC5Qcm90b2NvbC5HYW1lUGxheWVyRGF0YRIrChBvYnN0YWNsZVBvc0luZm9zGAIgAygLMhEuUHJvdG9jb2wuUG9zSW5mbxIOCgZyb29tSWQYAyABKAUidwoZRzJDX0dhbWVTdGFydE5vdGlmaWNhdGlvbhItCgtwbGF5ZXJEYXRhcxgBIAMoCzIYLlByb3RvY29sLkdhbWVQbGF5ZXJEYXRhEisKEG9ic3RhY2xlUG9zSW5mb3MYAiADKAsyES5Qcm90b2NvbC5Qb3NJbmZvIhgKFkMyR19HZXRSb29tTGlzdFJlcXVlc3QiKAoWRzJMX0dldFJvb21MaXN0UmVxdWVzdBIOCgZ1c2VySWQYASABKAkiTAoXTDJHX0dldFJvb21MaXN0UmVzcG9uc2USIQoFcm9vbXMYASADKAsyEi5Qcm90b2NvbC5Sb29tRGF0YRIOCgZ1c2VySWQYAiABKAkiPAoXRzJDX0dldFJvb21MaXN0UmVzcG9uc2USIQoFcm9vbXMYASADKAsyEi5Qcm90b2NvbC5Sb29tRGF0YSJJChNDMkdfSm9pblJvb21SZXF1ZXN0Eg4KBnJvb21JZBgBIAEoBRIQCghuaWNrbmFtZRgCIAEoCRIQCghwcmVmYWJJZBgDIAEoCSJZChNHMkxfSm9pblJvb21SZXF1ZXN0Eg4KBnJvb21JZBgBIAEoBRIQCghuaWNrbmFtZRgCIAEoCRIQCghwcmVmYWJJZBgDIAEoCRIOCgZ1c2VySWQYBCABKAkiXwoUTDJHX0pvaW5Sb29tUmVzcG9uc2USEQoJaXNTdWNjZXNzGAEgASgIEiQKCHJvb21JbmZvGAIgASgLMhIuUHJvdG9jb2wuUm9vbURhdGESDgoGdXNlcklkGAMgASgJIk8KFEcyQ19Kb2luUm9vbVJlc3BvbnNlEhEKCWlzU3VjY2VzcxgBIAEoCBIkCghyb29tSW5mbxgCIAEoCzISLlByb3RvY29sLlJvb21EYXRhIlAKGEwyR19Kb2luUm9vbU5vdGlmaWNhdGlvbhIkCghqb2luVXNlchgBIAEoCzISLlByb3RvY29sLlVzZXJEYXRhEg4KBnJvb21JZBgCIAEoBSJAChhHMkNfSm9pblJvb21Ob3RpZmljYXRpb24SJAoIam9pblVzZXIYASABKAsyEi5Qcm90b2NvbC5Vc2VyRGF0YSImChRDMkdfTGVhdmVSb29tUmVxdWVzdBIOCgZyb29tSWQYASABKAUiNgoURzJMX0xlYXZlUm9vbVJlcXVlc3QSDgoGcm9vbUlkGAEgASgFEg4KBnVzZXJJZBgCIAEoCSIqChVMMkdfTGVhdmVSb29tUmVzcG9uc2USEQoJaXNTdWNjZXNzGAEgASgIIjsKGUwyR19MZWF2ZVJvb21Ob3RpZmljYXRpb24SDgoGdXNlcklkGAEgASgJEg4KBnJvb21JZBgCIAEoBSIrChlHMkNfTGVhdmVSb29tTm90aWZpY2F0aW9uEg4KBnVzZXJJZBgBIAEoCSJBChxCMkdfSW5jcmVhc2VXYXZlTm90aWZpY2F0aW9uEhEKCWlzU3VjY2VzcxgBIAEoCBIOCgZyb29tSWQYAiABKAUiMQocRzJDX0luY3JlYXNlV2F2ZU5vdGlmaWNhdGlvbhIRCglpc1N1Y2Nlc3MYASABKAgiNwoiQjJMX1NvY2tldERpc2Nvbm5lY3RlZE5vdGlmaWNhdGlvbhIRCglzZXNzaW9uSWQYASABKAkiLAoXQjJDX0dhbWVFbmROb3RpZmljYXRpb24SEQoJaXNTdWNjZXNzGAEgASgIIisKGUIyR19EZWxldGVHYW1lUm9vbVJlcXVlc3QSDgoGcm9vbUlkGAEgASgFIisKGUcyTF9EZWxldGVHYW1lUm9vbVJlcXVlc3QSDgoGcm9vbUlkGAEgASgFIjkKFkMyR19DaGF0TWVzc2FnZVJlcXVlc3QSDwoHbWVzc2FnZRgBIAEoCRIOCgZyb29tSWQYAiABKAUiPgobRzJDX0NoYXRNZXNzYWdlTm90aWZpY2F0aW9uEg4KBnVzZXJJZBgBIAEoCRIPCgdtZXNzYWdlGAIgASgJYgZwcm90bzM", [file_struct]);
 
 /**
  * @generated from message Protocol.C2G_CreateRoomRequest
@@ -556,9 +556,9 @@ export const G2C_JoinRoomNotificationSchema: GenMessage<G2C_JoinRoomNotification
   messageDesc(file_room, 23);
 
 /**
- * @generated from message Protocol.C2L_LeaveRoomRequest
+ * @generated from message Protocol.C2G_LeaveRoomRequest
  */
-export type C2L_LeaveRoomRequest = Message<"Protocol.C2L_LeaveRoomRequest"> & {
+export type C2G_LeaveRoomRequest = Message<"Protocol.C2G_LeaveRoomRequest"> & {
   /**
    * @generated from field: int32 roomId = 1;
    */
@@ -566,16 +566,38 @@ export type C2L_LeaveRoomRequest = Message<"Protocol.C2L_LeaveRoomRequest"> & {
 };
 
 /**
- * Describes the message Protocol.C2L_LeaveRoomRequest.
- * Use `create(C2L_LeaveRoomRequestSchema)` to create a new message.
+ * Describes the message Protocol.C2G_LeaveRoomRequest.
+ * Use `create(C2G_LeaveRoomRequestSchema)` to create a new message.
  */
-export const C2L_LeaveRoomRequestSchema: GenMessage<C2L_LeaveRoomRequest> = /*@__PURE__*/
+export const C2G_LeaveRoomRequestSchema: GenMessage<C2G_LeaveRoomRequest> = /*@__PURE__*/
   messageDesc(file_room, 24);
 
 /**
- * @generated from message Protocol.L2C_LeaveRoomResponse
+ * @generated from message Protocol.G2L_LeaveRoomRequest
  */
-export type L2C_LeaveRoomResponse = Message<"Protocol.L2C_LeaveRoomResponse"> & {
+export type G2L_LeaveRoomRequest = Message<"Protocol.G2L_LeaveRoomRequest"> & {
+  /**
+   * @generated from field: int32 roomId = 1;
+   */
+  roomId: number;
+
+  /**
+   * @generated from field: string userId = 2;
+   */
+  userId: string;
+};
+
+/**
+ * Describes the message Protocol.G2L_LeaveRoomRequest.
+ * Use `create(G2L_LeaveRoomRequestSchema)` to create a new message.
+ */
+export const G2L_LeaveRoomRequestSchema: GenMessage<G2L_LeaveRoomRequest> = /*@__PURE__*/
+  messageDesc(file_room, 25);
+
+/**
+ * @generated from message Protocol.L2G_LeaveRoomResponse
+ */
+export type L2G_LeaveRoomResponse = Message<"Protocol.L2G_LeaveRoomResponse"> & {
   /**
    * @generated from field: bool isSuccess = 1;
    */
@@ -583,16 +605,38 @@ export type L2C_LeaveRoomResponse = Message<"Protocol.L2C_LeaveRoomResponse"> & 
 };
 
 /**
- * Describes the message Protocol.L2C_LeaveRoomResponse.
- * Use `create(L2C_LeaveRoomResponseSchema)` to create a new message.
+ * Describes the message Protocol.L2G_LeaveRoomResponse.
+ * Use `create(L2G_LeaveRoomResponseSchema)` to create a new message.
  */
-export const L2C_LeaveRoomResponseSchema: GenMessage<L2C_LeaveRoomResponse> = /*@__PURE__*/
-  messageDesc(file_room, 25);
+export const L2G_LeaveRoomResponseSchema: GenMessage<L2G_LeaveRoomResponse> = /*@__PURE__*/
+  messageDesc(file_room, 26);
 
 /**
- * @generated from message Protocol.L2C_LeaveRoomNotification
+ * @generated from message Protocol.L2G_LeaveRoomNotification
  */
-export type L2C_LeaveRoomNotification = Message<"Protocol.L2C_LeaveRoomNotification"> & {
+export type L2G_LeaveRoomNotification = Message<"Protocol.L2G_LeaveRoomNotification"> & {
+  /**
+   * @generated from field: string userId = 1;
+   */
+  userId: string;
+
+  /**
+   * @generated from field: int32 roomId = 2;
+   */
+  roomId: number;
+};
+
+/**
+ * Describes the message Protocol.L2G_LeaveRoomNotification.
+ * Use `create(L2G_LeaveRoomNotificationSchema)` to create a new message.
+ */
+export const L2G_LeaveRoomNotificationSchema: GenMessage<L2G_LeaveRoomNotification> = /*@__PURE__*/
+  messageDesc(file_room, 27);
+
+/**
+ * @generated from message Protocol.G2C_LeaveRoomNotification
+ */
+export type G2C_LeaveRoomNotification = Message<"Protocol.G2C_LeaveRoomNotification"> & {
   /**
    * @generated from field: string userId = 1;
    */
@@ -600,11 +644,11 @@ export type L2C_LeaveRoomNotification = Message<"Protocol.L2C_LeaveRoomNotificat
 };
 
 /**
- * Describes the message Protocol.L2C_LeaveRoomNotification.
- * Use `create(L2C_LeaveRoomNotificationSchema)` to create a new message.
+ * Describes the message Protocol.G2C_LeaveRoomNotification.
+ * Use `create(G2C_LeaveRoomNotificationSchema)` to create a new message.
  */
-export const L2C_LeaveRoomNotificationSchema: GenMessage<L2C_LeaveRoomNotification> = /*@__PURE__*/
-  messageDesc(file_room, 26);
+export const G2C_LeaveRoomNotificationSchema: GenMessage<G2C_LeaveRoomNotification> = /*@__PURE__*/
+  messageDesc(file_room, 28);
 
 /**
  * @generated from message Protocol.B2G_IncreaseWaveNotification
@@ -626,7 +670,7 @@ export type B2G_IncreaseWaveNotification = Message<"Protocol.B2G_IncreaseWaveNot
  * Use `create(B2G_IncreaseWaveNotificationSchema)` to create a new message.
  */
 export const B2G_IncreaseWaveNotificationSchema: GenMessage<B2G_IncreaseWaveNotification> = /*@__PURE__*/
-  messageDesc(file_room, 27);
+  messageDesc(file_room, 29);
 
 /**
  * @generated from message Protocol.G2C_IncreaseWaveNotification
@@ -643,7 +687,7 @@ export type G2C_IncreaseWaveNotification = Message<"Protocol.G2C_IncreaseWaveNot
  * Use `create(G2C_IncreaseWaveNotificationSchema)` to create a new message.
  */
 export const G2C_IncreaseWaveNotificationSchema: GenMessage<G2C_IncreaseWaveNotification> = /*@__PURE__*/
-  messageDesc(file_room, 28);
+  messageDesc(file_room, 30);
 
 /**
  * @generated from message Protocol.B2L_SocketDisconnectedNotification
@@ -660,7 +704,7 @@ export type B2L_SocketDisconnectedNotification = Message<"Protocol.B2L_SocketDis
  * Use `create(B2L_SocketDisconnectedNotificationSchema)` to create a new message.
  */
 export const B2L_SocketDisconnectedNotificationSchema: GenMessage<B2L_SocketDisconnectedNotification> = /*@__PURE__*/
-  messageDesc(file_room, 29);
+  messageDesc(file_room, 31);
 
 /**
  * @generated from message Protocol.B2C_GameEndNotification
@@ -677,7 +721,7 @@ export type B2C_GameEndNotification = Message<"Protocol.B2C_GameEndNotification"
  * Use `create(B2C_GameEndNotificationSchema)` to create a new message.
  */
 export const B2C_GameEndNotificationSchema: GenMessage<B2C_GameEndNotification> = /*@__PURE__*/
-  messageDesc(file_room, 30);
+  messageDesc(file_room, 32);
 
 /**
  * @generated from message Protocol.B2G_DeleteGameRoomRequest
@@ -694,7 +738,7 @@ export type B2G_DeleteGameRoomRequest = Message<"Protocol.B2G_DeleteGameRoomRequ
  * Use `create(B2G_DeleteGameRoomRequestSchema)` to create a new message.
  */
 export const B2G_DeleteGameRoomRequestSchema: GenMessage<B2G_DeleteGameRoomRequest> = /*@__PURE__*/
-  messageDesc(file_room, 31);
+  messageDesc(file_room, 33);
 
 /**
  * @generated from message Protocol.G2L_DeleteGameRoomRequest
@@ -711,7 +755,7 @@ export type G2L_DeleteGameRoomRequest = Message<"Protocol.G2L_DeleteGameRoomRequ
  * Use `create(G2L_DeleteGameRoomRequestSchema)` to create a new message.
  */
 export const G2L_DeleteGameRoomRequestSchema: GenMessage<G2L_DeleteGameRoomRequest> = /*@__PURE__*/
-  messageDesc(file_room, 32);
+  messageDesc(file_room, 34);
 
 /**
  * @generated from message Protocol.C2G_ChatMessageRequest
@@ -733,7 +777,7 @@ export type C2G_ChatMessageRequest = Message<"Protocol.C2G_ChatMessageRequest"> 
  * Use `create(C2G_ChatMessageRequestSchema)` to create a new message.
  */
 export const C2G_ChatMessageRequestSchema: GenMessage<C2G_ChatMessageRequest> = /*@__PURE__*/
-  messageDesc(file_room, 33);
+  messageDesc(file_room, 35);
 
 /**
  * @generated from message Protocol.G2C_ChatMessageNotification
@@ -755,5 +799,5 @@ export type G2C_ChatMessageNotification = Message<"Protocol.G2C_ChatMessageNotif
  * Use `create(G2C_ChatMessageNotificationSchema)` to create a new message.
  */
 export const G2C_ChatMessageNotificationSchema: GenMessage<G2C_ChatMessageNotification> = /*@__PURE__*/
-  messageDesc(file_room, 34);
+  messageDesc(file_room, 36);
 

@@ -173,7 +173,7 @@ export function handleB2G_BaseDestroyNotification(buffer: Buffer, session: Battl
     const sendBuffer = PacketUtils.SerializePacket(
         notificationPacket,
         G2C_BaseDestroyNotificationSchema,
-        ePacketId.G2C_TowerBuffNotification,
+        ePacketId.G2C_BaseDestroyNotification,
         0
     );
 

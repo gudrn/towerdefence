@@ -1,7 +1,7 @@
 import { create, fromBinary, toBinary } from "@bufbuild/protobuf";
 import { CustomError } from "ServerCore/utils/error/customError";
 import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
-import { G2L_CreateRoomRequestSchema, G2L_DeleteGameRoomRequestSchema, G2L_GameStartRequestSchema, G2L_GetRoomListRequestSchema, G2L_JoinRoomRequestSchema, L2G_CreateRoomResponseSchema, L2G_GetRoomListResponseSchema, L2G_JoinRoomNotificationSchema, L2G_JoinRoomResponseSchema } from "src/protocol/room_pb";
+import { G2L_CreateRoomRequestSchema, G2L_DeleteGameRoomRequestSchema, G2L_GameStartRequestSchema, G2L_GetRoomListRequestSchema, G2L_JoinRoomRequestSchema, G2L_LeaveRoomRequestSchema, L2G_CreateRoomResponseSchema, L2G_GetRoomListResponseSchema, L2G_JoinRoomNotificationSchema, L2G_JoinRoomResponseSchema, L2G_LeaveRoomNotificationSchema } from "src/protocol/room_pb";
 import { handleError } from "src/utils/errorHandler";
 import { redis } from "src/utils/redis/redis";
 import { LobbySession } from "../session/lobbySession";
@@ -10,6 +10,7 @@ import { RoomData, RoomDataSchema, UserDataSchema } from "src/protocol/struct_pb
 import { PacketUtils } from "ServerCore/utils/packetUtils";
 import { ePacketId } from "ServerCore/network/packetId";
 import { RoomStateType } from "src/protocol/enum_pb";
+import { lobbySessionManager } from "src/server";
 
 
 /*---------------------------------------------
@@ -159,6 +160,61 @@ export async function enterRoomHandler(buffer: Buffer, session: LobbySession): P
         const sendBuffer = PacketUtils.SerializePacket(notificationPacket, L2G_JoinRoomNotificationSchema, ePacketId.L2G_JoinRoomNotification, 0);
         session.send(sendBuffer);
     }
+}
+
+ /*---------------------------------------------
+   [방 퇴장]
+---------------------------------------------*/
+export async function leaveRoomHandler(buffer: Buffer, session: LobbySession): Promise<void>{
+    // 클라이언트가 보낸 패킷 역직렬화
+    const packet = fromBinary(G2L_LeaveRoomRequestSchema, buffer);
+    console.log('leaveRoomHandler');
+    console.log(packet.roomId);
+
+    // 1. 방 ID를 통해 해당 방을 가져오기
+    const roomKey = `${roomConfig.ROOM_KEY}${packet.roomId}`;
+    const serializedRoomData = await redis.getBuffer(roomKey);
+
+     // 2. 방 데이터 역직렬화
+     const roomData = fromBinary(RoomDataSchema, serializedRoomData);
+
+     // 3. 유저가 방에 존재하는지 확인
+     const userIndex = roomData.users.findIndex((user) => user.id === packet.userId);
+ 
+     if (userIndex === -1) {
+         handleError(session, new CustomError(ErrorCodes.LEAVE_ROOM_FAILED, "유저가 방에 존재하지 않습니다."));
+         return;
+     }
+ 
+     // 4. 유저 제거
+     roomData.users.splice(userIndex, 1); // 해당 인덱스에서 유저 제거
+ 
+     // 5. 업데이트된 방 데이터를 Redis에 저장
+     const updatedSerializedRoomData = Buffer.from(toBinary(RoomDataSchema, roomData));
+     await redis.set(roomKey, updatedSerializedRoomData);
+ 
+     // 6. 유저 퇴장 정보를 다른 유저들에게 알리기
+     {
+         const notificationPacket = create(L2G_LeaveRoomNotificationSchema, {
+             userId: packet.userId,
+             roomId: packet.roomId
+         });
+ 
+         const sendBuffer = PacketUtils.SerializePacket(
+             notificationPacket,
+             L2G_LeaveRoomNotificationSchema,
+             ePacketId.L2G_LeaveRoomNotification,
+             0
+         );
+ 
+         // 현재 방에 남아있는 모든 유저에게 퇴장 알림을 전송
+         for (const user of roomData.users) {
+             const userSession = lobbySessionManager.getSessionOrNull(user.id); // 유저의 세션 가져오기
+             if (userSession) {
+                 userSession.send(sendBuffer);
+             }
+         }
+     }
 }
 
  /*---------------------------------------------
