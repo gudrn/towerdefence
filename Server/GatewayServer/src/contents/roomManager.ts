@@ -8,7 +8,7 @@ import { RoomDataSchema } from 'src/protocol/struct_pb';
 import { ePacketId } from 'ServerCore/network/packetId';
 import { BattleSession } from 'src/main/session/battleSession';
 import { LobbySession } from 'src/main/session/lobbySession';
-import { G2C_CreateRoomResponseSchema, G2C_GetRoomListResponseSchema, G2C_JoinRoomNotificationSchema, G2C_JoinRoomResponseSchema, L2G_CreateRoomResponseSchema, L2G_GetRoomListResponseSchema, L2G_JoinRoomNotificationSchema, L2G_JoinRoomResponseSchema } from 'src/protocol/room_pb';
+import { G2C_CreateRoomResponseSchema, G2C_GetRoomListResponseSchema, G2C_JoinRoomNotificationSchema, G2C_JoinRoomResponseSchema, G2C_LeaveRoomNotificationSchema, L2G_CreateRoomResponseSchema, L2G_GetRoomListResponseSchema, L2G_JoinRoomNotificationSchema, L2G_JoinRoomResponseSchema, L2G_LeaveRoomNotificationSchema } from 'src/protocol/room_pb';
 import { gatewaySessionManager } from 'src/server';
 
 class RoomManager {
@@ -114,6 +114,26 @@ class RoomManager {
         joinUser: packet.joinUser
     });
     const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_JoinRoomNotificationSchema, ePacketId.G2C_JoinRoomNotification, 0);
+    room.broadcast(sendBuffer);
+  }
+
+  /*---------------------------------------------
+    [방 퇴장 알림]
+  ---------------------------------------------*/
+  public handleL2G_LeaveRoomNotification(buffer: Buffer, session: LobbySession) {
+    console.log("handleL2G_LeaveRoomNotification");
+    const packet = fromBinary(L2G_LeaveRoomNotificationSchema, buffer);
+
+    const room = roomManager.getRoom(packet.roomId);
+    if(room == undefined){
+      throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, "방을 찾지 못했습니다.");
+    }
+
+    const notificationPacket = create(G2C_LeaveRoomNotificationSchema, {
+      userId: packet.userId,
+    });
+
+    const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_LeaveRoomNotificationSchema, ePacketId.G2C_LeaveRoomNotification, 0);
     room.broadcast(sendBuffer);
   }
 

@@ -123,6 +123,7 @@ export async function enterRoomHandler(buffer: Buffer, session: LobbySession): P
 
     // 3. 기존 플레이어 목록을 유저에게 보내기
     {
+        console.log(roomData.users);
         const existingUsersResponse = create(L2G_JoinRoomResponseSchema, {
             isSuccess: true,
             roomInfo: roomData,
@@ -187,32 +188,34 @@ export async function leaveRoomHandler(buffer: Buffer, session: LobbySession): P
      }
  
      // 4. 유저 제거
-     roomData.users.splice(userIndex, 1); // 해당 인덱스에서 유저 제거
- 
-     // 5. 업데이트된 방 데이터를 Redis에 저장
-     const updatedSerializedRoomData = Buffer.from(toBinary(RoomDataSchema, roomData));
-     await redis.set(roomKey, updatedSerializedRoomData);
- 
-     // 6. 유저 퇴장 정보를 다른 유저들에게 알리기
-     {
-         const notificationPacket = create(L2G_LeaveRoomNotificationSchema, {
-             userId: packet.userId,
-             roomId: packet.roomId
-         });
- 
-         const sendBuffer = PacketUtils.SerializePacket(
-             notificationPacket,
-             L2G_LeaveRoomNotificationSchema,
-             ePacketId.L2G_LeaveRoomNotification,
-             0
-         );
- 
-         // 현재 방에 남아있는 모든 유저에게 퇴장 알림을 전송
-         for (const user of roomData.users) {
-             const userSession = lobbySessionManager.getSessionOrNull(user.id); // 유저의 세션 가져오기
-             if (userSession) {
-                 userSession.send(sendBuffer);
-             }
+     roomData.users = roomData.users.filter((user) => user.id !== packet.userId);
+     //this.users = this.users.filter((user) => user !== player);
+     console.log(roomData.users);
+     if(roomData.users.length <=0){
+        //방 제거
+        await redis.del(roomKey);
+        return;
+     }
+     else{
+         // 5. 업데이트된 방 데이터를 Redis에 저장
+         const updatedSerializedRoomData = Buffer.from(toBinary(RoomDataSchema, roomData));
+         await redis.set(roomKey, updatedSerializedRoomData);
+     
+         // 6. 유저 퇴장 정보를 다른 유저들에게 알리기
+         {
+             const notificationPacket = create(L2G_LeaveRoomNotificationSchema, {
+                 userId: packet.userId,
+                 roomId: packet.roomId
+             });
+     
+             const sendBuffer = PacketUtils.SerializePacket(
+                 notificationPacket,
+                 L2G_LeaveRoomNotificationSchema,
+                 ePacketId.L2G_LeaveRoomNotification,
+                 0
+             );
+     
+             session.send(sendBuffer);
          }
      }
 }

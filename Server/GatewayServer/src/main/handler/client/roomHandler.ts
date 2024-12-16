@@ -22,13 +22,10 @@ import { send } from "process";
     게이트웨이 서버는 redis에 접근X
   ---------------------------------------------*/
 export function handleC2G_GetRoomListRequest(buffer: Buffer, session: GatewaySession) {
-    console.log("getRoomsHandler");
     try{
         const packet = create(G2L_GetRoomListRequestSchema, { 
             userId: session.getId()
         });
-
-        console.log("[handleC2G_GetRoomListRequest]", packet.userId)
 
         const sendBuffer = PacketUtils.SerializePacket(
             packet,
