@@ -1,7 +1,7 @@
 import { create, fromBinary, toBinary } from "@bufbuild/protobuf";
 import { CustomError } from "ServerCore/utils/error/customError";
 import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
-import { G2L_CreateRoomRequestSchema, G2L_GameStartRequestSchema, G2L_GetRoomListRequestSchema, G2L_JoinRoomRequestSchema, L2G_CreateRoomResponseSchema, L2G_GetRoomListResponseSchema, L2G_JoinRoomNotificationSchema, L2G_JoinRoomResponseSchema } from "src/protocol/room_pb";
+import { G2L_CreateRoomRequestSchema, G2L_DeleteGameRoomRequestSchema, G2L_GameStartRequestSchema, G2L_GetRoomListRequestSchema, G2L_JoinRoomRequestSchema, L2G_CreateRoomResponseSchema, L2G_GetRoomListResponseSchema, L2G_JoinRoomNotificationSchema, L2G_JoinRoomResponseSchema } from "src/protocol/room_pb";
 import { handleError } from "src/utils/errorHandler";
 import { redis } from "src/utils/redis/redis";
 import { LobbySession } from "../session/lobbySession";
@@ -16,7 +16,6 @@ import { RoomStateType } from "src/protocol/enum_pb";
     [방 생성]
 ---------------------------------------------*/
 export async function createRoomHandler(buffer: Buffer, session: LobbySession): Promise<void> {
-
     try {
         const packet = fromBinary(G2L_CreateRoomRequestSchema, buffer);
 
@@ -205,4 +204,33 @@ export async function onSocketDisconnected(playerId:string){
         }
       }
 
+}
+
+export async function deleteGameRoomHandler(buffer: Buffer, session: LobbySession): Promise<void>{
+    try {
+        // 클라이언트가 보낸 패킷 역직렬화
+        const packet = fromBinary(G2L_DeleteGameRoomRequestSchema, buffer);
+        console.log('deleteGameRoomHandler');
+        console.log(packet.roomId);
+        
+        // 1. 방 ID를 통해 해당 방을 가져오기
+        const roomKey = `${roomConfig.ROOM_KEY}${packet.roomId}`;
+        const serializedRoomData = await redis.getBuffer(roomKey);
+    
+        //유효성 검증
+        if (!serializedRoomData) {
+            handleError(session, new CustomError(ErrorCodes.INVALID_ROOM_ID, "유효하지 않은 방 ID입니다."));
+            return;
+        }
+        
+        //2. 방 제거
+        const result = await redis.del(roomKey);
+        if(!result) {
+            throw new CustomError(ErrorCodes.INVALID_ROOM_ID, "방을 제거하는 데 실패했습니다.");
+        }
+    } catch (error) {
+        console.log(error);
+    }
+
+    
 }

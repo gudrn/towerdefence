@@ -171,13 +171,13 @@ message L2C_LeaveRoomNotification
 }
 
 
-message B2G_increaseWaveNotification
+message B2G_IncreaseWaveNotification
 {
     bool isSuccess = 1;
     int32 roomId = 2;
 }
 
-message G2C_increaseWaveNotification{
+message G2C_IncreaseWaveNotification{
     bool isSuccess = 1; 
 }
 
@@ -189,4 +189,24 @@ message B2L_SocketDisconnectedNotification
 message B2C_GameEndNotification
 {
     bool isSuccess = 1;
+}
+
+message B2G_DeleteGameRoomRequest
+{
+    int32 roomId = 1;
+}
+
+message G2L_DeleteGameRoomRequest
+{
+    int32 roomId = 1;
+}
+
+message C2G_ChatMessageRequest {
+    string message = 1;
+    int32 roomId = 2;
+}
+
+message G2C_ChatMessageNotification {
+    string userId = 1;
+    string message = 2;
 }

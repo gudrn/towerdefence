@@ -111,3 +111,8 @@ export function handleC2G_UseSkillRequest(buffer: Buffer, session: GatewaySessio
     const sendBuffer = PacketUtils.SerializePacket(requestPacket, G2B_PlayerUseAbilityRequestSchema, ePacketId.G2B_PlayerUseAbilityRequest, 0);
     battleSession.send(sendBuffer);
 }
+
+/*---------------------------------------------
+    [채팅]
+---------------------------------------------*/
+//export   

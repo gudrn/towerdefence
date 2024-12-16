@@ -6,12 +6,18 @@ import { PacketUtils } from "ServerCore/utils/packetUtils";
 import { roomManager } from "src/contents/roomManager";
 import { BattleSession } from "src/main/session/battleSession";
 import { B2G_MonsterAttackBaseNotificationSchema, B2G_MonsterAttackTowerNotificationSchema, B2G_MonsterBuffNotificationSchema, B2G_MonsterDeathNotificationSchema, B2G_MonsterHealthUpdateNotificationSchema, B2G_MonsterPositionUpdateNotificationSchema, B2G_SpawnMonsterNotificationSchema, G2C_MonsterAttackBaseNotificationSchema, G2C_MonsterAttackTowerNotificationSchema, G2C_MonsterBuffNotificationSchema, G2C_MonsterDeathNotificationSchema, G2C_MonsterHealthUpdateNotificationSchema, G2C_MonsterPositionUpdateNotificationSchema, G2C_SpawnMonsterNotificationSchema } from "src/protocol/monster_pb";
+import { B2G_IncreaseWaveNotificationSchema, G2C_IncreaseWaveNotificationSchema } from "src/protocol/room_pb";
+
+
+//메모
+//게임 종료하면
+//싹 다 자르기
 
  /*---------------------------------------------
     [몬스터 스폰]
   ---------------------------------------------*/
 export function handleB2G_SpawnMonsterNotification(buffer: Buffer, session: BattleSession) {
-    console.log("handleB2G_InitCardData");
+    console.log("handleB2G_SpawnMonsterNotification");
     const packet = fromBinary(B2G_SpawnMonsterNotificationSchema, buffer);
 
     const room = roomManager.getRoom(packet.roomId);
@@ -22,7 +28,8 @@ export function handleB2G_SpawnMonsterNotification(buffer: Buffer, session: Batt
     //일단 그대로 보내보기
     const notificationPacket = create(G2C_SpawnMonsterNotificationSchema, {
         posInfo: packet.posInfo,
-        prefabId: packet.prefabId
+        prefabId: packet.prefabId,
+        maxHp: packet.maxHp
     });
 
     const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_SpawnMonsterNotificationSchema, ePacketId.G2C_SpawnMonsterNotification, 0);
@@ -162,5 +169,26 @@ export function handleB2G_MonsterDeathNotification(buffer: Buffer, session: Batt
     });
 
     const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_MonsterBuffNotificationSchema, ePacketId.G2C_MonsterBuffNotification, 0);
+    room.broadcast(sendBuffer);
+  }
+
+  /*---------------------------------------------
+    [웨이브 증가 알림]
+  ---------------------------------------------*/
+  export function handleB2G_IncreaseWaveNotification(buffer: Buffer, session: BattleSession) {
+    console.log("handleB2G_IncreaseWaveNotification");
+
+    const packet = fromBinary(B2G_IncreaseWaveNotificationSchema, buffer);
+
+    const room = roomManager.getRoom(packet.roomId);
+    if(room == undefined) {
+        throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, `방을 찾지 못했습니다 ${packet.roomId}`);
+    }
+
+    const notificationPacket = create(G2C_IncreaseWaveNotificationSchema, {
+        isSuccess: packet.isSuccess
+    });
+
+    const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_IncreaseWaveNotificationSchema, ePacketId.G2C_IncreaseWaveNotification, 0);
     room.broadcast(sendBuffer);
   }

@@ -85,38 +85,21 @@ export class SkillManager {
     this.applyDamageToMonsters(monstersInRange, skill.attackDamage);
 
     monstersInRange.forEach((monster) => {
-      if (monster.hp <= 0) {
-        const mopnsterDeathPacket = create(B2G_MonsterDeathNotificationSchema, {
-          monsterId: monster.getId(),
-          score: monster.score,
-          roomId:this.gameRoom.id,
-        });
+      const attackPacket = create(B2G_MonsterHealthUpdateNotificationSchema, {
+        monsterId: monster.getId(),
+        hp:monster.hp,
+        maxHp:monster.maxHp,
+        roomId:this.gameRoom.id,
+      });
+    
+      const attackBuffer = PacketUtils.SerializePacket(
+        attackPacket,
+        B2G_MonsterHealthUpdateNotificationSchema,
+        ePacketId.B2G_MonsterHealthUpdateNotification,
+        0,
+      );
+      this.gameRoom.broadcast(attackBuffer);
       
-        const monsterDeathBuffer = PacketUtils.SerializePacket(
-          mopnsterDeathPacket,
-          B2G_MonsterDeathNotificationSchema,
-          ePacketId.B2G_MonsterDeathNotification,
-          0, //수정 부분
-        );
-        this.gameRoom.broadcast(monsterDeathBuffer);
-        // this.gameRoom.addScore(monster.score);
-        this.gameRoom.removeObject(monster.getId());
-      } else {
-        const attackPacket = create(B2G_MonsterHealthUpdateNotificationSchema, {
-          monsterId: monster.getId(),
-          hp:monster.hp,
-          maxHp:monster.maxHp,
-          roomId:this.gameRoom.id,
-        });
-      
-        const attackBuffer = PacketUtils.SerializePacket(
-          attackPacket,
-          B2G_MonsterHealthUpdateNotificationSchema,
-          ePacketId.B2G_MonsterHealthUpdateNotification,
-          0,
-        );
-        this.gameRoom.broadcast(attackBuffer);
-      }
     });
   }
 

@@ -1,15 +1,10 @@
 /*---------------------------------------------
-    [접두사]
-    - S2C: 서버->클라
-
-    - C2L / L2C
-        클라<->로비 서버
-    - C2B / B2C
-        클라->배틀 서버
-    - L2B / B2L
-        로비 서버 <-> 배틀 서버
+    [Room] 101~200
+    [Monster] 201~300
+    [Tower] 301~400
+    [Skill] 401~500
+    [Character] 501~600
 ---------------------------------------------*/
-//cursor
 export enum ePacketId {
   S2C_Error = 0,
   C2G_Init = 1,
@@ -36,18 +31,23 @@ export enum ePacketId {
   G2C_JoinRoomResponse = 119,
   L2G_JoinRoomNotification = 120,
   G2C_JoinRoomNotification = 121,
+  C2G_ChatMessageRequest = 122,
+  G2C_ChatMessageNotification = 123,
   //구현X - 시작
-  C2G_LeaveRoomRequest = 122,
-  G2L_LeaveRoomRequest = 123,
-  L2G_LeaveRoomResponse = 124,
-  G2C_LeaveRoomResponse = 125,
-  L2G_LeaveRoomNotification = 126,
-  G2C_LeaveRoomNotification = 127,
+  B2G_DeleteGameRoomRequest = 124,
+  G2L_DeleteGameRoomRequest = 125,
+  L2G_DeleteGameRoomResponse = 126, //요기서 
+  C2G_LeaveRoomRequest = 127,
+  G2L_LeaveRoomRequest = 128,
+  L2G_LeaveRoomResponse = 129,
+  G2C_LeaveRoomResponse = 130,
+  L2G_LeaveRoomNotification = 131,
+  G2C_LeaveRoomNotification = 132,
   //구현X - 끝
-  C2G_JoinGameRoomRequest = 128,
-  G2B_JoinGameRoomRequest = 129,
-  B2G_JoinGameRoomResponse = 130,
-  G2C_JoinGameRoomResponse = 131,
+  C2G_JoinGameRoomRequest = 133,
+  G2B_JoinGameRoomRequest = 134,
+  B2G_JoinGameRoomResponse = 135,
+  G2C_JoinGameRoomResponse = 136,
   //
   B2G_SpawnMonsterNotification = 201,
   G2C_SpawnMonsterNotification = 202,
@@ -61,8 +61,10 @@ export enum ePacketId {
   G2C_MonsterDeathNotification = 210,
   B2G_MonsterHealthUpdateNotification = 211,
   G2C_MonsterHealthUpdateNotification = 212,
-  B2G_IncreaseWaveNotification = 213,
-  G2C_IncreaseWaveNotification = 214,
+  B2G_MonsterBuffNotification = 213,
+  G2C_MonsterBuffNotification = 214,
+  B2G_IncreaseWaveNotification = 215,
+  G2C_IncreaseWaveNotification = 216,
   C2G_TowerBuildRequest = 301,
   G2B_TowerBuildRequest = 302,
   B2G_TowerBuildNotification = 303,
@@ -91,12 +93,10 @@ export enum ePacketId {
   G2C_PlayerPositionUpdateNotification = 504,
   B2G_InitCardData = 505,
   G2C_InitCardData = 506,
-  B2G_MonsterBuffNotification = 507,
-  G2C_MonsterBuffNotification = 508,
-  B2G_TowerBuffNotification = 509,
-  G2C_TowerBuffNotification = 510,
-  B2G_AddCard = 511,
-  G2C_AddCard = 512,
+  B2G_TowerBuffNotification = 507,
+  G2C_TowerBuffNotification = 508,
+  B2G_AddCard = 509,
+  G2C_AddCard = 510,
   //B2L_SocketDisconnectedNotification = 508,
   //B2C_GameEndNotification = 509,
 }

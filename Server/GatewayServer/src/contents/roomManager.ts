@@ -120,6 +120,16 @@ class RoomManager {
   public getRoom(roomId: number) {
     return this.rooms.get(roomId);
   }
+
+  public deleteRoom(roomId: number){
+    const room = this.rooms.get(roomId);
+    if (room == undefined) {
+      console.log('유효하지 않은 roomID');
+      throw new CustomError(ErrorCodes.SOCKET_ERROR, `유효하지 않은 roomID ${roomId}`);
+    }
+
+    this.rooms.delete(roomId);
+  }
 }
 
 export const roomManager = new RoomManager();

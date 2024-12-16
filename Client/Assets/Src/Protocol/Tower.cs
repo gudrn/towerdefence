@@ -29,38 +29,39 @@ namespace Protocol {
             "b3dlckRhdGESDwoHb3duZXJJZBgCIAEoCRIOCgZyb29tSWQYAyABKAUSDgoG",
             "Y2FyZElkGAQgASgJImwKFUcyQl9Ub3dlckJ1aWxkUmVxdWVzdBIiCgV0b3dl",
             "chgBIAEoCzITLlByb3RvY29sLlRvd2VyRGF0YRIPCgdvd25lcklkGAIgASgJ",
-            "Eg4KBnJvb21JZBgDIAEoBRIOCgZjYXJkSWQYBCABKAkiYQoaQjJHX1Rvd2Vy",
+            "Eg4KBnJvb21JZBgDIAEoBRIOCgZjYXJkSWQYBCABKAkicAoaQjJHX1Rvd2Vy",
             "QnVpbGROb3RpZmljYXRpb24SIgoFdG93ZXIYASABKAsyEy5Qcm90b2NvbC5U",
-            "b3dlckRhdGESDwoHb3duZXJJZBgCIAEoCRIOCgZyb29tSWQYAyABKAUiUQoa",
-            "RzJDX1Rvd2VyQnVpbGROb3RpZmljYXRpb24SIgoFdG93ZXIYASABKAsyEy5Q",
-            "cm90b2NvbC5Ub3dlckRhdGESDwoHb3duZXJJZBgCIAEoCSKAAQoiQjJHX1Rv",
-            "d2VyQXR0YWNrTW9uc3Rlck5vdGlmaWNhdGlvbhIPCgd0b3dlcklkGAEgASgJ",
-            "EiUKCm1vbnN0ZXJQb3MYAiABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhIKCnRy",
-            "YXZlbFRpbWUYAyABKAISDgoGcm9vbUlkGAQgASgFInAKIkcyQ19Ub3dlckF0",
-            "dGFja01vbnN0ZXJOb3RpZmljYXRpb24SDwoHdG93ZXJJZBgBIAEoCRIlCgpt",
-            "b25zdGVyUG9zGAIgASgLMhEuUHJvdG9jb2wuUG9zSW5mbxISCgp0cmF2ZWxU",
-            "aW1lGAMgASgCIlIKHEIyR19Ub3dlckRlc3Ryb3lOb3RpZmljYXRpb24SEQoJ",
-            "aXNTdWNjZXNzGAEgASgIEg8KB3Rvd2VySWQYAiABKAkSDgoGcm9vbUlkGAMg",
-            "ASgFIkIKHEcyQ19Ub3dlckRlc3Ryb3lOb3RpZmljYXRpb24SEQoJaXNTdWNj",
-            "ZXNzGAEgASgIEg8KB3Rvd2VySWQYAiABKAkiQgobQjJHX0Jhc2VEZXN0cm95",
-            "Tm90aWZpY2F0aW9uEhMKC2lzRGVzdHJvaWVkGAEgASgIEg4KBnJvb21JZBgC",
-            "IAEoBSIyChtHMkNfQmFzZURlc3Ryb3lOb3RpZmljYXRpb24SEwoLaXNEZXN0",
-            "cm9pZWQYASABKAgiXwohQjJHX1Rvd2VySGVhbHRoVXBkYXRlTm90aWZpY2F0",
-            "aW9uEg8KB3Rvd2VySWQYASABKAkSCgoCaHAYAiABKAUSDQoFbWF4SHAYAyAB",
-            "KAUSDgoGcm9vbUlkGAQgASgFIk8KIUcyQ19Ub3dlckhlYWx0aFVwZGF0ZU5v",
-            "dGlmaWNhdGlvbhIPCgd0b3dlcklkGAEgASgJEgoKAmhwGAIgASgFEg0KBW1h",
-            "eEhwGAMgASgFImAKGUIyR19Ub3dlckJ1ZmZOb3RpZmljYXRpb24SDwoHdG93",
-            "ZXJJZBgBIAMoCRIQCghidWZmVHlwZRgCIAEoCRIQCghpc0J1ZmZlZBgDIAEo",
-            "CBIOCgZyb29tSWQYBCABKAUiUAoZRzJDX1Rvd2VyQnVmZk5vdGlmaWNhdGlv",
-            "bhIPCgd0b3dlcklkGAEgAygJEhAKCGJ1ZmZUeXBlGAIgASgJEhAKCGlzQnVm",
-            "ZmVkGAMgASgIYgZwcm90bzM="));
+            "b3dlckRhdGESDwoHb3duZXJJZBgCIAEoCRINCgVtYXhIcBgDIAEoBRIOCgZy",
+            "b29tSWQYBCABKAUiYAoaRzJDX1Rvd2VyQnVpbGROb3RpZmljYXRpb24SIgoF",
+            "dG93ZXIYASABKAsyEy5Qcm90b2NvbC5Ub3dlckRhdGESDwoHb3duZXJJZBgC",
+            "IAEoCRINCgVtYXhIcBgDIAEoBSKAAQoiQjJHX1Rvd2VyQXR0YWNrTW9uc3Rl",
+            "ck5vdGlmaWNhdGlvbhIPCgd0b3dlcklkGAEgASgJEiUKCm1vbnN0ZXJQb3MY",
+            "AiABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhIKCnRyYXZlbFRpbWUYAyABKAIS",
+            "DgoGcm9vbUlkGAQgASgFInAKIkcyQ19Ub3dlckF0dGFja01vbnN0ZXJOb3Rp",
+            "ZmljYXRpb24SDwoHdG93ZXJJZBgBIAEoCRIlCgptb25zdGVyUG9zGAIgASgL",
+            "MhEuUHJvdG9jb2wuUG9zSW5mbxISCgp0cmF2ZWxUaW1lGAMgASgCIlIKHEIy",
+            "R19Ub3dlckRlc3Ryb3lOb3RpZmljYXRpb24SEQoJaXNTdWNjZXNzGAEgASgI",
+            "Eg8KB3Rvd2VySWQYAiABKAkSDgoGcm9vbUlkGAMgASgFIkIKHEcyQ19Ub3dl",
+            "ckRlc3Ryb3lOb3RpZmljYXRpb24SEQoJaXNTdWNjZXNzGAEgASgIEg8KB3Rv",
+            "d2VySWQYAiABKAkiQgobQjJHX0Jhc2VEZXN0cm95Tm90aWZpY2F0aW9uEhMK",
+            "C2lzRGVzdHJvaWVkGAEgASgIEg4KBnJvb21JZBgCIAEoBSIyChtHMkNfQmFz",
+            "ZURlc3Ryb3lOb3RpZmljYXRpb24SEwoLaXNEZXN0cm9pZWQYASABKAgiXwoh",
+            "QjJHX1Rvd2VySGVhbHRoVXBkYXRlTm90aWZpY2F0aW9uEg8KB3Rvd2VySWQY",
+            "ASABKAkSCgoCaHAYAiABKAUSDQoFbWF4SHAYAyABKAUSDgoGcm9vbUlkGAQg",
+            "ASgFIk8KIUcyQ19Ub3dlckhlYWx0aFVwZGF0ZU5vdGlmaWNhdGlvbhIPCgd0",
+            "b3dlcklkGAEgASgJEgoKAmhwGAIgASgFEg0KBW1heEhwGAMgASgFImAKGUIy",
+            "R19Ub3dlckJ1ZmZOb3RpZmljYXRpb24SDwoHdG93ZXJJZBgBIAMoCRIQCghi",
+            "dWZmVHlwZRgCIAEoCRIQCghpc0J1ZmZlZBgDIAEoCBIOCgZyb29tSWQYBCAB",
+            "KAUiUAoZRzJDX1Rvd2VyQnVmZk5vdGlmaWNhdGlvbhIPCgd0b3dlcklkGAEg",
+            "AygJEhAKCGJ1ZmZUeXBlGAIgASgJEhAKCGlzQnVmZmVkGAMgASgIYgZwcm90",
+            "bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Protocol.StructReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.C2G_TowerBuildRequest), global::Protocol.C2G_TowerBuildRequest.Parser, new[]{ "Tower", "OwnerId", "RoomId", "CardId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.G2B_TowerBuildRequest), global::Protocol.G2B_TowerBuildRequest.Parser, new[]{ "Tower", "OwnerId", "RoomId", "CardId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2G_TowerBuildNotification), global::Protocol.B2G_TowerBuildNotification.Parser, new[]{ "Tower", "OwnerId", "RoomId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.G2C_TowerBuildNotification), global::Protocol.G2C_TowerBuildNotification.Parser, new[]{ "Tower", "OwnerId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2G_TowerBuildNotification), global::Protocol.B2G_TowerBuildNotification.Parser, new[]{ "Tower", "OwnerId", "MaxHp", "RoomId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.G2C_TowerBuildNotification), global::Protocol.G2C_TowerBuildNotification.Parser, new[]{ "Tower", "OwnerId", "MaxHp" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2G_TowerAttackMonsterNotification), global::Protocol.B2G_TowerAttackMonsterNotification.Parser, new[]{ "TowerId", "MonsterPos", "TravelTime", "RoomId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.G2C_TowerAttackMonsterNotification), global::Protocol.G2C_TowerAttackMonsterNotification.Parser, new[]{ "TowerId", "MonsterPos", "TravelTime" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2G_TowerDestroyNotification), global::Protocol.B2G_TowerDestroyNotification.Parser, new[]{ "IsSuccess", "TowerId", "RoomId" }, null, null, null, null),
@@ -758,6 +759,7 @@ namespace Protocol {
     public B2G_TowerBuildNotification(B2G_TowerBuildNotification other) : this() {
       tower_ = other.tower_ != null ? other.tower_.Clone() : null;
       ownerId_ = other.ownerId_;
+      maxHp_ = other.maxHp_;
       roomId_ = other.roomId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -798,8 +800,20 @@ namespace Protocol {
       }
     }
 
+    /// <summary>Field number for the "maxHp" field.</summary>
+    public const int MaxHpFieldNumber = 3;
+    private int maxHp_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int MaxHp {
+      get { return maxHp_; }
+      set {
+        maxHp_ = value;
+      }
+    }
+
     /// <summary>Field number for the "roomId" field.</summary>
-    public const int RoomIdFieldNumber = 3;
+    public const int RoomIdFieldNumber = 4;
     private int roomId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -827,6 +841,7 @@ namespace Protocol {
       }
       if (!object.Equals(Tower, other.Tower)) return false;
       if (OwnerId != other.OwnerId) return false;
+      if (MaxHp != other.MaxHp) return false;
       if (RoomId != other.RoomId) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -837,6 +852,7 @@ namespace Protocol {
       int hash = 1;
       if (tower_ != null) hash ^= Tower.GetHashCode();
       if (OwnerId.Length != 0) hash ^= OwnerId.GetHashCode();
+      if (MaxHp != 0) hash ^= MaxHp.GetHashCode();
       if (RoomId != 0) hash ^= RoomId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -864,8 +880,12 @@ namespace Protocol {
         output.WriteRawTag(18);
         output.WriteString(OwnerId);
       }
-      if (RoomId != 0) {
+      if (MaxHp != 0) {
         output.WriteRawTag(24);
+        output.WriteInt32(MaxHp);
+      }
+      if (RoomId != 0) {
+        output.WriteRawTag(32);
         output.WriteInt32(RoomId);
       }
       if (_unknownFields != null) {
@@ -886,8 +906,12 @@ namespace Protocol {
         output.WriteRawTag(18);
         output.WriteString(OwnerId);
       }
-      if (RoomId != 0) {
+      if (MaxHp != 0) {
         output.WriteRawTag(24);
+        output.WriteInt32(MaxHp);
+      }
+      if (RoomId != 0) {
+        output.WriteRawTag(32);
         output.WriteInt32(RoomId);
       }
       if (_unknownFields != null) {
@@ -905,6 +929,9 @@ namespace Protocol {
       }
       if (OwnerId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(OwnerId);
+      }
+      if (MaxHp != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MaxHp);
       }
       if (RoomId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(RoomId);
@@ -929,6 +956,9 @@ namespace Protocol {
       }
       if (other.OwnerId.Length != 0) {
         OwnerId = other.OwnerId;
+      }
+      if (other.MaxHp != 0) {
+        MaxHp = other.MaxHp;
       }
       if (other.RoomId != 0) {
         RoomId = other.RoomId;
@@ -960,6 +990,10 @@ namespace Protocol {
             break;
           }
           case 24: {
+            MaxHp = input.ReadInt32();
+            break;
+          }
+          case 32: {
             RoomId = input.ReadInt32();
             break;
           }
@@ -990,6 +1024,10 @@ namespace Protocol {
             break;
           }
           case 24: {
+            MaxHp = input.ReadInt32();
+            break;
+          }
+          case 32: {
             RoomId = input.ReadInt32();
             break;
           }
@@ -1036,6 +1074,7 @@ namespace Protocol {
     public G2C_TowerBuildNotification(G2C_TowerBuildNotification other) : this() {
       tower_ = other.tower_ != null ? other.tower_.Clone() : null;
       ownerId_ = other.ownerId_;
+      maxHp_ = other.maxHp_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1075,6 +1114,18 @@ namespace Protocol {
       }
     }
 
+    /// <summary>Field number for the "maxHp" field.</summary>
+    public const int MaxHpFieldNumber = 3;
+    private int maxHp_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int MaxHp {
+      get { return maxHp_; }
+      set {
+        maxHp_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -1092,6 +1143,7 @@ namespace Protocol {
       }
       if (!object.Equals(Tower, other.Tower)) return false;
       if (OwnerId != other.OwnerId) return false;
+      if (MaxHp != other.MaxHp) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1101,6 +1153,7 @@ namespace Protocol {
       int hash = 1;
       if (tower_ != null) hash ^= Tower.GetHashCode();
       if (OwnerId.Length != 0) hash ^= OwnerId.GetHashCode();
+      if (MaxHp != 0) hash ^= MaxHp.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1127,6 +1180,10 @@ namespace Protocol {
         output.WriteRawTag(18);
         output.WriteString(OwnerId);
       }
+      if (MaxHp != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(MaxHp);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1145,6 +1202,10 @@ namespace Protocol {
         output.WriteRawTag(18);
         output.WriteString(OwnerId);
       }
+      if (MaxHp != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(MaxHp);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1160,6 +1221,9 @@ namespace Protocol {
       }
       if (OwnerId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(OwnerId);
+      }
+      if (MaxHp != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MaxHp);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1181,6 +1245,9 @@ namespace Protocol {
       }
       if (other.OwnerId.Length != 0) {
         OwnerId = other.OwnerId;
+      }
+      if (other.MaxHp != 0) {
+        MaxHp = other.MaxHp;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1208,6 +1275,10 @@ namespace Protocol {
             OwnerId = input.ReadString();
             break;
           }
+          case 24: {
+            MaxHp = input.ReadInt32();
+            break;
+          }
         }
       }
     #endif
@@ -1232,6 +1303,10 @@ namespace Protocol {
           }
           case 18: {
             OwnerId = input.ReadString();
+            break;
+          }
+          case 24: {
+            MaxHp = input.ReadInt32();
             break;
           }
         }

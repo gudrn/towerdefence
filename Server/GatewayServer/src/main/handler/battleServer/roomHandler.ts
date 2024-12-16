@@ -1,6 +1,6 @@
 import { create, fromBinary } from "@bufbuild/protobuf";
 import { GatewaySession } from "../../session/gatewaySession";
-import { B2G_CreateGameRoomResponseSchema, B2G_GameStartNotificationSchema, C2G_CreateRoomRequest, C2G_CreateRoomRequestSchema, C2G_GetRoomListRequestSchema, C2G_JoinRoomRequest, C2G_JoinRoomRequestSchema, G2B_CreateGameRoomRequestSchema, G2C_CreateGameRoomNotificationSchema, G2C_GameStartNotificationSchema, G2L_CreateRoomRequestSchema, G2L_GameStartRequestSchema, G2L_GetRoomListRequestSchema, G2L_JoinRoomRequestSchema } from "src/protocol/room_pb";
+import { B2G_CreateGameRoomResponseSchema, B2G_DeleteGameRoomRequestSchema, B2G_GameStartNotificationSchema, C2G_CreateRoomRequest, C2G_CreateRoomRequestSchema, C2G_GetRoomListRequestSchema, C2G_JoinRoomRequest, C2G_JoinRoomRequestSchema, G2B_CreateGameRoomRequestSchema, G2C_CreateGameRoomNotificationSchema, G2C_GameStartNotificationSchema, G2L_CreateRoomRequestSchema, G2L_DeleteGameRoomRequestSchema, G2L_GameStartRequestSchema, G2L_GetRoomListRequestSchema, G2L_JoinRoomRequestSchema } from "src/protocol/room_pb";
 import { PacketUtils } from "ServerCore/utils/packetUtils";
 import { ePacketId } from "ServerCore/network/packetId";
 import { battleSessionManager, lobbySessionManager } from "src/server";
@@ -66,4 +66,33 @@ export function handleB2G_GameStartNotification(buffer: Buffer, session: Gateway
 
     const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_GameStartNotificationSchema, ePacketId.G2C_GameStartNotification, 0);
     room.broadcast(sendBuffer);
+}
+
+/*---------------------------------------------
+    [방 제거 요청]
+    로비 서버에게 방 제거 요청
+    자신의 room도 제거
+  ---------------------------------------------*/
+export function handleB2G_DeleteGameRoomRequest(buffer: Buffer, session: GatewaySession){
+    console.log("handleB2G_DeleteGameRoomRequest");
+
+    
+    const packet = fromBinary(B2G_DeleteGameRoomRequestSchema, buffer);
+    
+    //1. 로비 서버에게 방 제거 요청
+    {
+        const lobbySession = lobbySessionManager.getRandomSession();
+        if(lobbySession == null){
+            throw new CustomError(ErrorCodes.SERSSION_NOT_FOUND, "로비 세션을 찾지 못했습니다.");
+        }
+        const requestPacket = create(G2L_DeleteGameRoomRequestSchema, {
+            roomId: packet.roomId,
+        });
+    
+        const sendBuffer = PacketUtils.SerializePacket(requestPacket, G2L_DeleteGameRoomRequestSchema, ePacketId.G2L_DeleteGameRoomRequest, 0);
+        lobbySession.send(sendBuffer);
+    }
+    //자신의 room도 제거
+    roomManager.deleteRoom(packet.roomId);
+
 }

@@ -13,7 +13,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file skill.proto.
  */
 export const file_skill: GenFile = /*@__PURE__*/
-  fileDesc("Cgtza2lsbC5wcm90bxIIUHJvdG9jb2wiWQoTQzJHX1VzZVNraWxsUmVxdWVzdBIiCgVza2lsbBgBIAEoCzITLlByb3RvY29sLlNraWxsRGF0YRIOCgZyb29tSWQYAiABKAUSDgoGY2FyZElkGAMgASgJImkKE0cyQl9Vc2VTa2lsbFJlcXVlc3QSIgoFc2tpbGwYASABKAsyEy5Qcm90b2NvbC5Ta2lsbERhdGESDgoGcm9vbUlkGAIgASgFEg4KBmNhcmRJZBgDIAEoCRIOCgZ1c2VySWQYBCABKAkiSQoUQjJHX1VzZVNraWxsUmVzcG9uc2USDgoGcm9vbUlkGAEgASgFEhEKCWlzU3VjY2VzcxgCIAEoCBIOCgZjYXJkSWQYAyABKAkiOQoURzJDX1VzZVNraWxsUmVzcG9uc2USEQoJaXNTdWNjZXNzGAEgASgIEg4KBmNhcmRJZBgCIAEoCSJfChhCMkdfVXNlU2tpbGxOb3RpZmljYXRpb24SDgoGcm9vbUlkGAEgASgFEg8KB293bmVySWQYAiABKAkSIgoFc2tpbGwYAyABKAsyEy5Qcm90b2NvbC5Ta2lsbERhdGEiTwoYRzJDX1VzZVNraWxsTm90aWZpY2F0aW9uEg8KB293bmVySWQYASABKAkSIgoFc2tpbGwYAiABKAsyEy5Qcm90b2NvbC5Ta2lsbERhdGEiYwoLQjJHX0FkZENhcmQSDgoGcm9vbUlkGAEgASgFEg4KBnVzZXJJZBgCIAEoCRIOCgZjYXJkSWQYAyABKAkSJAoIY2FyZERhdGEYBCABKAsyEi5Qcm90b2NvbC5DYXJkRGF0YSJDCgtHMkNfQWRkQ2FyZBIOCgZjYXJkSWQYASABKAkSJAoIY2FyZERhdGEYAiABKAsyEi5Qcm90b2NvbC5DYXJkRGF0YSJIChBCMkdfSW5pdENhcmREYXRhEiQKCGNhcmREYXRhGAEgAygLMhIuUHJvdG9jb2wuQ2FyZERhdGESDgoGdXNlcklkGAIgASgJIjgKEEcyQ19Jbml0Q2FyZERhdGESJAoIY2FyZERhdGEYASADKAsyEi5Qcm90b2NvbC5DYXJkRGF0YWIGcHJvdG8z", [file_enum, file_struct]);
+  fileDesc("Cgtza2lsbC5wcm90bxIIUHJvdG9jb2wiWQoTQzJHX1VzZVNraWxsUmVxdWVzdBIiCgVza2lsbBgBIAEoCzITLlByb3RvY29sLlNraWxsRGF0YRIOCgZyb29tSWQYAiABKAUSDgoGY2FyZElkGAMgASgJImkKE0cyQl9Vc2VTa2lsbFJlcXVlc3QSIgoFc2tpbGwYASABKAsyEy5Qcm90b2NvbC5Ta2lsbERhdGESDgoGcm9vbUlkGAIgASgFEg4KBmNhcmRJZBgDIAEoCRIOCgZ1c2VySWQYBCABKAkiSQoUQjJHX1VzZVNraWxsUmVzcG9uc2USDgoGcm9vbUlkGAEgASgFEhEKCWlzU3VjY2VzcxgCIAEoCBIOCgZjYXJkSWQYAyABKAkiOQoURzJDX1VzZVNraWxsUmVzcG9uc2USEQoJaXNTdWNjZXNzGAEgASgIEg4KBmNhcmRJZBgCIAEoCSJfChhCMkdfVXNlU2tpbGxOb3RpZmljYXRpb24SDgoGcm9vbUlkGAEgASgFEg8KB293bmVySWQYAiABKAkSIgoFc2tpbGwYAyABKAsyEy5Qcm90b2NvbC5Ta2lsbERhdGEiTwoYRzJDX1VzZVNraWxsTm90aWZpY2F0aW9uEg8KB293bmVySWQYASABKAkSIgoFc2tpbGwYAiABKAsyEy5Qcm90b2NvbC5Ta2lsbERhdGEiUwoLQjJHX0FkZENhcmQSDgoGcm9vbUlkGAEgASgFEg4KBnVzZXJJZBgCIAEoCRIkCghjYXJkRGF0YRgDIAEoCzISLlByb3RvY29sLkNhcmREYXRhIjMKC0cyQ19BZGRDYXJkEiQKCGNhcmREYXRhGAEgASgLMhIuUHJvdG9jb2wuQ2FyZERhdGEiSAoQQjJHX0luaXRDYXJkRGF0YRIkCghjYXJkRGF0YRgBIAMoCzISLlByb3RvY29sLkNhcmREYXRhEg4KBnVzZXJJZBgCIAEoCSI4ChBHMkNfSW5pdENhcmREYXRhEiQKCGNhcmREYXRhGAEgAygLMhIuUHJvdG9jb2wuQ2FyZERhdGFiBnByb3RvMw", [file_enum, file_struct]);
 
 /**
  * @generated from message Protocol.C2G_UseSkillRequest
@@ -205,12 +205,7 @@ export type B2G_AddCard = Message<"Protocol.B2G_AddCard"> & {
   userId: string;
 
   /**
-   * @generated from field: string cardId = 3;
-   */
-  cardId: string;
-
-  /**
-   * @generated from field: Protocol.CardData cardData = 4;
+   * @generated from field: Protocol.CardData cardData = 3;
    */
   cardData?: CardData;
 };
@@ -229,12 +224,7 @@ export const B2G_AddCardSchema: GenMessage<B2G_AddCard> = /*@__PURE__*/
  */
 export type G2C_AddCard = Message<"Protocol.G2C_AddCard"> & {
   /**
-   * @generated from field: string cardId = 1;
-   */
-  cardId: string;
-
-  /**
-   * @generated from field: Protocol.CardData cardData = 2;
+   * @generated from field: Protocol.CardData cardData = 1;
    */
   cardData?: CardData;
 };

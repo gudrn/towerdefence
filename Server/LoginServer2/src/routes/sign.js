@@ -73,7 +73,6 @@ router.post('/signin', async (req, res) => {
         return res.status(400).json({ message: "body가 비어있습니다." });
     }
 
-
     try{
         const user = await prisma.users.findUnique({
             where: {

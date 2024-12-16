@@ -3,6 +3,11 @@ import { ePacketId } from "ServerCore/network/packetId";
 import { PacketUtils } from "ServerCore/utils/packetUtils";
 import { PosInfo } from "src/protocol/struct_pb";
 import { GameRoom } from "../room/gameRoom";
+import { B2G_BaseDestroyNotificationSchema } from "src/protocol/tower_pb";
+import { gameRoomManager } from "../room/gameRoomManager";
+import { sessionManager } from "src/server";
+import { CustomError } from "ServerCore/utils/error/customError";
+import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
 
 
 export class Base {
@@ -36,9 +41,10 @@ export class Base {
 /*---------------------------------------------
     [onDamaged]
 ---------------------------------------------*/
-    onDamaged(amount: number): void {
+    public onDamaged(amount: number): void {
         this.hp -= amount;
-        if (this.hp < 0){
+        //등호를 붙여야 합니다.
+        if (this.hp <= 0){
             this.hp = 0;
             this.onDestroyed();
         } 
@@ -47,21 +53,26 @@ export class Base {
     [기지 파괴 처리]
 ---------------------------------------------*/
     public onDestroyed(): void {
-        // console.log(`기지가 파괴되었습니다.`);
+        console.log(`기지가 파괴되었습니다.`);
 
-        // // 이걸 그냥 게임오버로 만들면 되는게 아닌지.
-        // const baseDestroyedPacket = create(B2C_BaseDestroyNotificationSchema, {
-        //     isDestroied: true
-        // });
+        const baseDestroyedPacket = create(B2G_BaseDestroyNotificationSchema, {
+            isDestroied: true,
+            roomId: this.room.id
+        });
 
-        // const baseDestroyedBuffer = PacketUtils.SerializePacket(
-        //     baseDestroyedPacket,
-        //     B2C_BaseDestroyNotificationSchema,
-        //     ePacketId.B2G_BaseDestroyNotification,
-        //     0, //수정 부분
-        // );
+        const baseDestroyedBuffer = PacketUtils.SerializePacket(
+            baseDestroyedPacket,
+            B2G_BaseDestroyNotificationSchema,
+            ePacketId.B2G_BaseDestroyNotification,
+            0, //수정 부분
+        );
 
-        //this.room.broadcast(baseDestroyedBuffer);  
+        this.room.broadcast(baseDestroyedBuffer);  
+
+        // room제거
+        gameRoomManager.deleteGameRoom(this.room.id);
+
+        //로비 서버에 방 제거 요청(redis에 있는 룸 제거)
     }
 
 /*---------------------------------------------

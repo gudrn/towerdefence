@@ -4,6 +4,7 @@ import { ePacketId } from 'ServerCore/network/packetId';
 import { PacketUtils } from 'ServerCore/utils/packetUtils';
 import {
   B2G_CreateGameRoomResponseSchema,
+  B2G_DeleteGameRoomRequestSchema,
   G2B_CreateGameRoomRequestSchema,
   G2B_JoinGameRoomRequestSchema,
 } from 'src/protocol/room_pb';
@@ -14,6 +15,7 @@ import { GamePlayer } from '../game/gamePlayer';
 import { G2B_PlayerPositionUpdateRequestSchema, G2B_PlayerUseAbilityRequestSchema } from 'src/protocol/character_pb';
 import { G2B_TowerBuildRequestSchema } from 'src/protocol/tower_pb';
 import { G2B_UseSkillRequest, G2B_UseSkillRequestSchema } from 'src/protocol/skill_pb';
+import { sessionManager } from 'src/server';
 
 const MAX_ROOMS_SIZE = 10000;
 
@@ -86,6 +88,35 @@ class GameRoomManager {
     );
     session.send(createGameRoomBuffer);
   }
+
+    /*---------------------------------------------
+   [방 제거]
+   ---------------------------------------------*/
+   public deleteGameRoom(roomId:number) {
+
+    if(!roomId) {
+      throw new CustomError(ErrorCodes.MISSING_FIELDS, 'roomId가 없습니다.');
+    }
+
+    this.rooms.delete(roomId);
+    console.log(`${roomId}방 제거에 성공했습니다.`)
+
+    const deleteGameRoomPacket = create(B2G_DeleteGameRoomRequestSchema, {
+      roomId: roomId,
+    })
+    
+    const deleteGameRoomBuffer = PacketUtils.SerializePacket(
+      deleteGameRoomPacket,
+      B2G_DeleteGameRoomRequestSchema,
+      ePacketId.B2G_DeleteGameRoomRequest,
+      0
+    );
+
+    const gatewaySession = sessionManager.getRandomSession();
+    if(gatewaySession != undefined){
+      gatewaySession.send(deleteGameRoomBuffer)
+    }
+   }
 
   /*---------------------------------------------
    [이동 동기화]

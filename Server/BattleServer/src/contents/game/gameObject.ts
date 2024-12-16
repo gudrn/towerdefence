@@ -24,10 +24,9 @@ export abstract class GameObject {
         [onDeath]
         엔티티 사망 (추상 메서드처럼 구현 필요)
     ---------------------------------------------*/
-    onDeath(): void {
-        throw new Error("onDeath() must be implemented in a subclass");
-    }
-
+    abstract onDeath(): void;
+    abstract onDamaged(amount: number): void;
+    
     getPos(): PosInfo {
         return this.pos;
     }

@@ -35,13 +35,14 @@ export class GamePlayer {
     if (room == undefined) {
       throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, `유효하지 않은 roomID ${roomId}`);
     }
-    this.character = CreateCharacter.createChar(playerData.prefabId, room, this);
+    this.character = CreateCharacter.createChar(playerData.prefabId, room, this) ;
   }
 
   /*---------------------------------------------
     [initCard]
 ---------------------------------------------*/
   initCard() {
+    console.log("이닛카드");
     if (this.isInitCard) return;
     this.isInitCard = true;
     // 포탑 카드를 무조건 하나 추가
@@ -93,6 +94,8 @@ export class GamePlayer {
     this.cardList.set(card[0].cardId, card[0].prefabId); // 카드 목록에 추가
 
     const packet = create(B2G_AddCardSchema, {
+      roomId:this.character?.room.id,
+      userId:this.playerData.position?.uuid,
       cardData: create(CardDataSchema, { cardId: card[0].cardId, prefabId: card[0].prefabId }),
     });
 

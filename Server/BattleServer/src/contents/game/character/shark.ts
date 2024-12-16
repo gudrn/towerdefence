@@ -36,23 +36,7 @@ export class Shark extends Character {
 
     
     monsters.forEach((monster) => {
-      //[안건] - 조정현
-      //이 부분은 monster의 onDeath에서 처리해줘야 합니다.
-      //onDeath는 onDamaged에서 호출합니다.
-      if (monster.hp <= 0) {
-        const notificationPacket = create(B2G_MonsterDeathNotificationSchema, {
-          monsterId: monster.getId(),
-          score: monster.score,
-        });
-      
-        const sendBuffer = PacketUtils.SerializePacket(
-          notificationPacket,
-          B2G_MonsterDeathNotificationSchema,
-          ePacketId.B2G_MonsterDeathNotification,
-          0, //수정 부분
-        );
-        this.room.broadcast(sendBuffer);
-      } else {
+       {
         const notificationPacket = create(B2G_MonsterHealthUpdateNotificationSchema, {
           monsterId: monster.getId(),
           hp: monster.hp,

@@ -1,6 +1,6 @@
 import { create, fromBinary } from "@bufbuild/protobuf";
 import { GatewaySession } from "../../session/gatewaySession";
-import { C2G_CreateRoomRequest, C2G_CreateRoomRequestSchema, C2G_GetRoomListRequestSchema, C2G_JoinGameRoomRequestSchema, C2G_JoinRoomRequest, C2G_JoinRoomRequestSchema, G2B_CreateGameRoomRequestSchema, G2B_JoinGameRoomRequestSchema, G2L_CreateRoomRequestSchema, G2L_GameStartRequestSchema, G2L_GetRoomListRequestSchema, G2L_JoinRoomRequestSchema } from "src/protocol/room_pb";
+import { C2G_ChatMessageRequest, C2G_ChatMessageRequestSchema, C2G_CreateRoomRequest, C2G_CreateRoomRequestSchema, C2G_GetRoomListRequestSchema, C2G_JoinGameRoomRequestSchema, C2G_JoinRoomRequest, C2G_JoinRoomRequestSchema, G2B_CreateGameRoomRequestSchema, G2B_JoinGameRoomRequestSchema, G2C_ChatMessageNotificationSchema, G2L_CreateRoomRequestSchema, G2L_GameStartRequestSchema, G2L_GetRoomListRequestSchema, G2L_JoinRoomRequestSchema } from "src/protocol/room_pb";
 import { PacketUtils } from "ServerCore/utils/packetUtils";
 import { ePacketId } from "ServerCore/network/packetId";
 import { battleSessionManager, lobbySessionManager } from "src/server";
@@ -175,4 +175,29 @@ export function handleC2G_JoinGameRoomRequest(buffer: Buffer, session: GatewaySe
     const sendBuffer = PacketUtils.SerializePacket(requestPacket, G2B_JoinGameRoomRequestSchema, ePacketId.G2B_JoinGameRoomRequest, 0);
 
     battleSession.send(sendBuffer);
+}
+
+export function handleChatMessage (buffer: Buffer, session: GatewaySession) {
+
+    //패킷에서 roomID가져와서서
+    //로비에서 작성한 메시지인지 배틀(게임 진행 중)에서 작성한 메시지인지 구분하기(클라에서 어디에 데이터를 넣을지 알아야 하니깐)
+    const packet: C2G_ChatMessageRequest = fromBinary(C2G_ChatMessageRequestSchema, buffer);
+
+    //게임 종료 후 room이 사라질텐데 사라진 뒤 도착한다면 
+    //throw new CustomError를 해야되나..?
+    const room = roomManager.getRoom(packet.roomId);
+    if(room == undefined) {
+        throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, `[handleC2G_GameStartRequest] 방을 찾지 못했습니다. ${packet.roomId}`);
+    }
+
+
+    const responePacket = create(G2C_ChatMessageNotificationSchema, {
+        userId: session.getId(),
+        message: packet.message
+    });
+
+    const sendBuffer = PacketUtils.SerializePacket(responePacket, G2C_ChatMessageNotificationSchema, ePacketId.G2C_ChatMessageNotification, 0);
+
+    room.broadcast(sendBuffer);
+     
 }

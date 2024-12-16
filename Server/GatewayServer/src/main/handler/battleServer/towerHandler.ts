@@ -5,7 +5,7 @@ import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
 import { PacketUtils } from "ServerCore/utils/packetUtils";
 import { roomManager } from "src/contents/roomManager";
 import { BattleSession } from "src/main/session/battleSession";
-import { B2G_TowerAttackMonsterNotificationSchema, B2G_TowerBuffNotificationSchema, B2G_TowerBuildNotificationSchema, B2G_TowerDestroyNotificationSchema, B2G_TowerHealthUpdateNotificationSchema, G2C_TowerAttackMonsterNotificationSchema, G2C_TowerBuffNotificationSchema, G2C_TowerBuildNotificationSchema, G2C_TowerDestroyNotificationSchema, G2C_TowerHealthUpdateNotificationSchema } from "src/protocol/tower_pb";
+import { B2G_BaseDestroyNotificationSchema, B2G_TowerAttackMonsterNotificationSchema, B2G_TowerBuffNotificationSchema, B2G_TowerBuildNotificationSchema, B2G_TowerDestroyNotificationSchema, B2G_TowerHealthUpdateNotificationSchema, G2C_BaseDestroyNotificationSchema, G2C_TowerAttackMonsterNotificationSchema, G2C_TowerBuffNotificationSchema, G2C_TowerBuildNotificationSchema, G2C_TowerDestroyNotificationSchema, G2C_TowerHealthUpdateNotificationSchema } from "src/protocol/tower_pb";
 
 /*---------------------------------------------
     [타워 생성 알림]
@@ -15,16 +15,17 @@ export function handleB2G_TowerBuildNotification(buffer: Buffer, session: Battle
 
     const notificationPacket = create(G2C_TowerBuildNotificationSchema, {
         ownerId: packet.ownerId,
-        tower: packet.tower
+        tower: packet.tower,
+        maxHp: packet.maxHp
     });
 
     if(packet.tower == undefined) {
-        console.log("sibal");
+        console.log("타워 못 찾음");
     }
     else
     {
         if(packet.tower.towerPos == undefined) {
-            console.log("ddddddddddd");
+            console.log("towerPos undefined");
         }
         else
         {
@@ -132,6 +133,9 @@ export function handleB2G_TowerAttackMonsterNotification(buffer: Buffer, session
     room.broadcast(sendBuffer);
 }
 
+  /**---------------------------------------------
+   * [타워 버프 ]
+   ---------------------------------------------*/
 export function handleB2G_TowerBuffNotification(buffer: Buffer, session: BattleSession) {
     const packet = fromBinary(B2G_TowerBuffNotificationSchema, buffer);
 
@@ -144,6 +148,31 @@ export function handleB2G_TowerBuffNotification(buffer: Buffer, session: BattleS
     const sendBuffer = PacketUtils.SerializePacket(
         notificationPacket,
         G2C_TowerBuffNotificationSchema,
+        ePacketId.G2C_TowerBuffNotification,
+        0
+    );
+
+    const room = roomManager.getRoom(packet.roomId);
+    if(room == undefined) {
+        throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, `방을 찾지 못했습니다 ${packet.roomId}`);
+    }
+
+    room.broadcast(sendBuffer);
+}
+
+/*---------------------------------------------
+    [게임 오버]
+  ---------------------------------------------*/
+export function handleB2G_BaseDestroyNotification(buffer: Buffer, session: BattleSession) {
+    const packet = fromBinary(B2G_BaseDestroyNotificationSchema, buffer);
+
+    const notificationPacket = create(G2C_BaseDestroyNotificationSchema, {
+        isDestroied: packet.isDestroied,
+    });
+
+    const sendBuffer = PacketUtils.SerializePacket(
+        notificationPacket,
+        G2C_BaseDestroyNotificationSchema,
         ePacketId.G2C_TowerBuffNotification,
         0
     );

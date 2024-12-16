@@ -8,12 +8,14 @@ import "struct.proto";
 message B2G_SpawnMonsterNotification {
     PosInfo posInfo = 1;
     string prefabId = 2;
-    int32 roomId = 3;
+    int32 maxHp = 3;
+    int32 roomId = 4;
 }
 
 message G2C_SpawnMonsterNotification {
     PosInfo posInfo = 1;
     string prefabId = 2;
+    int32 maxHp = 3;
 }
 
 // 몬스터 사망 알림
