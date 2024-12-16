@@ -177,7 +177,7 @@ export function handleC2G_JoinGameRoomRequest(buffer: Buffer, session: GatewaySe
     battleSession.send(sendBuffer);
 }
 
-export function handleChatMessage (buffer: Buffer, session: GatewaySession) {
+export function handleC2G_ChatMessageRequest (buffer: Buffer, session: GatewaySession) {
 
     //패킷에서 roomID가져와서서
     //로비에서 작성한 메시지인지 배틀(게임 진행 중)에서 작성한 메시지인지 구분하기(클라에서 어디에 데이터를 넣을지 알아야 하니깐)

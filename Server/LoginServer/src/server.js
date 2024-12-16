@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 
 app.use('/api/sign', signRouter);
-app.use('/api/friend', friendRouter);
+//app.use('/api/friend', friendRouter);
 
 app.set('port',  4000);
 
