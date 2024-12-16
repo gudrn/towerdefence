@@ -31,6 +31,7 @@ export async function createRoomHandler(buffer: Buffer, session: LobbySession): 
             name: packet.name,
             maxUserNum: packet.maxUserNum,
             users: [],
+            state: RoomStateType.PREPARE
         });
 
         const serialziedRoomData: Buffer = Buffer.from(toBinary(RoomDataSchema, roomData));
@@ -70,6 +71,8 @@ export async function getRoomsHandler(buffer: Buffer, session: LobbySession): Pr
       const serializedRoomData = await redis.getBuffer(key);
       if (serializedRoomData) {
         const roomData: RoomData = fromBinary(RoomDataSchema, serializedRoomData);
+
+        if(roomData.state == RoomStateType.PREPARE)
         roomsData.push(roomData);
       }
     }

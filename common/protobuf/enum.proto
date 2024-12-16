@@ -5,9 +5,8 @@ package Protocol;
 
 //변경 주의(클라 의존성)
 enum RoomStateType {
-  WAIT = 0;
-  PREPARE = 1;
-  INAGAME = 2;
+  PREPARE = 0;
+  INAGAME = 1;
 }
 
 enum ObjectType {

@@ -9,7 +9,7 @@ import { enumDesc, fileDesc } from "@bufbuild/protobuf/codegenv1";
  * Describes the file enum.proto.
  */
 export const file_enum: GenFile = /*@__PURE__*/
-  fileDesc("CgplbnVtLnByb3RvEghQcm90b2NvbCozCg1Sb29tU3RhdGVUeXBlEggKBFdBSVQQABILCgdQUkVQQVJFEAESCwoHSU5BR0FNRRACKkkKCk9iamVjdFR5cGUSCQoFVE9XRVIQABIKCgZQTEFZRVIQARILCgdNT05TVEVSEAISDgoKUFJPSkVDVElMRRADEgcKA0VOVhAEKjIKEU9CSkVDVF9TVEFURV9UWVBFEggKBElETEUQABIICgRNT1ZFEAESCQoFU0tJTEwQAio0CghDYXJkVHlwZRITCg9DQVJEX1RZUEVfVE9XRVIQABITCg9DQVJEX1RZUEVfU0tJTEwQAWIGcHJvdG8z");
+  fileDesc("CgplbnVtLnByb3RvEghQcm90b2NvbCopCg1Sb29tU3RhdGVUeXBlEgsKB1BSRVBBUkUQABILCgdJTkFHQU1FEAEqSQoKT2JqZWN0VHlwZRIJCgVUT1dFUhAAEgoKBlBMQVlFUhABEgsKB01PTlNURVIQAhIOCgpQUk9KRUNUSUxFEAMSBwoDRU5WEAQqMgoRT0JKRUNUX1NUQVRFX1RZUEUSCAoESURMRRAAEggKBE1PVkUQARIJCgVTS0lMTBACKjQKCENhcmRUeXBlEhMKD0NBUkRfVFlQRV9UT1dFUhAAEhMKD0NBUkRfVFlQRV9TS0lMTBABYgZwcm90bzM");
 
 /**
  * 변경 주의(클라 의존성)
@@ -18,19 +18,14 @@ export const file_enum: GenFile = /*@__PURE__*/
  */
 export enum RoomStateType {
   /**
-   * @generated from enum value: WAIT = 0;
+   * @generated from enum value: PREPARE = 0;
    */
-  WAIT = 0,
+  PREPARE = 0,
 
   /**
-   * @generated from enum value: PREPARE = 1;
+   * @generated from enum value: INAGAME = 1;
    */
-  PREPARE = 1,
-
-  /**
-   * @generated from enum value: INAGAME = 2;
-   */
-  INAGAME = 2,
+  INAGAME = 1,
 }
 
 /**
