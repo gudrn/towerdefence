@@ -102,9 +102,11 @@ export function handleC2G_JoinRoomRequest(buffer: Buffer, session: GatewaySessio
     [방 퇴장 요청]
   ---------------------------------------------*/
 export function handleC2G_LeaveRoomRequest(buffer: Buffer, session: GatewaySession) {
-    console.log("handleC2G_LeaveRoomRequest");
+    //console.log("handleC2G_LeaveRoomRequest");
     const packet = fromBinary(C2G_LeaveRoomRequestSchema, buffer);
 
+    roomManager.leaveRoom(packet.roomId, session.getId());
+    
     const lobbySession = lobbySessionManager.getRandomSession();
     if(lobbySession == undefined){
         throw new CustomError(ErrorCodes.SERSSION_NOT_FOUND, "로비 세션을 찾지 못했습니다.");

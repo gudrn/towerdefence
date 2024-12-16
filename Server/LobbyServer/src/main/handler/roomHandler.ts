@@ -190,7 +190,7 @@ export async function leaveRoomHandler(buffer: Buffer, session: LobbySession): P
      // 4. 유저 제거
      roomData.users = roomData.users.filter((user) => user.id !== packet.userId);
      //this.users = this.users.filter((user) => user !== player);
-     console.log(roomData.users);
+     console.log("제거 후 남은 인원", roomData.users.length);
      if(roomData.users.length <=0){
         //방 제거
         await redis.del(roomKey);

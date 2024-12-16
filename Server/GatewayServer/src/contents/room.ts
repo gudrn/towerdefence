@@ -59,4 +59,8 @@ export class Room {
   public setBattleServerd(battleServerId: string) {
     this.battleServerId = battleServerId;
   }
+
+  public leaveRoom(userId: string){
+    this.users = this.users.filter((user) => user.getId() !== userId);
+  }
 }
