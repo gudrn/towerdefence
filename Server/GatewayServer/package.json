@@ -1,0 +1,27 @@
+{
+  "name": "gatewayserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node -r tsconfig-paths/register ./src/server.ts",
+    "protoc": "cd ../.. && npx buf generate ./common/protobuf"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@bufbuild/protobuf": "^2.2.2",
+    "dotenv": "^16.4.7",
+    "ioredis": "^5.4.1",
+    "jsonwebtoken": "^9.0.2",
+    "servercore": "file:../ServerCore",
+    "uuid": "^11.0.3"
+  },
+  "devDependencies": {
+    "@types/ioredis": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^22.10.1",
+    "tsconfig-paths": "^4.2.0"
+  }
+}

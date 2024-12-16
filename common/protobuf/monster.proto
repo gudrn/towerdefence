@@ -5,24 +5,55 @@ package Protocol;
 import "struct.proto";
 
 // 몬스터 생성 알림
-message B2C_SpawnMonsterNotification {
+message B2G_SpawnMonsterNotification {
     PosInfo posInfo = 1;
     string prefabId = 2;
+    int32 maxHp = 3;
+    int32 roomId = 4;
+}
+
+message G2C_SpawnMonsterNotification {
+    PosInfo posInfo = 1;
+    string prefabId = 2;
+    int32 maxHp = 3;
 }
 
 // 몬스터 사망 알림
-message B2C_MonsterDeathNotification {
+message B2G_MonsterDeathNotification {
+    string monsterId = 1;
+    int32 score = 2;
+    int32 roomId = 3;
+}
+
+// 몬스터 사망 알림
+message G2C_MonsterDeathNotification {
     string monsterId = 1;
     int32 score = 2;
 }
 
 // 몬스터 위치 동기화
-message B2C_MonsterPositionUpdateNotification {
+message B2G_MonsterPositionUpdateNotification {
+    PosInfo posInfo = 1;
+    int32 roomId = 2;
+}
+
+// 몬스터 위치 동기화
+message G2C_MonsterPositionUpdateNotification {
     PosInfo posInfo = 1;
 }
 
 // 몬스터 -> 타워 공격 알림
-message B2C_MonsterAttackTowerNotification
+message B2G_MonsterAttackTowerNotification
+{
+    string monsterId = 1;
+    string targetId = 2;
+    int32 hp = 3;
+    int32 maxHp = 4;
+    int32 roomId = 5;
+}
+
+// 몬스터 -> 타워 공격 알림
+message G2C_MonsterAttackTowerNotification
 {
     string monsterId = 1;
     string targetId = 2;
@@ -31,18 +62,45 @@ message B2C_MonsterAttackTowerNotification
 }
 
 // 몬스터 -> 베이스 공격 알림
-message B2C_MonsterAttackBaseNotification
+message B2G_MonsterAttackBaseNotification
+{
+    string monsterId = 1;
+    int32 attackDamage = 2;
+    int32 roomId = 3;
+}
+
+// 몬스터 -> 베이스 공격 알림
+message G2C_MonsterAttackBaseNotification
 {
     string monsterId = 1;
     int32 attackDamage = 2;
 }
 
 // 몬스터 체력 업데이트
-message B2C_MonsterHealthUpdateNotification {
+message B2G_MonsterHealthUpdateNotification {
+    string monsterId = 1;
+    int32 hp = 2;
+    int32 maxHp = 3;
+    int32 roomId = 4;
+}
+
+// 몬스터 체력 업데이트
+message G2C_MonsterHealthUpdateNotification {
     string monsterId = 1;
     int32 hp = 2;
     int32 maxHp = 3;
 }
 
+// 몬스터 버프 상태 알림
+message B2G_MonsterBuffNotification{
+    string buffType = 1;
+    bool state = 2;
+    int32 roomId = 3;
+}
 
+// 몬스터 버프 상태 알림
+message G2C_MonsterBuffNotification {
+    string buffType = 1;
+    bool state = 2;
+}
 

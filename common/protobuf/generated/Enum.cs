@@ -24,12 +24,12 @@ namespace Protocol {
     static EnumReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "CgplbnVtLnByb3RvEghQcm90b2NvbCozCg1Sb29tU3RhdGVUeXBlEggKBFdB",
-            "SVQQABILCgdQUkVQQVJFEAESCwoHSU5BR0FNRRACKkkKCk9iamVjdFR5cGUS",
-            "CQoFVE9XRVIQABIKCgZQTEFZRVIQARILCgdNT05TVEVSEAISDgoKUFJPSkVD",
-            "VElMRRADEgcKA0VOVhAEKjIKEU9CSkVDVF9TVEFURV9UWVBFEggKBElETEUQ",
-            "ABIICgRNT1ZFEAESCQoFU0tJTEwQAio0CghDYXJkVHlwZRITCg9DQVJEX1RZ",
-            "UEVfVE9XRVIQABITCg9DQVJEX1RZUEVfU0tJTEwQAWIGcHJvdG8z"));
+            "CgplbnVtLnByb3RvEghQcm90b2NvbCopCg1Sb29tU3RhdGVUeXBlEgsKB1BS",
+            "RVBBUkUQABILCgdJTkFHQU1FEAEqSQoKT2JqZWN0VHlwZRIJCgVUT1dFUhAA",
+            "EgoKBlBMQVlFUhABEgsKB01PTlNURVIQAhIOCgpQUk9KRUNUSUxFEAMSBwoD",
+            "RU5WEAQqMgoRT0JKRUNUX1NUQVRFX1RZUEUSCAoESURMRRAAEggKBE1PVkUQ",
+            "ARIJCgVTS0lMTBACKjQKCENhcmRUeXBlEhMKD0NBUkRfVFlQRV9UT1dFUhAA",
+            "EhMKD0NBUkRfVFlQRV9TS0lMTBABYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Protocol.RoomStateType), typeof(global::Protocol.ObjectType), typeof(global::Protocol.OBJECT_STATE_TYPE), typeof(global::Protocol.CardType), }, null, null));
@@ -42,9 +42,8 @@ namespace Protocol {
   ///변경 주의(클라 의존성)
   /// </summary>
   public enum RoomStateType {
-    [pbr::OriginalName("WAIT")] Wait = 0,
-    [pbr::OriginalName("PREPARE")] Prepare = 1,
-    [pbr::OriginalName("INAGAME")] Inagame = 2,
+    [pbr::OriginalName("PREPARE")] Prepare = 0,
+    [pbr::OriginalName("INAGAME")] Inagame = 1,
   }
 
   public enum ObjectType {

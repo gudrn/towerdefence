@@ -6,3 +6,4 @@
  * @property {string} host - Database host
  * @property {number} port - Database port
  */
+//# sourceMappingURL=dbConfig.js.map

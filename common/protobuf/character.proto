@@ -6,16 +6,37 @@ import "struct.proto";
 import "enum.proto";
 
 // 캐릭터 위치 동기화
-message C2B_PlayerPositionUpdateRequest 
+message C2G_PlayerPositionUpdateRequest 
 {
     PosInfo posInfo = 1;
-    int32 roomId = 2;
+    string parameter = 2;
+    bool state = 3;
+    int32 roomId = 4;
+}
+
+message G2B_PlayerPositionUpdateRequest 
+{
+    PosInfo posInfo = 1;
+    string parameter = 2;
+    bool state = 3;
+    int32 roomId = 4;
 }
 
 // 캐릭터 위치 동기화 알림
-message B2C_PlayerPositionUpdateNotification 
+message B2G_PlayerPositionUpdateNotification 
 {
     PosInfo posInfo = 1;
+    string parameter = 2;
+    bool state = 3;
+    int32 roomId = 4;
+}
+
+// 캐릭터 위치 동기화 알림
+message G2C_PlayerPositionUpdateNotification 
+{
+    PosInfo posInfo = 1;
+    string parameter = 2;
+    bool state = 3;
 }
 
 // 카드 사용
@@ -24,3 +45,35 @@ message C2B_UseCardRequest {
     string cardId = 2; 
 }
 
+
+//GamePlayerData에서 nickname이 불필요해 제거했습니다 - 조정현
+//이유: 네트워크 부하 감소
+message C2G_PlayerUseAbilityRequest 
+{
+    PosInfo position = 1;
+    string prefabId = 2;
+    int32 roomId = 3;
+}
+
+message G2B_PlayerUseAbilityRequest 
+{
+    PosInfo position = 1;
+    string prefabId = 2;
+    int32 roomId = 3;
+}
+
+//
+message B2G_PlayerUseAbilityNotification 
+{
+    PosInfo position = 1;
+    string prefabId = 2;
+    string message = 3;
+    int32 roomId = 4;
+}
+
+message G2C_PlayerUseAbilityNotification 
+{
+    PosInfo position = 1;
+    string prefabId = 2;
+    string message = 3;
+}

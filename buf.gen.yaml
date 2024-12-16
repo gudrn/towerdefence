@@ -2,8 +2,12 @@ version: v1
 plugins:
   - name: es
     out: Server/LobbyServer/src/protocol
-    opt: target=js
+    opt: target=ts
 
   - name: es
     out: Server/BattleServer/src/protocol
-    opt: target=js
+    opt: target=ts
+
+  - name: es
+    out: Server/GatewayServer/src/protocol
+    opt: target=ts

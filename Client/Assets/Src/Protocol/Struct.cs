@@ -999,7 +999,7 @@ namespace Protocol {
 
     /// <summary>Field number for the "state" field.</summary>
     public const int StateFieldNumber = 5;
-    private global::Protocol.RoomStateType state_ = global::Protocol.RoomStateType.Wait;
+    private global::Protocol.RoomStateType state_ = global::Protocol.RoomStateType.Prepare;
     /// <summary>
     /// 방 상태
     /// </summary>
@@ -1058,7 +1058,7 @@ namespace Protocol {
       if (OwnerId.Length != 0) hash ^= OwnerId.GetHashCode();
       if (Name.Length != 0) hash ^= Name.GetHashCode();
       if (MaxUserNum != 0) hash ^= MaxUserNum.GetHashCode();
-      if (State != global::Protocol.RoomStateType.Wait) hash ^= State.GetHashCode();
+      if (State != global::Protocol.RoomStateType.Prepare) hash ^= State.GetHashCode();
       hash ^= users_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -1094,7 +1094,7 @@ namespace Protocol {
         output.WriteRawTag(32);
         output.WriteInt32(MaxUserNum);
       }
-      if (State != global::Protocol.RoomStateType.Wait) {
+      if (State != global::Protocol.RoomStateType.Prepare) {
         output.WriteRawTag(40);
         output.WriteEnum((int) State);
       }
@@ -1125,7 +1125,7 @@ namespace Protocol {
         output.WriteRawTag(32);
         output.WriteInt32(MaxUserNum);
       }
-      if (State != global::Protocol.RoomStateType.Wait) {
+      if (State != global::Protocol.RoomStateType.Prepare) {
         output.WriteRawTag(40);
         output.WriteEnum((int) State);
       }
@@ -1152,7 +1152,7 @@ namespace Protocol {
       if (MaxUserNum != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(MaxUserNum);
       }
-      if (State != global::Protocol.RoomStateType.Wait) {
+      if (State != global::Protocol.RoomStateType.Prepare) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) State);
       }
       size += users_.CalculateSize(_repeated_users_codec);
@@ -1180,7 +1180,7 @@ namespace Protocol {
       if (other.MaxUserNum != 0) {
         MaxUserNum = other.MaxUserNum;
       }
-      if (other.State != global::Protocol.RoomStateType.Wait) {
+      if (other.State != global::Protocol.RoomStateType.Prepare) {
         State = other.State;
       }
       users_.Add(other.users_);
