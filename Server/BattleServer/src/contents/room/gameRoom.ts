@@ -288,8 +288,8 @@ export class GameRoom {
         roomId: this.id
       });
 
-      console.log("방 아이디는", this.id);
-      console.log(object.getPrefabId, object.maxHp);
+      //console.log("방 아이디는", this.id);
+      //console.log(object.getPrefabId, object.maxHp);
       const sendBuffer: Buffer = PacketUtils.SerializePacket(
         packet,
         B2G_SpawnMonsterNotificationSchema,
@@ -462,6 +462,7 @@ export class GameRoom {
   // }
 
   private gameOver(){
+      console.log("게임 오버");
       this.monsterManager.stopSpawning();
       clearInterval(this.gameLoopInterval);
       this.monsterManager.destroy();

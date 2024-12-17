@@ -89,7 +89,7 @@ export class Monster extends GameObject {
     this.maxHp = Math.floor(this.maxHp * multiplier);
     this.hp = this.maxHp;
     this.attackDamage = Math.floor(this.attackDamage * multiplier);
-    console.log(`몬스터가 강화되었습니다. `, this.maxHp);
+    //console.log(`몬스터가 강화되었습니다. `, this.maxHp);
   }
 
   /*---------------------------------------------
