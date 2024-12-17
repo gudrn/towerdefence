@@ -407,10 +407,12 @@ export class GameRoom {
   /*---------------------------------------------
     [addScore]
     - 점수를 추가하고 웨이브 상태를 확인
+    - 50점마다 카드 지급
   ---------------------------------------------*/
   public addScore(monsterScore: number) {
     this.score += monsterScore;
 
+    //console.log(this.score, this.rewardScore, monsterScore);
     if (this.score >= this.rewardScore) {
       // 여기에 카드 추가 로직
       this.users.forEach((player) => player.addRandomCard());
@@ -446,7 +448,9 @@ export class GameRoom {
 
     this.broadcast(sendBuffer);
 
-    if (this.wave % 5 === 0 && this.wave !== 1) {
+    //5웨이브 마다 엘리트 몬스터 생성
+    if (true) {
+    //if (this.wave % 5 === 0) {
       this.monsterManager.spawnEilteMonster();
     }
   }

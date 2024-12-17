@@ -37,9 +37,21 @@ export class MonsterManager {
   public startSpawning() {
     this.monsterSpawner.startSpawning();
   }
-  public spawnEilteMonster() {
 
+  /*---------------------------------------------
+    [엘리트 몬스터 스폰]
+  ---------------------------------------------*/
+  public spawnEilteMonster() {
+    this.monsterSpawner.spawnMonster(true);
   }
+
+  /*---------------------------------------------
+    [일반 몬스터 스폰 중단]
+  ---------------------------------------------*/
+  public stopSpawning() {
+    this.monsterSpawner.stopSpawning();
+  }
+
   /*---------------------------------------------
     [update]
   ---------------------------------------------*/
@@ -90,19 +102,8 @@ export class MonsterManager {
     this.monsters.delete(uuid);
   }
 
-  public getMonsterCount() {
-    return this.monsters.size;
-  }
-
-  public getMonsters() {
-    return this.monsters;
-  }
-
-  public getGameRoom(){
-    return this.gameRoom;
-  }
-  public stopSpawning() {
-    this.monsterSpawner.stopSpawning();
+  public increaseWave() {
+    this.monsterSpawner.increaseWave();
   }
 
   public destroy() {
@@ -110,12 +111,11 @@ export class MonsterManager {
     this.monsterSpawner.destroy();
   }
 
-  public getMonster(uuid: string) {
-    return this.monsters.get(uuid);
-  }
-
   /*---------------------------------------------
     [길찾기]
+    -findPath
+    -parseKey
+    -canGo 
   ---------------------------------------------*/
   public findPath(src: Vec2, dest: Vec2): Vec2[] | null {
     const path: Vec2[] = [];
@@ -237,7 +237,22 @@ export class MonsterManager {
     return tile !== null;
   }
 
-  public increaseWave() {
-    this.monsterSpawner.increaseWave();
+  /*---------------------------------------------
+    [getter]
+  ---------------------------------------------*/
+  public getMonsterCount() {
+    return this.monsters.size;
+  }
+
+  public getMonsters() {
+    return this.monsters;
+  }
+
+  public getGameRoom(){
+    return this.gameRoom;
+  }
+
+  public getMonster(uuid: string) {
+    return this.monsters.get(uuid);
   }
 }

@@ -23,7 +23,8 @@ class AssetManager {
 
   private towerPrefabIdCaches: Array<string>;
   private skillPrefabIdCaches: Array<string>;
-  private normalMoster: Array<AssetMonster>;
+  private normalMonster: Array<AssetMonster>;
+  private eliteMonster: Array<AssetMonster>;
 
   constructor() {
     this.monsters = new Map<string, AssetMonster>();
@@ -33,7 +34,8 @@ class AssetManager {
 
     this.towerPrefabIdCaches = new Array<string>();
     this.skillPrefabIdCaches = new Array<string>();
-    this.normalMoster = new Array<AssetMonster>();
+    this.normalMonster = new Array<AssetMonster>();
+    this.eliteMonster = new Array<AssetMonster>();
   }
 
   /*---------------------------------------------
@@ -53,9 +55,13 @@ class AssetManager {
         monsters.data.map((monster: AssetMonster) => [monster.prefabId, monster]), // prefabId를 키로 사용
       );
 
-      this.normalMoster = Array.from(this.monsters.values()).filter(
-        (monster) => monster.prefabId !== 'Robot5',
-      );
+      for (const monster of this.monsters.values()) {
+        if (monster.prefabId === 'Robot5') {
+          this.eliteMonster.push(monster);
+        } else {
+          this.normalMonster.push(monster);
+        }
+      }
 
       //타워 자원 로드
       this.towers = new Map(
@@ -118,9 +124,14 @@ class AssetManager {
    * ---------------------------------------------
    * @returns {Object} 랜덤 몬스터 데이터
    */
-  getRandomAssetMonster() {
-    const random = Math.floor(Math.random() * this.normalMoster.length);
-    return this.normalMoster[random];
+  getRandomNormalAssetMonster() {
+    const random = Math.floor(Math.random() * this.normalMonster.length);
+    return this.normalMonster[random];
+  }
+
+  getRandomEliteMonsterAssetMonster() {
+    const random = Math.floor(Math.random() * this.eliteMonster.length);
+    return this.eliteMonster[random];
   }
 
   /**
@@ -185,7 +196,7 @@ class AssetManager {
    * @param {number} num 뽑을 카드의 수
    * @returns {Array<CardData>}
    */
-  getRandomTowerCards(num = 1) {
+  getRandomTowerCards(num: number = 1): CardData[] {
     const ret = [];
     for (let i = 0; i < num; i += 1) {
       const randomIndex = Math.floor(Math.random() * this.towerPrefabIdCaches.length);
@@ -206,7 +217,7 @@ class AssetManager {
    * @param {number} num 뽑을 카드의 수
    * @returns {Array<CardData>}
    */
-  getRandomSkillCards(num = 1) {
+  getRandomSkillCards(num: number = 1): CardData[] {
     const ret = [];
     for (let i = 0; i < num; i += 1) {
       const randomIndex = Math.floor(Math.random() * this.skillPrefabIdCaches.length);
@@ -223,19 +234,24 @@ class AssetManager {
    * ---------------------------------------------
    * [getRandomCards]
    * - 랜덤 카드 배열 반환
+   * - [todo] - 가중치 랜덤 뽑기로 변경해보기
    * ---------------------------------------------
    * @param {number} num 뽑을 카드의 수
-   * @returns {Array<CardData>}
    */
-  getRandomCards(num = 1) {
-    //시간 남으면 subarray를 사용해서 최적화 해보기
-    const numTowerCards = Math.floor(Math.random() * (num + 1));
+  getRandomCards(num: number = 1): CardData[] {
+    let numTowerCards = 0;
+  
+    for (let i = 0; i < num; i++) {
+      //타워 카드가 나올 확률 60%
+      if (Math.random() < 0.6) {
+        numTowerCards++;
+      }
+    }
+
     let towerCards = this.getRandomTowerCards(numTowerCards);
     let skillCards = this.getRandomSkillCards(num - numTowerCards);
-    //let skillCards = this.getRandomSkillCards(num);
 
     return towerCards.concat(skillCards);
-    //return skillCards;
   }
 }
 

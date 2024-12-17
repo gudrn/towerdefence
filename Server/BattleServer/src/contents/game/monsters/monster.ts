@@ -78,15 +78,12 @@ export class Monster extends GameObject{
     }
 
     private updateIdle() {
-        console.log("UpdateIdle");
         const now = Date.now();
       
         // 2초마다 경로 재계산
         if (now - this.lastUpdated > 2000) {
           this.target = this.room.findCloseBuilding(this.getPos());
-          console.log(this.target);
           if (this.target) {
-            console.log("ㅇㅇ");
             this.path = this.room.getMonsterManager().findPath(this.pos, this.target.getPos());
             this.lastUpdated = now;
           }
@@ -100,7 +97,6 @@ export class Monster extends GameObject{
       
           if (dist <= attackRange) {
             // 공격 범위 내에 들어오면 상태를 SKILL로 변경
-            console.log(`몬스터가 타겟에 도달: ${this.getId()}`);
             this.waitUntil = now + this.attackCoolDown * 1000;
             this.setState(OBJECT_STATE_TYPE.SKILL);
             return;
@@ -176,7 +172,7 @@ export class Monster extends GameObject{
 
     /*---------------------------------------------
             [타워 공격]
-        ---------------------------------------------*/
+    ---------------------------------------------*/
     private attackTower(tower: Tower) {
         // 2. 클라이언트에 공격 패킷 전송
         const attackPacket = create(B2G_MonsterAttackTowerNotificationSchema, {
@@ -238,7 +234,6 @@ export class Monster extends GameObject{
     3. monsters에서 제거
 ---------------------------------------------*/
     override onDeath() {
-        console.log(`몬스터 ${this.getId()}가 사망.`);
     
         //1. 몬스터 사망 패킷 전송
         {

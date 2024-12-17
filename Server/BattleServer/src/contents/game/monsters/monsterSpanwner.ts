@@ -8,6 +8,7 @@ import { ePacketId } from 'ServerCore/network/packetId';
 import { Monster } from './monster';
 import { MathUtils } from 'src/utils/mathUtils';
 import { MonsterManager } from './monsterManager';
+import { AssetMonster } from 'src/utils/interfaces/assetMonster';
 
 /*---------------------------------------------
     [MonsterSpawner]
@@ -68,7 +69,7 @@ export class MonsterSpawner {
    * 노말 몬스터 스폰
    * - 지정된 위치에 몬스터를 생성하고 게임 방에 추가
   ---------------------------------------------*/
-  public spawnMonster() {
+  public spawnMonster(isEilteMonster: boolean = false) {
     // 랜덤 위치 선택
     const randomSpawnPos = this.getRandomSpawnPosition();
 
@@ -82,8 +83,15 @@ export class MonsterSpawner {
       y: randomSpawnPos.y,
     });
 
-    // 1~4번 몬스터 중 랜덤
-    let randomAssetMonster = assetManager.getRandomAssetMonster();
+    let randomAssetMonster: AssetMonster;
+
+    if(isEilteMonster) {
+      randomAssetMonster = assetManager.getRandomEliteMonsterAssetMonster();
+    }
+    else {
+      // 1~4번 몬스터 중 랜덤
+      randomAssetMonster = assetManager.getRandomNormalAssetMonster();
+    }
     const monster = new Monster(randomAssetMonster.prefabId, posInfo, this.monsterManager.getGameRoom());
     this.monsterManager.addMonster(monster);
   }
@@ -93,35 +101,10 @@ export class MonsterSpawner {
    * - 지정된 위치에 몬스터를 생성하고 게임 방에 추가
    * - 점수를 기준으로 
   ---------------------------------------------*/
-  // spawnEilteMonster() {
-  //   // 랜덤 위치 선택
-  //   const randomSpawnPos = this.getRandomSpawnPosition();
-
-  //   // 몬스터 uuid 생성
-  //   const newUuid = uuidv4();
-
-  //   // 위치 정보 생성
-  //   const posInfo = create(PosInfoSchema, {
-  //     uuid: newUuid,
-  //     x: randomSpawnPos.x,
-  //     y: randomSpawnPos.y,
-  //   });
-
-  //   // 엘리트 몬스터 가져오기
-  //   let eliteAssetMonster = assetManager.getMonsterData('Robot5');
-
-  //   // null인지 확인하기
-  //   if (!eliteAssetMonster) {
-  //     console.log('엘리트 몬스터 못 찾음');
-  //     return;
-  //   }
-  //   this.spawnedMonster += 1;
-  //   this.eliteSpawnCount += 1;
-
-  //   const monster = new Monster(eliteAssetMonster.prefabId, posInfo, this.gameRoom);
-  //   monster.statusMultiplier(this.gameRoom.monsterStatusMultiplier); // 강화 배율 적용
-  //   this.gameRoom.addObject(monster);
-  // }
+  spawnEilteMonster() {
+    // 랜덤 위치 선택
+    
+  }
 
   /**
    * 스폰 중지
