@@ -223,7 +223,7 @@ export class MonsterManager extends MonsterSpawner {
     return tile !== null;
   }
 
-  public increaseWave(){ 
-    this.updateSpawnRate(MathUtils.clamp(this.spawnRate-500, 100, this.spawnRate))
+  public increaseWave() {
+    this.updateSpawnRate(MathUtils.clamp(this.spawnRate - 500, 100, this.spawnRate));
   }
 }
