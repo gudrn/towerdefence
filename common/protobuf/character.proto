@@ -39,13 +39,6 @@ message G2C_PlayerPositionUpdateNotification
     bool state = 3;
 }
 
-// 카드 사용
-message C2B_UseCardRequest { 
-    int32 roomId = 1;
-    string cardId = 2; 
-}
-
-
 //GamePlayerData에서 nickname이 불필요해 제거했습니다 - 조정현
 //이유: 네트워크 부하 감소
 message C2G_PlayerUseAbilityRequest 

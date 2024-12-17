@@ -1,8 +1,8 @@
 import { create } from '@bufbuild/protobuf';
 import { PosInfo } from 'src/protocol/struct_pb';
-import { GameRoom } from '../room/gameRoom';
+import { GameRoom } from '../../room/gameRoom';
 import { assetManager } from 'src/utils/assetManager';
-import { GameObject } from './gameObject';
+import { GameObject } from '../gameObject';
 import { PacketUtils } from 'ServerCore/utils/packetUtils';
 import {
   B2G_MonsterDeathNotificationSchema,
@@ -13,26 +13,26 @@ import {
   B2G_TowerAttackMonsterNotificationSchema,
   B2G_TowerBuffNotificationSchema,
 } from 'src/protocol/tower_pb';
-import { SkillUseMonster } from './skillUseMonster';
+import { Monster } from '../monsters/monster';
 
 export class Tower extends GameObject {
   /*---------------------------------------------
     [멤버 변수]
 ---------------------------------------------*/
-private originalAttackDamage: number = 0; // 기본 공격력 (버프 적용 전)
-private attackDamage: number = 0; // 현재 공격력 (버프 적용 후)
-private attackRange: number = 0; // 공격 범위
-public attackCoolDown: number = 0; // 공격 쿨다운 시간
-public hp: number = 0; // 현재 체력
-public maxHp: number = 0; // 최대 체력
-private bulletSpeed = 0; // 투사체 속도
-public target: null | undefined; // 현재 타겟
-public lastAttackTime: number = 0; // 마지막 공격 시간
-private isBuffed: boolean = false; // 버프 유무
+  private originalAttackDamage: number = 0; // 기본 공격력 (버프 적용 전)
+  private attackDamage: number = 0; // 현재 공격력 (버프 적용 후)
+  private attackRange: number = 0; // 공격 범위
+  public attackCoolDown: number = 0; // 공격 쿨다운 시간
+  public hp: number = 0; // 현재 체력
+  public maxHp: number = 0; // 최대 체력
+  private bulletSpeed = 0; // 투사체 속도
+  public target: null | undefined; // 현재 타겟
+  public lastAttackTime: number = 0; // 마지막 공격 시간
+  private isBuffed: boolean = false; // 버프 유무
 
-// 특수 능력치들
-private buffAmount: number = 0; // 버프 타워의 공격력 증가량
-private explosionRadius: number = 0; // 미사일 타워의 폭발 범위
+  // 특수 능력치들
+  private buffAmount: number = 0; // 버프 타워의 공격력 증가량
+  private explosionRadius: number = 0; // 미사일 타워의 폭발 범위
 
   /*---------------------------------------------
     [생성자]
@@ -66,10 +66,8 @@ private explosionRadius: number = 0; // 미사일 타워의 폭발 범위
    * @param monsters 현재 맵에 있는 모든 몬스터 배열
    * @returns 가장 가까운 몬스터와 그 거리, 없으면 null
    */
-  private getMonsterInRange(
-    monsters: SkillUseMonster[],
-  ): { monster: SkillUseMonster; distance: number } | null {
-    let closestMonster: SkillUseMonster | null = null;
+  private getMonsterInRange( monsters: Monster[]): { monster: Monster; distance: number } | null {
+    let closestMonster: Monster | null = null;
     let minDistance = Infinity;
 
     for (const monster of monsters) {
@@ -98,7 +96,7 @@ private explosionRadius: number = 0; // 미사일 타워의 폭발 범위
    * 타워의 공격 처리
    * @param targetData 타겟 몬스터와 거리 정보
    */
-  private attackTarget(targetData: { monster: SkillUseMonster; distance: number }) {
+  private attackTarget(targetData: { monster: Monster; distance: number }) {
     this.lastAttackTime = Date.now();
     const { monster: target, distance } = targetData;
     if (!targetData) return;
@@ -132,7 +130,6 @@ private explosionRadius: number = 0; // 미사일 타워의 폭발 범위
         const attackPacket = create(B2G_MonsterHealthUpdateNotificationSchema, {
           monsterId: target.getId(),
           hp: target.hp,
-          maxHp: target.maxHp,
           roomId: this.room.id,
         });
 
@@ -157,7 +154,7 @@ private explosionRadius: number = 0; // 미사일 타워의 폭발 범위
       - tower를 추상 클래스로 만들기기
       - processAttack을 가상함수로 만들기
    */
-  private processAttack(target: SkillUseMonster) {
+  private processAttack(target: Monster) {
     switch (this.getPrefabId()) {
       case 'BasicTower':
         // 기본 타워: 단일 타겟 기본 공격
@@ -335,7 +332,7 @@ private explosionRadius: number = 0; // 미사일 타워의 폭발 범위
 
 
 
-  private splashDamage(target: SkillUseMonster) {
+  private splashDamage(target: Monster) {
     // 범위 내 몬스터 찾기
     const monsters = Array.from(this.room.getMonsters().values());
     for (const monster of monsters) {
@@ -354,12 +351,8 @@ private explosionRadius: number = 0; // 미사일 타워의 폭발 범위
         const splashDamageAttackPacket = create(B2G_MonsterHealthUpdateNotificationSchema, {
           monsterId: target.getId(),
           hp: target.hp,
-          maxHp: target.maxHp,
           roomId: this.room.id,
         });
-
-        //console.log('targetHp: ', target.hp);
-        //console.log('targetMaxHp: ', target.maxHp);
 
         const splashDamageAttackBuffer = PacketUtils.SerializePacket(
           splashDamageAttackPacket,
@@ -455,3 +448,4 @@ private explosionRadius: number = 0; // 미사일 타워의 폭발 범위
 //브로셔 작성 1명
 //클라 수정 1명
 //서버 2명
+

@@ -6,7 +6,7 @@ import { ePacketId } from "ServerCore/network/packetId";
 import { CustomError } from "ServerCore/utils/error/customError";
 import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
 import { PacketUtils } from "ServerCore/utils/packetUtils";
-import { C2B_Init, C2B_InitSchema, C2G_Init, C2G_InitSchema } from "src/protocol/init_pb";
+import { C2G_Init, C2G_InitSchema } from "src/protocol/init_pb";
 import { GatewaySession } from "../session/gatewaySession";
 import { gatewaySessionManager } from "src/server";
 import dotenv from "dotenv";

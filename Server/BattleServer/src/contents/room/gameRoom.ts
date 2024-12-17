@@ -1,5 +1,4 @@
 import {
-  B2C_GameEndNotification,
   B2G_GameStartNotification,
   B2G_GameStartNotificationSchema,
   B2G_IncreaseWaveNotificationSchema,
@@ -15,13 +14,13 @@ import {
   TowerDataSchema,
 } from 'src/protocol/struct_pb';
 import { Base } from '../game/base';
-import { MonsterSpawner } from './monsterSpanwner';
+import { MonsterSpawner } from '../game/monsters/monsterSpanwner';
 import { Tile, Tilemap } from './tilemap';
 import { CustomError } from 'ServerCore/utils/error/customError';
 import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
 import { PacketUtils } from 'ServerCore/utils/packetUtils';
 import { ePacketId } from 'ServerCore/network/packetId';
-import { Tower } from '../game/tower';
+import { Tower } from '../game/towers/tower';
 import { Vec2 } from 'ServerCore/utils/vec2';
 import { B2G_SpawnMonsterNotificationSchema } from 'src/protocol/monster_pb';
 import { gameRoomManager } from './gameRoomManager';
@@ -38,15 +37,9 @@ import {
 import { sessionManager } from 'src/server';
 import { B2G_TowerBuildNotificationSchema, G2B_TowerBuildRequest } from 'src/protocol/tower_pb';
 import { SkillManager } from './skillManager';
-import { MonsterManager } from './monsterManager';
-import { SkillUseMonster } from '../game/skillUseMonster';
+import { MonsterManager } from '../game/monsters/monsterManager';
 import { G2B_UseSkillRequest } from 'src/protocol/skill_pb';
-import { Monster } from '../game/monster';
-
-interface PQNode {
-  cost: number;
-  pos: Vec2;
-}
+import { Monster } from '../game/monsters/monster';
 
 export class GameRoom {
   //유저의 스폰 위치
@@ -92,8 +85,8 @@ export class GameRoom {
   [방 입장]
   // 1. 방이 가득 찼는지 확인
   // 2. 유저 추가
-  // 3. 해당 유저에게 B2C_JoinRoomResponse 패킷 전송
-  // 4. 모든 인원이 들어왔다면 B2C_GameStartNotification 패킷 전송
+  // 3. 해당 유저에게 BGC_JoinRoomResponse 패킷 전송
+  // 4. 모든 인원이 들어왔다면 B2G_GameStartNotification 패킷 전송
 ---------------------------------------------*/
   public enterRoom(player: GamePlayer, session: BattleSession) {
     // 1. 방이 가득 찼는지 확인
@@ -105,7 +98,7 @@ export class GameRoom {
     this.users.set(player.playerData.position!.uuid, player);
     console.log(`유저가 방에 입장했습니다. 현재 인원: ${this.users.size}/${this.maxPlayerCount}`);
 
-    // 3. 해당 유저에게 B2C_JoinRoomResponse 패킷 전송
+    // 3. 해당 유저에게 B2G_JoinRoomResponse 패킷 전송
     const enterRoomPacket = create(B2G_JoinGameRoomResponseSchema, {
       isSuccess: true,
     });
@@ -118,7 +111,7 @@ export class GameRoom {
     );
     session.send(enterRoomBuffer);
 
-    // 4. 모든 인원이 들어왔다면 B2C_GameStart 패킷 전송
+    // 4. 모든 인원이 들어왔다면 B2G_GameStart 패킷 전송
     if (this.users.size === this.maxPlayerCount) {
       console.log('모든 유저가 입장하였습니다. 게임을 시작합니다.');
 
@@ -148,7 +141,7 @@ export class GameRoom {
       }
 
       const obstaclePosInfos = this.generateObstacles(20);
-      // B2C_GameStartNotification 패킷 생성
+      // B2G_GameStartNotification 패킷 생성
       const gameStartPacket: B2G_GameStartNotification = create(B2G_GameStartNotificationSchema, {
         roomId: this.id,
         playerDatas,
@@ -290,26 +283,26 @@ export class GameRoom {
    * 대상: 몬스터, 타워, 투사체
    * 주의: 플레이어는 enterRoom으로 추가하기 
    ---------------------------------------------*/
-  addObject(object: SkillUseMonster) {
-    this.monsterManager.addMonster(object);
+  // addObject(object: Monster) {
+  //   this.monsterManager.addMonster(object);
 
-    const packet = create(B2G_SpawnMonsterNotificationSchema, {
-      posInfo: object.getPos(),
-      prefabId: object.getPrefabId(),
-      maxHp: object.maxHp,
-      roomId: this.id,
-    });
+  //   const packet = create(B2G_SpawnMonsterNotificationSchema, {
+  //     posInfo: object.getPos(),
+  //     prefabId: object.getPrefabId(),
+  //     maxHp: object.maxHp,
+  //     roomId: this.id,
+  //   });
 
-    //console.log("방 아이디는", this.id);
-    //console.log(object.getPrefabId, object.maxHp);
-    const sendBuffer: Buffer = PacketUtils.SerializePacket(
-      packet,
-      B2G_SpawnMonsterNotificationSchema,
-      ePacketId.B2G_SpawnMonsterNotification,
-      0,
-    );
-    this.broadcast(sendBuffer);
-  }
+  //   //console.log("방 아이디는", this.id);
+  //   //console.log(object.getPrefabId, object.maxHp);
+  //   const sendBuffer: Buffer = PacketUtils.SerializePacket(
+  //     packet,
+  //     B2G_SpawnMonsterNotificationSchema,
+  //     ePacketId.B2G_SpawnMonsterNotification,
+  //     0,
+  //   );
+  //   this.broadcast(sendBuffer);
+  // }
 
   /*---------------------------------------------
    [오브젝트 제거]
@@ -319,7 +312,7 @@ export class GameRoom {
 
     if (object instanceof GamePlayer) {
       this.users.delete(uuid);
-    } else if (object instanceof SkillUseMonster) {
+    } else if (object instanceof Monster) {
       this.monsterManager.removeMonster(uuid);
     } else if (object instanceof Tower) {
       this.towers.delete(uuid);
@@ -331,6 +324,7 @@ export class GameRoom {
    ---------------------------------------------*/
   findObject(uuid: string) {
     if (this.users.has(uuid)) return this.users.get(uuid);
+
     if (this.monsterManager.getMonsters().has(uuid))
       return this.monsterManager.getMonsters().get(uuid);
     if (this.towers.has(uuid)) return this.towers.get(uuid);
@@ -433,7 +427,7 @@ export class GameRoom {
     this.wave += 1;
 
     // 강화 계수 증가
-    this.monsterStatusMultiplier += 2;
+    this.monsterStatusMultiplier += 0.1;
     if (this.wave % 10 == 0) {
       this.monsterManager.increaseWave();
       this.scorePerWave += 40;
@@ -557,5 +551,9 @@ export class GameRoom {
 
   getMonsterManager() {
     return this.monsterManager;
+  }
+
+  public getMultiplier(): number {
+    return this.monsterStatusMultiplier;
   }
 }

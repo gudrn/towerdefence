@@ -1,105 +1,93 @@
 import { PosInfo } from 'src/protocol/struct_pb';
-import { GameRoom } from './gameRoom';
+import { GameRoom } from '../../room/gameRoom';
 import { MonsterSpawner } from './monsterSpanwner';
 import { Vec2 } from 'ServerCore/utils/vec2';
-import { Tilemap } from './tilemap';
+import { Tilemap } from '../../room/tilemap';
 import { PQNode } from 'src/utils/interfaces/assetPQnode';
-import { SkillUseMonster } from '../game/skillUseMonster';
 import { create } from '@bufbuild/protobuf';
 import { PacketUtils } from 'ServerCore/utils/packetUtils';
 import { ePacketId } from 'ServerCore/network/packetId';
-import { B2G_MonsterBuffNotificationSchema } from 'src/protocol/monster_pb';
+import { B2G_SpawnMonsterNotificationSchema } from 'src/protocol/monster_pb';
 import { MathUtils } from 'src/utils/mathUtils';
+import { Monster } from './monster';
 
-export class MonsterManager extends MonsterSpawner {
-  private monsters: Map<string, SkillUseMonster>;
+export class MonsterManager {
+  /*---------------------------------------------
+    [멤버 변수]
+  ---------------------------------------------*/
+  private monsters: Map<string, Monster>;
   private tilemap: Tilemap;
-  private attackCoolDownBuffer: boolean = false; // 공격 속도 버프 상태 여부
-  private attackUpBuffer: boolean = false; // 공격력 버프 상태 여부
+  private numBuffMonsters: number = 0;
+  private monsterSpawner: MonsterSpawner;
+  private gameRoom: GameRoom;
 
+  /*---------------------------------------------
+    [생성자]
+  ---------------------------------------------*/
   constructor(gameRoom: GameRoom, tilemap: Tilemap) {
-    super(gameRoom);
-    this.monsters = new Map<string, SkillUseMonster>();
+    this.gameRoom = gameRoom;
+    this.monsterSpawner = new MonsterSpawner(this);
+    this.monsters = new Map<string, Monster>();
     this.tilemap = tilemap;
   }
 
+  /*---------------------------------------------
+    [일반 몬스터 스폰]
+  ---------------------------------------------*/
   public startSpawning() {
-    super.startSpawning();
+    this.monsterSpawner.startSpawning();
   }
+  public spawnEilteMonster() {
 
+  }
+  /*---------------------------------------------
+    [update]
+  ---------------------------------------------*/
   public updateMonsters() {
-
-    if(this.eliteSpawnCount>0&&!this.attackUpBuffer){
-      this.attackUpBuffer = true;
-      for(const monster of this.monsters.values()){
-        monster.buffAttack();
-        const packet = create(B2G_MonsterBuffNotificationSchema, {
-          buffType: 'atkBuff',
-          state: true,
-          roomId: this.gameRoom.id,
-        });
-        const createAttackBuffBuffer = PacketUtils.SerializePacket(
-          packet,
-          B2G_MonsterBuffNotificationSchema,
-          ePacketId.B2G_MonsterBuffNotification,
-          0,
-        );
-        this.gameRoom.broadcast(createAttackBuffBuffer);
-      }
+    for (const [uuid, monster] of this.monsters) {
+      monster.update();
     }
-    else if(this.eliteSpawnCount===0 && this.attackUpBuffer){
-      this.attackUpBuffer = false;
-      for(const monster of this.monsters.values()){
-        monster.removeBuff();
-        const packet = create(B2G_MonsterBuffNotificationSchema, {
-          buffType: 'atkBuff',
-          state: false,
-          roomId: this.gameRoom.id,
-        });
-        const createAttackBuffBuffer = PacketUtils.SerializePacket(
-          packet,
-          B2G_MonsterBuffNotificationSchema,
-          ePacketId.B2G_MonsterBuffNotification,
-          0,
-        );
-        this.gameRoom.broadcast(createAttackBuffBuffer);
-      }
-    }
-    // let packet;
-    // for (const monster of this.monsters.values()) {
-    //   // 공격력 버프
-    //   if (hasRobot5 && !monster.getIsAttackUpBuffed()) {
-    //     monster.buffAttack();
-    //     packet = create(B2G_MonsterBuffNotificationSchema, {
-    //       buffType: 'atkBuff',
-    //       state: true,
-    //       roomId: this.gameRoom.id,
-    //     });
-    //     const createAttackBuffBuffer = PacketUtils.SerializePacket(
-    //       packet,
-    //       B2G_MonsterBuffNotificationSchema,
-    //       ePacketId.B2G_MonsterBuffNotification,
-    //       0,
-    //     );
-    //     this.gameRoom.broadcast(createAttackBuffBuffer);
-    //   } else if (!hasRobot5 && monster.getIsAttackUpBuffed()) {
-        
-    //   }
-    // }
   }
 
-  public addMonster(monster: SkillUseMonster) {
+  /*---------------------------------------------
+    [몬스터 추가]
+  ---------------------------------------------*/
+  public addMonster(monster: Monster) {
     this.monsters.set(monster.getId(), monster);
-    // 몬스터 추가 시 필요한 로직
+    
+    //버프 몬스터 수 갱신
+    if(monster.getPrefabId() == "Robot5") {
+      this.numBuffMonsters += 1;
+    }
+
+    // [TODO] 큐에 담았다가 일정 시간 경과 시 한 패킷으로 보내는 방법으로 구현해보기
+    const packet = create(B2G_SpawnMonsterNotificationSchema, {
+      posInfo: monster.getPos(),
+      prefabId: monster.getPrefabId(),
+      maxHp: monster.maxHp,
+      roomId: this.gameRoom.id,
+    });
+
+    const sendBuffer: Buffer = PacketUtils.SerializePacket(
+      packet,
+      B2G_SpawnMonsterNotificationSchema,
+      ePacketId.B2G_SpawnMonsterNotification,
+      0,
+    );
+    this.gameRoom.broadcast(sendBuffer);
   }
 
+  /*---------------------------------------------
+    [몬스터 제거]
+      - robot5(버프 몬스터)의 생존여부를 확인해야 합니다.
+  ---------------------------------------------*/
   public removeMonster(uuid: string) {
     const monster = this.monsters.get(uuid);
+
     if(monster?.getPrefabId() === 'Robot5'){
-      this.eliteSpawnCount -= 1;
+      this.numBuffMonsters -= 1;
     }
     this.monsters.delete(uuid);
-    // 몬스터 제거 시 필요한 로직
   }
 
   public getMonsterCount() {
@@ -110,13 +98,16 @@ export class MonsterManager extends MonsterSpawner {
     return this.monsters;
   }
 
+  public getGameRoom(){
+    return this.gameRoom;
+  }
   public stopSpawning() {
-    super.stopSpawning();
+    this.monsterSpawner.stopSpawning();
   }
 
   public destroy() {
     this.monsters.clear();
-    super.destroy();
+    this.monsterSpawner.destroy();
   }
 
   public getMonster(uuid: string) {
@@ -247,6 +238,6 @@ export class MonsterManager extends MonsterSpawner {
   }
 
   public increaseWave() {
-    this.updateSpawnRate(MathUtils.clamp(this.spawnRate - 500, 100, this.spawnRate));
+    this.monsterSpawner.increaseWave();
   }
 }

@@ -33,7 +33,6 @@ class AssetManager {
 
     this.towerPrefabIdCaches = new Array<string>();
     this.skillPrefabIdCaches = new Array<string>();
-    //this.normalMoster = new Array<Monster>();
     this.normalMoster = new Array<AssetMonster>();
   }
 

@@ -8,7 +8,7 @@ import { CustomError } from 'ServerCore/utils/error/customError';
 import { PacketUtils } from "ServerCore/utils/packetUtils";
 import { battleConfig } from "src/config/config";
 import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
-import { C2L_InitSchema, G2L_InitSchema } from 'src/protocol/init_pb';
+import { G2L_InitSchema } from 'src/protocol/init_pb';
 import { handleError } from 'src/utils/errorHandler';
 import lobbyHandlerMappings from '../handlerMapping/lobbyServerPacketHandler';
 import { lobbySessionManager } from 'src/server';

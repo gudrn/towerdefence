@@ -198,11 +198,6 @@ message B2L_SocketDisconnectedNotification
     string sessionId = 1;
 }
 
-message B2C_GameEndNotification
-{
-    bool isSuccess = 1;
-}
-
 message B2G_DeleteGameRoomRequest
 {
     int32 roomId = 1;

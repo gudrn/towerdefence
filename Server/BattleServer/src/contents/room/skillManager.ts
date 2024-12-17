@@ -88,7 +88,6 @@ export class SkillManager {
       const attackPacket = create(B2G_MonsterHealthUpdateNotificationSchema, {
         monsterId: monster.getId(),
         hp:monster.hp,
-        maxHp:monster.maxHp,
         roomId:this.gameRoom.id,
       });
     

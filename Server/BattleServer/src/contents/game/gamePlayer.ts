@@ -114,39 +114,6 @@ export class GamePlayer {
     gatewaySession.send(sendBuffer); // 카드 추가 데이터 전송
   }
 
-  //   /**
-  //    * 카드 사용 실패시 다시 추가
-  //    * @param {string} cardPrefabId 카드 prefabId
-  //    */
-  //   reAddCardOnFailure(cardPrefabId) {
-  //     const card = assetManager.getCardDataByPrefabId(cardPrefabId); // 카드 데이터 가져오기
-  //     if (!card) return;
-
-  //     const uuid = uuidv4(); // 새로운 UUID 생성
-  //     this.cardList.set(uuid, card.prefabId); // 카드 목록에 추가
-
-  //     const packet = create(B2C_AddCardSchema, {
-  //       cardId: uuid,
-  //       prefabId: card.prefabId,
-  //     });
-
-  //     const sendBuffer = PacketUtils.SerializePacket(
-  //       packet,
-  //       B2C_AddCardSchema,
-  //       ePacketId.B2C_AddCard,
-  //       this.session.getNextSequence(),
-  //     );
-
-  //     this.session.send(sendBuffer); // 카드 추가 데이터 전송
-  //   }
-
-  /*
-   * 1. 카드 사용시 카드 삭제
-   * 2. 타워 일 경우 tower관련 함수를 통해 타워 설치
-   * 2-1. 실패시 reAddCardOnFailure를 통해 다시 유저에게 보내기
-   * 3. 스킬 카드시 skill관련 함수를 통해 스킬 사용
-   * 3-1. 스킬 사용 실패시, reAddCardOnFailure를 통해 카드 다시 추가
-   */
   /*---------------------------------------------
    [useCard]
    ---------------------------------------------*/

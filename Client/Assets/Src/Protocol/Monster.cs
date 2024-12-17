@@ -36,23 +36,19 @@ namespace Protocol {
             "IlsKJUIyR19Nb25zdGVyUG9zaXRpb25VcGRhdGVOb3RpZmljYXRpb24SIgoH",
             "cG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SDgoGcm9vbUlkGAIg",
             "ASgFIksKJUcyQ19Nb25zdGVyUG9zaXRpb25VcGRhdGVOb3RpZmljYXRpb24S",
-            "IgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8idAoiQjJHX01v",
+            "IgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8iZQoiQjJHX01v",
             "bnN0ZXJBdHRhY2tUb3dlck5vdGlmaWNhdGlvbhIRCgltb25zdGVySWQYASAB",
-            "KAkSEAoIdGFyZ2V0SWQYAiABKAkSCgoCaHAYAyABKAUSDQoFbWF4SHAYBCAB",
-            "KAUSDgoGcm9vbUlkGAUgASgFImQKIkcyQ19Nb25zdGVyQXR0YWNrVG93ZXJO",
-            "b3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJEhAKCHRhcmdldElkGAIg",
-            "ASgJEgoKAmhwGAMgASgFEg0KBW1heEhwGAQgASgFIlwKIUIyR19Nb25zdGVy",
-            "QXR0YWNrQmFzZU5vdGlmaWNhdGlvbhIRCgltb25zdGVySWQYASABKAkSFAoM",
-            "YXR0YWNrRGFtYWdlGAIgASgFEg4KBnJvb21JZBgDIAEoBSJMCiFHMkNfTW9u",
-            "c3RlckF0dGFja0Jhc2VOb3RpZmljYXRpb24SEQoJbW9uc3RlcklkGAEgASgJ",
-            "EhQKDGF0dGFja0RhbWFnZRgCIAEoBSJjCiNCMkdfTW9uc3RlckhlYWx0aFVw",
-            "ZGF0ZU5vdGlmaWNhdGlvbhIRCgltb25zdGVySWQYASABKAkSCgoCaHAYAiAB",
-            "KAUSDQoFbWF4SHAYAyABKAUSDgoGcm9vbUlkGAQgASgFIlMKI0cyQ19Nb25z",
+            "KAkSEAoIdGFyZ2V0SWQYAiABKAkSCgoCaHAYAyABKAUSDgoGcm9vbUlkGAQg",
+            "ASgFIlUKIkcyQ19Nb25zdGVyQXR0YWNrVG93ZXJOb3RpZmljYXRpb24SEQoJ",
+            "bW9uc3RlcklkGAEgASgJEhAKCHRhcmdldElkGAIgASgJEgoKAmhwGAMgASgF",
+            "IlwKIUIyR19Nb25zdGVyQXR0YWNrQmFzZU5vdGlmaWNhdGlvbhIRCgltb25z",
+            "dGVySWQYASABKAkSFAoMYXR0YWNrRGFtYWdlGAIgASgFEg4KBnJvb21JZBgD",
+            "IAEoBSJMCiFHMkNfTW9uc3RlckF0dGFja0Jhc2VOb3RpZmljYXRpb24SEQoJ",
+            "bW9uc3RlcklkGAEgASgJEhQKDGF0dGFja0RhbWFnZRgCIAEoBSJUCiNCMkdf",
+            "TW9uc3RlckhlYWx0aFVwZGF0ZU5vdGlmaWNhdGlvbhIRCgltb25zdGVySWQY",
+            "ASABKAkSCgoCaHAYAiABKAUSDgoGcm9vbUlkGAMgASgFIkQKI0cyQ19Nb25z",
             "dGVySGVhbHRoVXBkYXRlTm90aWZpY2F0aW9uEhEKCW1vbnN0ZXJJZBgBIAEo",
-            "CRIKCgJocBgCIAEoBRINCgVtYXhIcBgDIAEoBSJOChtCMkdfTW9uc3RlckJ1",
-            "ZmZOb3RpZmljYXRpb24SEAoIYnVmZlR5cGUYASABKAkSDQoFc3RhdGUYAiAB",
-            "KAgSDgoGcm9vbUlkGAMgASgFIj4KG0cyQ19Nb25zdGVyQnVmZk5vdGlmaWNh",
-            "dGlvbhIQCghidWZmVHlwZRgBIAEoCRINCgVzdGF0ZRgCIAEoCGIGcHJvdG8z"));
+            "CRIKCgJocBgCIAEoBWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Protocol.StructReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -62,14 +58,12 @@ namespace Protocol {
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.G2C_MonsterDeathNotification), global::Protocol.G2C_MonsterDeathNotification.Parser, new[]{ "MonsterId", "Score" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2G_MonsterPositionUpdateNotification), global::Protocol.B2G_MonsterPositionUpdateNotification.Parser, new[]{ "PosInfo", "RoomId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.G2C_MonsterPositionUpdateNotification), global::Protocol.G2C_MonsterPositionUpdateNotification.Parser, new[]{ "PosInfo" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2G_MonsterAttackTowerNotification), global::Protocol.B2G_MonsterAttackTowerNotification.Parser, new[]{ "MonsterId", "TargetId", "Hp", "MaxHp", "RoomId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.G2C_MonsterAttackTowerNotification), global::Protocol.G2C_MonsterAttackTowerNotification.Parser, new[]{ "MonsterId", "TargetId", "Hp", "MaxHp" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2G_MonsterAttackTowerNotification), global::Protocol.B2G_MonsterAttackTowerNotification.Parser, new[]{ "MonsterId", "TargetId", "Hp", "RoomId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.G2C_MonsterAttackTowerNotification), global::Protocol.G2C_MonsterAttackTowerNotification.Parser, new[]{ "MonsterId", "TargetId", "Hp" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2G_MonsterAttackBaseNotification), global::Protocol.B2G_MonsterAttackBaseNotification.Parser, new[]{ "MonsterId", "AttackDamage", "RoomId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.G2C_MonsterAttackBaseNotification), global::Protocol.G2C_MonsterAttackBaseNotification.Parser, new[]{ "MonsterId", "AttackDamage" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2G_MonsterHealthUpdateNotification), global::Protocol.B2G_MonsterHealthUpdateNotification.Parser, new[]{ "MonsterId", "Hp", "MaxHp", "RoomId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.G2C_MonsterHealthUpdateNotification), global::Protocol.G2C_MonsterHealthUpdateNotification.Parser, new[]{ "MonsterId", "Hp", "MaxHp" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2G_MonsterBuffNotification), global::Protocol.B2G_MonsterBuffNotification.Parser, new[]{ "BuffType", "State", "RoomId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.G2C_MonsterBuffNotification), global::Protocol.G2C_MonsterBuffNotification.Parser, new[]{ "BuffType", "State" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2G_MonsterHealthUpdateNotification), global::Protocol.B2G_MonsterHealthUpdateNotification.Parser, new[]{ "MonsterId", "Hp", "RoomId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.G2C_MonsterHealthUpdateNotification), global::Protocol.G2C_MonsterHealthUpdateNotification.Parser, new[]{ "MonsterId", "Hp" }, null, null, null, null)
           }));
     }
     #endregion
@@ -1634,7 +1628,6 @@ namespace Protocol {
       monsterId_ = other.monsterId_;
       targetId_ = other.targetId_;
       hp_ = other.hp_;
-      maxHp_ = other.maxHp_;
       roomId_ = other.roomId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -1681,20 +1674,8 @@ namespace Protocol {
       }
     }
 
-    /// <summary>Field number for the "maxHp" field.</summary>
-    public const int MaxHpFieldNumber = 4;
-    private int maxHp_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int MaxHp {
-      get { return maxHp_; }
-      set {
-        maxHp_ = value;
-      }
-    }
-
     /// <summary>Field number for the "roomId" field.</summary>
-    public const int RoomIdFieldNumber = 5;
+    public const int RoomIdFieldNumber = 4;
     private int roomId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1723,7 +1704,6 @@ namespace Protocol {
       if (MonsterId != other.MonsterId) return false;
       if (TargetId != other.TargetId) return false;
       if (Hp != other.Hp) return false;
-      if (MaxHp != other.MaxHp) return false;
       if (RoomId != other.RoomId) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -1735,7 +1715,6 @@ namespace Protocol {
       if (MonsterId.Length != 0) hash ^= MonsterId.GetHashCode();
       if (TargetId.Length != 0) hash ^= TargetId.GetHashCode();
       if (Hp != 0) hash ^= Hp.GetHashCode();
-      if (MaxHp != 0) hash ^= MaxHp.GetHashCode();
       if (RoomId != 0) hash ^= RoomId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -1767,12 +1746,8 @@ namespace Protocol {
         output.WriteRawTag(24);
         output.WriteInt32(Hp);
       }
-      if (MaxHp != 0) {
-        output.WriteRawTag(32);
-        output.WriteInt32(MaxHp);
-      }
       if (RoomId != 0) {
-        output.WriteRawTag(40);
+        output.WriteRawTag(32);
         output.WriteInt32(RoomId);
       }
       if (_unknownFields != null) {
@@ -1797,12 +1772,8 @@ namespace Protocol {
         output.WriteRawTag(24);
         output.WriteInt32(Hp);
       }
-      if (MaxHp != 0) {
-        output.WriteRawTag(32);
-        output.WriteInt32(MaxHp);
-      }
       if (RoomId != 0) {
-        output.WriteRawTag(40);
+        output.WriteRawTag(32);
         output.WriteInt32(RoomId);
       }
       if (_unknownFields != null) {
@@ -1823,9 +1794,6 @@ namespace Protocol {
       }
       if (Hp != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Hp);
-      }
-      if (MaxHp != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MaxHp);
       }
       if (RoomId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(RoomId);
@@ -1850,9 +1818,6 @@ namespace Protocol {
       }
       if (other.Hp != 0) {
         Hp = other.Hp;
-      }
-      if (other.MaxHp != 0) {
-        MaxHp = other.MaxHp;
       }
       if (other.RoomId != 0) {
         RoomId = other.RoomId;
@@ -1885,10 +1850,6 @@ namespace Protocol {
             break;
           }
           case 32: {
-            MaxHp = input.ReadInt32();
-            break;
-          }
-          case 40: {
             RoomId = input.ReadInt32();
             break;
           }
@@ -1920,10 +1881,6 @@ namespace Protocol {
             break;
           }
           case 32: {
-            MaxHp = input.ReadInt32();
-            break;
-          }
-          case 40: {
             RoomId = input.ReadInt32();
             break;
           }
@@ -1974,7 +1931,6 @@ namespace Protocol {
       monsterId_ = other.monsterId_;
       targetId_ = other.targetId_;
       hp_ = other.hp_;
-      maxHp_ = other.maxHp_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2020,18 +1976,6 @@ namespace Protocol {
       }
     }
 
-    /// <summary>Field number for the "maxHp" field.</summary>
-    public const int MaxHpFieldNumber = 4;
-    private int maxHp_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int MaxHp {
-      get { return maxHp_; }
-      set {
-        maxHp_ = value;
-      }
-    }
-
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -2050,7 +1994,6 @@ namespace Protocol {
       if (MonsterId != other.MonsterId) return false;
       if (TargetId != other.TargetId) return false;
       if (Hp != other.Hp) return false;
-      if (MaxHp != other.MaxHp) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -2061,7 +2004,6 @@ namespace Protocol {
       if (MonsterId.Length != 0) hash ^= MonsterId.GetHashCode();
       if (TargetId.Length != 0) hash ^= TargetId.GetHashCode();
       if (Hp != 0) hash ^= Hp.GetHashCode();
-      if (MaxHp != 0) hash ^= MaxHp.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2092,10 +2034,6 @@ namespace Protocol {
         output.WriteRawTag(24);
         output.WriteInt32(Hp);
       }
-      if (MaxHp != 0) {
-        output.WriteRawTag(32);
-        output.WriteInt32(MaxHp);
-      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2118,10 +2056,6 @@ namespace Protocol {
         output.WriteRawTag(24);
         output.WriteInt32(Hp);
       }
-      if (MaxHp != 0) {
-        output.WriteRawTag(32);
-        output.WriteInt32(MaxHp);
-      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -2140,9 +2074,6 @@ namespace Protocol {
       }
       if (Hp != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Hp);
-      }
-      if (MaxHp != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MaxHp);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2164,9 +2095,6 @@ namespace Protocol {
       }
       if (other.Hp != 0) {
         Hp = other.Hp;
-      }
-      if (other.MaxHp != 0) {
-        MaxHp = other.MaxHp;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -2195,10 +2123,6 @@ namespace Protocol {
             Hp = input.ReadInt32();
             break;
           }
-          case 32: {
-            MaxHp = input.ReadInt32();
-            break;
-          }
         }
       }
     #endif
@@ -2224,10 +2148,6 @@ namespace Protocol {
           }
           case 24: {
             Hp = input.ReadInt32();
-            break;
-          }
-          case 32: {
-            MaxHp = input.ReadInt32();
             break;
           }
         }
@@ -2771,7 +2691,6 @@ namespace Protocol {
     public B2G_MonsterHealthUpdateNotification(B2G_MonsterHealthUpdateNotification other) : this() {
       monsterId_ = other.monsterId_;
       hp_ = other.hp_;
-      maxHp_ = other.maxHp_;
       roomId_ = other.roomId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -2806,20 +2725,8 @@ namespace Protocol {
       }
     }
 
-    /// <summary>Field number for the "maxHp" field.</summary>
-    public const int MaxHpFieldNumber = 3;
-    private int maxHp_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int MaxHp {
-      get { return maxHp_; }
-      set {
-        maxHp_ = value;
-      }
-    }
-
     /// <summary>Field number for the "roomId" field.</summary>
-    public const int RoomIdFieldNumber = 4;
+    public const int RoomIdFieldNumber = 3;
     private int roomId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -2847,7 +2754,6 @@ namespace Protocol {
       }
       if (MonsterId != other.MonsterId) return false;
       if (Hp != other.Hp) return false;
-      if (MaxHp != other.MaxHp) return false;
       if (RoomId != other.RoomId) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -2858,7 +2764,6 @@ namespace Protocol {
       int hash = 1;
       if (MonsterId.Length != 0) hash ^= MonsterId.GetHashCode();
       if (Hp != 0) hash ^= Hp.GetHashCode();
-      if (MaxHp != 0) hash ^= MaxHp.GetHashCode();
       if (RoomId != 0) hash ^= RoomId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -2886,12 +2791,8 @@ namespace Protocol {
         output.WriteRawTag(16);
         output.WriteInt32(Hp);
       }
-      if (MaxHp != 0) {
-        output.WriteRawTag(24);
-        output.WriteInt32(MaxHp);
-      }
       if (RoomId != 0) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(24);
         output.WriteInt32(RoomId);
       }
       if (_unknownFields != null) {
@@ -2912,12 +2813,8 @@ namespace Protocol {
         output.WriteRawTag(16);
         output.WriteInt32(Hp);
       }
-      if (MaxHp != 0) {
-        output.WriteRawTag(24);
-        output.WriteInt32(MaxHp);
-      }
       if (RoomId != 0) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(24);
         output.WriteInt32(RoomId);
       }
       if (_unknownFields != null) {
@@ -2935,9 +2832,6 @@ namespace Protocol {
       }
       if (Hp != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Hp);
-      }
-      if (MaxHp != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MaxHp);
       }
       if (RoomId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(RoomId);
@@ -2959,9 +2853,6 @@ namespace Protocol {
       }
       if (other.Hp != 0) {
         Hp = other.Hp;
-      }
-      if (other.MaxHp != 0) {
-        MaxHp = other.MaxHp;
       }
       if (other.RoomId != 0) {
         RoomId = other.RoomId;
@@ -2990,10 +2881,6 @@ namespace Protocol {
             break;
           }
           case 24: {
-            MaxHp = input.ReadInt32();
-            break;
-          }
-          case 32: {
             RoomId = input.ReadInt32();
             break;
           }
@@ -3021,10 +2908,6 @@ namespace Protocol {
             break;
           }
           case 24: {
-            MaxHp = input.ReadInt32();
-            break;
-          }
-          case 32: {
             RoomId = input.ReadInt32();
             break;
           }
@@ -3074,7 +2957,6 @@ namespace Protocol {
     public G2C_MonsterHealthUpdateNotification(G2C_MonsterHealthUpdateNotification other) : this() {
       monsterId_ = other.monsterId_;
       hp_ = other.hp_;
-      maxHp_ = other.maxHp_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -3108,18 +2990,6 @@ namespace Protocol {
       }
     }
 
-    /// <summary>Field number for the "maxHp" field.</summary>
-    public const int MaxHpFieldNumber = 3;
-    private int maxHp_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int MaxHp {
-      get { return maxHp_; }
-      set {
-        maxHp_ = value;
-      }
-    }
-
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -3137,7 +3007,6 @@ namespace Protocol {
       }
       if (MonsterId != other.MonsterId) return false;
       if (Hp != other.Hp) return false;
-      if (MaxHp != other.MaxHp) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -3147,7 +3016,6 @@ namespace Protocol {
       int hash = 1;
       if (MonsterId.Length != 0) hash ^= MonsterId.GetHashCode();
       if (Hp != 0) hash ^= Hp.GetHashCode();
-      if (MaxHp != 0) hash ^= MaxHp.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -3174,10 +3042,6 @@ namespace Protocol {
         output.WriteRawTag(16);
         output.WriteInt32(Hp);
       }
-      if (MaxHp != 0) {
-        output.WriteRawTag(24);
-        output.WriteInt32(MaxHp);
-      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -3196,10 +3060,6 @@ namespace Protocol {
         output.WriteRawTag(16);
         output.WriteInt32(Hp);
       }
-      if (MaxHp != 0) {
-        output.WriteRawTag(24);
-        output.WriteInt32(MaxHp);
-      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -3215,9 +3075,6 @@ namespace Protocol {
       }
       if (Hp != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Hp);
-      }
-      if (MaxHp != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MaxHp);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -3237,9 +3094,6 @@ namespace Protocol {
       if (other.Hp != 0) {
         Hp = other.Hp;
       }
-      if (other.MaxHp != 0) {
-        MaxHp = other.MaxHp;
-      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -3263,10 +3117,6 @@ namespace Protocol {
             Hp = input.ReadInt32();
             break;
           }
-          case 24: {
-            MaxHp = input.ReadInt32();
-            break;
-          }
         }
       }
     #endif
@@ -3288,505 +3138,6 @@ namespace Protocol {
           }
           case 16: {
             Hp = input.ReadInt32();
-            break;
-          }
-          case 24: {
-            MaxHp = input.ReadInt32();
-            break;
-          }
-        }
-      }
-    }
-    #endif
-
-  }
-
-  /// <summary>
-  /// 몬스터 버프 상태 알림
-  /// </summary>
-  public sealed partial class B2G_MonsterBuffNotification : pb::IMessage<B2G_MonsterBuffNotification>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
-    private static readonly pb::MessageParser<B2G_MonsterBuffNotification> _parser = new pb::MessageParser<B2G_MonsterBuffNotification>(() => new B2G_MonsterBuffNotification());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<B2G_MonsterBuffNotification> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.MonsterReflection.Descriptor.MessageTypes[12]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public B2G_MonsterBuffNotification() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public B2G_MonsterBuffNotification(B2G_MonsterBuffNotification other) : this() {
-      buffType_ = other.buffType_;
-      state_ = other.state_;
-      roomId_ = other.roomId_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public B2G_MonsterBuffNotification Clone() {
-      return new B2G_MonsterBuffNotification(this);
-    }
-
-    /// <summary>Field number for the "buffType" field.</summary>
-    public const int BuffTypeFieldNumber = 1;
-    private string buffType_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string BuffType {
-      get { return buffType_; }
-      set {
-        buffType_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "state" field.</summary>
-    public const int StateFieldNumber = 2;
-    private bool state_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool State {
-      get { return state_; }
-      set {
-        state_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "roomId" field.</summary>
-    public const int RoomIdFieldNumber = 3;
-    private int roomId_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int RoomId {
-      get { return roomId_; }
-      set {
-        roomId_ = value;
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
-      return Equals(other as B2G_MonsterBuffNotification);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(B2G_MonsterBuffNotification other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (BuffType != other.BuffType) return false;
-      if (State != other.State) return false;
-      if (RoomId != other.RoomId) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (BuffType.Length != 0) hash ^= BuffType.GetHashCode();
-      if (State != false) hash ^= State.GetHashCode();
-      if (RoomId != 0) hash ^= RoomId.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
-      if (BuffType.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(BuffType);
-      }
-      if (State != false) {
-        output.WriteRawTag(16);
-        output.WriteBool(State);
-      }
-      if (RoomId != 0) {
-        output.WriteRawTag(24);
-        output.WriteInt32(RoomId);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (BuffType.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(BuffType);
-      }
-      if (State != false) {
-        output.WriteRawTag(16);
-        output.WriteBool(State);
-      }
-      if (RoomId != 0) {
-        output.WriteRawTag(24);
-        output.WriteInt32(RoomId);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
-      int size = 0;
-      if (BuffType.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(BuffType);
-      }
-      if (State != false) {
-        size += 1 + 1;
-      }
-      if (RoomId != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(RoomId);
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(B2G_MonsterBuffNotification other) {
-      if (other == null) {
-        return;
-      }
-      if (other.BuffType.Length != 0) {
-        BuffType = other.BuffType;
-      }
-      if (other.State != false) {
-        State = other.State;
-      }
-      if (other.RoomId != 0) {
-        RoomId = other.RoomId;
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10: {
-            BuffType = input.ReadString();
-            break;
-          }
-          case 16: {
-            State = input.ReadBool();
-            break;
-          }
-          case 24: {
-            RoomId = input.ReadInt32();
-            break;
-          }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            BuffType = input.ReadString();
-            break;
-          }
-          case 16: {
-            State = input.ReadBool();
-            break;
-          }
-          case 24: {
-            RoomId = input.ReadInt32();
-            break;
-          }
-        }
-      }
-    }
-    #endif
-
-  }
-
-  /// <summary>
-  /// 몬스터 버프 상태 알림
-  /// </summary>
-  public sealed partial class G2C_MonsterBuffNotification : pb::IMessage<G2C_MonsterBuffNotification>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
-    private static readonly pb::MessageParser<G2C_MonsterBuffNotification> _parser = new pb::MessageParser<G2C_MonsterBuffNotification>(() => new G2C_MonsterBuffNotification());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<G2C_MonsterBuffNotification> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.MonsterReflection.Descriptor.MessageTypes[13]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public G2C_MonsterBuffNotification() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public G2C_MonsterBuffNotification(G2C_MonsterBuffNotification other) : this() {
-      buffType_ = other.buffType_;
-      state_ = other.state_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public G2C_MonsterBuffNotification Clone() {
-      return new G2C_MonsterBuffNotification(this);
-    }
-
-    /// <summary>Field number for the "buffType" field.</summary>
-    public const int BuffTypeFieldNumber = 1;
-    private string buffType_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string BuffType {
-      get { return buffType_; }
-      set {
-        buffType_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "state" field.</summary>
-    public const int StateFieldNumber = 2;
-    private bool state_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool State {
-      get { return state_; }
-      set {
-        state_ = value;
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
-      return Equals(other as G2C_MonsterBuffNotification);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(G2C_MonsterBuffNotification other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (BuffType != other.BuffType) return false;
-      if (State != other.State) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (BuffType.Length != 0) hash ^= BuffType.GetHashCode();
-      if (State != false) hash ^= State.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
-      if (BuffType.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(BuffType);
-      }
-      if (State != false) {
-        output.WriteRawTag(16);
-        output.WriteBool(State);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (BuffType.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(BuffType);
-      }
-      if (State != false) {
-        output.WriteRawTag(16);
-        output.WriteBool(State);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
-      int size = 0;
-      if (BuffType.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(BuffType);
-      }
-      if (State != false) {
-        size += 1 + 1;
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(G2C_MonsterBuffNotification other) {
-      if (other == null) {
-        return;
-      }
-      if (other.BuffType.Length != 0) {
-        BuffType = other.BuffType;
-      }
-      if (other.State != false) {
-        State = other.State;
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10: {
-            BuffType = input.ReadString();
-            break;
-          }
-          case 16: {
-            State = input.ReadBool();
-            break;
-          }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            BuffType = input.ReadString();
-            break;
-          }
-          case 16: {
-            State = input.ReadBool();
             break;
           }
         }

@@ -13,7 +13,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file character.proto.
  */
 export const file_character: GenFile = /*@__PURE__*/
-  fileDesc("Cg9jaGFyYWN0ZXIucHJvdG8SCFByb3RvY29sIncKH0MyR19QbGF5ZXJQb3NpdGlvblVwZGF0ZVJlcXVlc3QSIgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SEQoJcGFyYW1ldGVyGAIgASgJEg0KBXN0YXRlGAMgASgIEg4KBnJvb21JZBgEIAEoBSJ3Ch9HMkJfUGxheWVyUG9zaXRpb25VcGRhdGVSZXF1ZXN0EiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhEKCXBhcmFtZXRlchgCIAEoCRINCgVzdGF0ZRgDIAEoCBIOCgZyb29tSWQYBCABKAUifAokQjJHX1BsYXllclBvc2l0aW9uVXBkYXRlTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhEKCXBhcmFtZXRlchgCIAEoCRINCgVzdGF0ZRgDIAEoCBIOCgZyb29tSWQYBCABKAUibAokRzJDX1BsYXllclBvc2l0aW9uVXBkYXRlTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhEKCXBhcmFtZXRlchgCIAEoCRINCgVzdGF0ZRgDIAEoCCI0ChJDMkJfVXNlQ2FyZFJlcXVlc3QSDgoGcm9vbUlkGAEgASgFEg4KBmNhcmRJZBgCIAEoCSJkChtDMkdfUGxheWVyVXNlQWJpbGl0eVJlcXVlc3QSIwoIcG9zaXRpb24YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhAKCHByZWZhYklkGAIgASgJEg4KBnJvb21JZBgDIAEoBSJkChtHMkJfUGxheWVyVXNlQWJpbGl0eVJlcXVlc3QSIwoIcG9zaXRpb24YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhAKCHByZWZhYklkGAIgASgJEg4KBnJvb21JZBgDIAEoBSJ6CiBCMkdfUGxheWVyVXNlQWJpbGl0eU5vdGlmaWNhdGlvbhIjCghwb3NpdGlvbhgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SEAoIcHJlZmFiSWQYAiABKAkSDwoHbWVzc2FnZRgDIAEoCRIOCgZyb29tSWQYBCABKAUiagogRzJDX1BsYXllclVzZUFiaWxpdHlOb3RpZmljYXRpb24SIwoIcG9zaXRpb24YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhAKCHByZWZhYklkGAIgASgJEg8KB21lc3NhZ2UYAyABKAliBnByb3RvMw", [file_struct, file_enum]);
+  fileDesc("Cg9jaGFyYWN0ZXIucHJvdG8SCFByb3RvY29sIncKH0MyR19QbGF5ZXJQb3NpdGlvblVwZGF0ZVJlcXVlc3QSIgoHcG9zSW5mbxgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SEQoJcGFyYW1ldGVyGAIgASgJEg0KBXN0YXRlGAMgASgIEg4KBnJvb21JZBgEIAEoBSJ3Ch9HMkJfUGxheWVyUG9zaXRpb25VcGRhdGVSZXF1ZXN0EiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhEKCXBhcmFtZXRlchgCIAEoCRINCgVzdGF0ZRgDIAEoCBIOCgZyb29tSWQYBCABKAUifAokQjJHX1BsYXllclBvc2l0aW9uVXBkYXRlTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhEKCXBhcmFtZXRlchgCIAEoCRINCgVzdGF0ZRgDIAEoCBIOCgZyb29tSWQYBCABKAUibAokRzJDX1BsYXllclBvc2l0aW9uVXBkYXRlTm90aWZpY2F0aW9uEiIKB3Bvc0luZm8YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhEKCXBhcmFtZXRlchgCIAEoCRINCgVzdGF0ZRgDIAEoCCJkChtDMkdfUGxheWVyVXNlQWJpbGl0eVJlcXVlc3QSIwoIcG9zaXRpb24YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhAKCHByZWZhYklkGAIgASgJEg4KBnJvb21JZBgDIAEoBSJkChtHMkJfUGxheWVyVXNlQWJpbGl0eVJlcXVlc3QSIwoIcG9zaXRpb24YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhAKCHByZWZhYklkGAIgASgJEg4KBnJvb21JZBgDIAEoBSJ6CiBCMkdfUGxheWVyVXNlQWJpbGl0eU5vdGlmaWNhdGlvbhIjCghwb3NpdGlvbhgBIAEoCzIRLlByb3RvY29sLlBvc0luZm8SEAoIcHJlZmFiSWQYAiABKAkSDwoHbWVzc2FnZRgDIAEoCRIOCgZyb29tSWQYBCABKAUiagogRzJDX1BsYXllclVzZUFiaWxpdHlOb3RpZmljYXRpb24SIwoIcG9zaXRpb24YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZvEhAKCHByZWZhYklkGAIgASgJEg8KB21lc3NhZ2UYAyABKAliBnByb3RvMw", [file_struct, file_enum]);
 
 /**
  * 캐릭터 위치 동기화
@@ -145,30 +145,6 @@ export const G2C_PlayerPositionUpdateNotificationSchema: GenMessage<G2C_PlayerPo
   messageDesc(file_character, 3);
 
 /**
- * 카드 사용
- *
- * @generated from message Protocol.C2B_UseCardRequest
- */
-export type C2B_UseCardRequest = Message<"Protocol.C2B_UseCardRequest"> & {
-  /**
-   * @generated from field: int32 roomId = 1;
-   */
-  roomId: number;
-
-  /**
-   * @generated from field: string cardId = 2;
-   */
-  cardId: string;
-};
-
-/**
- * Describes the message Protocol.C2B_UseCardRequest.
- * Use `create(C2B_UseCardRequestSchema)` to create a new message.
- */
-export const C2B_UseCardRequestSchema: GenMessage<C2B_UseCardRequest> = /*@__PURE__*/
-  messageDesc(file_character, 4);
-
-/**
  * GamePlayerData에서 nickname이 불필요해 제거했습니다 - 조정현
  * 이유: 네트워크 부하 감소
  *
@@ -196,7 +172,7 @@ export type C2G_PlayerUseAbilityRequest = Message<"Protocol.C2G_PlayerUseAbility
  * Use `create(C2G_PlayerUseAbilityRequestSchema)` to create a new message.
  */
 export const C2G_PlayerUseAbilityRequestSchema: GenMessage<C2G_PlayerUseAbilityRequest> = /*@__PURE__*/
-  messageDesc(file_character, 5);
+  messageDesc(file_character, 4);
 
 /**
  * @generated from message Protocol.G2B_PlayerUseAbilityRequest
@@ -223,7 +199,7 @@ export type G2B_PlayerUseAbilityRequest = Message<"Protocol.G2B_PlayerUseAbility
  * Use `create(G2B_PlayerUseAbilityRequestSchema)` to create a new message.
  */
 export const G2B_PlayerUseAbilityRequestSchema: GenMessage<G2B_PlayerUseAbilityRequest> = /*@__PURE__*/
-  messageDesc(file_character, 6);
+  messageDesc(file_character, 5);
 
 /**
  * 
@@ -257,7 +233,7 @@ export type B2G_PlayerUseAbilityNotification = Message<"Protocol.B2G_PlayerUseAb
  * Use `create(B2G_PlayerUseAbilityNotificationSchema)` to create a new message.
  */
 export const B2G_PlayerUseAbilityNotificationSchema: GenMessage<B2G_PlayerUseAbilityNotification> = /*@__PURE__*/
-  messageDesc(file_character, 7);
+  messageDesc(file_character, 6);
 
 /**
  * @generated from message Protocol.G2C_PlayerUseAbilityNotification
@@ -284,5 +260,5 @@ export type G2C_PlayerUseAbilityNotification = Message<"Protocol.G2C_PlayerUseAb
  * Use `create(G2C_PlayerUseAbilityNotificationSchema)` to create a new message.
  */
 export const G2C_PlayerUseAbilityNotificationSchema: GenMessage<G2C_PlayerUseAbilityNotification> = /*@__PURE__*/
-  messageDesc(file_character, 8);
+  messageDesc(file_character, 7);
 

@@ -1,7 +1,6 @@
 import { GameRoom } from '../../room/gameRoom';
 import { GamePlayer } from '../gamePlayer';
-import { Monster } from '../monster';
-import { Tower } from '../tower';
+import { Tower } from '../towers/tower';
 import { BattleSession } from 'src/main/session/battleSession';
 import { assetManager } from 'src/utils/assetManager';
 import { CustomError } from 'ServerCore/utils/error/customError';
@@ -14,6 +13,7 @@ import {
 import { create } from '@bufbuild/protobuf';
 import { PacketUtils } from 'ServerCore/utils/packetUtils';
 import { ePacketId } from 'ServerCore/network/packetId';
+import { Monster } from '../monsters/monster';
 /**
  * 캐릭터 클래스입니다.
  */
@@ -132,7 +132,7 @@ export abstract class Character {
    * @param range 버프 적용 범위
    * @returns 범위 내 타워 목록
    */
-  protected getMonstersInRange(room: GameRoom, player: GamePlayer, range: number): Monster[] {
+  protected getMonstersInRange(room: GameRoom, player: GamePlayer, range: number){
     const monsters = Array.from(room.getMonsters().values()); // 모든 타워 가져오기
     //console.log(monsters);
     const playerPos = player.playerData.position; // 플레이어의 위치 가져오기 (캐릭터 기준)

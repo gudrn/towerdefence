@@ -60,8 +60,6 @@ export enum ePacketId {
   G2C_MonsterDeathNotification = 210,
   B2G_MonsterHealthUpdateNotification = 211,
   G2C_MonsterHealthUpdateNotification = 212,
-  B2G_MonsterBuffNotification = 213,
-  G2C_MonsterBuffNotification = 214,
   B2G_IncreaseWaveNotification = 215,
   G2C_IncreaseWaveNotification = 216,
   C2G_TowerBuildRequest = 301,
@@ -97,5 +95,4 @@ export enum ePacketId {
   B2G_AddCard = 509,
   G2C_AddCard = 510,
   //B2L_SocketDisconnectedNotification = 508,
-  //B2C_GameEndNotification = 509,
 }

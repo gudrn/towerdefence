@@ -30,7 +30,6 @@ class GameRoomManager {
 
   /*---------------------------------------------
     [방 입장]
-    -클라에게 B2C_EnterRoom패킷 전송
 ---------------------------------------------*/
   public enterRoomHandler(buffer: Buffer, session: BattleSession) {
     console.log('enterRoomHandler 호출됨');
