@@ -43,7 +43,6 @@ export class GamePlayer {
     [initCard]
 ---------------------------------------------*/
   initCard() {
-    console.log("이닛카드");
     if (this.isInitCard) return;
     this.isInitCard = true;
     // 포탑 카드를 무조건 하나 추가
@@ -152,10 +151,18 @@ export class GamePlayer {
    [useCard]
    ---------------------------------------------*/
 
-  useCard(cardId: string, roomId: number) {
+  useCard(cardId: string, roomId: number, isTowerCard: boolean = false) {
     const card = this.cardList.get(cardId); // 카드 목록에서 카드 가져오기
     if (!card) return;
     this.cardList.delete(cardId); // 카드 목록에서 카드 삭제
+
+    //타워 카드면 패킷을 전송하지 않음
+    //좋은 방법은 아닌데 그냥...
+    //처음부터 아싸리 타워 설치도 이렇게 보내면 되는데 너무 늦어버림...
+    if(isTowerCard){
+      return;
+    }
+
     const responsePacket = create(B2G_UseSkillNotificationSchema, {
       roomId: roomId,
       ownerId: this.playerData.position?.uuid,

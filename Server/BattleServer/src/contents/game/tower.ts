@@ -28,7 +28,7 @@ public maxHp: number = 0; // 최대 체력
 private bulletSpeed = 0; // 투사체 속도
 public target: null | undefined; // 현재 타겟
 public lastAttackTime: number = 0; // 마지막 공격 시간
-private isBuffed: boolean = false; // 버프 유무무
+private isBuffed: boolean = false; // 버프 유무
 
 // 특수 능력치들
 private buffAmount: number = 0; // 버프 타워의 공격력 증가량
@@ -146,34 +146,16 @@ private explosionRadius: number = 0; // 미사일 타워의 폭발 범위
           0,
         );
         this.room.broadcast(attackBuffer);
-
-        // 3. 몬스터 사망 처리
-        if (target.hp < 0) {
-          const monsterScore = target.score;
-
-          // 점수를 GameRoom에 추가
-          this.room.addScore(monsterScore);
-          const mopnsterDeathPacket = create(B2G_MonsterDeathNotificationSchema, {
-            monsterId: target.getId(),
-            score: target.score,
-            roomId: this.room.id,
-          });
-
-          const monsterDeathBuffer = PacketUtils.SerializePacket(
-            mopnsterDeathPacket,
-            B2G_MonsterDeathNotificationSchema,
-            ePacketId.B2G_MonsterDeathNotification,
-            0, //수정 부분
-          );
-
-          this.room.broadcast(monsterDeathBuffer);
-        }
       }, travelTime); // 총알 이동 시간 이후 실행
     }
 
   /**
    * 타워 타입별 공격 처리
    * @param target 타겟 몬스터
+   * 
+   [TODO] 
+      - tower를 추상 클래스로 만들기기
+      - processAttack을 가상함수로 만들기
    */
   private processAttack(target: SkillUseMonster) {
     switch (this.getPrefabId()) {
@@ -386,28 +368,6 @@ private explosionRadius: number = 0; // 미사일 타워의 폭발 범위
           0,
         );
         this.room.broadcast(splashDamageAttackBuffer);
-
-        // 주 타겟이 아닌 몬스터도 죽음 처리
-        if (target.hp < 0) {
-          const monsterScore = target.score;
-
-          // 점수를 GameRoom에 추가
-          this.room.addScore(monsterScore);
-          const mopnsterDeathPacket = create(B2G_MonsterDeathNotificationSchema, {
-            monsterId: target.getId(),
-            score: target.score,
-            roomId: this.room.id,
-          });
-
-          const monsterDeathBuffer = PacketUtils.SerializePacket(
-            mopnsterDeathPacket,
-            B2G_MonsterDeathNotificationSchema,
-            ePacketId.B2G_MonsterDeathNotification,
-            0, //수정 부분
-          );
-
-          this.room.broadcast(monsterDeathBuffer);
-        }
       }
     }
   }
@@ -486,3 +446,12 @@ private explosionRadius: number = 0; // 미사일 타워의 폭발 범위
     }
   }
 }
+
+
+//[TODO]
+//길찾기 수정하기
+//
+//
+//브로셔 작성 1명
+//클라 수정 1명
+//서버 2명

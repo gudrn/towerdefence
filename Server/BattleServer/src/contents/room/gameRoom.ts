@@ -191,8 +191,6 @@ export class GameRoom {
     }
 
     const arr = Array.from(usedPositions.values());
-    console.log(arr);
-    console.log(arr.length);
     return arr;
   }
 
@@ -342,8 +340,10 @@ export class GameRoom {
   // 타워 생성 동기화
   handleTowerBuild(packet: G2B_TowerBuildRequest, session: BattleSession) {
     const { tower, ownerId, cardId } = packet;
-    const user = this.users.get(session.getId());
-    //user?.useCard(cardId); 나중에 카드까지 동기화 후 사용할 코드임 삭제 하지마십시오.
+    const user = this.users.get(ownerId);
+    if(user == undefined) {
+      throw new CustomError(ErrorCodes.INVALID_PACKET, "유저를 찾지 못했습니다.");
+    }
 
     //1. 타워 데이터 존재 확인
     if (packet.tower == undefined) {
@@ -360,6 +360,8 @@ export class GameRoom {
       console.log('[handleTowerBuild] towerPos가 유효하지 않습니다.');
       throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 towerPos');
     }
+
+    user.useCard(cardId,this.id, true);
 
     const towerPosInfo = create(PosInfoSchema, {
       uuid: uuidv4(),
@@ -451,7 +453,7 @@ export class GameRoom {
     this.broadcast(sendBuffer);
 
     if (this.wave % 5 === 0 && this.wave !== 1) {
-      this.monsterManager.startSpawningElite();
+      this.monsterManager.spawnEilteMonster();
     }
   }
 

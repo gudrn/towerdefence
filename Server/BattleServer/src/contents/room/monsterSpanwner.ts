@@ -4,6 +4,9 @@ import { PosInfoSchema } from 'src/protocol/struct_pb';
 import { v4 as uuidv4 } from 'uuid';
 import { GameRoom } from './gameRoom';
 import { SkillUseMonster } from '../game/skillUseMonster';
+import { B2G_MonsterBuffNotificationSchema } from 'src/protocol/monster_pb';
+import { PacketUtils } from 'ServerCore/utils/packetUtils';
+import { ePacketId } from 'ServerCore/network/packetId';
 
 /**
  * 몬스터 스포너 클래스
@@ -18,6 +21,7 @@ export class MonsterSpawner {
   private spawnedMonster: number = 0;
   protected spawnRate: number = 4000; //몬스터 생성 간격
   private spawnTimer: NodeJS.Timeout | undefined; //NodeJS.Timeout
+  protected eliteSpawnCount: number = 0;
 
   public getRandomSpawnPosition() {
     const positions = [
@@ -62,11 +66,6 @@ export class MonsterSpawner {
     this.startSpawning(); // 새로운 rate로 interval 재설정
   }
 
-  startSpawningElite() {
-    this.spawnEilteMonster(); // 엘리트 몬스터 생성
-    this.spawnedMonster += 1;
-  }
-
   /*---------------------------------------------
    * 노말 몬스터 스폰
    * - 지정된 위치에 몬스터를 생성하고 게임 방에 추가
@@ -89,6 +88,21 @@ export class MonsterSpawner {
     let randomAssetMonster = assetManager.getRandomAssetMonster();
     const monster = new SkillUseMonster(randomAssetMonster.prefabId, posInfo, this.gameRoom);
     monster.statusMultiplier(this.gameRoom.monsterStatusMultiplier); // 강화 배율 적용
+    if(this.eliteSpawnCount>0){
+      monster.buffAttack();
+      const packet = create(B2G_MonsterBuffNotificationSchema, {
+        buffType: 'atkBuff',
+        state: true,
+        roomId: this.gameRoom.id,
+      });
+      const createAttackBuffBuffer = PacketUtils.SerializePacket(
+        packet,
+        B2G_MonsterBuffNotificationSchema,
+        ePacketId.B2G_MonsterBuffNotification,
+        0,
+      );
+      this.gameRoom.broadcast(createAttackBuffBuffer);
+    }
     this.gameRoom.addObject(monster);
   }
 
@@ -119,6 +133,8 @@ export class MonsterSpawner {
       console.log('엘리트 몬스터 못 찾음');
       return;
     }
+    this.spawnedMonster += 1;
+    this.eliteSpawnCount += 1;
 
     const monster = new SkillUseMonster(eliteAssetMonster.prefabId, posInfo, this.gameRoom);
     monster.statusMultiplier(this.gameRoom.monsterStatusMultiplier); // 강화 배율 적용

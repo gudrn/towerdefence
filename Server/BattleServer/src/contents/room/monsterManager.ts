@@ -28,18 +28,12 @@ export class MonsterManager extends MonsterSpawner {
   }
 
   public updateMonsters() {
-    let hasRobot5 = false;
 
-    for (const monster of this.monsters.values()) {
-      monster.update();
-      hasRobot5 ||= monster.getPrefabId() === 'Robot5'; //??
-    }
-    let packet;
-    for (const monster of this.monsters.values()) {
-      // 공격력 버프
-      if (hasRobot5 && !monster.getIsAttackUpBuffed()) {
+    if(this.eliteSpawnCount>0&&!this.attackUpBuffer){
+      this.attackUpBuffer = true;
+      for(const monster of this.monsters.values()){
         monster.buffAttack();
-        packet = create(B2G_MonsterBuffNotificationSchema, {
+        const packet = create(B2G_MonsterBuffNotificationSchema, {
           buffType: 'atkBuff',
           state: true,
           roomId: this.gameRoom.id,
@@ -51,9 +45,13 @@ export class MonsterManager extends MonsterSpawner {
           0,
         );
         this.gameRoom.broadcast(createAttackBuffBuffer);
-      } else if (!hasRobot5 && monster.getIsAttackUpBuffed()) {
+      }
+    }
+    else if(this.eliteSpawnCount===0 && this.attackUpBuffer){
+      this.attackUpBuffer = false;
+      for(const monster of this.monsters.values()){
         monster.removeBuff();
-        packet = create(B2G_MonsterBuffNotificationSchema, {
+        const packet = create(B2G_MonsterBuffNotificationSchema, {
           buffType: 'atkBuff',
           state: false,
           roomId: this.gameRoom.id,
@@ -67,6 +65,27 @@ export class MonsterManager extends MonsterSpawner {
         this.gameRoom.broadcast(createAttackBuffBuffer);
       }
     }
+    // let packet;
+    // for (const monster of this.monsters.values()) {
+    //   // 공격력 버프
+    //   if (hasRobot5 && !monster.getIsAttackUpBuffed()) {
+    //     monster.buffAttack();
+    //     packet = create(B2G_MonsterBuffNotificationSchema, {
+    //       buffType: 'atkBuff',
+    //       state: true,
+    //       roomId: this.gameRoom.id,
+    //     });
+    //     const createAttackBuffBuffer = PacketUtils.SerializePacket(
+    //       packet,
+    //       B2G_MonsterBuffNotificationSchema,
+    //       ePacketId.B2G_MonsterBuffNotification,
+    //       0,
+    //     );
+    //     this.gameRoom.broadcast(createAttackBuffBuffer);
+    //   } else if (!hasRobot5 && monster.getIsAttackUpBuffed()) {
+        
+    //   }
+    // }
   }
 
   public addMonster(monster: SkillUseMonster) {
@@ -75,6 +94,10 @@ export class MonsterManager extends MonsterSpawner {
   }
 
   public removeMonster(uuid: string) {
+    const monster = this.monsters.get(uuid);
+    if(monster?.getPrefabId() === 'Robot5'){
+      this.eliteSpawnCount -= 1;
+    }
     this.monsters.delete(uuid);
     // 몬스터 제거 시 필요한 로직
   }

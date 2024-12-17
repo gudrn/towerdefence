@@ -120,9 +120,6 @@ class AssetManager {
    * @returns {Object} 랜덤 몬스터 데이터
    */
   getRandomAssetMonster() {
-    console.log('----------');
-    console.log(this.monsters.get('Robot1'));
-    console.log('----------');
     const random = Math.floor(Math.random() * this.normalMoster.length);
     return this.normalMoster[random];
   }

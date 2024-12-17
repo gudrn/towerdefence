@@ -20,6 +20,7 @@ import { sessionManager } from 'src/server';
 import { CustomError } from 'ServerCore/utils/error/customError';
 import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
 import { B2G_TowerDestroyNotificationSchema } from 'src/protocol/tower_pb';
+import { Vec2 } from 'ServerCore/utils/vec2';
 
 export class Monster extends GameObject {
   /*---------------------------------------------
@@ -37,9 +38,12 @@ export class Monster extends GameObject {
   public score: number = 0; //점수
   private isSlowed: boolean = false; // 슬로우 상태 체크용
   private slowEffectEndTime: number = 0; //슬로우 효과 종료 시간
-
+  private lastUpdated = 0; // 마지막 경로 계산 시간
+  private path: Vec2[] | null;
+  
   constructor(prefabId: string, pos: PosInfo, room: GameRoom) {
     super(prefabId, pos, room);
+    this.path = [];
 
     const monsterData = assetManager.getMonsterData(prefabId);
     if (monsterData == null) {
@@ -56,11 +60,6 @@ export class Monster extends GameObject {
     this.score = monsterData.score; // 점수
     this.waitUntil = 0; // 딜레이 시간
     this.moveSpeed = this.originalMoveSpeed = monsterData.moveSpeed; // 이동 속도 초기화 수정
-
-    // console.log('------------');
-    // console.log('몬스터 스포너');
-    // console.log(this.pos.uuid);
-    // console.log('------------');
   }
 
   getpos() {
@@ -113,37 +112,51 @@ export class Monster extends GameObject {
    * 몬스터의 IDLE 상태를 업데이트합니다.
    */
   private UpdateIdle() {
-    if (!this.room) return;
-
-    // if (!this.target) {
-    this.target = this.room.findCloseBuilding(this.getPos());
-    // }
-
-    if (this.target) {
-      const pos = MathUtils.calcPosDiff(this.target.getPos(), this.getPos());
-      const dist = Math.abs(pos.x) + Math.abs(pos.y);
-      const attackRange = this.target instanceof Base ? this.attackRange + 1.5 : this.attackRange;
-
-      if (dist <= attackRange) {
-        console.log('monsterAttack: ', this.getId());
-        this.waitUntil = Date.now() + this.attackCoolDown * 1000;
-        this.setState(OBJECT_STATE_TYPE.SKILL);
-      } else {
-        const path = this.room.getMonsterManager().findPath(this.pos, this.target.getPos());
-        if (path && path.length > 1) {
-          const nextPos = path[1];
-          if (this.room.getMonsterManager().canGo(nextPos)) {
-            //console.log("이동 가능");
-            this.setPos(create(PosInfoSchema, { x: nextPos.x, y: nextPos.y }));
-            this.waitUntil = Date.now() + 1000;
-            this.setState(OBJECT_STATE_TYPE.MOVE);
-          } else {
-            console.log('이동 불가능');
-          }
-        }
+    console.log("UpdateIdle");
+    const now = Date.now();
+  
+    // 2초마다 경로 재계산
+    if (now - this.lastUpdated > 2000) {
+      this.target = this.room.findCloseBuilding(this.getPos());
+      console.log(this.target);
+      if (this.target) {
+        console.log("ㅇㅇ");
+        this.path = this.room.getMonsterManager().findPath(this.pos, this.target.getPos());
+        this.lastUpdated = now;
       }
     }
+  
+    if (this.target) {
+      // 거리 계산
+      const posDiff = MathUtils.calcPosDiff(this.target.getPos(), this.getPos());
+      const dist = Math.abs(posDiff.x) + Math.abs(posDiff.y);
+      const attackRange = this.target instanceof Base ? this.attackRange + 1.5 : this.attackRange;
+  
+      if (dist <= attackRange) {
+        // 공격 범위 내에 들어오면 상태를 SKILL로 변경
+        console.log(`몬스터가 타겟에 도달: ${this.getId()}`);
+        this.waitUntil = now + this.attackCoolDown * 1000;
+        this.setState(OBJECT_STATE_TYPE.SKILL);
+        return;
+      }
+    }
+  
+    // 이동 상태 처리
+    if (this.path && this.path.length > 1) {
+      const nextPos = this.path[1];
+      if (this.room.getMonsterManager().canGo(nextPos)) {
+        this.setPos(create(PosInfoSchema, { x: nextPos.x, y: nextPos.y }));
+        this.path.shift(); // 다음 위치로 이동 후 경로 업데이트
+        this.setState(OBJECT_STATE_TYPE.MOVE);
+        this.waitUntil = now + 1000;
+      } else {
+        console.log('이동 불가능');
+      }
+    } else {
+      console.log('Path가 없습니다.');
+    }
   }
+  
 
   /*---------------------------------------------
     [몬스터 이동]

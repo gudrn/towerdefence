@@ -17,7 +17,6 @@ import { B2G_IncreaseWaveNotificationSchema, G2C_IncreaseWaveNotificationSchema 
     [몬스터 스폰]
   ---------------------------------------------*/
 export function handleB2G_SpawnMonsterNotification(buffer: Buffer, session: BattleSession) {
-    console.log("handleB2G_SpawnMonsterNotification");
     const packet = fromBinary(B2G_SpawnMonsterNotificationSchema, buffer);
 
     const room = roomManager.getRoom(packet.roomId);

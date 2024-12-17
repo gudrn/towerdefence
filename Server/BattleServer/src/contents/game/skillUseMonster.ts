@@ -6,7 +6,6 @@ import { create } from '@bufbuild/protobuf';
 
 // 스킬을 사용하는 몬스터 클래스 정의
 export class SkillUseMonster extends Monster {
-  private cloneInterval: NodeJS.Timeout | null = null; // 클론 생성 간격
   private isAttackUpBuffed: boolean = false; // 버프 상태 여부
 
   constructor(prefabId: string, pos: PosInfo, room: GameRoom) {
@@ -92,9 +91,6 @@ export class SkillUseMonster extends Monster {
 
   // 몬스터가 죽었을 때 호출되는 메서드
   public override onDeath() {
-    if (this.cloneInterval) {
-      clearInterval(this.cloneInterval);
-    }
     if (this.isAttackUpBuffed) {
       this.isAttackUpBuffed = false;
       this.setAttackDamage(this.getAttackDamage() / 3);

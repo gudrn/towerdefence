@@ -29,8 +29,6 @@ export class Shark extends Character {
 
     const monsters = this.getMonstersInRange(this.room, player, range);
 
-    console.log(monsters);
-
     this.applyDamageToMonsters(monsters, damage);
     console.log(`몬스터에게 ${damage}의 데미지!`);
 
