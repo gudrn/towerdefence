@@ -17,7 +17,7 @@
       "prefabId": "Malang",
       "cooldown": 30000,
       "range": 5,
-      "buffDuration": 5000,
+      "buffDuration": 2500,
       "attackCoolDownBuff": 0.5
     },
     {
