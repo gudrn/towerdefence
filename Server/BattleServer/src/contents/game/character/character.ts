@@ -6,7 +6,11 @@ import { BattleSession } from 'src/main/session/battleSession';
 import { assetManager } from 'src/utils/assetManager';
 import { CustomError } from 'ServerCore/utils/error/customError';
 import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
-import { B2G_PlayerUseAbilityNotificationSchema, C2G_PlayerUseAbilityRequest, G2B_PlayerUseAbilityRequest } from 'src/protocol/character_pb';
+import {
+  B2G_PlayerUseAbilityNotificationSchema,
+  C2G_PlayerUseAbilityRequest,
+  G2B_PlayerUseAbilityRequest,
+} from 'src/protocol/character_pb';
 import { create } from '@bufbuild/protobuf';
 import { PacketUtils } from 'ServerCore/utils/packetUtils';
 import { ePacketId } from 'ServerCore/network/packetId';
@@ -67,10 +71,15 @@ export abstract class Character {
       position: this.player.playerData.position,
       prefabId: this.player.playerData.prefabId,
       message: `${this.prefabId}의 고유 능력을 발동합니다.`,
-      roomId: this.room.id
+      roomId: this.room.id,
     });
 
-    const sendBuffer = PacketUtils.SerializePacket(notificationPacket, B2G_PlayerUseAbilityNotificationSchema, ePacketId.B2G_PlayerUseAbilityNotification, 0);
+    const sendBuffer = PacketUtils.SerializePacket(
+      notificationPacket,
+      B2G_PlayerUseAbilityNotificationSchema,
+      ePacketId.B2G_PlayerUseAbilityNotification,
+      0,
+    );
     this.room.broadcast(sendBuffer);
     // 쿨다운 시작
     this.startCooldown();

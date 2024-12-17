@@ -75,7 +75,7 @@ export class GameRoom {
   public monsterStatusMultiplier = 1; // 몬스터 강화 계수 (wave만으론 강화가 불가능한가요?) --12.06 조정현
   private gameLoopInterval: any = null; //gameLoop를 저장 후 방 제거 시 clear하기 위함
   private skillManager: SkillManager;
-  private scorePerWave = 10; // 웨이브 증가 기준 점수
+  private scorePerWave = 100; // 웨이브 증가 기준 점수
 
   constructor(id: number, maxPlayerCount: number) {
     this.id = id;
@@ -293,25 +293,24 @@ export class GameRoom {
    * 주의: 플레이어는 enterRoom으로 추가하기 
    ---------------------------------------------*/
   addObject(object: SkillUseMonster) {
-      this.monsterManager.addMonster(object);
+    this.monsterManager.addMonster(object);
 
-      const packet = create(B2G_SpawnMonsterNotificationSchema, {
-        posInfo: object.getPos(),
-        prefabId: object.getPrefabId(),
-        maxHp: object.maxHp,
-        roomId: this.id,
-      });
+    const packet = create(B2G_SpawnMonsterNotificationSchema, {
+      posInfo: object.getPos(),
+      prefabId: object.getPrefabId(),
+      maxHp: object.maxHp,
+      roomId: this.id,
+    });
 
-      //console.log("방 아이디는", this.id);
-      //console.log(object.getPrefabId, object.maxHp);
-      const sendBuffer: Buffer = PacketUtils.SerializePacket(
-        packet,
-        B2G_SpawnMonsterNotificationSchema,
-        ePacketId.B2G_SpawnMonsterNotification,
-        0,
-      );
-      this.broadcast(sendBuffer);
-    
+    //console.log("방 아이디는", this.id);
+    //console.log(object.getPrefabId, object.maxHp);
+    const sendBuffer: Buffer = PacketUtils.SerializePacket(
+      packet,
+      B2G_SpawnMonsterNotificationSchema,
+      ePacketId.B2G_SpawnMonsterNotification,
+      0,
+    );
+    this.broadcast(sendBuffer);
   }
 
   /*---------------------------------------------
@@ -420,7 +419,7 @@ export class GameRoom {
       // 여기에 카드 추가 로직
       this.users.forEach((player) => player.addRandomCard());
       console.log(`점수가 달성되어 카드가 지급됩니다.`);
-      this.rewardScore += 10;
+      this.rewardScore += 50;
     }
 
     if (this.score >= this.wave * this.scorePerWave) {
@@ -430,8 +429,6 @@ export class GameRoom {
 
   private increaseWave() {
     this.wave += 1;
-
-    this.users.forEach((player) => player.addRandomCard());
 
     // 강화 계수 증가
     this.monsterStatusMultiplier += 2;

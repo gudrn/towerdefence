@@ -36,7 +36,7 @@ export enum ePacketId {
   //구현X - 시작
   B2G_DeleteGameRoomRequest = 124,
   G2L_DeleteGameRoomRequest = 125,
-  L2G_DeleteGameRoomResponse = 126, //요기서 
+  L2G_DeleteGameRoomResponse = 126, //요기서
   C2G_LeaveRoomRequest = 127,
   G2L_LeaveRoomRequest = 128,
   L2G_LeaveRoomResponse = 129,
