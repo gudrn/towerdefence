@@ -228,7 +228,7 @@ export class Monster extends GameObject {
   //   );
   //   this.room.broadcast(removeSlowEffectBuffer);
   // }
-  
+
   /*---------------------------------------------
         [타워 공격]
     ---------------------------------------------*/
@@ -243,6 +243,9 @@ export class Monster extends GameObject {
       roomId: this.room.id,
     });
 
+    // 타워 데미지 처리
+    const isDestroyed = tower.onDamaged(this.attackDamage);
+
     const attackBuffer = PacketUtils.SerializePacket(
       attackPacket,
       B2G_MonsterAttackTowerNotificationSchema,
@@ -250,9 +253,6 @@ export class Monster extends GameObject {
       0,
     );
     this.room.broadcast(attackBuffer);
-
-    // 타워 데미지 처리
-    const isDestroyed = tower.onDamaged(this.attackDamage);
 
     // 3. 타워 파괴 처리
     if (isDestroyed) {
@@ -328,20 +328,19 @@ export class Monster extends GameObject {
         score: this.score,
         roomId: this.room.id,
       });
-  
+
       const monsterDeathBuffer = PacketUtils.SerializePacket(
         mopnsterDeathPacket,
         B2G_MonsterDeathNotificationSchema,
         ePacketId.B2G_MonsterDeathNotification,
         0, //수정 부분
       );
-  
+
       this.room.broadcast(monsterDeathBuffer);
     }
 
-
     //2. gameRoom에 점수 추가
-    this.room.addScore(this.score)
+    this.room.addScore(this.score);
 
     //3. monsters에서 제거
     this.room.removeObject(this.getId());
