@@ -9,6 +9,7 @@ import { create } from '@bufbuild/protobuf';
 import { PacketUtils } from 'ServerCore/utils/packetUtils';
 import { ePacketId } from 'ServerCore/network/packetId';
 import { B2G_MonsterBuffNotificationSchema } from 'src/protocol/monster_pb';
+import { MathUtils } from 'src/utils/mathUtils';
 
 export class MonsterManager extends MonsterSpawner {
   private monsters: Map<string, SkillUseMonster>;
@@ -220,5 +221,9 @@ export class MonsterManager extends MonsterSpawner {
   public canGo(pos: PosInfo) {
     const tile = this.tilemap.getTile(pos);
     return tile !== null;
+  }
+
+  public increaseWave(){ 
+    this.updateSpawnRate(MathUtils.clamp(this.spawnRate-1000, 100, this.spawnRate))
   }
 }

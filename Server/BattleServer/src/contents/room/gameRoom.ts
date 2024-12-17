@@ -424,8 +424,10 @@ export class GameRoom {
     this.users.forEach((player) => player.addRandomCard());
 
     // 강화 계수 증가
-    this.monsterStatusMultiplier += 0.1;
-
+    this.monsterStatusMultiplier += 0.05;
+    if(this.wave % 5 == 0){
+      this.monsterManager.increaseWave();
+    }
     const increaseWavePacket = create(B2G_IncreaseWaveNotificationSchema, {
       isSuccess:  true,
       roomId: this.id
