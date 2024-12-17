@@ -424,7 +424,7 @@ export class GameRoom {
     this.users.forEach((player) => player.addRandomCard());
 
     // 강화 계수 증가
-    this.monsterStatusMultiplier += 0.05;
+    //this.monsterStatusMultiplier += 0.05;
     if(this.wave % 5 == 0){
       this.monsterManager.increaseWave();
     }
