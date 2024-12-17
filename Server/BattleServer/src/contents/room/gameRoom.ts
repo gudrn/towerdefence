@@ -103,7 +103,7 @@ export class GameRoom {
 
     // 2. 유저 추가
     this.users.set(player.playerData.position!.uuid, player);
-    console.log(`유저가 방에 입장했습니다. 현재 인원: ${this.users.size}/${this.maxPlayerCount}`);
+    // console.log(`유저가 방에 입장했습니다. 현재 인원: ${this.users.size}/${this.maxPlayerCount}`);
 
     // 3. 해당 유저에게 B2C_JoinRoomResponse 패킷 전송
     const enterRoomPacket = create(B2G_JoinGameRoomResponseSchema, {
@@ -120,7 +120,7 @@ export class GameRoom {
 
     // 4. 모든 인원이 들어왔다면 B2C_GameStart 패킷 전송
     if (this.users.size === this.maxPlayerCount) {
-      console.log('모든 유저가 입장하였습니다. 게임을 시작합니다.');
+      // console.log('모든 유저가 입장하였습니다. 게임을 시작합니다.');
 
       // 유저의 스폰 위치 부여
       const playerDatas: GamePlayerData[] = [];
@@ -195,7 +195,7 @@ export class GameRoom {
   }
 
   private onGameStart() {
-    console.log('OnGameStart Called');
+    // console.log('OnGameStart Called');
 
     setTimeout(() => {
       this.users.forEach((player) => player.initCard());
@@ -341,8 +341,8 @@ export class GameRoom {
   handleTowerBuild(packet: G2B_TowerBuildRequest, session: BattleSession) {
     const { tower, ownerId, cardId } = packet;
     const user = this.users.get(ownerId);
-    if(user == undefined) {
-      throw new CustomError(ErrorCodes.INVALID_PACKET, "유저를 찾지 못했습니다.");
+    if (user == undefined) {
+      throw new CustomError(ErrorCodes.INVALID_PACKET, '유저를 찾지 못했습니다.');
     }
 
     //1. 타워 데이터 존재 확인
@@ -361,7 +361,7 @@ export class GameRoom {
       throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 towerPos');
     }
 
-    user.useCard(cardId,this.id, true);
+    user.useCard(cardId, this.id, true);
 
     const towerPosInfo = create(PosInfoSchema, {
       uuid: uuidv4(),
@@ -420,7 +420,7 @@ export class GameRoom {
     if (this.score >= this.rewardScore) {
       // 여기에 카드 추가 로직
       this.users.forEach((player) => player.addRandomCard());
-      console.log(`점수가 달성되어 카드가 지급됩니다.`);
+      // console.log(`점수가 달성되어 카드가 지급됩니다.`);
       this.rewardScore += 50;
     }
 
@@ -472,7 +472,7 @@ export class GameRoom {
   // }
 
   private gameOver() {
-    console.log('게임 오버');
+    // console.log('게임 오버');
     this.monsterManager.stopSpawning();
     clearInterval(this.gameLoopInterval);
     this.monsterManager.destroy();

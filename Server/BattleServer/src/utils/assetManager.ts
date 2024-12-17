@@ -134,8 +134,8 @@ class AssetManager {
    */
   getTowerData(prefabId: string) {
     let tower = this.towers.get(prefabId) || null; // Map의 get() 메서드 사용
-    console.log('tower정보');
-    console.log(tower);
+    // console.log('tower정보');
+    // console.log(tower);
     return tower;
   }
 
@@ -149,8 +149,8 @@ class AssetManager {
    */
   getCharacterData(prefabId: string): AssetCharacter | null {
     let character = this.characters.get(prefabId) || null;
-    console.log('character정보');
-    console.log(character);
+    // console.log('character정보');
+    // console.log(character);
     return character;
   }
 

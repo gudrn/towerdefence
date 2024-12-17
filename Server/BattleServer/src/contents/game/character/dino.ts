@@ -12,7 +12,7 @@ export class Dino extends Character {
   }
 
   protected override activateAbility(): void {
-    console.log('Dino 고유 능력');
+    // console.log('Dino 고유 능력');
     // 구체적인 스킬 로직 구현
   }
 }

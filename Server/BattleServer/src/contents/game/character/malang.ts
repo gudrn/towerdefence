@@ -21,7 +21,7 @@ export class Malang extends Character {
       return;
     }
 
-    console.log('Malang의 고유 능력 발동: 원형 범위 내 타워 공격력 증가');
+    // console.log('Malang의 고유 능력 발동: 원형 범위 내 타워 공격력 증가');
 
     const range = 5; // 버프 적용 범위 (단위: 거리)
 
@@ -35,7 +35,7 @@ export class Malang extends Character {
       const buffAmount = tower.attackCoolDown * attackCoolDownBuff; // 공격속도 증가수치
 
       tower.attackCoolDown -= buffAmount; // 공격속도 증가
-      console.log(`${tower.getPrefabId()} 타워 공격속도가 ${attackCoolDownBuff} 증가했습니다.`);
+      // console.log(`${tower.getPrefabId()} 타워 공격속도가 ${attackCoolDownBuff} 증가했습니다.`);
 
       return {
         tower,
@@ -53,7 +53,7 @@ export class Malang extends Character {
     setTimeout(() => {
       towersToBuff.forEach(({ tower, currentAttackCoolDown }) => {
         tower.attackCoolDown = currentAttackCoolDown;
-        console.log(`${tower.getPrefabId()} 타워 공격력이 복원되었습니다.`);
+        // console.log(`${tower.getPrefabId()} 타워 공격력이 복원되었습니다.`);
       });
 
       this.towerBuff(
@@ -75,9 +75,9 @@ export class Malang extends Character {
       towerId: towers.map((tower) => tower.getId()),
       buffType: buffType,
       isBuffed: isBuffActive,
-      roomId: this.room.id
+      roomId: this.room.id,
     });
-  
+
     const sendBuffer = PacketUtils.SerializePacket(
       notificationPacket,
       B2G_TowerBuffNotificationSchema,

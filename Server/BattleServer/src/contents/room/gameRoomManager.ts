@@ -12,7 +12,10 @@ import { CustomError } from 'ServerCore/utils/error/customError';
 import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
 import { BattleSession } from 'src/main/session/battleSession';
 import { GamePlayer } from '../game/gamePlayer';
-import { G2B_PlayerPositionUpdateRequestSchema, G2B_PlayerUseAbilityRequestSchema } from 'src/protocol/character_pb';
+import {
+  G2B_PlayerPositionUpdateRequestSchema,
+  G2B_PlayerUseAbilityRequestSchema,
+} from 'src/protocol/character_pb';
 import { G2B_TowerBuildRequestSchema } from 'src/protocol/tower_pb';
 import { G2B_UseSkillRequest, G2B_UseSkillRequestSchema } from 'src/protocol/skill_pb';
 import { sessionManager } from 'src/server';
@@ -33,7 +36,7 @@ class GameRoomManager {
     -클라에게 B2C_EnterRoom패킷 전송
 ---------------------------------------------*/
   public enterRoomHandler(buffer: Buffer, session: BattleSession) {
-    console.log('enterRoomHandler 호출됨');
+    // console.log('enterRoomHandler 호출됨');
 
     const packet = fromBinary(G2B_JoinGameRoomRequestSchema, buffer);
     // 1. 유효성 검사: roomId 확인
@@ -72,7 +75,7 @@ class GameRoomManager {
     // 내부 방 관리 시스템에 방 등록
     this.rooms.set(packet.roomId, newRoom);
 
-    console.log(`방 생성 성공: roomId=${packet.roomId}, maxPlayers=${packet.maxUserNum}`);
+    // console.log(`방 생성 성공: roomId=${packet.roomId}, maxPlayers=${packet.maxUserNum}`);
 
     // 4. 성공 응답 패킷 생성 및 전송
     const createGameRoomPacket = create(B2G_CreateGameRoomResponseSchema, {
@@ -88,34 +91,33 @@ class GameRoomManager {
     session.send(createGameRoomBuffer);
   }
 
-    /*---------------------------------------------
+  /*---------------------------------------------
    [방 제거]
    ---------------------------------------------*/
-   public deleteGameRoom(roomId:number) {
-
-    if(!roomId) {
+  public deleteGameRoom(roomId: number) {
+    if (!roomId) {
       throw new CustomError(ErrorCodes.MISSING_FIELDS, 'roomId가 없습니다.');
     }
 
     this.rooms.delete(roomId);
-    console.log(`${roomId}방 제거에 성공했습니다.`)
+    // console.log(`${roomId}방 제거에 성공했습니다.`)
 
     const deleteGameRoomPacket = create(B2G_DeleteGameRoomRequestSchema, {
       roomId: roomId,
-    })
-    
+    });
+
     const deleteGameRoomBuffer = PacketUtils.SerializePacket(
       deleteGameRoomPacket,
       B2G_DeleteGameRoomRequestSchema,
       ePacketId.B2G_DeleteGameRoomRequest,
-      0
+      0,
     );
 
     const gatewaySession = sessionManager.getRandomSession();
-    if(gatewaySession != undefined){
-      gatewaySession.send(deleteGameRoomBuffer)
+    if (gatewaySession != undefined) {
+      gatewaySession.send(deleteGameRoomBuffer);
     }
-   }
+  }
 
   /*---------------------------------------------
    [이동 동기화]

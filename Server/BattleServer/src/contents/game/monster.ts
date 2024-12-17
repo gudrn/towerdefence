@@ -40,7 +40,7 @@ export class Monster extends GameObject {
   private slowEffectEndTime: number = 0; //슬로우 효과 종료 시간
   private lastUpdated = 0; // 마지막 경로 계산 시간
   private path: Vec2[] | null;
-  
+
   constructor(prefabId: string, pos: PosInfo, room: GameRoom) {
     super(prefabId, pos, room);
     this.path = [];
@@ -112,35 +112,35 @@ export class Monster extends GameObject {
    * 몬스터의 IDLE 상태를 업데이트합니다.
    */
   private UpdateIdle() {
-    console.log("UpdateIdle");
+    // console.log("UpdateIdle");
     const now = Date.now();
-  
+
     // 2초마다 경로 재계산
     if (now - this.lastUpdated > 2000) {
       this.target = this.room.findCloseBuilding(this.getPos());
-      console.log(this.target);
+      // console.log(this.target);
       if (this.target) {
-        console.log("ㅇㅇ");
+        // console.log("ㅇㅇ");
         this.path = this.room.getMonsterManager().findPath(this.pos, this.target.getPos());
         this.lastUpdated = now;
       }
     }
-  
+
     if (this.target) {
       // 거리 계산
       const posDiff = MathUtils.calcPosDiff(this.target.getPos(), this.getPos());
       const dist = Math.abs(posDiff.x) + Math.abs(posDiff.y);
       const attackRange = this.target instanceof Base ? this.attackRange + 1.5 : this.attackRange;
-  
+
       if (dist <= attackRange) {
         // 공격 범위 내에 들어오면 상태를 SKILL로 변경
-        console.log(`몬스터가 타겟에 도달: ${this.getId()}`);
+        // console.log(`몬스터가 타겟에 도달: ${this.getId()}`);
         this.waitUntil = now + this.attackCoolDown * 1000;
         this.setState(OBJECT_STATE_TYPE.SKILL);
         return;
       }
     }
-  
+
     // 이동 상태 처리
     if (this.path && this.path.length > 1) {
       const nextPos = this.path[1];
@@ -156,7 +156,6 @@ export class Monster extends GameObject {
       console.log('Path가 없습니다.');
     }
   }
-  
 
   /*---------------------------------------------
     [몬스터 이동]
@@ -269,7 +268,7 @@ export class Monster extends GameObject {
 
     // 3. 타워 파괴 처리
     if (isDestroyed) {
-      console.log(`타워 ${tower.getId()}가 파괴되었습니다.`);
+      // console.log(`타워 ${tower.getId()}가 파괴되었습니다.`);
       this.room.removeObject(tower.getId()); // GameRoom에서 타워 제거
 
       const towerDestroyedPacket = create(B2G_TowerDestroyNotificationSchema, {
@@ -332,7 +331,7 @@ export class Monster extends GameObject {
       3. monsters에서 제거
 ---------------------------------------------*/
   onDeath() {
-    console.log(`몬스터 ${this.getId()}가 사망.`);
+    // console.log(`몬스터 ${this.getId()}가 사망.`);
 
     //1. 몬스터 사망 패킷 전송
     {

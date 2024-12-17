@@ -19,7 +19,7 @@ export class Red extends Character {
       return;
     }
 
-    console.log('Red의 고유 능력 카드 추가');
+    // console.log('Red의 고유 능력 카드 추가');
     player.addRandomCard();
   }
 }

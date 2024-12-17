@@ -8,14 +8,25 @@ import { RoomDataSchema } from 'src/protocol/struct_pb';
 import { ePacketId } from 'ServerCore/network/packetId';
 import { BattleSession } from 'src/main/session/battleSession';
 import { LobbySession } from 'src/main/session/lobbySession';
-import { G2C_CreateRoomResponseSchema, G2C_GetRoomListResponseSchema, G2C_JoinRoomNotificationSchema, G2C_JoinRoomResponseSchema, G2C_LeaveRoomNotificationSchema, L2G_CreateRoomResponseSchema, L2G_GetRoomListResponseSchema, L2G_JoinRoomNotificationSchema, L2G_JoinRoomResponseSchema, L2G_LeaveRoomNotificationSchema } from 'src/protocol/room_pb';
+import {
+  G2C_CreateRoomResponseSchema,
+  G2C_GetRoomListResponseSchema,
+  G2C_JoinRoomNotificationSchema,
+  G2C_JoinRoomResponseSchema,
+  G2C_LeaveRoomNotificationSchema,
+  L2G_CreateRoomResponseSchema,
+  L2G_GetRoomListResponseSchema,
+  L2G_JoinRoomNotificationSchema,
+  L2G_JoinRoomResponseSchema,
+  L2G_LeaveRoomNotificationSchema,
+} from 'src/protocol/room_pb';
 import { gatewaySessionManager } from 'src/server';
 
 class RoomManager {
   /*---------------------------------------------
   [멤버 변수]
 ---------------------------------------------*/
-  private rooms: Map<number, Room>  = new Map<number, Room>();
+  private rooms: Map<number, Room> = new Map<number, Room>();
 
   constructor() {
     this.rooms = new Map<number, Room>();
@@ -25,50 +36,59 @@ class RoomManager {
     [방 정보 응답]
   ---------------------------------------------*/
   public handleL2G_GetRoomListResponse(buffer: Buffer, session: LobbySession) {
-  const packet = fromBinary(L2G_GetRoomListResponseSchema, buffer);
+    const packet = fromBinary(L2G_GetRoomListResponseSchema, buffer);
 
-  const clientSession = gatewaySessionManager.getSessionOrNull(packet.userId);
-  if(clientSession == null) {
-      console.log("[handleL2G_GetRoomListResponse] 클라이언트가 유효하지 않습니다.");
-      console.log(packet.userId);
+    const clientSession = gatewaySessionManager.getSessionOrNull(packet.userId);
+    if (clientSession == null) {
+      console.log('[handleL2G_GetRoomListResponse] 클라이언트가 유효하지 않습니다.');
+      // console.log(packet.userId);
       return;
+    }
+
+    const responsePacket = create(G2C_GetRoomListResponseSchema, {
+      rooms: packet.rooms,
+    });
+
+    const sendBuffer = PacketUtils.SerializePacket(
+      responsePacket,
+      G2C_GetRoomListResponseSchema,
+      ePacketId.G2C_GetRoomListResponse,
+      0,
+    );
+    clientSession.send(sendBuffer);
   }
 
-  const responsePacket = create(G2C_GetRoomListResponseSchema, {
-      rooms: packet.rooms
-  });
-
-  const sendBuffer = PacketUtils.SerializePacket(responsePacket, G2C_GetRoomListResponseSchema, ePacketId.G2C_GetRoomListResponse, 0);
-  clientSession.send(sendBuffer);
-}
-
-/*---------------------------------------------
+  /*---------------------------------------------
   [방 생성 응답]
 ---------------------------------------------*/
   public handleL2G_CreateRoomResponse(buffer: Buffer, session: LobbySession) {
-
     const packet = fromBinary(L2G_CreateRoomResponseSchema, buffer);
-    console.log(packet.userId);
+    // console.log(packet.userId);
     const clientSession = gatewaySessionManager.getSessionOrNull(packet.userId);
-    if(clientSession == null) {
-        console.log("[handleL2G_CreateRoomResponse] 클라이언트가 유효하지 않습니다.");
-        return;
+    if (clientSession == null) {
+      console.log('[handleL2G_CreateRoomResponse] 클라이언트가 유효하지 않습니다.');
+      return;
     }
 
     //로비 서버에서 검사하고 넘겨줄텐데 꼭 검사가 필요할까요?
-    if(this.rooms.get(packet.room!.id) != undefined) {
-      throw new CustomError(ErrorCodes.ALREADY_USED_ROOM, "이미 생성된 방");
+    if (this.rooms.get(packet.room!.id) != undefined) {
+      throw new CustomError(ErrorCodes.ALREADY_USED_ROOM, '이미 생성된 방');
     }
 
     //방 생성
     this.rooms.set(packet.room!.id, new Room(packet.room!.id, packet.room!.maxUserNum));
 
     const responsePacket = create(G2C_CreateRoomResponseSchema, {
-        isSuccess: packet.isSuccess,
-        room: packet.room
+      isSuccess: packet.isSuccess,
+      room: packet.room,
     });
 
-    const sendBuffer = PacketUtils.SerializePacket(responsePacket, G2C_CreateRoomResponseSchema, ePacketId.G2C_CreateRoomResponse, 0);
+    const sendBuffer = PacketUtils.SerializePacket(
+      responsePacket,
+      G2C_CreateRoomResponseSchema,
+      ePacketId.G2C_CreateRoomResponse,
+      0,
+    );
     clientSession.send(sendBuffer);
   }
 
@@ -77,19 +97,24 @@ class RoomManager {
   ---------------------------------------------*/
   public handleL2G_JoinRoomResponse(buffer: Buffer, session: LobbySession) {
     const packet = fromBinary(L2G_JoinRoomResponseSchema, buffer);
-    
+
     const clientSession = gatewaySessionManager.getSessionOrNull(packet.userId);
-    if(clientSession == null) {
-        console.log("[handleL2G_CreateRoomResponse] 클라이언트가 유효하지 않습니다.");
-        return;
+    if (clientSession == null) {
+      console.log('[handleL2G_CreateRoomResponse] 클라이언트가 유효하지 않습니다.');
+      return;
     }
 
     const responsePacket = create(G2C_JoinRoomResponseSchema, {
-        isSuccess: packet.isSuccess,
-        roomInfo: packet.roomInfo
+      isSuccess: packet.isSuccess,
+      roomInfo: packet.roomInfo,
     });
 
-    const sendBuffer = PacketUtils.SerializePacket(responsePacket, G2C_JoinRoomResponseSchema, ePacketId.G2C_JoinRoomResponse, 0);
+    const sendBuffer = PacketUtils.SerializePacket(
+      responsePacket,
+      G2C_JoinRoomResponseSchema,
+      ePacketId.G2C_JoinRoomResponse,
+      0,
+    );
     clientSession.send(sendBuffer);
 
     const room = this.rooms.get(packet.roomInfo!.id);
@@ -100,20 +125,25 @@ class RoomManager {
     [방 입장 알림]
   ---------------------------------------------*/
   public handleL2G_JoinRoomNotification(buffer: Buffer, session: LobbySession) {
-    console.log("handleL2G_JoinRoomNotification");
+    console.log('handleL2G_JoinRoomNotification');
 
     const packet = fromBinary(L2G_JoinRoomNotificationSchema, buffer);
-    
+
     const room = this.rooms.get(packet.roomId);
-    if(room == undefined) {
+    if (room == undefined) {
       console.log('방을 찾을 수 없습니다.');
       throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, 'invalid roomId');
     }
-    
+
     const notificationPacket = create(G2C_JoinRoomNotificationSchema, {
-        joinUser: packet.joinUser
+      joinUser: packet.joinUser,
     });
-    const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_JoinRoomNotificationSchema, ePacketId.G2C_JoinRoomNotification, 0);
+    const sendBuffer = PacketUtils.SerializePacket(
+      notificationPacket,
+      G2C_JoinRoomNotificationSchema,
+      ePacketId.G2C_JoinRoomNotification,
+      0,
+    );
     room.broadcast(sendBuffer);
   }
 
@@ -125,15 +155,20 @@ class RoomManager {
     const packet = fromBinary(L2G_LeaveRoomNotificationSchema, buffer);
 
     const room = roomManager.getRoom(packet.roomId);
-    if(room == undefined){
-      throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, "방을 찾지 못했습니다.");
+    if (room == undefined) {
+      throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, '방을 찾지 못했습니다.');
     }
 
     const notificationPacket = create(G2C_LeaveRoomNotificationSchema, {
       userId: packet.userId,
     });
 
-    const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_LeaveRoomNotificationSchema, ePacketId.G2C_LeaveRoomNotification, 0);
+    const sendBuffer = PacketUtils.SerializePacket(
+      notificationPacket,
+      G2C_LeaveRoomNotificationSchema,
+      ePacketId.G2C_LeaveRoomNotification,
+      0,
+    );
     room.broadcast(sendBuffer);
   }
 
@@ -141,7 +176,7 @@ class RoomManager {
     return this.rooms.get(roomId);
   }
 
-  public deleteRoom(roomId: number){
+  public deleteRoom(roomId: number) {
     const room = this.rooms.get(roomId);
     if (room == undefined) {
       console.log('유효하지 않은 roomID');
@@ -151,10 +186,10 @@ class RoomManager {
     this.rooms.delete(roomId);
   }
 
-  public leaveRoom(roomId: number, userId: string){
+  public leaveRoom(roomId: number, userId: string) {
     const room = this.rooms.get(roomId);
-    if(room == undefined) {
-      throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, "방을 찾지 못했습니다");
+    if (room == undefined) {
+      throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, '방을 찾지 못했습니다');
     }
 
     room.leaveRoom(userId);

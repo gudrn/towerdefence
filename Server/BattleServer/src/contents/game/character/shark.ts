@@ -6,7 +6,10 @@ import { gameRoomManager } from 'src/contents/room/gameRoomManager';
 import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
 import { CustomError } from 'ServerCore/utils/error/customError';
 import { PacketUtils } from 'ServerCore/utils/packetUtils';
-import { B2G_MonsterDeathNotificationSchema, B2G_MonsterHealthUpdateNotificationSchema } from 'src/protocol/monster_pb';
+import {
+  B2G_MonsterDeathNotificationSchema,
+  B2G_MonsterHealthUpdateNotificationSchema,
+} from 'src/protocol/monster_pb';
 import { create } from '@bufbuild/protobuf';
 import { ePacketId } from 'ServerCore/network/packetId';
 export class Shark extends Character {
@@ -22,7 +25,7 @@ export class Shark extends Character {
       return;
     }
 
-    console.log('Shark의 고유 능력 발동: 원형 범위 내 몬스터들에게 데미지');
+    // console.log('Shark의 고유 능력 발동: 원형 범위 내 몬스터들에게 데미지');
 
     const range = 5; // 적용 범위 (단위: 거리)
     const damage = 20; // 공격력 값
@@ -30,18 +33,17 @@ export class Shark extends Character {
     const monsters = this.getMonstersInRange(this.room, player, range);
 
     this.applyDamageToMonsters(monsters, damage);
-    console.log(`몬스터에게 ${damage}의 데미지!`);
+    // console.log(`몬스터에게 ${damage}의 데미지!`);
 
-    
     monsters.forEach((monster) => {
-       {
+      {
         const notificationPacket = create(B2G_MonsterHealthUpdateNotificationSchema, {
           monsterId: monster.getId(),
           hp: monster.hp,
           maxHp: monster.maxHp,
-          roomId: this.room.id
+          roomId: this.room.id,
         });
-      
+
         const sendBuffer = PacketUtils.SerializePacket(
           notificationPacket,
           B2G_MonsterHealthUpdateNotificationSchema,

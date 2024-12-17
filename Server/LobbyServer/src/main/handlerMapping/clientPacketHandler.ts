@@ -1,6 +1,13 @@
-import { createRoomHandler, deleteGameRoomHandler, enterRoomHandler, gameStartHandler, getRoomsHandler, leaveRoomHandler } from "../handler/roomHandler";
-import { LobbySession } from "../session/lobbySession";
-import { ePacketId } from "ServerCore/network/packetId";
+import {
+  createRoomHandler,
+  deleteGameRoomHandler,
+  enterRoomHandler,
+  gameStartHandler,
+  getRoomsHandler,
+  leaveRoomHandler,
+} from '../handler/roomHandler';
+import { LobbySession } from '../session/lobbySession';
+import { ePacketId } from 'ServerCore/network/packetId';
 
 type PacketHandler = (buffer: Buffer, session: LobbySession) => void;
 
@@ -9,16 +16,14 @@ const handlerMappings: Record<ePacketId, PacketHandler> | any = {
     createRoomHandler(buffer, session),
   [ePacketId.G2L_JoinRoomRequest]: (buffer: Buffer, session: LobbySession) =>
     enterRoomHandler(buffer, session),
-  [ePacketId.G2L_GetRoomListRequest]: (buffer, session) =>
-    getRoomsHandler(buffer, session),
-  [ePacketId.G2L_GameStartRequest]: (buffer, session) =>
-    gameStartHandler(buffer, session),
+  [ePacketId.G2L_GetRoomListRequest]: (buffer, session) => getRoomsHandler(buffer, session),
+  [ePacketId.G2L_GameStartRequest]: (buffer, session) => gameStartHandler(buffer, session),
   [ePacketId.G2L_DeleteGameRoomRequest]: (buffer, session) =>
     deleteGameRoomHandler(buffer, session),
   [ePacketId.G2L_LeaveRoomRequest]: (buffer: Buffer, session: LobbySession) =>
     leaveRoomHandler(buffer, session),
   [ePacketId.S2C_Error]: function (buffer, session) {
-    console.log("에러 ㅇㅇ");
+    // console.log("에러 ㅇㅇ");
   },
 };
 

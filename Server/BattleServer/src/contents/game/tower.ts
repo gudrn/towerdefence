@@ -19,20 +19,20 @@ export class Tower extends GameObject {
   /*---------------------------------------------
     [멤버 변수]
 ---------------------------------------------*/
-private originalAttackDamage: number = 0; // 기본 공격력 (버프 적용 전)
-private attackDamage: number = 0; // 현재 공격력 (버프 적용 후)
-private attackRange: number = 0; // 공격 범위
-public attackCoolDown: number = 0; // 공격 쿨다운 시간
-public hp: number = 0; // 현재 체력
-public maxHp: number = 0; // 최대 체력
-private bulletSpeed = 0; // 투사체 속도
-public target: null | undefined; // 현재 타겟
-public lastAttackTime: number = 0; // 마지막 공격 시간
-private isBuffed: boolean = false; // 버프 유무
+  private originalAttackDamage: number = 0; // 기본 공격력 (버프 적용 전)
+  private attackDamage: number = 0; // 현재 공격력 (버프 적용 후)
+  private attackRange: number = 0; // 공격 범위
+  public attackCoolDown: number = 0; // 공격 쿨다운 시간
+  public hp: number = 0; // 현재 체력
+  public maxHp: number = 0; // 최대 체력
+  private bulletSpeed = 0; // 투사체 속도
+  public target: null | undefined; // 현재 타겟
+  public lastAttackTime: number = 0; // 마지막 공격 시간
+  private isBuffed: boolean = false; // 버프 유무
 
-// 특수 능력치들
-private buffAmount: number = 0; // 버프 타워의 공격력 증가량
-private explosionRadius: number = 0; // 미사일 타워의 폭발 범위
+  // 특수 능력치들
+  private buffAmount: number = 0; // 버프 타워의 공격력 증가량
+  private explosionRadius: number = 0; // 미사일 타워의 폭발 범위
 
   /*---------------------------------------------
     [생성자]
@@ -106,48 +106,48 @@ private explosionRadius: number = 0; // 미사일 타워의 폭발 범위
     // 투사체 이동 시간 계산
     const travelTime = (distance / this.bulletSpeed) * 1000; // 이동 시간 (ms)
 
-      // 총알 이동 효과 (애니메이션 대체)
-      //console.log(`총알이 ${travelTime.toFixed(0)}ms 동안 날아감.`);
+    // 총알 이동 효과 (애니메이션 대체)
+    //console.log(`총알이 ${travelTime.toFixed(0)}ms 동안 날아감.`);
 
-      const attackMotionPacket = create(B2G_TowerAttackMonsterNotificationSchema, {
-        towerId: this.getId(),
-        monsterPos: target.getPos(),
-        travelTime: travelTime,
-        roomId: this.room.id,
-      });
+    const attackMotionPacket = create(B2G_TowerAttackMonsterNotificationSchema, {
+      towerId: this.getId(),
+      monsterPos: target.getPos(),
+      travelTime: travelTime,
+      roomId: this.room.id,
+    });
 
-      const attackMotionBuffer = PacketUtils.SerializePacket(
-        attackMotionPacket,
-        B2G_TowerAttackMonsterNotificationSchema,
-        ePacketId.B2G_TowerAttackMonsterNotification,
-        0,
-      );
-      this.room.broadcast(attackMotionBuffer);
+    const attackMotionBuffer = PacketUtils.SerializePacket(
+      attackMotionPacket,
+      B2G_TowerAttackMonsterNotificationSchema,
+      ePacketId.B2G_TowerAttackMonsterNotification,
+      0,
+    );
+    this.room.broadcast(attackMotionBuffer);
 
-      setTimeout(() => {
+    setTimeout(() => {
       // 타워 타입에 따른 공격 처리
       this.processAttack(target);
 
-        // 2. 클라이언트에 공격 패킷 전송
-        const attackPacket = create(B2G_MonsterHealthUpdateNotificationSchema, {
-          monsterId: target.getId(),
-          hp: target.hp,
-          maxHp: target.maxHp,
-          roomId: this.room.id,
-        });
+      // 2. 클라이언트에 공격 패킷 전송
+      const attackPacket = create(B2G_MonsterHealthUpdateNotificationSchema, {
+        monsterId: target.getId(),
+        hp: target.hp,
+        maxHp: target.maxHp,
+        roomId: this.room.id,
+      });
 
-        //console.log('targetHp: ', target.hp);
-        //console.log('targetMaxHp: ', target.maxHp);
+      //console.log('targetHp: ', target.hp);
+      //console.log('targetMaxHp: ', target.maxHp);
 
-        const attackBuffer = PacketUtils.SerializePacket(
-          attackPacket,
-          B2G_MonsterHealthUpdateNotificationSchema,
-          ePacketId.B2G_MonsterHealthUpdateNotification,
-          0,
-        );
-        this.room.broadcast(attackBuffer);
-      }, travelTime); // 총알 이동 시간 이후 실행
-    }
+      const attackBuffer = PacketUtils.SerializePacket(
+        attackPacket,
+        B2G_MonsterHealthUpdateNotificationSchema,
+        ePacketId.B2G_MonsterHealthUpdateNotification,
+        0,
+      );
+      this.room.broadcast(attackBuffer);
+    }, travelTime); // 총알 이동 시간 이후 실행
+  }
 
   /**
    * 타워 타입별 공격 처리
@@ -209,28 +209,28 @@ private explosionRadius: number = 0; // 미사일 타워의 폭발 범위
      * @param {Tower[]} towers - 전체 타워 배열
      * @returns {Tower[]} - 범위 내 타워 배열
      ---------------------------------------------*/
-     getTowersInRange(): Tower[] {
-      // 범위 내 타워 배열 생성
-      const towersInRange: Tower[] = [];
-      const towers = Array.from(this.room.getTowers().values());
-  
-      for (const tower of towers) {
-        // 자기 자신은 제외
-        if (tower.getId() === this.getId()) continue;
-  
-        // 거리 계산 (제곱 상태로 비교하여 최적화)
-        const distance =
-          (this.pos.x - tower.pos.x) * (this.pos.x - tower.pos.x) +
-          (this.pos.y - tower.pos.y) * (this.pos.y - tower.pos.y);
-  
-        // 범위 내에 있으면 배열에 추가
-        if (distance <= this.attackRange * this.attackRange) {
-          towersInRange.push(tower);
-        }
+  getTowersInRange(): Tower[] {
+    // 범위 내 타워 배열 생성
+    const towersInRange: Tower[] = [];
+    const towers = Array.from(this.room.getTowers().values());
+
+    for (const tower of towers) {
+      // 자기 자신은 제외
+      if (tower.getId() === this.getId()) continue;
+
+      // 거리 계산 (제곱 상태로 비교하여 최적화)
+      const distance =
+        (this.pos.x - tower.pos.x) * (this.pos.x - tower.pos.x) +
+        (this.pos.y - tower.pos.y) * (this.pos.y - tower.pos.y);
+
+      // 범위 내에 있으면 배열에 추가
+      if (distance <= this.attackRange * this.attackRange) {
+        towersInRange.push(tower);
       }
-  
-      return towersInRange;
     }
+
+    return towersInRange;
+  }
 
   /**---------------------------------------------
    * [버프 타워 범위 내 타워 찾기]
@@ -283,26 +283,26 @@ private explosionRadius: number = 0; // 미사일 타워의 폭발 범위
   /**---------------------------------------------
    * [버프 적용]
    ---------------------------------------------*/
-   applyAttackBuff() {
+  applyAttackBuff() {
     if (!this.isBuffed) {
       this.isBuffed = true;
       this.attackDamage = this.originalAttackDamage + this.buffAmount;
-      console.log(`[버프 적용] ${this.getPrefabId()}: ${this.originalAttackDamage} -> ${this.attackDamage}`);
+      // console.log(`[버프 적용] ${this.getPrefabId()}: ${this.originalAttackDamage} -> ${this.attackDamage}`);
 
       // 버프 적용용 패킷 생성 및 전송
       const buffApplyPacket = create(B2G_TowerBuffNotificationSchema, {
         towerId: [this.getId()],
         buffType: 'atkBuff',
         isBuffed: true,
-        roomId: this.room.id
+        roomId: this.room.id,
       });
 
       const buffApplyBuffer = PacketUtils.SerializePacket(
         buffApplyPacket,
         B2G_TowerBuffNotificationSchema,
         ePacketId.B2G_TowerBuffNotification,
-        0
-      )
+        0,
+      );
       this.room.broadcast(buffApplyBuffer);
     }
   }
@@ -313,27 +313,25 @@ private explosionRadius: number = 0; // 미사일 타워의 폭발 범위
     this.isBuffed = false;
 
     this.attackDamage = this.originalAttackDamage;
-    console.log(`[버프 해제] ${this.getPrefabId()}: ${this.attackDamage} -> ${this.originalAttackDamage}`);
+    // console.log(`[버프 해제] ${this.getPrefabId()}: ${this.attackDamage} -> ${this.originalAttackDamage}`);
 
     // 버프 해제 패킷 생성 및 전송
     const buffPacket = create(B2G_TowerBuffNotificationSchema, {
       towerId: [this.getId()],
       buffType: 'atkBuff',
       isBuffed: false,
-      roomId: this.room.id
+      roomId: this.room.id,
     });
 
     const buffBuffer = PacketUtils.SerializePacket(
       buffPacket,
       B2G_TowerBuffNotificationSchema,
       ePacketId.B2G_TowerBuffNotification,
-      0
+      0,
     );
 
     this.room.broadcast(buffBuffer);
   }
-
-
 
   private splashDamage(target: SkillUseMonster) {
     // 범위 내 몬스터 찾기
@@ -446,7 +444,6 @@ private explosionRadius: number = 0; // 미사일 타워의 폭발 범위
     }
   }
 }
-
 
 //[TODO]
 //길찾기 수정하기

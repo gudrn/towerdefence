@@ -1,15 +1,19 @@
-import { create, fromBinary } from "@bufbuild/protobuf";
-import { config } from "ServerCore/config/config";
-import { ePacketId } from "ServerCore/network/packetId";
-import { CustomError } from "ServerCore/utils/error/customError";
-import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
-import { PacketUtils } from "ServerCore/utils/packetUtils";
-import { B2L_InitSchema, C2L_InitSchema, G2L_Init, G2L_InitSchema, L2C_InitSchema } from "src/protocol/init_pb";
-import { lobbySessionManager } from "../../server";
-import { Socket } from "net";
-import { PacketHeader } from "ServerCore/network/packetHeader";
-
-
+import { create, fromBinary } from '@bufbuild/protobuf';
+import { config } from 'ServerCore/config/config';
+import { ePacketId } from 'ServerCore/network/packetId';
+import { CustomError } from 'ServerCore/utils/error/customError';
+import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
+import { PacketUtils } from 'ServerCore/utils/packetUtils';
+import {
+  B2L_InitSchema,
+  C2L_InitSchema,
+  G2L_Init,
+  G2L_InitSchema,
+  L2C_InitSchema,
+} from 'src/protocol/init_pb';
+import { lobbySessionManager } from '../../server';
+import { Socket } from 'net';
+import { PacketHeader } from 'ServerCore/network/packetHeader';
 
 export const onConnection = (socket: Socket): void => {
   console.log('새로운 연결이 감지되었습니다:', socket.remoteAddress, socket.remotePort);
@@ -49,7 +53,7 @@ export const onConnection = (socket: Socket): void => {
     [TODO] Initial패킷 구조 변경에 따른 코드 변경 필요
 ---------------------------------------------*/
 const initialHandler = async (buffer: Buffer, socket: Socket, packetId: ePacketId) => {
-  console.log('initialHandler: called');
+  // console.log('initialHandler: called');
   socket.removeAllListeners('data');
 
   if (packetId === ePacketId.G2L_Init) {
@@ -63,9 +67,8 @@ const initialHandler = async (buffer: Buffer, socket: Socket, packetId: ePacketI
 
     //1. sessionManager에 로비세션 추가
     lobbySessionManager.addSession(packet.serverId, socket);
-  }
-  else {
-    console.log("[initialHandler] 비정상적인 패킷")
+  } else {
+    console.log('[initialHandler] 비정상적인 패킷');
   }
 };
 

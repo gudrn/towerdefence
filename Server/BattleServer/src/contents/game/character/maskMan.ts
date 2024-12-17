@@ -9,7 +9,7 @@ export class MaskMan extends Character {
   }
 
   protected override activateAbility(): void {
-    console.log('MaskMan 고유 능력');
+    // console.log('MaskMan 고유 능력');
     // 구체적인 스킬 로직 구현
   }
 }
