@@ -41,6 +41,7 @@ import { SkillManager } from './skillManager';
 import { MonsterManager } from './monsterManager';
 import { SkillUseMonster } from '../game/skillUseMonster';
 import { G2B_UseSkillRequest } from 'src/protocol/skill_pb';
+import { Monster } from '../game/monster';
 
 interface PQNode {
   cost: number;
@@ -291,8 +292,7 @@ export class GameRoom {
    * 대상: 몬스터, 타워, 투사체
    * 주의: 플레이어는 enterRoom으로 추가하기 
    ---------------------------------------------*/
-  addObject(object: SkillUseMonster | Tower) {
-    if (object instanceof SkillUseMonster) {
+  addObject(object: SkillUseMonster) {
       this.monsterManager.addMonster(object);
 
       const packet = create(B2G_SpawnMonsterNotificationSchema, {
@@ -311,7 +311,7 @@ export class GameRoom {
         0,
       );
       this.broadcast(sendBuffer);
-    }
+    
   }
 
   /*---------------------------------------------
@@ -434,7 +434,7 @@ export class GameRoom {
     this.users.forEach((player) => player.addRandomCard());
 
     // 강화 계수 증가
-    this.monsterStatusMultiplier += 0.05;
+    this.monsterStatusMultiplier += 2;
     if (this.wave % 10 == 0) {
       this.monsterManager.increaseWave();
       this.scorePerWave += 40;
