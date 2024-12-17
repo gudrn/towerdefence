@@ -35,7 +35,8 @@ export class GamePlayer {
     if (room == undefined) {
       throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, `유효하지 않은 roomID ${roomId}`);
     }
-    this.character = CreateCharacter.createChar(playerData.prefabId, room, this) ;
+    this.character = CreateCharacter.createChar(playerData.prefabId, room, this);
+    this.playerData.coolDown = this.character.cooldown;
   }
 
   /*---------------------------------------------

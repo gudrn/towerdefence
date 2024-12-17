@@ -123,7 +123,8 @@ export class GameRoom {
         const gamePlayerData = create(GamePlayerDataSchema, {
           position: posInfo,
           nickname: user.playerData.nickname,
-          prefabId: user.playerData.prefabId
+          prefabId: user.playerData.prefabId,
+          coolDown: user.playerData.coolDown
         });
 
         playerDatas.push(gamePlayerData);

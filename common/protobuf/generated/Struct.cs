@@ -33,16 +33,17 @@ namespace Protocol {
             "B293bmVySWQYAiABKAkSDAoEbmFtZRgDIAEoCRISCgptYXhVc2VyTnVtGAQg",
             "ASgFEiYKBXN0YXRlGAUgASgOMhcuUHJvdG9jb2wuUm9vbVN0YXRlVHlwZRIh",
             "CgV1c2VycxgGIAMoCzISLlByb3RvY29sLlVzZXJEYXRhIi0KB1Bvc0luZm8S",
-            "DAoEdXVpZBgBIAEoCRIJCgF4GAIgASgCEgkKAXkYAyABKAIiWQoOR2FtZVBs",
+            "DAoEdXVpZBgBIAEoCRIJCgF4GAIgASgCEgkKAXkYAyABKAIiawoOR2FtZVBs",
             "YXllckRhdGESIwoIcG9zaXRpb24YASABKAsyES5Qcm90b2NvbC5Qb3NJbmZv",
-            "EhAKCG5pY2tuYW1lGAIgASgJEhAKCHByZWZhYklkGAMgASgJIjIKCUVycm9y",
-            "RGF0YRIUCgxyZXNwb25zZUNvZGUYASABKAUSDwoHbWVzc2FnZRgCIAEoCSJC",
-            "CglUb3dlckRhdGESEAoIcHJlZmFiSWQYASABKAkSIwoIdG93ZXJQb3MYAiAB",
-            "KAsyES5Qcm90b2NvbC5Qb3NJbmZvIkIKCVNraWxsRGF0YRIQCghwcmVmYWJJ",
-            "ZBgBIAEoCRIjCghza2lsbFBvcxgCIAEoCzIRLlByb3RvY29sLlBvc0luZm8i",
-            "LAoIQ2FyZERhdGESDgoGY2FyZElkGAEgASgJEhAKCHByZWZhYklkGAIgASgJ",
-            "IkoKE01vbnN0ZXJIZWFsdGhVcGRhdGUSEQoJbW9uc3RlcklkGAEgASgJEhEK",
-            "CWN1cnJlbnRIcBgCIAEoBRINCgVtYXhIcBgDIAEoBWIGcHJvdG8z"));
+            "EhAKCG5pY2tuYW1lGAIgASgJEhAKCHByZWZhYklkGAMgASgJEhAKCGNvb2xE",
+            "b3duGAQgASgFIjIKCUVycm9yRGF0YRIUCgxyZXNwb25zZUNvZGUYASABKAUS",
+            "DwoHbWVzc2FnZRgCIAEoCSJCCglUb3dlckRhdGESEAoIcHJlZmFiSWQYASAB",
+            "KAkSIwoIdG93ZXJQb3MYAiABKAsyES5Qcm90b2NvbC5Qb3NJbmZvIkIKCVNr",
+            "aWxsRGF0YRIQCghwcmVmYWJJZBgBIAEoCRIjCghza2lsbFBvcxgCIAEoCzIR",
+            "LlByb3RvY29sLlBvc0luZm8iLAoIQ2FyZERhdGESDgoGY2FyZElkGAEgASgJ",
+            "EhAKCHByZWZhYklkGAIgASgJIkoKE01vbnN0ZXJIZWFsdGhVcGRhdGUSEQoJ",
+            "bW9uc3RlcklkGAEgASgJEhEKCWN1cnJlbnRIcBgCIAEoBRINCgVtYXhIcBgD",
+            "IAEoBWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Protocol.EnumReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -51,7 +52,7 @@ namespace Protocol {
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.UserData), global::Protocol.UserData.Parser, new[]{ "Id", "Name", "PrefabId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.RoomData), global::Protocol.RoomData.Parser, new[]{ "Id", "OwnerId", "Name", "MaxUserNum", "State", "Users" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.PosInfo), global::Protocol.PosInfo.Parser, new[]{ "Uuid", "X", "Y" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.GamePlayerData), global::Protocol.GamePlayerData.Parser, new[]{ "Position", "Nickname", "PrefabId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.GamePlayerData), global::Protocol.GamePlayerData.Parser, new[]{ "Position", "Nickname", "PrefabId", "CoolDown" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.ErrorData), global::Protocol.ErrorData.Parser, new[]{ "ResponseCode", "Message" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.TowerData), global::Protocol.TowerData.Parser, new[]{ "PrefabId", "TowerPos" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.SkillData), global::Protocol.SkillData.Parser, new[]{ "PrefabId", "SkillPos" }, null, null, null, null),
@@ -1569,6 +1570,7 @@ namespace Protocol {
       position_ = other.position_ != null ? other.position_.Clone() : null;
       nickname_ = other.nickname_;
       prefabId_ = other.prefabId_;
+      coolDown_ = other.coolDown_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1614,6 +1616,18 @@ namespace Protocol {
       }
     }
 
+    /// <summary>Field number for the "coolDown" field.</summary>
+    public const int CoolDownFieldNumber = 4;
+    private int coolDown_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CoolDown {
+      get { return coolDown_; }
+      set {
+        coolDown_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -1632,6 +1646,7 @@ namespace Protocol {
       if (!object.Equals(Position, other.Position)) return false;
       if (Nickname != other.Nickname) return false;
       if (PrefabId != other.PrefabId) return false;
+      if (CoolDown != other.CoolDown) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1642,6 +1657,7 @@ namespace Protocol {
       if (position_ != null) hash ^= Position.GetHashCode();
       if (Nickname.Length != 0) hash ^= Nickname.GetHashCode();
       if (PrefabId.Length != 0) hash ^= PrefabId.GetHashCode();
+      if (CoolDown != 0) hash ^= CoolDown.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1672,6 +1688,10 @@ namespace Protocol {
         output.WriteRawTag(26);
         output.WriteString(PrefabId);
       }
+      if (CoolDown != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(CoolDown);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1694,6 +1714,10 @@ namespace Protocol {
         output.WriteRawTag(26);
         output.WriteString(PrefabId);
       }
+      if (CoolDown != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(CoolDown);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1712,6 +1736,9 @@ namespace Protocol {
       }
       if (PrefabId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(PrefabId);
+      }
+      if (CoolDown != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(CoolDown);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1736,6 +1763,9 @@ namespace Protocol {
       }
       if (other.PrefabId.Length != 0) {
         PrefabId = other.PrefabId;
+      }
+      if (other.CoolDown != 0) {
+        CoolDown = other.CoolDown;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1767,6 +1797,10 @@ namespace Protocol {
             PrefabId = input.ReadString();
             break;
           }
+          case 32: {
+            CoolDown = input.ReadInt32();
+            break;
+          }
         }
       }
     #endif
@@ -1795,6 +1829,10 @@ namespace Protocol {
           }
           case 26: {
             PrefabId = input.ReadString();
+            break;
+          }
+          case 32: {
+            CoolDown = input.ReadInt32();
             break;
           }
         }

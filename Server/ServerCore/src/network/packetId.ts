@@ -40,7 +40,6 @@ export enum ePacketId {
   C2G_LeaveRoomRequest = 127,
   G2L_LeaveRoomRequest = 128,
   L2G_LeaveRoomResponse = 129,
-  G2C_LeaveRoomResponse = 130,
   L2G_LeaveRoomNotification = 131,
   G2C_LeaveRoomNotification = 132,
   //구현X - 끝

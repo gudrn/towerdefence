@@ -4,7 +4,6 @@ import { C2G_ChatMessageRequest, C2G_ChatMessageRequestSchema, C2G_CreateRoomReq
 import { PacketUtils } from "ServerCore/utils/packetUtils";
 import { ePacketId } from "ServerCore/network/packetId";
 import { battleSessionManager, lobbySessionManager } from "src/server";
-import { redis } from "src/utils/redis";
 import { handleError } from "src/utils/errorHandler";
 import { roomManager } from "src/contents/roomManager";
 import { CustomError } from "ServerCore/utils/error/customError";

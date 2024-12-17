@@ -55,7 +55,7 @@ export function handleB2G_UseSkillNotification(buffer: Buffer, session: BattleSe
 }
 
 /*---------------------------------------------
-    [스킬 사용 알림]
+    [캐릭터 고유 능력 사용 알림]
   ---------------------------------------------*/
   export function handleB2G_PlayerUseAbilityNotification(buffer: Buffer, session: BattleSession) {
     const packet = fromBinary(B2G_PlayerUseAbilityNotificationSchema, buffer);
