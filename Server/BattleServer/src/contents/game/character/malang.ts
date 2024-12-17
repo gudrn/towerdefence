@@ -2,11 +2,11 @@ import { GameRoom } from 'src/contents/room/gameRoom';
 import { Character } from './character';
 import { eCharacterId } from 'ServerCore/utils/characterId';
 import { GamePlayer } from '../gamePlayer';
-import { Tower } from '../towers/tower';
 import { PacketUtils } from 'ServerCore/utils/packetUtils';
 import { B2G_TowerBuffNotificationSchema } from 'src/protocol/tower_pb';
 import { create } from '@bufbuild/protobuf';
 import { ePacketId } from 'ServerCore/network/packetId';
+import { Tower } from '../towers/tower';
 
 export class Malang extends Character {
   constructor(room: GameRoom, player: GamePlayer) {

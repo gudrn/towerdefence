@@ -20,7 +20,6 @@ import { CustomError } from 'ServerCore/utils/error/customError';
 import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
 import { PacketUtils } from 'ServerCore/utils/packetUtils';
 import { ePacketId } from 'ServerCore/network/packetId';
-import { Tower } from '../game/towers/tower';
 import { Vec2 } from 'ServerCore/utils/vec2';
 import { B2G_SpawnMonsterNotificationSchema } from 'src/protocol/monster_pb';
 import { gameRoomManager } from './gameRoomManager';
@@ -40,6 +39,8 @@ import { SkillManager } from './skillManager';
 import { MonsterManager } from '../game/monsters/monsterManager';
 import { G2B_UseSkillRequest } from 'src/protocol/skill_pb';
 import { Monster } from '../game/monsters/monster';
+import { Tower } from '../game/towers/tower';
+import { TowerUtils } from '../game/towers/createTower';
 
 export class GameRoom {
   //유저의 스폰 위치
@@ -362,7 +363,9 @@ export class GameRoom {
       x: packet.tower.towerPos.x,
       y: packet.tower.towerPos.y,
     });
-    const newTower = new Tower(packet.tower.prefabId, towerPosInfo, this);
+    
+    const newTower = TowerUtils.createTower(packet.tower.prefabId, towerPosInfo, this);
+
     this.towers.set(newTower.getId(), newTower);
     // 3. 타워 생성 성공 응답
 
@@ -384,13 +387,6 @@ export class GameRoom {
       0,
     );
     this.broadcast(towerBuildNotificationBuffer);
-
-    // 버프 적용
-    if (newTower.getPrefabId() === 'BuffTower') {
-      newTower.buffTowersInRange();
-    } else if (newTower.isBuffTowerInRange()) {
-      newTower.applyAttackBuff();
-    }
   }
 
   public broadcast(buffer: Buffer) {
@@ -510,7 +506,7 @@ export class GameRoom {
       if (tower[1]) {
         const dirX = pos.x - tower[1].getPos().x;
         const dirY = pos.y - tower[1].getPos().y;
-        const dist: number = dirX * dirX + dirY * dirY; // 유클리드 거리 계산
+        const dist: number = dirX * dirX + dirY * dirY;
 
         if (dist < best) {
           best = dist;

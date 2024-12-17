@@ -1,6 +1,5 @@
 import { Vec2 } from "ServerCore/utils/vec2";
 import { Base } from "../base";
-import { Tower } from "../towers/tower";
 import { GameRoom } from "src/contents/room/gameRoom";
 import { PosInfo, PosInfoSchema } from "src/protocol/struct_pb";
 import { assetManager } from "src/utils/assetManager";
@@ -15,6 +14,7 @@ import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
 import { CustomError } from "ServerCore/utils/error/customError";
 import { MathUtils } from "src/utils/mathUtils";
 import { B2G_TowerDestroyNotificationSchema } from "src/protocol/tower_pb";
+import { Tower } from "../towers/tower";
 
 //임시로 사용
 export class Monster extends GameObject{

@@ -142,10 +142,11 @@ class AssetManager {
    * @param {string} prefabId 타워 prefabId
    * @returns {Object|null} 해당 타워 데이터 또는 null
    */
-  getTowerData(prefabId: string) {
-    let tower = this.towers.get(prefabId) || null; // Map의 get() 메서드 사용
-    console.log('tower정보');
-    console.log(tower);
+  getTowerData(prefabId: string): AssetTower {
+    let tower = this.towers.get(prefabId); // Map의 get() 메서드 사용
+    if (!tower) {
+      throw new Error('타워 데이터를 찾을 수 없습니다.');
+    }
     return tower;
   }
 
@@ -252,6 +253,34 @@ class AssetManager {
     let skillCards = this.getRandomSkillCards(num - numTowerCards);
 
     return towerCards.concat(skillCards);
+  }
+
+  getBuffTowerCard(num: number) {
+    let ret = [];
+
+    for (let i = 0; i < num; i += 1) {
+      const randomIndex = Math.floor(Math.random() * this.towerPrefabIdCaches.length);
+      const card = create(CardDataSchema, {
+        cardId: uuidv4(),
+        prefabId: this.towerPrefabIdCaches[1],
+      });
+      ret.push(card);
+    }
+    return ret;
+  }
+
+  getMissileTowerCard(num: number) {
+    let ret = [];
+
+    for (let i = 0; i < num; i += 1) {
+      const randomIndex = Math.floor(Math.random() * this.towerPrefabIdCaches.length);
+      const card = create(CardDataSchema, {
+        cardId: uuidv4(),
+        prefabId: this.towerPrefabIdCaches[3],
+      });
+      ret.push(card);
+    }
+    return ret;
   }
 }
 

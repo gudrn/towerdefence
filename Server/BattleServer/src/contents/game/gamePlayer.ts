@@ -45,11 +45,19 @@ export class GamePlayer {
   initCard() {
     if (this.isInitCard) return;
     this.isInitCard = true;
-    // 포탑 카드를 무조건 하나 추가
-    const mandatoryTowerCard: CardData[] = assetManager.getRandomTowerCards();
-    this.cardList.set(mandatoryTowerCard[0].cardId, mandatoryTowerCard[0].prefabId);
 
-    const cards = assetManager.getRandomCards(3); // 랜덤 카드 3개 가져오기
+    //변경 전
+    // 포탑 카드를 무조건 하나 추가
+    // const mandatoryTowerCard: CardData[] = assetManager.getRandomTowerCards();
+    // this.cardList.set(mandatoryTowerCard[0].cardId, mandatoryTowerCard[0].prefabId);
+
+    //const cards = assetManager.getRandomCards(3); // 랜덤 카드 3개 가져오기
+
+    const cards = assetManager.getMissileTowerCard(2);
+    const mandatoryTowerCard = assetManager.getBuffTowerCard(1);
+    this.cardList.set(mandatoryTowerCard[0].cardId, mandatoryTowerCard[0].prefabId);
+    //변경 후
+
     for (let card of cards) {
       this.cardList.set(card.cardId, card.prefabId); // 카드 목록에 추가
     }

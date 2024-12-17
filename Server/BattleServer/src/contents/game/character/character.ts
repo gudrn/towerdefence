@@ -1,6 +1,5 @@
 import { GameRoom } from '../../room/gameRoom';
 import { GamePlayer } from '../gamePlayer';
-import { Tower } from '../towers/tower';
 import { BattleSession } from 'src/main/session/battleSession';
 import { assetManager } from 'src/utils/assetManager';
 import { CustomError } from 'ServerCore/utils/error/customError';
@@ -14,6 +13,7 @@ import { create } from '@bufbuild/protobuf';
 import { PacketUtils } from 'ServerCore/utils/packetUtils';
 import { ePacketId } from 'ServerCore/network/packetId';
 import { Monster } from '../monsters/monster';
+import { Tower } from '../towers/tower';
 /**
  * 캐릭터 클래스입니다.
  */
@@ -118,10 +118,8 @@ export abstract class Character {
     }
 
     return towers.filter((tower) => {
-      const distance = Math.sqrt(
-        Math.pow(tower.pos.x - playerPos.x, 2) + Math.pow(tower.pos.y - playerPos.y, 2),
-      );
-      return distance <= range; // 범위 내 타워 필터링
+      const distance = (tower.pos.x - playerPos.x) * (tower.pos.x - playerPos.x) + (tower.pos.y - playerPos.y) * (tower.pos.y - playerPos.y);
+      return distance <= range * range; // 범위 내 타워 필터링
     });
   }
 
