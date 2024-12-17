@@ -16,7 +16,7 @@ export class MonsterSpawner {
 ---------------------------------------------*/
   protected gameRoom: GameRoom;
   private spawnedMonster: number = 0;
-  private spawnRate: number = 0; //몬스터 생성 간격
+  private spawnRate: number = 2000; //몬스터 생성 간격
   private spawnTimer: NodeJS.Timeout | undefined; //NodeJS.Timeout
 
   public getRandomSpawnPosition() {
@@ -57,7 +57,7 @@ export class MonsterSpawner {
     this.spawnedMonster += 1;
   }
 
-/*---------------------------------------------
+  /*---------------------------------------------
    * 노말 몬스터 스폰
    * - 지정된 위치에 몬스터를 생성하고 게임 방에 추가
   ---------------------------------------------*/
@@ -114,8 +114,6 @@ export class MonsterSpawner {
     monster.statusMultiplier(this.gameRoom.monsterStatusMultiplier); // 강화 배율 적용
     this.gameRoom.addObject(monster);
   }
-
-
 
   /**
    * 스폰 중지
