@@ -132,8 +132,11 @@ class AssetManager {
    * @param {string} prefabId 타워 prefabId
    * @returns {Object|null} 해당 타워 데이터 또는 null
    */
-  getTowerData(prefabId: string) {
-    let tower = this.towers.get(prefabId) || null; // Map의 get() 메서드 사용
+  getTowerData(prefabId: string): AssetTower {
+    let tower = this.towers.get(prefabId); // Map의 get() 메서드 사용
+    if (!tower) {
+      throw new Error('타워 데이터를 찾을 수 없습니다.');
+    }
     console.log('tower정보');
     console.log(tower);
     return tower;
