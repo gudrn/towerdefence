@@ -341,8 +341,8 @@ export class GameRoom {
 
   // 타워 생성 동기화
   handleTowerBuild(packet: G2B_TowerBuildRequest, session: BattleSession) {
-    const { tower, ownerId, cardId } = packet;
-    const user = this.users.get(session.getId());
+    const { ownerId, cardId } = packet;
+    const user = this.users.get(ownerId);
     //1. 타워 데이터 존재 확인
     if (packet.tower == undefined) {
       console.log('[handleTowerBuild] 타워 데이터가 유효하지 않습니다.');
@@ -352,12 +352,12 @@ export class GameRoom {
     if (!towerData) {
       throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 타워');
     }
-    user?.useCard(cardId, this.id);
     // 2. 타워 정보 저장
     if (packet.tower.towerPos == undefined) {
       console.log('[handleTowerBuild] towerPos가 유효하지 않습니다.');
       throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 towerPos');
     }
+    user?.useCard(cardId, this.id);
 
     const towerPosInfo = create(PosInfoSchema, {
       uuid: uuidv4(),
