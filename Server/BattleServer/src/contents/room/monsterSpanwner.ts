@@ -16,7 +16,7 @@ export class MonsterSpawner {
 ---------------------------------------------*/
   protected gameRoom: GameRoom;
   private spawnedMonster: number = 0;
-  protected spawnRate: number = 5000; //몬스터 생성 간격
+  protected spawnRate: number = 4000; //몬스터 생성 간격
   private spawnTimer: NodeJS.Timeout | undefined; //NodeJS.Timeout
 
   public getRandomSpawnPosition() {
@@ -58,10 +58,9 @@ export class MonsterSpawner {
   }
 
   protected updateSpawnRate(newRate: number) {
-      this.spawnRate = newRate; // spawnRate 갱신
-      this.startSpawning(); // 새로운 rate로 interval 재설정
+    this.spawnRate = newRate; // spawnRate 갱신
+    this.startSpawning(); // 새로운 rate로 interval 재설정
   }
-
 
   startSpawningElite() {
     this.spawnEilteMonster(); // 엘리트 몬스터 생성
