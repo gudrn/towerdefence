@@ -42,8 +42,8 @@ export class MissileTower extends Tower {
         monster.onDamaged(this.getTotalDamage());
 
         const splashDamageAttackPacket = create(B2G_MonsterHealthUpdateNotificationSchema, {
-          monsterId: this.target.monster.getId(),
-          hp: this.target.monster.hp,
+          monsterId: monster.getId(),
+          hp: monster.hp,
           roomId: this.room.id,
         });
 

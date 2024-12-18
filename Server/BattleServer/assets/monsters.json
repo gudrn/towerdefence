@@ -40,7 +40,7 @@
     },
     {
       "prefabId": "Robot5",
-      "maxHp": 250,
+      "maxHp": 500,
       "attackRange": 1,
       "attackDamage": 10,
       "attackCoolDown": 2,
