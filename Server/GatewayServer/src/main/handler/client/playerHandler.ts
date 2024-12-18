@@ -30,7 +30,9 @@ export function handleC2G_PlayerPositionUpdateRequest(buffer: Buffer, session: G
 
     const requestPacket = create(G2B_PlayerPositionUpdateRequestSchema, {
         posInfo: packet.posInfo,
-        roomId: packet.roomId
+        parameter: packet.parameter,
+        state: packet.state,
+        roomId: packet.roomId,
     });
     
     const sendBuffer = PacketUtils.SerializePacket(requestPacket, G2B_PlayerPositionUpdateRequestSchema, ePacketId.G2B_PlayerPositionUpdateRequest, 0);
