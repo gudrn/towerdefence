@@ -39,7 +39,7 @@ export class Monster extends GameObject {
   private waitUntil: number = 0; //동작 간 딜레이 시간
   private lastUpdated = 0; // 마지막 경로 계산 시간
   private path: Vec2[] | null = [];
-  public attackBuffRate: number = 0;
+  public attackBuffRate: number = 0.5;
 
   /*---------------------------------------------
     [생성자]
@@ -54,6 +54,7 @@ export class Monster extends GameObject {
     }
 
     this.target = null; // 타겟
+    
 
     this.hp = this.maxHp = Math.floor(monsterData.maxHp * room.getMultiplier()); // 체력
     this.attackDamage = Math.floor(monsterData.attackDamage * room.getMultiplier()); // 공격력
@@ -181,6 +182,7 @@ export class Monster extends GameObject {
   private attackTower(tower: Tower) {
     // 1. 타워 데미지 처리
     tower.onDamaged(this.getTotalDamage());
+
     // 2. 클라이언트에 공격 패킷 전송
     const attackPacket = create(B2G_MonsterAttackTowerNotificationSchema, {
       monsterId: this.getId(),
@@ -200,11 +202,15 @@ export class Monster extends GameObject {
 
   /*---------------------------------------------
             [베이스 공격]
-        ---------------------------------------------*/
+  ---------------------------------------------*/
   private attackBase(base: Base) {
+    //1. 기지 데미지 처리
+    base.onDamaged(this.getTotalDamage());
+
+    //2. 패킷 전송
     const baseAttackPacket = create(B2G_MonsterAttackBaseNotificationSchema, {
       monsterId: this.getId(),
-      attackDamage: this.attackDamage,
+      attackDamage: this.getTotalDamage(),
       roomId: this.room.id,
     });
 
@@ -216,8 +222,6 @@ export class Monster extends GameObject {
     );
     this.room.broadcast(baseAttackBuffer);
 
-    //기지 데미지 처리
-    base.onDamaged(this.getTotalDamage());
   }
 
   /*---------------------------------------------
@@ -263,6 +267,11 @@ export class Monster extends GameObject {
   }
 
   getTotalDamage(): number {
-    return this.attackDamage + this.attackDamage * this.attackBuffRate;
+    if(this.room.numBuffMonsters > 0){
+      console.log("공격력 버프 on");
+      return this.attackDamage + this.attackDamage * this.attackBuffRate;
+    }
+    
+    return this.attackDamage;
   }
 }

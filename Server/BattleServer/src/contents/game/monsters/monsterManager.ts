@@ -17,7 +17,6 @@ export class MonsterManager {
   ---------------------------------------------*/
   private monsters: Map<string, Monster>;
   private tilemap: Tilemap;
-  private numBuffMonsters: number = 0;
   private monsterSpawner: MonsterSpawner;
   private gameRoom: GameRoom;
 
@@ -42,6 +41,7 @@ export class MonsterManager {
     [엘리트 몬스터 스폰]
   ---------------------------------------------*/
   public spawnEilteMonster() {
+    this.gameRoom.numBuffMonsters += 1;
     this.monsterSpawner.spawnMonster(true);
   }
 
@@ -66,11 +66,6 @@ export class MonsterManager {
   ---------------------------------------------*/
   public addMonster(monster: Monster) {
     this.monsters.set(monster.getId(), monster);
-    
-    //버프 몬스터 수 갱신
-    if(monster.getPrefabId() == "Robot5") {
-      this.numBuffMonsters += 1;
-    }
 
     // [TODO] 큐에 담았다가 일정 시간 경과 시 한 패킷으로 보내는 방법으로 구현해보기
     const packet = create(B2G_SpawnMonsterNotificationSchema, {
@@ -97,7 +92,7 @@ export class MonsterManager {
     const monster = this.monsters.get(uuid);
 
     if(monster?.getPrefabId() === 'Robot5'){
-      this.numBuffMonsters -= 1;
+      this.gameRoom.numBuffMonsters -= 1;
     }
     this.monsters.delete(uuid);
   }

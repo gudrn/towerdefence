@@ -70,6 +70,7 @@ export class GameRoom {
   private gameLoopInterval: any = null; //gameLoop를 저장 후 방 제거 시 clear하기 위함
   private skillManager: SkillManager;
   private scorePerWave = 50; // 웨이브 증가 기준 점수
+  public numBuffMonsters: number = 0;
 
   constructor(id: number, maxPlayerCount: number) {
     this.id = id;
@@ -194,7 +195,8 @@ export class GameRoom {
     setTimeout(() => {
       this.users.forEach((player) => player.initCard());
       this.monsterManager.startSpawning();
-    }, 500);
+      this.monsterManager.spawnEilteMonster()
+    }, 1000);
 
     this.gameLoopInterval = setInterval(() => {
       this.gameLoop();
