@@ -10,7 +10,6 @@ import { B2G_MonsterDeathNotificationSchema, B2G_MonsterHealthUpdateNotification
 import { create } from '@bufbuild/protobuf';
 import { ePacketId } from 'ServerCore/network/packetId';
 export class Shark extends Character {
-  private damage = 50;
   private range = 5;
 
   constructor(room: GameRoom, player: GamePlayer) {
@@ -28,14 +27,14 @@ export class Shark extends Character {
     console.log('Shark의 고유 능력 발동: 원형 범위 내 몬스터들에게 데미지');
 
     const monsters = this.getMonstersInRange(this.room, player, this.range);
-
-    this.applyDamageToMonsters(monsters, this.damage);
     
     monsters.forEach((monster) => {
+      monster.onDamaged(monster.hp - monster.maxHp * 0.3);
+
        {
         const notificationPacket = create(B2G_MonsterHealthUpdateNotificationSchema, {
           monsterId: monster.getId(),
-          hp: monster.hp,
+          hp: monster.hp - monster.maxHp * 0.2,
           roomId: this.room.id
         });
       
@@ -48,9 +47,5 @@ export class Shark extends Character {
         this.room.broadcast(sendBuffer);
       }
     });
-  }
-
-  public getTotalDamage(){
-    return Math.floor(this.damage + (this.damage * this.room.wave * 0.2));
   }
 }
