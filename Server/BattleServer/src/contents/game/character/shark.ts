@@ -28,13 +28,15 @@ export class Shark extends Character {
 
     const monsters = this.getMonstersInRange(this.room, player, this.range);
     
+    let perDamage: number = 0;
     monsters.forEach((monster) => {
-      monster.onDamaged(monster.hp - monster.maxHp * 0.3);
+      perDamage = Math.floor(monster.hp - monster.maxHp * 0.3);
+      monster.onDamaged(perDamage);
 
        {
         const notificationPacket = create(B2G_MonsterHealthUpdateNotificationSchema, {
           monsterId: monster.getId(),
-          hp: monster.hp - monster.maxHp * 0.2,
+          hp: perDamage,
           roomId: this.room.id
         });
       
