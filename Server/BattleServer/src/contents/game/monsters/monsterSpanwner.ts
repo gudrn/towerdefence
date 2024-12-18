@@ -24,7 +24,7 @@ export class MonsterSpawner {
     [멤버 변수]
 ---------------------------------------------*/
   private monsterManager: MonsterManager;
-  private spawnRate: number = 4000; //몬스터 생성 간격
+  private spawnRate: number = 2000; //몬스터 생성 간격
   private spawnTimer: NodeJS.Timeout | undefined; //NodeJS.Timeout
 
   public getRandomSpawnPosition() {
@@ -61,7 +61,7 @@ export class MonsterSpawner {
   }
 
   public increaseWave() {
-    this.spawnRate = MathUtils.clamp(this.spawnRate - 500, 100, this.spawnRate); // spawnRate 갱신
+    this.spawnRate = MathUtils.clamp(this.spawnRate - 500, 200, this.spawnRate); // spawnRate 갱신
     this.startSpawning(); // 새로운 rate로 interval 재설정
   }
 
