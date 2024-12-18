@@ -452,7 +452,9 @@ export class GameRoom {
     this.broadcast(sendBuffer);
 
     //5웨이브 마다 엘리트 몬스터 생성
-    this.monsterManager.spawnEilteMonster();
+    if (this.wave % 3 == 0 && this.wave != 0) {
+      this.monsterManager.spawnEilteMonster();
+    }
   }
 
   isGameOver() {
