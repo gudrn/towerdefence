@@ -61,7 +61,7 @@ export class MonsterSpawner {
   }
 
   public increaseWave() {
-    this.spawnRate = MathUtils.clamp(this.spawnRate - 500, 200, this.spawnRate); // spawnRate 갱신
+    this.spawnRate = MathUtils.clamp(this.spawnRate - 300, 200, this.spawnRate); // spawnRate 갱신
     this.startSpawning(); // 새로운 rate로 interval 재설정
   }
 
