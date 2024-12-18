@@ -213,6 +213,8 @@ export class GameRoom {
 
     const packet = create(B2G_PlayerPositionUpdateNotificationSchema, {
       posInfo: clientPacket.posInfo,
+      parameter: clientPacket.parameter,
+      state: clientPacket.state,
       roomId: clientPacket.roomId,
     });
 
@@ -336,8 +338,8 @@ export class GameRoom {
   handleTowerBuild(packet: G2B_TowerBuildRequest, session: BattleSession) {
     const { tower, ownerId, cardId } = packet;
     const user = this.users.get(ownerId);
-    if(user == undefined) {
-      throw new CustomError(ErrorCodes.INVALID_PACKET, "유저를 찾지 못했습니다.");
+    if (user == undefined) {
+      throw new CustomError(ErrorCodes.INVALID_PACKET, '유저를 찾지 못했습니다.');
     }
 
     //1. 타워 데이터 존재 확인
@@ -356,14 +358,14 @@ export class GameRoom {
       throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 towerPos');
     }
 
-    user.useCard(cardId,this.id, true);
+    user.useCard(cardId, this.id, true);
 
     const towerPosInfo = create(PosInfoSchema, {
       uuid: uuidv4(),
       x: packet.tower.towerPos.x,
       y: packet.tower.towerPos.y,
     });
-    
+
     const newTower = TowerUtils.createTower(packet.tower.prefabId, towerPosInfo, this);
 
     this.towers.set(newTower.getId(), newTower);
@@ -446,7 +448,7 @@ export class GameRoom {
 
     //5웨이브 마다 엘리트 몬스터 생성
     if (true) {
-    //if (this.wave % 5 === 0) {
+      //if (this.wave % 5 === 0) {
       this.monsterManager.spawnEilteMonster();
     }
   }
