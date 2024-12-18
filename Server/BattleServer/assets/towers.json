@@ -46,7 +46,7 @@
       "attackDamage": 10,
       "attackRange": 5,
       "attackCoolDown": 2000,
-      "maxHp": 200
+      "maxHp": 400
     },
     {
       "prefabId": "ThunderTower",
