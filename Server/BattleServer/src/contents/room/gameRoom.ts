@@ -40,7 +40,7 @@ import { MonsterManager } from '../game/monsters/monsterManager';
 import { G2B_UseSkillRequest } from 'src/protocol/skill_pb';
 import { Monster } from '../game/monsters/monster';
 import { Tower } from '../game/towers/tower';
-import { TowerUtils } from '../game/towers/createTower';
+import { TowerUtils } from '../../utils/towerUtils';
 
 export class GameRoom {
   //유저의 스폰 위치
@@ -69,7 +69,7 @@ export class GameRoom {
   public monsterStatusMultiplier = 1; // 몬스터 강화 계수 (wave만으론 강화가 불가능한가요?) --12.06 조정현
   private gameLoopInterval: any = null; //gameLoop를 저장 후 방 제거 시 clear하기 위함
   private skillManager: SkillManager;
-  private scorePerWave = 100; // 웨이브 증가 기준 점수
+  private scorePerWave = 50; // 웨이브 증가 기준 점수
 
   constructor(id: number, maxPlayerCount: number) {
     this.id = id;
@@ -389,6 +389,11 @@ export class GameRoom {
       0,
     );
     this.broadcast(towerBuildNotificationBuffer);
+
+    //버프적용
+    if(newTower.isBuffTowerInRange()) {
+      newTower.applyAttackBuff();
+    }
   }
 
   public broadcast(buffer: Buffer) {

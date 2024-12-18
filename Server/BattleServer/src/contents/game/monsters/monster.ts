@@ -179,9 +179,8 @@ export class Monster extends GameObject {
             [타워 공격]
     ---------------------------------------------*/
   private attackTower(tower: Tower) {
-    // 타워 데미지 처리
+    // 1. 타워 데미지 처리
     tower.onDamaged(this.getTotalDamage());
-
     // 2. 클라이언트에 공격 패킷 전송
     const attackPacket = create(B2G_MonsterAttackTowerNotificationSchema, {
       monsterId: this.getId(),

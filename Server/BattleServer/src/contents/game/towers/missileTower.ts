@@ -39,7 +39,6 @@ export class MissileTower extends Tower {
 
       // 폭발 범위 내에 있으면 데미지 처리
       if (distance <= this.explosionRadius * this.explosionRadius) {
-        console.log("광역딜 ㅇㅇ");
         monster.onDamaged(this.getTotalDamage());
 
         const splashDamageAttackPacket = create(B2G_MonsterHealthUpdateNotificationSchema, {

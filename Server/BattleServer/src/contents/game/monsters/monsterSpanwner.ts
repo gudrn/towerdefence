@@ -85,25 +85,18 @@ export class MonsterSpawner {
 
     let randomAssetMonster: AssetMonster;
 
-    if(isEilteMonster) {
+    if (isEilteMonster) {
       randomAssetMonster = assetManager.getRandomEliteMonsterAssetMonster();
-    }
-    else {
+    } else {
       // 1~4번 몬스터 중 랜덤
       randomAssetMonster = assetManager.getRandomNormalAssetMonster();
     }
-    const monster = new Monster(randomAssetMonster.prefabId, posInfo, this.monsterManager.getGameRoom());
+    const monster = new Monster(
+      randomAssetMonster.prefabId,
+      posInfo,
+      this.monsterManager.getGameRoom(),
+    );
     this.monsterManager.addMonster(monster);
-  }
-
-  /*---------------------------------------------
-   * 엘리트 몬스터 스폰
-   * - 지정된 위치에 몬스터를 생성하고 게임 방에 추가
-   * - 점수를 기준으로 
-  ---------------------------------------------*/
-  spawnEilteMonster() {
-    // 랜덤 위치 선택
-    
   }
 
   /**
