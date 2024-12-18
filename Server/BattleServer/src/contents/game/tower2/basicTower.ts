@@ -10,7 +10,14 @@ export class BasicTower extends Tower {
     super(towerData, pos, room);
   }
 
-  protected processAttack(target: SkillUseMonster) {
+  public processAttack(target: SkillUseMonster) {
     target.onDamaged(this.attackDamage);
+  }
+  onDeath(): void {
+    this.room.removeObject(this.getId());
+  }
+
+  public override splashDamage(target: SkillUseMonster): void {
+    throw new Error('Method not implemented.');
   }
 }

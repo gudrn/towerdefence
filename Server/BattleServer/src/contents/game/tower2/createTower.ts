@@ -1,6 +1,6 @@
 import { GameRoom } from 'src/contents/room/gameRoom';
 import { Tower } from './tower';
-import { BasicTower } from './basciTower';
+import { BasicTower } from './basicTower';
 import { MissileTower } from './MissileTower';
 import { ThunderTower } from './ThunderTower';
 import { TankTower } from './TankTower';

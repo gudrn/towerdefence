@@ -42,6 +42,7 @@ import { MonsterManager } from './monsterManager';
 import { SkillUseMonster } from '../game/skillUseMonster';
 import { G2B_UseSkillRequest } from 'src/protocol/skill_pb';
 import { Monster } from '../game/monster';
+import { Tower2 } from '../game/tower2/tower2';
 
 interface PQNode {
   cost: number;
@@ -63,7 +64,7 @@ export class GameRoom {
   public id: number;
   public users: Map<string, GamePlayer>;
   private monsterManager: MonsterManager;
-  private towers: Map<string, Tower>;
+  private towers: Map<string, Tower2>;
   private maxPlayerCount: number;
   private tilemap: Tilemap;
   private base: Base;
@@ -80,7 +81,7 @@ export class GameRoom {
   constructor(id: number, maxPlayerCount: number) {
     this.id = id;
     this.users = new Map<string, GamePlayer>();
-    this.towers = new Map<string, Tower>();
+    this.towers = new Map<string, Tower2>();
     this.tilemap = new Tilemap({ x: 16, y: 16 });
     this.monsterManager = new MonsterManager(this, this.tilemap);
     this.base = new Base(300, create(PosInfoSchema, { x: 16, y: 16 }), this);
@@ -341,8 +342,8 @@ export class GameRoom {
   handleTowerBuild(packet: G2B_TowerBuildRequest, session: BattleSession) {
     const { tower, ownerId, cardId } = packet;
     const user = this.users.get(ownerId);
-    if(user == undefined) {
-      throw new CustomError(ErrorCodes.INVALID_PACKET, "유저를 찾지 못했습니다.");
+    if (user == undefined) {
+      throw new CustomError(ErrorCodes.INVALID_PACKET, '유저를 찾지 못했습니다.');
     }
 
     //1. 타워 데이터 존재 확인
@@ -361,15 +362,15 @@ export class GameRoom {
       throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 towerPos');
     }
 
-    user.useCard(cardId,this.id, true);
+    user.useCard(cardId, this.id, true);
 
     const towerPosInfo = create(PosInfoSchema, {
       uuid: uuidv4(),
       x: packet.tower.towerPos.x,
       y: packet.tower.towerPos.y,
     });
-    const newTower = new Tower(packet.tower.prefabId, towerPosInfo, this);
-    this.towers.set(newTower.getId(), newTower);
+    const newTower = new Tower2(packet.tower.prefabId, towerPosInfo, this);
+    this.towers.set(newTower.getTower().getId(), newTower);
     // 3. 타워 생성 성공 응답
 
     // 4. 모든 클라이언트에게 타워 추가 알림
@@ -379,7 +380,7 @@ export class GameRoom {
         towerPos: towerPosInfo,
       }),
       ownerId: ownerId,
-      maxHp: newTower.maxHp,
+      maxHp: newTower.getTower().maxHp,
       roomId: this.id,
     });
 
@@ -392,7 +393,7 @@ export class GameRoom {
     this.broadcast(towerBuildNotificationBuffer);
 
     // 버프 적용
-    if (newTower.getPrefabId() === 'BuffTower') {
+    if (newTower.getTower().getPrefabId() === 'BuffTower') {
       newTower.buffTowersInRange();
     } else if (newTower.isBuffTowerInRange()) {
       newTower.applyAttackBuff();
@@ -510,8 +511,8 @@ export class GameRoom {
     // 타워 거리 계산
     for (let tower of this.towers) {
       if (tower[1]) {
-        const dirX = pos.x - tower[1].getPos().x;
-        const dirY = pos.y - tower[1].getPos().y;
+        const dirX = pos.x - tower[1].getTower().getPos().x;
+        const dirY = pos.y - tower[1].getTower().getPos().y;
         const dist: number = dirX * dirX + dirY * dirY; // 유클리드 거리 계산
 
         if (dist < best) {

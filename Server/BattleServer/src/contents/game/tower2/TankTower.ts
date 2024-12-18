@@ -13,4 +13,8 @@ export class TankTower extends Tower {
   protected processAttack(target: SkillUseMonster) {
     target.onDamaged(this.attackDamage);
   }
+
+  public override splashDamage(target: SkillUseMonster): void {
+    throw new Error('Method not implemented.');
+  }
 }

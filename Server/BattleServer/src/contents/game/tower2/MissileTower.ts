@@ -18,8 +18,10 @@ export class MissileTower extends Tower {
 
   protected processAttack(target: SkillUseMonster) {
     target.onDamaged(this.attackDamage);
+    this.splashDamage(target);
   }
-  protected splashDamage(target: SkillUseMonster) {
+
+  override splashDamage(target: SkillUseMonster) {
     // 범위 내 몬스터 찾기
     const monsters = Array.from(this.room.getMonsters().values());
     for (const monster of monsters) {
