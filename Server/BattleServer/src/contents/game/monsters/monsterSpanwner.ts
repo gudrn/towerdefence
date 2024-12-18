@@ -85,14 +85,17 @@ export class MonsterSpawner {
 
     let randomAssetMonster: AssetMonster;
 
-    if(isEilteMonster) {
+    if (isEilteMonster) {
       randomAssetMonster = assetManager.getRandomEliteMonsterAssetMonster();
-    }
-    else {
+    } else {
       // 1~4번 몬스터 중 랜덤
       randomAssetMonster = assetManager.getRandomNormalAssetMonster();
     }
-    const monster = new Monster(randomAssetMonster.prefabId, posInfo, this.monsterManager.getGameRoom());
+    const monster = new Monster(
+      randomAssetMonster.prefabId,
+      posInfo,
+      this.monsterManager.getGameRoom(),
+    );
     this.monsterManager.addMonster(monster);
   }
 
