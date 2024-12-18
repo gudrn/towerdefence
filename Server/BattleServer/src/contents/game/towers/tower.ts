@@ -12,6 +12,7 @@ import { ePacketId } from 'ServerCore/network/packetId';
 import {
   B2G_TowerAttackMonsterNotificationSchema,
   B2G_TowerBuffNotificationSchema,
+  B2G_TowerDestroyNotificationSchema,
 } from 'src/protocol/tower_pb';
 import { AssetTower } from 'src/utils/interfaces/assetTower';
 import { OBJECT_STATE_TYPE } from 'src/protocol/enum_pb';
@@ -203,6 +204,16 @@ protected processAttack(target: Monster) {
    ---------------------------------------------*/
    public override onDeath() {
     this.room.removeObject(this.getId());
+
+    const packet = create(B2G_TowerDestroyNotificationSchema, {
+      isSuccess: true,
+      towerId: this.getId(),
+      roomId: this.room.id
+    });
+
+    const sendBuffer = PacketUtils.SerializePacket(packet, B2G_TowerDestroyNotificationSchema, ePacketId.B2G_TowerDestroyNotification, 0);
+
+    this.room.broadcast(sendBuffer);
   }
 
   protected getTowersInRange(): Tower[] {

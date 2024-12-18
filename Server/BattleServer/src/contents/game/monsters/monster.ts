@@ -119,8 +119,6 @@ export class Monster extends GameObject {
       } else {
         console.log('이동 불가능');
       }
-    } else {
-      console.log('Path가 없습니다.');
     }
   }
 
