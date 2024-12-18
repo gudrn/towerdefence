@@ -54,7 +54,6 @@ export class Monster extends GameObject {
     }
 
     this.target = null; // 타겟
-    
 
     this.hp = this.maxHp = Math.floor(monsterData.maxHp * room.getMultiplier()); // 체력
     this.attackDamage = Math.floor(monsterData.attackDamage * room.getMultiplier()); // 공격력
@@ -221,7 +220,6 @@ export class Monster extends GameObject {
       0, //수정 부분
     );
     this.room.broadcast(baseAttackBuffer);
-
   }
 
   /*---------------------------------------------
@@ -267,11 +265,11 @@ export class Monster extends GameObject {
   }
 
   getTotalDamage(): number {
-    if(this.room.numBuffMonsters > 0){
-      console.log("공격력 버프 on");
-      return this.attackDamage + this.attackDamage * this.attackBuffRate;
+    if (this.room.numBuffMonsters > 0) {
+      console.log('공격력 버프 on');
+      return Math.floor(this.attackDamage + this.attackDamage * this.attackBuffRate);
     }
-    
+
     return this.attackDamage;
   }
 }
