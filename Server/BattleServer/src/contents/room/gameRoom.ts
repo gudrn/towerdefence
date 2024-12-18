@@ -392,7 +392,7 @@ export class GameRoom {
     this.broadcast(towerBuildNotificationBuffer);
 
     //버프적용
-    if(newTower.isBuffTowerInRange()) {
+    if (newTower.isBuffTowerInRange()) {
       newTower.applyAttackBuff();
     }
   }
@@ -434,7 +434,7 @@ export class GameRoom {
 
     // 강화 계수 증가
     this.monsterStatusMultiplier += 0.1;
-    if (this.wave % 10 == 0) {
+    if (this.wave % 3 == 0) {
       this.monsterManager.increaseWave();
       this.scorePerWave += 40;
     }
