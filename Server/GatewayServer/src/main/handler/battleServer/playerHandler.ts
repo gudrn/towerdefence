@@ -26,6 +26,8 @@ export function handleB2G_PlayerPositionUpdateNotification(buffer: Buffer, sessi
     
     const notificationPacket = create(G2C_PlayerPositionUpdateNotificationSchema, {
         posInfo: packet.posInfo,
+        parameter: packet.parameter,
+        state: packet.state,
     });
     
     const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_PlayerPositionUpdateNotificationSchema, ePacketId.G2C_PlayerPositionUpdateNotification, 0);
