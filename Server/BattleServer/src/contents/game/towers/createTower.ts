@@ -1,14 +1,13 @@
 import { GameRoom } from 'src/contents/room/gameRoom';
-import { Tower } from '../contents/game/towers/tower';
-
+import { Tower } from './tower';
+import { MissileTower } from './missileTower';
+import { ThunderTower } from './thunderTower';
+import { TankTower } from './tankTower';
+import { StrongTower } from './strongTower';
+import { IceTower } from './iceTower';
 import { PosInfo } from 'src/protocol/struct_pb';
-import { BasicTower } from 'src/contents/game/towers/basicTower';
-import { MissileTower } from 'src/contents/game/towers/missileTower';
-import { ThunderTower } from 'src/contents/game/towers/thunderTower';
-import { TankTower } from 'src/contents/game/towers/tankTower';
-import { StrongTower } from 'src/contents/game/towers/strongTower';
-import { IceTower } from 'src/contents/game/towers/iceTower';
-import { BuffTower } from 'src/contents/game/towers/buffTower';
+import { BuffTower } from './buffTower';
+import { BasicTower } from './basicTower';
 
 /**
  * 캐릭터 등록
