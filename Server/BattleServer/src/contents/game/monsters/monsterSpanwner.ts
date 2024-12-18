@@ -61,7 +61,7 @@ export class MonsterSpawner {
   }
 
   public increaseWave() {
-    this.spawnRate = MathUtils.clamp(this.spawnRate - 500, 100, this.spawnRate); // spawnRate 갱신
+    this.spawnRate = MathUtils.clamp(this.spawnRate - 500, 300, this.spawnRate); // spawnRate 갱신
     this.startSpawning(); // 새로운 rate로 interval 재설정
   }
 
@@ -85,14 +85,17 @@ export class MonsterSpawner {
 
     let randomAssetMonster: AssetMonster;
 
-    if(isEilteMonster) {
+    if (isEilteMonster) {
       randomAssetMonster = assetManager.getRandomEliteMonsterAssetMonster();
-    }
-    else {
+    } else {
       // 1~4번 몬스터 중 랜덤
       randomAssetMonster = assetManager.getRandomNormalAssetMonster();
     }
-    const monster = new Monster(randomAssetMonster.prefabId, posInfo, this.monsterManager.getGameRoom());
+    const monster = new Monster(
+      randomAssetMonster.prefabId,
+      posInfo,
+      this.monsterManager.getGameRoom(),
+    );
     this.monsterManager.addMonster(monster);
   }
 
@@ -103,7 +106,6 @@ export class MonsterSpawner {
   ---------------------------------------------*/
   spawnEilteMonster() {
     // 랜덤 위치 선택
-    
   }
 
   /**
