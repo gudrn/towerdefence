@@ -78,7 +78,7 @@ export class GameRoom {
     this.towers = new Map<string, Tower>();
     this.tilemap = new Tilemap({ x: 16, y: 16 });
     this.monsterManager = new MonsterManager(this, this.tilemap);
-    this.base = new Base(300, create(PosInfoSchema, { x: 16, y: 16 }), this);
+    this.base = new Base(2500, create(PosInfoSchema, { x: 16, y: 16 }), this);
     this.maxPlayerCount = maxPlayerCount;
     this.skillManager = new SkillManager(this);
   }
@@ -430,14 +430,13 @@ export class GameRoom {
   }
 
   private increaseWave() {
-
     this.wave += 1;
 
     // 강화 계수 증가
     this.monsterStatusMultiplier += 0.1 * this.wave;
     this.monsterManager.increaseWave();
     this.scorePerWave += 30;
-    
+
     const increaseWavePacket = create(B2G_IncreaseWaveNotificationSchema, {
       isSuccess: true,
       roomId: this.id,

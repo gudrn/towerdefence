@@ -11,9 +11,9 @@
     },
     {
       "prefabId": "TowerRepair",
-      "attackDamage": 0, 
+      "attackDamage": 0,
       "attackRange": 0,
-      "heal": 50,
+      "heal": 400,
       "type": "heal"
     }
   ]
