@@ -195,8 +195,7 @@ export class GameRoom {
     setTimeout(() => {
       this.users.forEach((player) => player.initCard());
       this.monsterManager.startSpawning();
-      this.monsterManager.spawnEilteMonster()
-    }, 1000);
+    }, 500);
 
     this.gameLoopInterval = setInterval(() => {
       this.gameLoop();
