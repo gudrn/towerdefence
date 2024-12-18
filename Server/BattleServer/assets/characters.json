@@ -24,7 +24,7 @@
       "prefabId": "Frog",
       "cooldown": 30000,
       "range": 5,
-      "heal": 50
+      "heal": 500
     }
   ]
 }
