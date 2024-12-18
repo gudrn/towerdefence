@@ -4,15 +4,6 @@
   "data": [
     {
       "prefabId": "Robot1",
-      "maxHp": 50,
-      "attackRange": 1,
-      "attackDamage": 10,
-      "attackCoolDown": 2,
-      "moveSpeed": 3,
-      "score": 5
-    },
-    {
-      "prefabId": "Robot2",
       "maxHp": 70,
       "attackRange": 1,
       "attackDamage": 10,
@@ -21,7 +12,7 @@
       "score": 5
     },
     {
-      "prefabId": "Robot3",
+      "prefabId": "Robot2",
       "maxHp": 80,
       "attackRange": 1,
       "attackDamage": 10,
@@ -30,8 +21,17 @@
       "score": 5
     },
     {
-      "prefabId": "Robot4",
+      "prefabId": "Robot3",
       "maxHp": 100,
+      "attackRange": 1,
+      "attackDamage": 10,
+      "attackCoolDown": 2,
+      "moveSpeed": 3,
+      "score": 5
+    },
+    {
+      "prefabId": "Robot4",
+      "maxHp": 120,
       "attackRange": 1,
       "attackDamage": 10,
       "attackCoolDown": 2,

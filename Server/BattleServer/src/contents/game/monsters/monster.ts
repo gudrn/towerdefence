@@ -39,7 +39,7 @@ export class Monster extends GameObject {
   private waitUntil: number = 0; //동작 간 딜레이 시간
   private lastUpdated = 0; // 마지막 경로 계산 시간
   private path: Vec2[] | null = [];
-  public attackBuffRate: number = 0.5;
+  public attackBuffRate: number = 1;
 
   /*---------------------------------------------
     [생성자]
@@ -102,7 +102,7 @@ export class Monster extends GameObject {
 
       if (dist <= attackRange) {
         // 공격 범위 내에 들어오면 상태를 SKILL로 변경
-        this.waitUntil = now + this.attackCoolDown * 1000;
+        this.waitUntil = now + this.attackCoolDown * 500;
         this.setState(OBJECT_STATE_TYPE.SKILL);
         return;
       }
@@ -115,7 +115,7 @@ export class Monster extends GameObject {
         this.setPos(create(PosInfoSchema, { x: nextPos.x, y: nextPos.y }));
         this.path.shift(); // 다음 위치로 이동 후 경로 업데이트
         this.setState(OBJECT_STATE_TYPE.MOVE);
-        this.waitUntil = now + 500;
+        this.waitUntil = now + 200;
       } else {
         console.log('이동 불가능');
       }

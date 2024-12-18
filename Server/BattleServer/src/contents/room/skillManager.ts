@@ -82,7 +82,8 @@ export class SkillManager {
       return distance <= skill.attackRange;
     });
 
-    this.applyDamageToMonsters(monstersInRange, skill.attackDamage);
+    const totalDamage = Math.floor(skill.attackDamage + (skill.attackDamage * this.gameRoom.wave * 0.2));
+    this.applyDamageToMonsters(monstersInRange, totalDamage);
 
     monstersInRange.forEach((monster) => {
       const attackPacket = create(B2G_MonsterHealthUpdateNotificationSchema, {

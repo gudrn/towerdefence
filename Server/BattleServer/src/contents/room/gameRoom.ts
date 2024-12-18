@@ -65,7 +65,7 @@ export class GameRoom {
 
   private score: number = 0; // 현재 점수
   private rewardScore: number = 10;
-  private wave = 1; // 현재 웨이브
+  public wave = 1; // 현재 웨이브
   public monsterStatusMultiplier = 1; // 몬스터 강화 계수 (wave만으론 강화가 불가능한가요?) --12.06 조정현
   private gameLoopInterval: any = null; //gameLoop를 저장 후 방 제거 시 clear하기 위함
   private skillManager: SkillManager;
@@ -430,10 +430,11 @@ export class GameRoom {
   }
 
   private increaseWave() {
+
     this.wave += 1;
 
     // 강화 계수 증가
-    this.monsterStatusMultiplier += 0.2;
+    this.monsterStatusMultiplier += 0.1 * this.wave;
     this.monsterManager.increaseWave();
     this.scorePerWave += 30;
     

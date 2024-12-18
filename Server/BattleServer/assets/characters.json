@@ -9,9 +9,9 @@
     },
     {
       "prefabId": "Shark",
-      "cooldown": 10000,
+      "cooldown": 30000,
       "range": 5,
-      "attackDamage": 50
+      "attackDamage": 70
     },
     {
       "prefabId": "Malang",

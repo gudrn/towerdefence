@@ -10,6 +10,9 @@ import { B2G_MonsterDeathNotificationSchema, B2G_MonsterHealthUpdateNotification
 import { create } from '@bufbuild/protobuf';
 import { ePacketId } from 'ServerCore/network/packetId';
 export class Shark extends Character {
+  private damage = 50;
+  private range = 5;
+
   constructor(room: GameRoom, player: GamePlayer) {
     super(eCharacterId.shark, room, player); // 3초 쿨다운
   }
@@ -24,14 +27,9 @@ export class Shark extends Character {
 
     console.log('Shark의 고유 능력 발동: 원형 범위 내 몬스터들에게 데미지');
 
-    const range = 5; // 적용 범위 (단위: 거리)
-    const damage = 20; // 공격력 값
+    const monsters = this.getMonstersInRange(this.room, player, this.range);
 
-    const monsters = this.getMonstersInRange(this.room, player, range);
-
-    this.applyDamageToMonsters(monsters, damage);
-    console.log(`몬스터에게 ${damage}의 데미지!`);
-
+    this.applyDamageToMonsters(monsters, this.damage);
     
     monsters.forEach((monster) => {
        {
@@ -50,5 +48,9 @@ export class Shark extends Character {
         this.room.broadcast(sendBuffer);
       }
     });
+  }
+
+  public getTotalDamage(){
+    return Math.floor(this.damage + (this.damage * this.room.wave * 0.2));
   }
 }
