@@ -160,8 +160,6 @@ class AssetManager {
    */
   getCharacterData(prefabId: string): AssetCharacter | null {
     let character = this.characters.get(prefabId) || null;
-    console.log('character정보');
-    console.log(character);
     return character;
   }
 

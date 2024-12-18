@@ -68,7 +68,6 @@ export function handleC2G_TowerBuildRequest(buffer: Buffer, session: GatewaySess
     [스킬 사용 요청]
   ---------------------------------------------*/
 export function handleC2G_UseSkillRequest(buffer: Buffer, session: GatewaySession) {
-    console.log("handleC2G_UseSkillRequest");
     const packet = fromBinary(C2G_UseSkillRequestSchema, buffer);
 
     const room = roomManager.getRoom(packet.roomId);

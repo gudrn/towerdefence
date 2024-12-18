@@ -176,7 +176,6 @@ export function handleC2G_GameStartRequest(buffer: Buffer, session: GatewaySessi
         - 배틀 서버에게 방 입장 요청
   ---------------------------------------------*/
 export function handleC2G_JoinGameRoomRequest(buffer: Buffer, session: GatewaySession) {
-    console.log("handleC2G_JoinGameRoomRequest");
 
     const packet = fromBinary(C2G_JoinGameRoomRequestSchema, buffer);
     

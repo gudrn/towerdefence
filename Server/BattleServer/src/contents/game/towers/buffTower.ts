@@ -23,13 +23,13 @@ export class BuffTower extends Tower {
    ---------------------------------------------*/
 
    override onDeath(): void {
-    const towersInRange: Tower[] = this.getTowersInRange();
+    super.onDeath();
 
+    const towersInRange: Tower[] = this.getTowersInRange();
     for (let i = 0; i < towersInRange.length; i++) {
         if (!towersInRange[i].isBuffTowerInRange()) {
           towersInRange[i].removeAttackBuff();
         }
     }
   }
-
 }

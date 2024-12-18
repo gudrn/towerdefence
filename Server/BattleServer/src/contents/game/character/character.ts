@@ -46,21 +46,10 @@ export abstract class Character {
    */
   public useAbility() {
     if (this.isCooldownActive) {
-      console.log(`${this.prefabId}의 능력은 재사용 대기 중입니다.`);
       return;
-
-      // // 쿨다운 상태를 알리는 패킷 생성 및 전송
-      // const cooldownNotificationPacketBuffer = createCooldownNotification(
-      //   payload.prefabId,
-      //   this.cooldown,
-      //   session.getNextSequence.bind(this),
-      // );
-      // this.player.session.send(cooldownNotificationPacketBuffer);
-      // return;
     }
 
     // 능력 발동 로직
-    console.log(`${this.prefabId}의 고유 능력을 발동합니다.`);
     this.activateAbility();
 
     if (this.player.playerData.position == undefined) {
@@ -134,7 +123,6 @@ export abstract class Character {
     const monsters = Array.from(room.getMonsters().values()); // 모든 타워 가져오기
     //console.log(monsters);
     const playerPos = player.playerData.position; // 플레이어의 위치 가져오기 (캐릭터 기준)
-    console.log(playerPos);
     if (!playerPos) {
       console.log('플레이어 위치를 가져올 수 없습니다.');
       return [];
@@ -157,10 +145,6 @@ export abstract class Character {
   protected applyDamageToMonsters(monsters: Monster[], damage: number) {
     monsters.forEach((monster) => {
       monster.onDamaged(damage); //조정현
-      // monster.hp -= damage;
-      // if (monster.hp <= 0) {
-      //   monster.onDeath();
-      // }
     });
   }
 }

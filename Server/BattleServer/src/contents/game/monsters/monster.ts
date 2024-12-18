@@ -264,7 +264,6 @@ export class Monster extends GameObject {
 
   getTotalDamage(): number {
     if (this.room.numBuffMonsters > 0) {
-      console.log('공격력 버프 on');
       return Math.floor(this.attackDamage + this.attackDamage * this.attackBuffRate);
     }
 

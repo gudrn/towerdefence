@@ -48,7 +48,6 @@ class RoomManager {
   public handleL2G_CreateRoomResponse(buffer: Buffer, session: LobbySession) {
 
     const packet = fromBinary(L2G_CreateRoomResponseSchema, buffer);
-    console.log(packet.userId);
     const clientSession = gatewaySessionManager.getSessionOrNull(packet.userId);
     if(clientSession == null) {
         console.log("[handleL2G_CreateRoomResponse] 클라이언트가 유효하지 않습니다.");
@@ -100,7 +99,7 @@ class RoomManager {
     [방 입장 알림]
   ---------------------------------------------*/
   public handleL2G_JoinRoomNotification(buffer: Buffer, session: LobbySession) {
-    console.log("handleL2G_JoinRoomNotification");
+    
 
     const packet = fromBinary(L2G_JoinRoomNotificationSchema, buffer);
     

@@ -59,8 +59,6 @@ export function handleB2G_MonsterPositionUpdateNotification(buffer: Buffer, sess
     [몬스터->타워 공격 동기화]
   ---------------------------------------------*/
 export function handleB2G_MonsterAttackTowerNotification(buffer: Buffer, session: BattleSession) {
-    console.log("handleB2G_MonsterAttackTowerNotification");
-
     const packet = fromBinary(B2G_MonsterAttackTowerNotificationSchema, buffer);
 
     const room = roomManager.getRoom(packet.roomId);

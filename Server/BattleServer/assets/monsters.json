@@ -8,7 +8,7 @@
       "attackRange": 1,
       "attackDamage": 5,
       "attackCoolDown": 2,
-      "moveSpeed": 2,
+      "moveSpeed": 3,
       "score": 5
     },
     {
@@ -17,7 +17,7 @@
       "attackRange": 1,
       "attackDamage": 5,
       "attackCoolDown": 2,
-      "moveSpeed": 2,
+      "moveSpeed": 3,
       "score": 5
     },
     {
@@ -26,7 +26,7 @@
       "attackRange": 1,
       "attackDamage": 5,
       "attackCoolDown": 2,
-      "moveSpeed": 2,
+      "moveSpeed": 3,
       "score": 5
     },
     {
@@ -35,14 +35,14 @@
       "attackRange": 1,
       "attackDamage": 5,
       "attackCoolDown": 2,
-      "moveSpeed": 2,
+      "moveSpeed": 3,
       "score": 5
     },
     {
       "prefabId": "Robot5",
       "maxHp": 500,
       "attackRange": 1,
-      "attackDamage": 10,
+      "attackDamage": 15,
       "attackCoolDown": 2,
       "moveSpeed": 2,
       "score": 5

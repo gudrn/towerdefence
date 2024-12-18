@@ -27,7 +27,6 @@ const connectToLobbyServers = () => {
 const connectToBattleServers = () => {
   for(let serverConfig of battleConfig) {
     const id = uuidv4();
-    console.log(id);
     const battleSession: BattleSession = battleSessionManager.addSession(id, new Socket());
     battleSession.init(serverConfig.host, serverConfig.port);
     console.log("BattleSessionId", battleSession.getId());

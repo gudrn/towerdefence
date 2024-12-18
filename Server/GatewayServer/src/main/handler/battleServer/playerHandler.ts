@@ -49,7 +49,7 @@ export function handleB2G_UseSkillNotification(buffer: Buffer, session: BattleSe
     
     const notificationPacket = create(G2C_UseSkillNotificationSchema, {
         skill: packet.skill,
-        ownerId: packet.ownerId
+        ownerId: packet.ownerId,
     });
     
     const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_UseSkillNotificationSchema, ePacketId.G2C_UseSkillNotification, 0);
