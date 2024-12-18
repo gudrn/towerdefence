@@ -359,7 +359,7 @@ export class GameRoom {
       throw new CustomError(ErrorCodes.SOCKET_ERROR, '유효하지 않은 towerPos');
     }
 
-    user.useCard(cardId, this.id, true);
+    user.useCard(cardId);
 
     const towerPosInfo = create(PosInfoSchema, {
       uuid: uuidv4(),
@@ -433,7 +433,7 @@ export class GameRoom {
     this.wave += 1;
 
     // 강화 계수 증가
-    this.monsterStatusMultiplier += 0.1;
+    this.monsterStatusMultiplier += 0.2;
     this.monsterManager.increaseWave();
     this.scorePerWave += 30;
     

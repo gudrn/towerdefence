@@ -34,7 +34,7 @@ export class SkillManager {
       throw new CustomError(ErrorCodes.MISSING_FIELDS, "[handleSkill] Skill이 누락됐습니다.");
     }
 
-    user.useCard(packet.cardId, packet.roomId);
+    user.useCard(packet.cardId);
     const skillData = assetManager.getSkillsDataByPrefabId(packet.skill.prefabId);
     if (!skillData) return; 
 

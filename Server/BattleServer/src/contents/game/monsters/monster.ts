@@ -115,7 +115,7 @@ export class Monster extends GameObject {
         this.setPos(create(PosInfoSchema, { x: nextPos.x, y: nextPos.y }));
         this.path.shift(); // 다음 위치로 이동 후 경로 업데이트
         this.setState(OBJECT_STATE_TYPE.MOVE);
-        this.waitUntil = now + 1000;
+        this.waitUntil = now + 500;
       } else {
         console.log('이동 불가능');
       }

@@ -122,38 +122,10 @@ export class GamePlayer {
    [useCard]
    ---------------------------------------------*/
 
-  useCard(cardId: string, roomId: number, isTowerCard: boolean = false) {
+  useCard(cardId: string) {
     const card = this.cardList.get(cardId); // 카드 목록에서 카드 가져오기
     if (!card) return;
     this.cardList.delete(cardId); // 카드 목록에서 카드 삭제
-
-    //타워 카드면 패킷을 전송하지 않음
-    //좋은 방법은 아닌데 그냥...
-    //처음부터 아싸리 타워 설치도 이렇게 보내면 되는데 너무 늦어버림...
-    if(isTowerCard){
-      return;
-    }
-
-    const responsePacket = create(B2G_UseSkillNotificationSchema, {
-      roomId: roomId,
-      ownerId: this.playerData.position?.uuid,
-      skill: create(SkillDataSchema, {
-        prefabId: card,
-      }),
-    });
-
-    const sendBuffer = PacketUtils.SerializePacket(
-      responsePacket,
-      B2G_UseSkillNotificationSchema,
-      ePacketId.B2G_UseSkillNotification,
-      0,
-    );
-    const gatewaySession = sessionManager.getRandomSession();
-    if (gatewaySession == null) {
-      throw new CustomError(ErrorCodes.SERSSION_NOT_FOUND, '게이트웨이 세션을 찾지 못했습니다.');
-    }
-
-    gatewaySession.send(sendBuffer); // 카드 추가 데이터 전송
   }
 
   public getCardList() {
