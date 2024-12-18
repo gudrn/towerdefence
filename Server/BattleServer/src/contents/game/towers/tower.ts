@@ -57,11 +57,6 @@ export abstract class Tower extends GameObject {
 
     // 특수 능력치 초기화 (?? 연산자로 기본값 0 설정)
     this.buffAmount = towerData.buffAmount ?? 0;
-
-    //버프 적용
-    if(this.isBuffTowerInRange()) {
-      this.applyAttackBuff();
-    }
   }
 
   /*---------------------------------------------
@@ -236,7 +231,7 @@ protected processAttack(target: Monster) {
   public isBuffTowerInRange(): boolean {
     // 공격 범위 내의 모든 타워 목록 가져오기
     const towersInRange: Tower[] = this.getTowersInRange();
-
+    console.log(towersInRange);
     // 범위 내 타워가 존재하는 경우
     if (towersInRange.length != 0) {
       // 각 타워를 순회하며 버프타워 여부 확인

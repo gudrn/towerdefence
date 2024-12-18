@@ -387,6 +387,11 @@ export class GameRoom {
       0,
     );
     this.broadcast(towerBuildNotificationBuffer);
+
+    //버프적용
+    if(newTower.isBuffTowerInRange()) {
+      newTower.applyAttackBuff();
+    }
   }
 
   public broadcast(buffer: Buffer) {
