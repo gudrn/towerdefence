@@ -4,12 +4,12 @@
   "data": [
     {
       "prefabId": "Red",
-      "cooldown": 3000,
+      "cooldown": 30000,
       "cardAmount": 1
     },
     {
       "prefabId": "Shark",
-      "cooldown": 3000,
+      "cooldown": 10000,
       "range": 5,
       "attackDamage": 50
     },
@@ -22,7 +22,7 @@
     },
     {
       "prefabId": "Frog",
-      "cooldown": 3000,
+      "cooldown": 30000,
       "range": 5,
       "heal": 50
     }
