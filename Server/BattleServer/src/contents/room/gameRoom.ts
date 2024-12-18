@@ -40,7 +40,7 @@ import { MonsterManager } from '../game/monsters/monsterManager';
 import { G2B_UseSkillRequest } from 'src/protocol/skill_pb';
 import { Monster } from '../game/monsters/monster';
 import { Tower } from '../game/towers/tower';
-import { TowerUtils } from '../game/towers/createTower';
+import { TowerUtils } from '../../utils/towerUtils';
 
 export class GameRoom {
   //유저의 스폰 위치

@@ -1,13 +1,7 @@
 import { GameRoom } from 'src/contents/room/gameRoom';
-import { Tower } from './tower';
-import { MissileTower } from './missileTower';
-import { ThunderTower } from './thunderTower';
-import { TankTower } from './tankTower';
-import { StrongTower } from './strongTower';
-import { IceTower } from './iceTower';
+import { Tower } from '../contents/game/towers/tower';
+
 import { PosInfo } from 'src/protocol/struct_pb';
-import { BuffTower } from './buffTower';
-import { BasicTower } from './BasicTower';
 
 /**
  * 캐릭터 등록

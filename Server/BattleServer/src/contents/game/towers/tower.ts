@@ -57,6 +57,11 @@ export abstract class Tower extends GameObject {
 
     // 특수 능력치 초기화 (?? 연산자로 기본값 0 설정)
     this.buffAmount = towerData.buffAmount ?? 0;
+
+    //버프 적용
+    if(this.isBuffTowerInRange()) {
+      this.applyAttackBuff();
+    }
   }
 
   /*---------------------------------------------
