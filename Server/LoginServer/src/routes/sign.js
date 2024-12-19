@@ -19,7 +19,7 @@ router.post('/signup', async (req, res) => {
   try {
     await signUpSchema.validate(req.body);
   } catch (error) {
-    return res.status(400).send(error.message);
+    return res.status(400).json({ message: error.message });
   }
 
   const hashedPwd = await bcrypt.hash(password, 10);
