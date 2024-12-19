@@ -18,7 +18,7 @@ router.post('/signup', async (req, res) => {
   //body 유효성 검사
   const { error } = signUpSchema.validate(req.body);
   if (error) {
-    return res.status(400).send("회원가입이 실패했습니다.");
+    return res.status(400).send(error.message);
   }
 
 
