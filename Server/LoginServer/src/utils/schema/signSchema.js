@@ -9,7 +9,7 @@ export const signUpSchema = yup.object().shape({
     password: yup
         .string()
         .required('비밀번호를 입력해 주세요.')
-        .min(8, '비밀번호는 최소 8자 이상이어야 합니다.')
+        .min(7, '비밀번호는 최소 7자 이상이어야 합니다.')
         .matches(/^(?=.*[a-zA-Z])(?=.*\d)/, '비밀번호는 영문자와 숫자를 포함해야 합니다.'), // 별도의 설명 추가
 
     nickname: yup
@@ -29,5 +29,5 @@ export const signInSchema = yup.object().shape({
     password: yup
         .string()
         .required('비밀번호를 입력해 주세요.')
-        .min(8, '비밀번호는 최소 8자 이상이어야 합니다.'),
+        .min(7, '비밀번호는 최소 7자 이상이어야 합니다.'),
 });
