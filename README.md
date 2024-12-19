@@ -33,7 +33,7 @@
 
 ## 게임 플로우 차트
 
-![게임 플로우 차트](https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F78e483ae-dd0d-4506-b91a-c6bbb967f875%2F%25EC%258A%25A4%25ED%2581%25AC%25EB%25A6%25B0%25EC%2583%25B7_2024-12-18_213741.png?table=block&id=7036d446-982c-4298-985f-109d0e3fdd92&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=1420&userId=&cache=v2)
+![게임 플로우 차트](https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2Fa33955fe-9e74-429f-aecf-abee16ac83ff%2F%25EC%258A%25A4%25ED%2581%25AC%25EB%25A6%25B0%25EC%2583%25B7_2024-12-19_165443.png?table=block&id=d921237e-59d6-41bb-977b-06459acabd48&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=1420&userId=&cache=v2)
 
 ### 1️⃣ 게임의 목표는 정해진 구역 내에서 몰려오는 몬스터로부터 기지를 방어하는 것입니다.
 
