@@ -15,35 +15,26 @@ const router = express.Router();
 router.post('/signup', async (req, res) => {
   const { email, password, nickname } = req.body;
 
-  //body 유효성 검사
-  const { error } = await signUpSchema.validate(req.body);
-  if (error) {
-    return res.status(400).send(error.message);
+  // body 유효성 검사
+  try {
+    await signUpSchema.validate(req.body);
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
   }
-
 
   const hashedPwd = await bcrypt.hash(password, 10);
 
-  //이미 존재하는 ID인지 확인
+  // 이미 존재하는 ID인지 확인
   try {
     const isExistedEmail = await prisma.users.findUnique({
-      where: {
-        email,
-      },
-      select: {
-        email: true,
-      },
+      where: { email },
+      select: { email: true },
     });
 
     if (isExistedEmail) {
-      return res.status(409).send('이미 사용 중인 ID입니다.');
+      return res.status(409).json({ message: '이미 사용 중인 ID입니다.' });
     }
-  } catch (err) {
-    console.log(err);
-    return res.status(400).send('계정을 생성하는 데 실패했습니다.' + '에러 코드: ' + err);
-  }
 
-  try {
     await prisma.users.create({
       data: {
         user_id: uuidv4(),
@@ -52,12 +43,12 @@ router.post('/signup', async (req, res) => {
         nickname,
       },
     });
-  } catch (err) {
-    console.log(err);
-    return res.status(400).send('계정을 생성하는 데 실패했습니다.' + '에러 코드: ' + err);
-  }
 
-  return res.status(201).json({ email, nickname });
+    return res.status(201).json({ email, nickname });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: '계정을 생성하는 데 실패했습니다.', error: err.message });
+  }
 });
 
 /*---------------------------------------------
