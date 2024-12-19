@@ -15,7 +15,7 @@ const router = express.Router();
 router.post('/signup', async (req, res) => {
   const { email, password, nickname } = req.body;
 
-  // 이미 존재하는 ID인지 확인
+  // 이미 존재하는 ID와 닉네임인지 확인
   try {
     await signUpSchema.validate(req.body);
     const hashedPwd = await bcrypt.hash(password, 10);
@@ -24,8 +24,19 @@ router.post('/signup', async (req, res) => {
       select: { email: true },
     });
 
+    const isExistedNickname = await prisma.users.findUnique({
+      where: { nickname },
+      select: { nickname: true },
+    });
+
     if (isExistedEmail) {
+      console.log('이미 사용 중인 ID입니다.');
       return res.status(409).json({ message: '이미 사용 중인 ID입니다.' });
+    }
+
+    if (isExistedNickname) {
+      console.log('이미 사용 중인 닉네임입니다.');
+      return res.status(409).json({ message: '이미 사용 중인 닉네임입니다.' });
     }
 
     await prisma.users.create({
