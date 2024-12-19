@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-const signUpSchema = yup.object().shape({
+export const signUpSchema = yup.object().shape({
     email: yup
         .string()
         .required('이메일을 입력해 주세요.')
@@ -20,5 +20,14 @@ const signUpSchema = yup.object().shape({
         .matches(/^[a-zA-Z가-힣0-9_]+$/, '닉네임은 한글, 영문, 숫자, 밑줄(_)만 사용할 수 있습니다.'),
 });
 
+export const signInSchema = yup.object().shape({
+    email: yup
+        .string()
+        .required('이메일을 입력해 주세요.')
+        .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, '유효하지 않은 이메일 형식입니다.'),
 
-export default signUpSchema;
+    password: yup
+        .string()
+        .required('비밀번호를 입력해 주세요.')
+        .min(8, '비밀번호는 최소 8자 이상이어야 합니다.'),
+});

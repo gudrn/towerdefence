@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import { prisma } from '../utils/prisma/prisma.js';
 import { v4 as uuidv4 } from 'uuid';
 import jwt from 'jsonwebtoken';
-import signUpSchema from '../utils/schema/signUpSchema.js';
+import { signUpSchema, signInSchema } from '../utils/schema/signSchema.js';
 
 const router = express.Router();
 
@@ -39,6 +39,9 @@ router.post('/signup', async (req, res) => {
 
     return res.status(201).json({ email, nickname });
   } catch (err) {
+    if (err.name === 'ValidationError') {
+      return res.status(400).json({ message: '유효성 검사 오류', error: err.errors });
+    }
     console.error(err);
     return res.status(500).json({ message: '계정을 생성하는 데 실패했습니다.', error: err.message });
   }
@@ -51,21 +54,9 @@ router.post('/signup', async (req, res) => {
 ---------------------------------------------*/
 router.post('/signin', async (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password) {
-    console.log('이메일 또는 비밀번호가 누락되었습니다.');
-    return res.status(400).json({ message: '이메일 또는 비밀번호가 누락되었습니다.' });
-  }
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    return res.status(400).json({ message: '유효하지 않은 이메일 형식입니다.' });
-  }
-
-  if (password.length < 8) {
-    return res.status(400).json({ message: '비밀번호는 최소 8자 이상이어야 합니다.' });
-  }
 
   try {
+    await signInSchema.validate(req.body);
     const user = await prisma.users.findUnique({
       where: {
         email,
@@ -87,6 +78,9 @@ router.post('/signin', async (req, res) => {
       return res.status(200).json({ token, userId: user.user_id, nickname: user.nickname });
     }
   } catch (err) {
+    if (err.name === 'ValidationError') {
+      return res.status(400).json({ message: '유효성 검사 오류', error: err.errors });
+    }
     console.log(err);
   }
   return res.status(409).json({ message: '비밀번호가 일치하지 않습니다.' });
