@@ -52,14 +52,14 @@
 
 ![서비스 아키텍처](<https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F8a7c0836-cad9-455d-864a-81bf888f3d49%2Fimage_(1).png?table=block&id=dcad5f01-0988-4bcc-a4b0-8fcfdb8416eb&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=1420&userId=&cache=v2>)
 
-## 📂 protobuf
+### 📂 protobuf
 
 - **정적 파일로 변환**: 루트/common/protobuf에 있는 모든 .proto 파일
 - **파일 이동**: 생성된 .pb.ts 파일은 GatewayServer, LobbyServer, BattlerServer로 이동
 - **자동 완성 기능**: 타입 안정성↑, 성능↑
 - **클라이언트와 공유**: .proto 파일 공유로 유지보수↑
 
-## 🛠️ ServerCore
+### 🛠️ ServerCore
 
 - **핵심 기능 구현**: 다른 프로젝트에서 상속하거나 호출
   - 예: Session, SessionManager, PacketHeader…
@@ -67,19 +67,19 @@
   - 예: handlerID, 커스텀 에러 코드
   - **중앙 집중화**: 유지 보수↑
 
-## 🏢 LobbyServer
+### 🏢 LobbyServer
 
 - **대기 방 로직 처리**: 게임 시작 전
   - 방 생성 및 참가
   - 캐릭터 선택
 
-## ⚔️ BattleServer
+### ⚔️ BattleServer
 
 - **게임 로직 처리**: 모든 게임 로직
   - 이동 동기화 및 길찾기
   - 시뮬레이션(몬스터, 타워)
 
-## 🌐 GatewayServer
+### 🌐 GatewayServer
 
 - **로드 밸런스**: 라운드 로빈 방식으로 로비 서버, 배틀 서버에게 작업 위임
 - **서버 연결**: 클라이언트와 다른 서버를 연결
