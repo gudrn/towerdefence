@@ -2,7 +2,7 @@
 
 ## 프로젝트 소개
 
-![프로젝트 이미지]()
+![프로젝트 이미지](https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2Fa3a19cb1-d58a-4229-807e-2b754443de48%2F1f68c529-15c4-483d-b089-8c158a97651d-removebg-preview.png?table=block&id=dc0d5215-3ecd-4eb2-ae30-40e6847868d7&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=660&userId=&cache=v2)
 
 ## 프롤로그
 
@@ -31,13 +31,10 @@
   서버가 모든 처리를 하기에 그만큼\*\* 서버의 과부하가 생김을 방지하기 위한 분산 서버.
   Login Server, Lobby Server, Battle Server, Gateway Server를 만들어서 서버를 최적화.
 
-## 서비스 아키텍처
-
-![서비스 아키텍처]()
-
 ## 게임 플로우 차트
 
-![플로우 차트]()
+![게임 플로우 차트](https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F78e483ae-dd0d-4506-b91a-c6bbb967f875%2F%25EC%258A%25A4%25ED%2581%25AC%25EB%25A6%25B0%25EC%2583%25B7_2024-12-18_213741.png?table=block&id=7036d446-982c-4298-985f-109d0e3fdd92&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=1420&userId=&cache=v2)
+
 1️⃣ 게임의 목표는 정해진 구역 내에서 몰려오는 몬스터로부터 기지를 방어하는 것입니다.
 
 로비에서는 캐릭터를 선택할 수 있으며,
@@ -51,24 +48,62 @@
 
 3️⃣ 기지의 체력이 0이 되는 순간 게임 오버입니다.
 
+## 서비스 아키텍처
+
+![서비스 아키텍처](<https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F8a7c0836-cad9-455d-864a-81bf888f3d49%2Fimage_(1).png?table=block&id=dcad5f01-0988-4bcc-a4b0-8fcfdb8416eb&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=1420&userId=&cache=v2>)
+
+**protobuf**
+
+- 루트/common/protobuf에 있는 모든 .proto파일을 정적 파일로 변경
+- 생성된 .pb.ts은 GatewayServer, LobbyServer, BattlerServer로 이동
+- 자동 완성 기능: 타입 안정성↑, 성능↑
+- 클라이언트와 .proto 공유: 유지보수↑
+
+**ServerCore**
+
+- 핵심 기능을 구현 후, 다른 프로젝트에서 이를 상속하거나 호출.
+  - Session, SessionManager, PacketHeader…
+- GatewayServer, LobbyServer, BattleServer가 공유해야되는 값
+  - handlerID, 커스텀 에러 코드
+  - 중앙 집중: 유지 보수↑
+
+**LobbyServer**
+
+- 게임 시작 전 대기 방에 관한 로직 처리
+  - 방 생성, 참가
+  - 캐릭터 선택
+
+**BattleServer**
+
+- 모든 게임 로직을 처리
+  - 이동 동기화, 길찾기
+  - 시뮬레이션(몬스터, 타워)
+
+**GatewayServer**
+
+- 로드 밸런스
+  - 라운드 로빈 방식으로 로비 서버, 배틀 서버에게 작업 위임
+- 클라이언트와 다른 서버를 연결
+  - 클라는 한 서버의 주소만 알고 있어도 됨: 확장성↑
+
 ## 주요 콘텐츠
 
-- [게임 플레이 및 UI]()
-- [4가지 종류의 캐릭터 및 전용 능력]()
-- [5가지 종류의 로봇 몬스터]()
-- [확률형 카드획득]()
-- [르탄이들의 든든한 버팀목 타워]()
+- [게임 플레이 및 UI](https://teamsparta.notion.site/UI-6ff71c8be1684e9fa6e45d581bb3f20a)
+- [4가지 종류의 캐릭터 및 전용 능력](https://teamsparta.notion.site/4-15b669ad3b094b918938f881249bfa94)
+- [5가지 종류의 로봇 몬스터](https://teamsparta.notion.site/5-32f0dda393ad4b70a31ec0c3270cd96f?pvs=25)
+- [확률형 카드획득](https://teamsparta.notion.site/3f366a6ffb9e4c3c9e400986383ae3f6)
+- [르탄이들의 든든한 버팀목 타워](https://teamsparta.notion.site/eab3c8e4c8fc403d96280b48782f7889)
 
 ## 시연 영상
 
-- [시연 영상]()
+- [시연 영상](https://teamsparta.notion.site/15f2dc3ef51481418e4dfc620845fb20?pvs=25)
 
 ## 트러블 슈팅
 
-- [엄청난 수의 InitialPacket]()
-- [타워 총알 동기화 문제]()
-- [서버 CPU 부하]()
-- [서버 확장성 문제]()
+- [엄청난 수의 InitialPacket](https://teamsparta.notion.site/InitialPacket-bf5c7da28eb74c2394ec6f3259778b23)
+- [타워 총알 동기화 문제](https://teamsparta.notion.site/427e5cd0a5044efa9943f37444e36805)
+- [서버 CPU 부하](https://teamsparta.notion.site/CPU-ad6828ca4d03454c92e7eb6f84046a14)
+- [서버 확장성 문제](https://teamsparta.notion.site/CPU-ad6828ca4d03454c92e7eb6f84046a14)
 
 ## 기술 스택
 
@@ -81,7 +116,7 @@
 
 ## 기획
 
-- [기획 문서]()
+- [기획 문서](https://teamsparta.notion.site/9-2dfa6b2d1f674002821c8e0459caec93)
 
 ## 게임 다운로드
 
