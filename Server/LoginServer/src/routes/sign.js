@@ -15,17 +15,10 @@ const router = express.Router();
 router.post('/signup', async (req, res) => {
   const { email, password, nickname } = req.body;
 
-  // body 유효성 검사
-  try {
-    await signUpSchema.validate(req.body);
-  } catch (error) {
-    return res.status(400).json({ message: error.message });
-  }
-
-  const hashedPwd = await bcrypt.hash(password, 10);
-
   // 이미 존재하는 ID인지 확인
   try {
+    await signUpSchema.validate(req.body);
+    const hashedPwd = await bcrypt.hash(password, 10);
     const isExistedEmail = await prisma.users.findUnique({
       where: { email },
       select: { email: true },
