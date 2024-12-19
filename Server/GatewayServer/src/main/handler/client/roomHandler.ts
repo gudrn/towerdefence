@@ -211,7 +211,8 @@ export function handleC2G_ChatMessageRequest (buffer: Buffer, session: GatewaySe
 
     const responePacket = create(G2C_ChatMessageNotificationSchema, {
         userId: session.getId(),
-        message: packet.message
+        message: packet.message,
+        isLobbyChat: packet.isLobbyChat
     });
 
     const sendBuffer = PacketUtils.SerializePacket(responePacket, G2C_ChatMessageNotificationSchema, ePacketId.G2C_ChatMessageNotification, 0);

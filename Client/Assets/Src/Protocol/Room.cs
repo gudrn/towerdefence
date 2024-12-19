@@ -75,10 +75,11 @@ namespace Protocol {
             "Y2F0aW9uEhEKCWlzU3VjY2VzcxgBIAEoCCI3CiJCMkxfU29ja2V0RGlzY29u",
             "bmVjdGVkTm90aWZpY2F0aW9uEhEKCXNlc3Npb25JZBgBIAEoCSIrChlCMkdf",
             "RGVsZXRlR2FtZVJvb21SZXF1ZXN0Eg4KBnJvb21JZBgBIAEoBSIrChlHMkxf",
-            "RGVsZXRlR2FtZVJvb21SZXF1ZXN0Eg4KBnJvb21JZBgBIAEoBSI5ChZDMkdf",
+            "RGVsZXRlR2FtZVJvb21SZXF1ZXN0Eg4KBnJvb21JZBgBIAEoBSJOChZDMkdf",
             "Q2hhdE1lc3NhZ2VSZXF1ZXN0Eg8KB21lc3NhZ2UYASABKAkSDgoGcm9vbUlk",
-            "GAIgASgFIj4KG0cyQ19DaGF0TWVzc2FnZU5vdGlmaWNhdGlvbhIOCgZ1c2Vy",
-            "SWQYASABKAkSDwoHbWVzc2FnZRgCIAEoCWIGcHJvdG8z"));
+            "GAIgASgFEhMKC2lzTG9iYnlDaGF0GAMgASgIIlMKG0cyQ19DaGF0TWVzc2Fn",
+            "ZU5vdGlmaWNhdGlvbhIOCgZ1c2VySWQYASABKAkSDwoHbWVzc2FnZRgCIAEo",
+            "CRITCgtpc0xvYmJ5Q2hhdBgDIAEoCGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Protocol.StructReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -116,8 +117,8 @@ namespace Protocol {
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2L_SocketDisconnectedNotification), global::Protocol.B2L_SocketDisconnectedNotification.Parser, new[]{ "SessionId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.B2G_DeleteGameRoomRequest), global::Protocol.B2G_DeleteGameRoomRequest.Parser, new[]{ "RoomId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.G2L_DeleteGameRoomRequest), global::Protocol.G2L_DeleteGameRoomRequest.Parser, new[]{ "RoomId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.C2G_ChatMessageRequest), global::Protocol.C2G_ChatMessageRequest.Parser, new[]{ "Message", "RoomId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.G2C_ChatMessageNotification), global::Protocol.G2C_ChatMessageNotification.Parser, new[]{ "UserId", "Message" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.C2G_ChatMessageRequest), global::Protocol.C2G_ChatMessageRequest.Parser, new[]{ "Message", "RoomId", "IsLobbyChat" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.G2C_ChatMessageNotification), global::Protocol.G2C_ChatMessageNotification.Parser, new[]{ "UserId", "Message", "IsLobbyChat" }, null, null, null, null)
           }));
     }
     #endregion
@@ -7609,6 +7610,7 @@ namespace Protocol {
     public C2G_ChatMessageRequest(C2G_ChatMessageRequest other) : this() {
       message_ = other.message_;
       roomId_ = other.roomId_;
+      isLobbyChat_ = other.isLobbyChat_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -7642,6 +7644,18 @@ namespace Protocol {
       }
     }
 
+    /// <summary>Field number for the "isLobbyChat" field.</summary>
+    public const int IsLobbyChatFieldNumber = 3;
+    private bool isLobbyChat_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool IsLobbyChat {
+      get { return isLobbyChat_; }
+      set {
+        isLobbyChat_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -7659,6 +7673,7 @@ namespace Protocol {
       }
       if (Message != other.Message) return false;
       if (RoomId != other.RoomId) return false;
+      if (IsLobbyChat != other.IsLobbyChat) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -7668,6 +7683,7 @@ namespace Protocol {
       int hash = 1;
       if (Message.Length != 0) hash ^= Message.GetHashCode();
       if (RoomId != 0) hash ^= RoomId.GetHashCode();
+      if (IsLobbyChat != false) hash ^= IsLobbyChat.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -7694,6 +7710,10 @@ namespace Protocol {
         output.WriteRawTag(16);
         output.WriteInt32(RoomId);
       }
+      if (IsLobbyChat != false) {
+        output.WriteRawTag(24);
+        output.WriteBool(IsLobbyChat);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -7712,6 +7732,10 @@ namespace Protocol {
         output.WriteRawTag(16);
         output.WriteInt32(RoomId);
       }
+      if (IsLobbyChat != false) {
+        output.WriteRawTag(24);
+        output.WriteBool(IsLobbyChat);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -7727,6 +7751,9 @@ namespace Protocol {
       }
       if (RoomId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(RoomId);
+      }
+      if (IsLobbyChat != false) {
+        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -7745,6 +7772,9 @@ namespace Protocol {
       }
       if (other.RoomId != 0) {
         RoomId = other.RoomId;
+      }
+      if (other.IsLobbyChat != false) {
+        IsLobbyChat = other.IsLobbyChat;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -7769,6 +7799,10 @@ namespace Protocol {
             RoomId = input.ReadInt32();
             break;
           }
+          case 24: {
+            IsLobbyChat = input.ReadBool();
+            break;
+          }
         }
       }
     #endif
@@ -7790,6 +7824,10 @@ namespace Protocol {
           }
           case 16: {
             RoomId = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            IsLobbyChat = input.ReadBool();
             break;
           }
         }
@@ -7835,6 +7873,7 @@ namespace Protocol {
     public G2C_ChatMessageNotification(G2C_ChatMessageNotification other) : this() {
       userId_ = other.userId_;
       message_ = other.message_;
+      isLobbyChat_ = other.isLobbyChat_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -7868,6 +7907,18 @@ namespace Protocol {
       }
     }
 
+    /// <summary>Field number for the "isLobbyChat" field.</summary>
+    public const int IsLobbyChatFieldNumber = 3;
+    private bool isLobbyChat_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool IsLobbyChat {
+      get { return isLobbyChat_; }
+      set {
+        isLobbyChat_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -7885,6 +7936,7 @@ namespace Protocol {
       }
       if (UserId != other.UserId) return false;
       if (Message != other.Message) return false;
+      if (IsLobbyChat != other.IsLobbyChat) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -7894,6 +7946,7 @@ namespace Protocol {
       int hash = 1;
       if (UserId.Length != 0) hash ^= UserId.GetHashCode();
       if (Message.Length != 0) hash ^= Message.GetHashCode();
+      if (IsLobbyChat != false) hash ^= IsLobbyChat.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -7920,6 +7973,10 @@ namespace Protocol {
         output.WriteRawTag(18);
         output.WriteString(Message);
       }
+      if (IsLobbyChat != false) {
+        output.WriteRawTag(24);
+        output.WriteBool(IsLobbyChat);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -7938,6 +7995,10 @@ namespace Protocol {
         output.WriteRawTag(18);
         output.WriteString(Message);
       }
+      if (IsLobbyChat != false) {
+        output.WriteRawTag(24);
+        output.WriteBool(IsLobbyChat);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -7953,6 +8014,9 @@ namespace Protocol {
       }
       if (Message.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
+      }
+      if (IsLobbyChat != false) {
+        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -7971,6 +8035,9 @@ namespace Protocol {
       }
       if (other.Message.Length != 0) {
         Message = other.Message;
+      }
+      if (other.IsLobbyChat != false) {
+        IsLobbyChat = other.IsLobbyChat;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -7995,6 +8062,10 @@ namespace Protocol {
             Message = input.ReadString();
             break;
           }
+          case 24: {
+            IsLobbyChat = input.ReadBool();
+            break;
+          }
         }
       }
     #endif
@@ -8016,6 +8087,10 @@ namespace Protocol {
           }
           case 18: {
             Message = input.ReadString();
+            break;
+          }
+          case 24: {
+            IsLobbyChat = input.ReadBool();
             break;
           }
         }

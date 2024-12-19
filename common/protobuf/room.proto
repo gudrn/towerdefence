@@ -211,9 +211,12 @@ message G2L_DeleteGameRoomRequest
 message C2G_ChatMessageRequest {
     string message = 1;
     int32 roomId = 2;
+    bool isLobbyChat = 3;
+
 }
 
 message G2C_ChatMessageNotification {
     string userId = 1;
     string message = 2;
+    bool isLobbyChat = 3;
 }
