@@ -26,11 +26,9 @@ router.post('/signup', async (req, res) => {
   }
 
   // 3. 비밀번호 복잡성 검증
-  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{8,}$/;
+  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
   if (!passwordRegex.test(password)) {
-    return res
-      .status(400)
-      .send('비밀번호는 최소 8자 이상, 영문자, 숫자, 특수문자를 포함해야 합니다.');
+    return res.status(400).send('비밀번호는 최소 8자 이상의 영문자, 숫자를 포함해야 합니다.');
   }
 
   // 4. 닉네임 검증
