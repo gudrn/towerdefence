@@ -16,7 +16,7 @@ router.post('/signup', async (req, res) => {
   const { email, password, nickname } = req.body;
 
   //body 유효성 검사
-  const { error } = signUpSchema.validate(req.body);
+  const { error } = await signUpSchema.validate(req.body);
   if (error) {
     return res.status(400).send(error.message);
   }
