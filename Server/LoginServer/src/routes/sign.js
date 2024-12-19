@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import { prisma } from '../utils/prisma/prisma.js';
 import { v4 as uuidv4 } from 'uuid';
 import jwt from 'jsonwebtoken';
+import signUpSchema from '../utils/schema/signUpSchema.js';
 
 const router = express.Router();
 
@@ -13,34 +14,13 @@ const router = express.Router();
 ---------------------------------------------*/
 router.post('/signup', async (req, res) => {
   const { email, password, nickname } = req.body;
-  // 1. 필수 입력 값 확인
-  if (!email || !password || !nickname) {
-    console.log('이메일, 비밀번호, 또는 닉네임이 누락되었습니다.');
-    return res.status(400).send('이메일, 비밀번호, 또는 닉네임이 누락되었습니다.');
-  }
 
-  // 2. 이메일 형식 검증
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    return res.status(400).send('유효하지 않은 이메일 형식입니다.');
-  }
-
-  // 3. 비밀번호 복잡성 검증
-  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-  if (!passwordRegex.test(password)) {
-    return res.status(400).send('비밀번호는 최소 8자 이상의 영문자, 숫자를 포함해야 합니다.');
-  }
-
-  // 4. 닉네임 검증
-  if (nickname.length < 2 || nickname.length > 10) {
-    return res.status(400).send('닉네임은 2자 이상 10자 이하여야 합니다.');
-  }
-
-  const nicknameRegex = /^[a-zA-Z가-힣0-9_]+$/;
-  if (!nicknameRegex.test(nickname)) {
-    return res.status(400).send('닉네임에는 특수문자를 사용할 수 없습니다.');
-  }
   //body 유효성 검사
+  const { error } = signUpSchema.validate(req.body);
+  if (error) {
+    return res.status(400).send("회원가입이 실패했습니다.");
+  }
+
 
   const hashedPwd = await bcrypt.hash(password, 10);
 
