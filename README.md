@@ -7,13 +7,21 @@
 ## 프롤로그
 
 🌅 인류의 편의성을 증진시키기 위해 만들어진 인공지능의 반란이 일어난지 9년…
+
 쉴 틈 없이 몰려오는 인공지능의 물량에 지쳐버린 인류는 점점 밀려나게 되어버리고
+
 어느덧 인류가 살아갈 장소 마저 지하 셸터로 한정되어 졌다.
+
 인류는 마지막 반격을 위해 쌓아온 전투 데이터를 기반으로
+
 **인공지능과 비슷한 시뮬레이터를 만들게 되었고,**
+
 이것을 토대로 영웅 육성을 위한 Project9을 실행한다.
+
 하지만 희망조차 남아있지 않는 인류에겐 지원자가 없는 그 순간…
+
 4명의 용감한 자들이 지원을 하였고,
+
 **그들은 시뮬레이터를 통해 영웅으로서 성장을 하려고 한다!**
 
 ## TowerDefense 게임 소개
@@ -72,7 +80,7 @@
 ## 기술 스택
 
 - **Backend**
-  - ![Node.js](https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white) ![TypeScript](https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) ![MySQL](https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white) ![redis](https://img.shields.io/badge/redis-FF4438?style=for-the-badge&logo=redis&logoColor=white) ![.NET](https://img.shields.io/badge/.net-512BD4?style=for-the-badge&logo=.net&logoColor=white)
+  - ![Node.js](https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white) ![JavaScript](https://img.shields.io/badge/javaScript-F7DF1E?style=for-the-badge&logo=javaScript&logoColor=black) ![TypeScript](https://img.shields.io/badge/TypeScript-87ceeb?style=for-the-badge&logo=TypeScript&logoColor=black) ![MySQL](https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white) ![redis](https://img.shields.io/badge/redis-FF4438?style=for-the-badge&logo=redis&logoColor=white)
 - **Infra**
   - ![AWS](https://img.shields.io/badge/aws-232F3E?style=for-the-badge&logo=awsorganizations&logoColor=white) ![Docker](https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![ubuntu](https://img.shields.io/badge/ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
 - **Client**
@@ -99,7 +107,7 @@
 | 김형구 | 팀원, 백엔드 개발               | gudrn8293@naver.com   | [김형구 블로그](https://gudrn8293.tistory.com)                                       |
 | 신승우 | 팀원, 클라이언트 개발           | ysshin1016@gmail.com  | [신승우 블로그](https://nbcssw.tistory.com/)                                         |
 | 조정현 | 팀원, 백엔드 및 클라이언트 개발 | emforhs0913@naver.com | [조정현 블로그](https://cannons.notion.site/13c383dfd6bf814e87acf0f93b5c2c4a?pvs=73) |
-| 황의헌 | 팀원, 백엔드 개발               | policessu@naver.com   | [황의헌 블로그](https://velog.io/@mu92204/posts)                                     |
+| 홍의헌 | 팀원, 백엔드 개발               | policessu@naver.com   | [홍의헌 블로그](https://velog.io/@mu92204/posts)                                     |
 
 ## 프로젝트 제작 기간
 
