@@ -4,7 +4,7 @@
   "data": [
     {
       "prefabId": "OrbitalBeam",
-      "attackDamage": 0.8,
+      "attackDamage": 0.3,
       "attackRange": 5,
       "heal": 0,
       "type": "Attack"
