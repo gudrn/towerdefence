@@ -6,7 +6,10 @@ import { gameRoomManager } from 'src/contents/room/gameRoomManager';
 import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
 import { CustomError } from 'ServerCore/utils/error/customError';
 import { PacketUtils } from 'ServerCore/utils/packetUtils';
-import { B2G_MonsterDeathNotificationSchema, B2G_MonsterHealthUpdateNotificationSchema } from 'src/protocol/monster_pb';
+import {
+  B2G_MonsterDeathNotificationSchema,
+  B2G_MonsterHealthUpdateNotificationSchema,
+} from 'src/protocol/monster_pb';
 import { create } from '@bufbuild/protobuf';
 import { ePacketId } from 'ServerCore/network/packetId';
 import { assetManager } from 'src/utils/assetManager';
@@ -36,19 +39,19 @@ export class Shark extends Character {
     console.log('Shark의 고유 능력 발동: 원형 범위 내 몬스터들에게 데미지');
 
     const monsters = this.getMonstersInRange(this.room, player, this.range);
-    
+
     let perDamage: number = 0;
     monsters.forEach((monster) => {
-      perDamage = Math.floor(monster.hp - monster.maxHp * this.percentDamage);
+      perDamage = Math.floor(monster.maxHp * this.percentDamage);
       monster.onDamaged(perDamage);
 
-       {
+      {
         const notificationPacket = create(B2G_MonsterHealthUpdateNotificationSchema, {
           monsterId: monster.getId(),
           hp: perDamage,
-          roomId: this.room.id
+          roomId: this.room.id,
         });
-      
+
         const sendBuffer = PacketUtils.SerializePacket(
           notificationPacket,
           B2G_MonsterHealthUpdateNotificationSchema,
