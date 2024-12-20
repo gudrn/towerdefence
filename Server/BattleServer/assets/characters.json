@@ -11,7 +11,7 @@
       "prefabId": "Shark",
       "cooldown": 30000,
       "range": 5,
-      "attackDamage": 70
+      "attackDamage": 0.8
     },
     {
       "prefabId": "Malang",
