@@ -93,14 +93,14 @@
 
 ## 👩‍💻 팀원
 
-| 이름   | 역할                            | email                 | blog                                                                                                                                       |
-| ------ | ------------------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| 윤서진 | 팀장,백엔드                     | ydh23203727@gmail.com | [https://velog.io/@yth0417/posts](https://velog.io/@yth0417/posts)                                                                         |
-| 김수빈 | 부팀장, 백엔드 개발             | rlatnqls311@gmail.com | [https://velog.io/@sidhd3030/posts](https://velog.io/@sidhd3030/posts)                                                                     |
-| 김형구 | 팀원, 백엔드 개발               | gudrn8293@naver.com   | [https://gudrn8293.tistory.com](https://gudrn8293.tistory.com)                                                                             |
-| 신승우 | 팀원, 클라이언트 개발           | ysshin1016@gmail.com  | [https://nbcssw.tistory.com/](https://nbcssw.tistory.com/)                                                                                 |
-| 조정현 | 팀원, 백엔드 및 클라이언트 개발 | emforhs0913@naver.com | [https://cannons.notion.site/13c383dfd6bf814e87acf0f93b5c2c4a?pvs=73](https://cannons.notion.site/13c383dfd6bf814e87acf0f93b5c2c4a?pvs=73) |
-| 황의헌 | 팀원, 백엔드 개발               | policessu@naver.com   | [https://velog.io/@mu92204/posts](https://velog.io/@mu92204/posts)                                                                         |
+| 이름   | 역할                            | email                 | blog                                                                                 |
+| ------ | ------------------------------- | --------------------- | ------------------------------------------------------------------------------------ |
+| 윤서진 | 팀장,백엔드                     | ydh23203727@gmail.com | [윤서진 블로그](https://velog.io/@yth0417/posts)                                     |
+| 김수빈 | 부팀장, 백엔드 개발             | rlatnqls311@gmail.com | [김수빈 블로그](https://velog.io/@sidhd3030/posts)                                   |
+| 김형구 | 팀원, 백엔드 개발               | gudrn8293@naver.com   | [김형구 블로그](https://gudrn8293.tistory.com)                                       |
+| 신승우 | 팀원, 클라이언트 개발           | ysshin1016@gmail.com  | [신승우 블로그](https://nbcssw.tistory.com/)                                         |
+| 조정현 | 팀원, 백엔드 및 클라이언트 개발 | emforhs0913@naver.com | [조정현 블로그](https://cannons.notion.site/13c383dfd6bf814e87acf0f93b5c2c4a?pvs=73) |
+| 황의헌 | 팀원, 백엔드 개발               | policessu@naver.com   | [황의헌 블로그](https://velog.io/@mu92204/posts)                                     |
 
 ## 프로젝트 제작 기간
 
