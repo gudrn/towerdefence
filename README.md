@@ -2,7 +2,7 @@
 
 ## 프로젝트 소개
 
-![프로젝트 이미지]()
+![프로젝트 이미지](https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2Fa3a19cb1-d58a-4229-807e-2b754443de48%2F1f68c529-15c4-483d-b089-8c158a97651d-removebg-preview.png?table=block&id=dc0d5215-3ecd-4eb2-ae30-40e6847868d7&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=290&userId=7205ba94-c774-4e48-a368-f07392273158&cache=v2)
 
 ## 프롤로그
 
@@ -33,11 +33,11 @@
 
 ## 서비스 아키텍처
 
-![서비스 아키텍처]()
+![서비스 아키텍처](<https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F8a7c0836-cad9-455d-864a-81bf888f3d49%2Fimage_(1).png?table=block&id=dcad5f01-0988-4bcc-a4b0-8fcfdb8416eb&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=1410&userId=7205ba94-c774-4e48-a368-f07392273158&cache=v2>)
 
 ## 게임 플로우 차트
 
-![플로우 차트]()
+![플로우 차트](https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2Fa33955fe-9e74-429f-aecf-abee16ac83ff%2F%25EC%258A%25A4%25ED%2581%25AC%25EB%25A6%25B0%25EC%2583%25B7_2024-12-19_165443.png?table=block&id=d921237e-59d6-41bb-977b-06459acabd48&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=1410&userId=7205ba94-c774-4e48-a368-f07392273158&cache=v2)
 1️⃣ 게임의 목표는 정해진 구역 내에서 몰려오는 몬스터로부터 기지를 방어하는 것입니다.
 
 로비에서는 캐릭터를 선택할 수 있으며,
@@ -53,22 +53,22 @@
 
 ## 주요 콘텐츠
 
-- [게임 플레이 및 UI]()
-- [4가지 종류의 캐릭터 및 전용 능력]()
-- [5가지 종류의 로봇 몬스터]()
-- [확률형 카드획득]()
-- [르탄이들의 든든한 버팀목 타워]()
+- [게임 플레이 및 UI](https://www.notion.so/teamsparta/UI-6ff71c8be1684e9fa6e45d581bb3f20a?pvs=25&cookie_sync_completed=true)
+- [4가지 종류의 캐릭터 및 전용 능력](https://www.notion.so/teamsparta/4-15b669ad3b094b918938f881249bfa94)
+- [5가지 종류의 로봇 몬스터](https://www.notion.so/teamsparta/5-32f0dda393ad4b70a31ec0c3270cd96f?pvs=25)
+- [확률형 카드획득](https://www.notion.so/teamsparta/3f366a6ffb9e4c3c9e400986383ae3f6?pvs=25)
+- [르탄이들의 든든한 버팀목 타워](https://www.notion.so/teamsparta/eab3c8e4c8fc403d96280b48782f7889?pvs=25)
 
 ## 시연 영상
 
-- [시연 영상]()
+- [시연 영상](https://www.notion.so/teamsparta/15f2dc3ef51481418e4dfc620845fb20)
 
 ## 트러블 슈팅
 
-- [엄청난 수의 InitialPacket]()
-- [타워 총알 동기화 문제]()
-- [서버 CPU 부하]()
-- [서버 확장성 문제]()
+- [엄청난 수의 InitialPacket](https://www.notion.so/teamsparta/InitialPacket-bf5c7da28eb74c2394ec6f3259778b23)
+- [타워 총알 동기화 문제](https://www.notion.so/teamsparta/427e5cd0a5044efa9943f37444e36805)
+- [서버 CPU 부하](https://www.notion.so/teamsparta/CPU-ad6828ca4d03454c92e7eb6f84046a14?pvs=25)
+- [서버 확장성 문제](https://www.notion.so/teamsparta/7ab684bdf1184f869c5ef28a6bb5e6b1)
 
 ## 기술 스택
 
@@ -81,7 +81,7 @@
 
 ## 기획
 
-- [기획 문서]()
+- [기획 문서](https://teamsparta.notion.site/d36b30239d8240199ef0d699181070a6)
 
 ## 게임 다운로드
 
@@ -89,7 +89,7 @@
 
 ## 관련 링크
 
-- [팀 노션]()
+- [팀 노션](https://teamsparta.notion.site/9-2dfa6b2d1f674002821c8e0459caec93)
 
 ## 👩‍💻 팀원
 
@@ -105,3 +105,7 @@
 ## 프로젝트 제작 기간
 
 2024.11.13 ~ 2024.12.22
+
+## 회의록
+
+- [회의록](https://www.notion.so/teamsparta/640aefdbe069499388cd0b93217c13bc)
