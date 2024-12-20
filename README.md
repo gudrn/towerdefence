@@ -106,6 +106,10 @@
 
 2024.11.13 ~ 2024.12.22
 
+## 클라이언트
+
+- [클라이언트](https://github.com/im-cjh/last-client)
+
 ## 회의록
 
 - [회의록](https://www.notion.so/teamsparta/640aefdbe069499388cd0b93217c13bc)
