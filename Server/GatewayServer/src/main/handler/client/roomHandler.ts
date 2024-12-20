@@ -1,6 +1,6 @@
 import { create, fromBinary } from "@bufbuild/protobuf";
 import { GatewaySession } from "../../session/gatewaySession";
-import { C2G_ChatMessageRequest, C2G_ChatMessageRequestSchema, C2G_CreateRoomRequest, C2G_CreateRoomRequestSchema, C2G_GetRoomListRequestSchema, C2G_JoinGameRoomRequestSchema, C2G_JoinRoomRequest, C2G_JoinRoomRequestSchema, C2G_LeaveRoomRequestSchema, G2B_CreateGameRoomRequestSchema, G2B_JoinGameRoomRequestSchema, G2C_ChatMessageNotificationSchema, G2L_CreateRoomRequestSchema, G2L_GameStartRequestSchema, G2L_GetRoomListRequestSchema, G2L_JoinRoomRequestSchema, G2L_LeaveRoomRequestSchema } from "src/protocol/room_pb";
+import { C2G_ChatMessageRequest, C2G_ChatMessageRequestSchema, C2G_CreateRoomRequest, C2G_CreateRoomRequestSchema, C2G_GameReadyRequest, C2G_GameReadyRequestSchema, C2G_GetRoomListRequestSchema, C2G_JoinGameRoomRequestSchema, C2G_JoinRoomRequest, C2G_JoinRoomRequestSchema, C2G_LeaveRoomRequestSchema, G2B_CreateGameRoomRequestSchema, G2B_JoinGameRoomRequestSchema, G2C_ChatMessageNotificationSchema, G2C_GameReadyNotificationSchema, G2L_CreateRoomRequestSchema, G2L_GameStartRequestSchema, G2L_GetRoomListRequestSchema, G2L_JoinRoomRequestSchema, G2L_LeaveRoomRequestSchema } from "src/protocol/room_pb";
 import { PacketUtils } from "ServerCore/utils/packetUtils";
 import { ePacketId } from "ServerCore/network/packetId";
 import { battleSessionManager, lobbySessionManager } from "src/server";
@@ -9,6 +9,7 @@ import { roomManager } from "src/contents/roomManager";
 import { CustomError } from "ServerCore/utils/error/customError";
 import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
 import { send } from "process";
+import { Room } from "src/contents/room";
 
 /*---------------------------------------------
     [클라이언트 패킷 처리]
@@ -101,7 +102,7 @@ export function handleC2G_JoinRoomRequest(buffer: Buffer, session: GatewaySessio
     [방 퇴장 요청]
   ---------------------------------------------*/
 export function handleC2G_LeaveRoomRequest(buffer: Buffer, session: GatewaySession) {
-    //console.log("handleC2G_LeaveRoomRequest");
+    session.isReady = false;
     const packet = fromBinary(C2G_LeaveRoomRequestSchema, buffer);
 
     roomManager.leaveRoom(packet.roomId, session.getId());
@@ -125,50 +126,24 @@ export function handleC2G_LeaveRoomRequest(buffer: Buffer, session: GatewaySessi
     1. 로비 서버에게 방 상태 변경 요청
     2. 배틀 서버에게 방 생성 요청
   ---------------------------------------------*/
-export function handleC2G_GameStartRequest(buffer: Buffer, session: GatewaySession) {
-    //console.log("handleC2G_GameStartRequest");
+export function handleC2G_GameReadyRequest(buffer: Buffer, session: GatewaySession) {
+    console.log("handleC2G_GameReadyRequest");
 
-    const packet: C2G_JoinRoomRequest = fromBinary(C2G_JoinRoomRequestSchema, buffer);
-    const room = roomManager.getRoom(packet.roomId);
+    const packet: C2G_GameReadyRequest = fromBinary(C2G_GameReadyRequestSchema, buffer);
+    const room: Room | undefined = roomManager.getRoom(packet.roomId);
     if(room == undefined) {
-        throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, `[handleC2G_GameStartRequest] 방을 찾지 못했습니다. ${packet.roomId}`);
+        throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, `[handleC2G_GameReadyRequest] 방을 찾지 못했습니다. ${packet.roomId}`);
     }
+    session.isReady = true;
 
-    //1. 로비 서버에게 방 상태 변경 요청
-    {
-        const requestPacket = create(G2L_GameStartRequestSchema, {
-            roomId: packet.roomId,
-            userId: session.getId()
-        });
-    
-        const sendBuffer = PacketUtils.SerializePacket(requestPacket, G2L_GameStartRequestSchema, ePacketId.G2L_GameStartRequest, 0);
-    
-        const lobbySession = lobbySessionManager.getRandomSession();
-        if(lobbySession == null) {
-            console.log("[handleC2G_GameStartRequest]: 로비 세션이 존재하지 않습니다.");
-            return;
-        }
-    
-        lobbySession.send(sendBuffer);
-    }
+    const notificationPacket = create(G2C_GameReadyNotificationSchema, {
+        userId: packet.userId
+    });
 
-    // 2. 배틀 서버에게 방 생성 요청
-    {
-        const requestPacket = create(G2B_CreateGameRoomRequestSchema, {
-            roomId: packet.roomId,
-            maxUserNum: room.getCurrentPlayerCount()
-        });
+    const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_GameReadyNotificationSchema, ePacketId.G2C_GameReadyRequest, 0);
+    room.broadcast(sendBuffer);
 
-        const sendBuffer = PacketUtils.SerializePacket(requestPacket, G2B_CreateGameRoomRequestSchema, ePacketId.G2B_CreateGameRoomRequest, 0);
-
-        const battleSession = battleSessionManager.getRandomSession();
-        if(battleSession == null) {
-            console.log("[handleC2G_GameStartRequest]: 배틀 세션이 존재하지 않습니다.");
-            return;
-        }
-
-        battleSession.send(sendBuffer);
-    }
+    room.handleGameReadyRequest(packet.userId);
 }
 
 /*---------------------------------------------

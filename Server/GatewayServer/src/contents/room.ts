@@ -6,7 +6,9 @@ import { PacketUtils } from 'ServerCore/utils/packetUtils';
 import { GatewaySession } from 'src/main/session/gatewaySession';
 import { LobbySession } from 'src/main/session/lobbySession.js';
 import { RoomStateType } from 'src/protocol/enum_pb';
+import { G2B_CreateGameRoomRequestSchema, G2L_GameStartRequestSchema } from 'src/protocol/room_pb';
 import { RoomDataSchema, UserDataSchema } from 'src/protocol/struct_pb';
+import { battleSessionManager, lobbySessionManager } from 'src/server';
 
 /**
  * Room 클래스
@@ -62,5 +64,60 @@ export class Room {
 
   public leaveRoom(userId: string){
     this.users = this.users.filter((user) => user.getId() !== userId);
+  }
+
+  public handleGameReadyRequest(userId: string){
+    //모든 유저가 ready라면?
+    console.log("나 호출 ㅇㅇ");
+    if(this.isAllReady()){
+      //1. 로비 서버에게 방 상태 변경 요청
+      {
+          const requestPacket = create(G2L_GameStartRequestSchema, {
+              roomId: this.id,
+              userId,
+          });
+      
+          const sendBuffer = PacketUtils.SerializePacket(requestPacket, G2L_GameStartRequestSchema, ePacketId.G2L_GameStartRequest, 0);
+      
+          const lobbySession = lobbySessionManager.getRandomSession();
+          if(lobbySession == null) {
+              console.log("[handleC2G_GameStartRequest]: 로비 세션이 존재하지 않습니다.");
+              return;
+          }
+      
+          lobbySession.send(sendBuffer);
+      }
+  
+      // 2. 배틀 서버에게 방 생성 요청
+      {
+          const requestPacket = create(G2B_CreateGameRoomRequestSchema, {
+              roomId: this.id,
+              maxUserNum: this.getCurrentPlayerCount()
+          });
+  
+          const sendBuffer = PacketUtils.SerializePacket(requestPacket, G2B_CreateGameRoomRequestSchema, ePacketId.G2B_CreateGameRoomRequest, 0);
+  
+          const battleSession = battleSessionManager.getRandomSession();
+          if(battleSession == null) {
+              console.log("[handleC2G_GameStartRequest]: 배틀 세션이 존재하지 않습니다.");
+              return;
+          }
+  
+          battleSession.send(sendBuffer);
+      }
+    }     
+    else{
+      console.log("이게 왜 false?");
+    }
+  }
+  
+
+  private isAllReady(){
+    for(let user of this.users){
+      if(user.isReady == false){
+        return false;
+      }
+    }
+    return true;
   }
 }

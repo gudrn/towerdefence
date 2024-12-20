@@ -31,10 +31,15 @@ message G2C_CreateRoomResponse
     RoomData room = 2;
 }
 
-message C2G_GameStartRequest
+message C2G_GameReadyRequest
 {
     int32 roomId = 1;       
     string userId = 2;      
+}
+
+message G2C_GameReadyNotification
+{    
+    string userId = 1;      
 }
 
 //방 상태 변경 요청

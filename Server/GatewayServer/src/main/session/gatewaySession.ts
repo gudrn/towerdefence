@@ -6,7 +6,8 @@ import { PacketHeader } from "ServerCore/network/packetHeader";
 import gatewayHandlerMappings from "../handlerMapping/gatewayServerPacketHandler";
 
 export class GatewaySession extends Session { 
-
+  public isReady: boolean = false;
+  
   constructor(socket: Socket) {
     super(socket);
   }
