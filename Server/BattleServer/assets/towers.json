@@ -28,7 +28,7 @@
     },
     {
       "prefabId": "MissileTower",
-      "attackDamage": 20,
+      "attackDamage": 40,
       "attackRange": 8,
       "attackCoolDown": 4000,
       "maxHp": 100,

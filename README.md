@@ -33,7 +33,7 @@
 
 ## 서비스 아키텍처
 
-![서비스 아키텍처](<https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F8a7c0836-cad9-455d-864a-81bf888f3d49%2Fimage_(1).png?table=block&id=dcad5f01-0988-4bcc-a4b0-8fcfdb8416eb&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=1420&userId=&cache=v2>)
+![서비스 아키텍처](./README/서버아키텍처.png)
 
 ## 게임 플로우 차트
 
