@@ -48,7 +48,7 @@ export class Shark extends Character {
       {
         const notificationPacket = create(B2G_MonsterHealthUpdateNotificationSchema, {
           monsterId: monster.getId(),
-          hp: perDamage,
+          hp: monster.hp,
           roomId: this.room.id,
         });
 
