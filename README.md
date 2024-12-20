@@ -2,7 +2,7 @@
 
 ## 프로젝트 소개
 
-![프로젝트 이미지](https://www.notion.so/teamsparta/9-8d89dc4c6f314fa69df04c1582b4d2eb?pvs=4#7b6c246337494d43bd5fc720388ca2a0)
+![프로젝트 이미지](./README/로고.png)
 
 ## 프롤로그
 
@@ -33,11 +33,11 @@
 
 ## 서비스 아키텍처
 
-![서비스 아키텍처](https://www.notion.so/teamsparta/9-8d89dc4c6f314fa69df04c1582b4d2eb?pvs=4#dcad5f0109884bcca4b08fcfdb8416eb)
+![서비스 아키텍처](<https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F8a7c0836-cad9-455d-864a-81bf888f3d49%2Fimage_(1).png?table=block&id=dcad5f01-0988-4bcc-a4b0-8fcfdb8416eb&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=1420&userId=&cache=v2>)
 
 ## 게임 플로우 차트
 
-![플로우 차트](https://www.notion.so/teamsparta/9-8d89dc4c6f314fa69df04c1582b4d2eb?pvs=4#d921237e59d641bb977b06459acabd48)
+![플로우 차트](./README/플로우차트.png)
 1️⃣ 게임의 목표는 정해진 구역 내에서 몰려오는 몬스터로부터 기지를 방어하는 것입니다.
 
 로비에서는 캐릭터를 선택할 수 있으며,
