@@ -4,25 +4,42 @@ import { CustomError } from "ServerCore/utils/error/customError";
 import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
 import { PacketHeader } from "ServerCore/network/packetHeader";
 import gatewayHandlerMappings from "../handlerMapping/gatewayServerPacketHandler";
+import { gatewaySessionManager, lobbySessionManager } from "src/server";
+import { G2L_LeaveRoomRequestSchema } from "src/protocol/room_pb";
+import { create } from "@bufbuild/protobuf";
+import { PacketUtils } from "ServerCore/utils/packetUtils";
+import { ePacketId } from "ServerCore/network/packetId";
+import { handleError } from "src/utils/errorHandler";
 
 export class GatewaySession extends Session { 
   public isReady: boolean = false;
-  
+  public currentRoomId: number = -1;
+
   constructor(socket: Socket) {
     super(socket);
   }
 
   /*---------------------------------------------
    [클라이언트 연결 종료 처리]
+   //1. 세션 매니저에서 제거하기
+   //2. 방에 참가했다면, redis에서 제거하기
   ---------------------------------------------*/
   onEnd() {
     console.log('[GatewaySession] 클라이언트 연결이 종료되었습니다.');
+    this.onDisconnect();
   }
 
 
   onError(error: any) {
     console.log(error);
-
+    switch (error.code) {
+      case 'ECONNRESET':
+        this.onDisconnect();
+        break;
+      default:
+        console.error('소켓 오류:', error);
+        break;
+    }
   }
   /**---------------------------------------------
    * [패킷 처리 핸들러]
@@ -51,6 +68,24 @@ export class GatewaySession extends Session {
       console.log('핸들 에러 호출');
       console.log(error);
       //handleError(this, error);
+    }
+  }
+
+  private onDisconnect() {
+    gatewaySessionManager.removeSession(this.id);
+    if(this.currentRoomId != -1){
+      const lobbySession = lobbySessionManager.getRandomSession();
+      if(lobbySession == undefined){
+        return;
+      }
+
+      const packet = create(G2L_LeaveRoomRequestSchema, {
+        roomId: this.currentRoomId,
+        userId: this.id
+      });
+
+      const sendBuffer= PacketUtils.SerializePacket(packet, G2L_LeaveRoomRequestSchema, ePacketId.G2L_LeaveRoomRequest, 0);
+      lobbySession.send(sendBuffer);
     }
   }
 }

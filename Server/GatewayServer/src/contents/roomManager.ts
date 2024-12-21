@@ -83,6 +83,9 @@ class RoomManager {
         return;
     }
 
+    //현재 참여한 roomId갱신. onDisconnect에서 사용하기 위함
+    clientSession.currentRoomId = packet.roomInfo!.id;
+
     const responsePacket = create(G2C_JoinRoomResponseSchema, {
         isSuccess: packet.isSuccess,
         roomInfo: packet.roomInfo
