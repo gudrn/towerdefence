@@ -120,4 +120,14 @@ export class Room {
     }
     return true;
   }
+
+  /*---------------------------------------------
+    [게임 오버]
+    - 해당 방에 참여한 유저의 세션의 roomID를 초기화
+  ---------------------------------------------*/
+  public onGameOver(){
+    for(let user of this.users){
+      user.currentRoomId = -1;
+    }
+  }
 }
