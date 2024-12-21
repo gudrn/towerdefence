@@ -4,27 +4,27 @@
   "data": [
     {
       "prefabId": "Red",
-      "cooldown": 3000,
+      "cooldown": 30000,
       "cardAmount": 1
     },
     {
       "prefabId": "Shark",
-      "cooldown": 3000,
+      "cooldown": 30000,
       "range": 5,
-      "attackDamage": 50
+      "attackDamage": 0.8
     },
     {
       "prefabId": "Malang",
-      "cooldown": 5000,
+      "cooldown": 30000,
       "range": 5,
-      "buffDuration": 3000,
-      "attackCoolDownBuff": 0.9
+      "buffDuration": 2500,
+      "attackCoolDownBuff": 0.5
     },
     {
       "prefabId": "Frog",
-      "cooldown": 3000,
+      "cooldown": 30000,
       "range": 5,
-      "heal": 50
+      "heal": 500
     }
   ]
 }

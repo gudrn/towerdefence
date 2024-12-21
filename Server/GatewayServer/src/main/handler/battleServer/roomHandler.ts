@@ -4,7 +4,6 @@ import { B2G_CreateGameRoomResponseSchema, B2G_DeleteGameRoomRequestSchema, B2G_
 import { PacketUtils } from "ServerCore/utils/packetUtils";
 import { ePacketId } from "ServerCore/network/packetId";
 import { battleSessionManager, lobbySessionManager } from "src/server";
-import { redis } from "src/utils/redis";
 import { handleError } from "src/utils/errorHandler";
 import { roomManager } from "src/contents/roomManager";
 import { CustomError } from "ServerCore/utils/error/customError";
@@ -46,11 +45,11 @@ export function handleB2G_CreateGameRoomResponse(buffer: Buffer, session: Battle
     room.broadcast(sendBuffer);
 }
 
-export function handleB2G_JoinGameRoomResponse(buffer: Buffer, session: GatewaySession) {
+export function handleB2G_JoinGameRoomResponse(buffer: Buffer, session: BattleSession) {
 
 }
 
-export function handleB2G_GameStartNotification(buffer: Buffer, session: GatewaySession) {
+export function handleB2G_GameStartNotification(buffer: Buffer, session: BattleSession) {
     console.log("게임 시작!");
 
     const packet = fromBinary(B2G_GameStartNotificationSchema, buffer);
@@ -73,7 +72,7 @@ export function handleB2G_GameStartNotification(buffer: Buffer, session: Gateway
     로비 서버에게 방 제거 요청
     자신의 room도 제거
   ---------------------------------------------*/
-export function handleB2G_DeleteGameRoomRequest(buffer: Buffer, session: GatewaySession){
+export function handleB2G_DeleteGameRoomRequest(buffer: Buffer, session: BattleSession){
     console.log("handleB2G_DeleteGameRoomRequest");
 
     

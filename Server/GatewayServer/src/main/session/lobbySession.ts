@@ -1,28 +1,26 @@
-
 import { create } from '@bufbuild/protobuf';
-import { Socket } from "net";
+import { Socket } from 'net';
 import { PacketHeader } from 'ServerCore/network/packetHeader';
-import { ePacketId } from "ServerCore/network/packetId";
-import { Session } from "ServerCore/network/session";
+import { ePacketId } from 'ServerCore/network/packetId';
+import { Session } from 'ServerCore/network/session';
 import { CustomError } from 'ServerCore/utils/error/customError';
-import { PacketUtils } from "ServerCore/utils/packetUtils";
-import { battleConfig } from "src/config/config";
+import { PacketUtils } from 'ServerCore/utils/packetUtils';
+import { battleConfig } from 'src/config/config';
 import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
-import { C2L_InitSchema, G2L_InitSchema } from 'src/protocol/init_pb';
+import { G2L_InitSchema } from 'src/protocol/init_pb';
 import { handleError } from 'src/utils/errorHandler';
 import lobbyHandlerMappings from '../handlerMapping/lobbyServerPacketHandler';
 import { lobbySessionManager } from 'src/server';
-
 
 /*---------------------------------------------
    [TODO]
    - 모든 session 생성자에 id를 넣어서 생성하기
 ---------------------------------------------*/
 export class LobbySession extends Session {
-  public host: string = "";
+  public host: string = '';
   public port: number = -1;
   public reConnectCount: number = 0;
-  public maxReConnectCount: number = 5;
+  public maxReConnectCount: number = 20;
 
   constructor(socket: Socket) {
     super(socket);
@@ -41,7 +39,7 @@ export class LobbySession extends Session {
 
       this.reConnectCount = 0;
       const packet = create(G2L_InitSchema, {
-        serverId: this.getId()
+        serverId: this.getId(),
       });
 
       const sendBuffer = PacketUtils.SerializePacket(packet, G2L_InitSchema, ePacketId.G2L_Init, 0);
@@ -62,13 +60,13 @@ export class LobbySession extends Session {
     [소켓 에러 처리]
   ---------------------------------------------*/
   onError(error: any) {
-    switch(error.code) {
+    switch (error.code) {
       case 'ECONNRESET':
         this.reConnect();
         break;
       case 'ECONNREFUSED':
-          this.reConnect();
-          break;
+        this.reConnect();
+        break;
       default:
         console.error('소켓 오류:', error);
         handleError(this, new CustomError(500, `소켓 오류: ${error.message}`));
@@ -101,7 +99,7 @@ export class LobbySession extends Session {
       // 3. 핸들러 호출
       await handler(packet, this);
     } catch (error) {
-      console.log("로비 세션에서 발생 ㅇㅇ")
+      console.log('로비 세션에서 발생 ㅇㅇ');
       handleError(this, error);
     }
   }
@@ -112,10 +110,10 @@ export class LobbySession extends Session {
   }
 
   private reConnect() {
-    this.reConnectCount+=1;
+    this.reConnectCount += 1;
 
-    if(this.reConnectCount >= this.maxReConnectCount) {
-      console.log("[LobbySession::reConnect] 최대 재연결 횟수 도달");
+    if (this.reConnectCount >= this.maxReConnectCount) {
+      console.log('[LobbySession::reConnect] 최대 재연결 횟수 도달');
       return;
     }
 

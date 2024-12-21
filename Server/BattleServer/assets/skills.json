@@ -4,16 +4,16 @@
   "data": [
     {
       "prefabId": "OrbitalBeam",
-      "attackDamage": 50,
+      "attackDamage": 0.3,
       "attackRange": 5,
       "heal": 0,
       "type": "Attack"
     },
     {
       "prefabId": "TowerRepair",
-      "attackDamage": 0, 
+      "attackDamage": 0,
       "attackRange": 0,
-      "heal": 50,
+      "heal": 400,
       "type": "heal"
     }
   ]

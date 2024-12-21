@@ -9,7 +9,6 @@ export class SlowMan extends Character {
   }
 
   protected override activateAbility(): void {
-    console.log('SlowMan 고유 능력');
     // 구체적인 스킬 로직 구현
   }
 }

@@ -1,15 +1,19 @@
 import { GameRoom } from '../../room/gameRoom';
 import { GamePlayer } from '../gamePlayer';
-import { Monster } from '../monster';
-import { Tower } from '../tower';
 import { BattleSession } from 'src/main/session/battleSession';
 import { assetManager } from 'src/utils/assetManager';
 import { CustomError } from 'ServerCore/utils/error/customError';
 import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
-import { B2G_PlayerUseAbilityNotificationSchema, C2G_PlayerUseAbilityRequest, G2B_PlayerUseAbilityRequest } from 'src/protocol/character_pb';
+import {
+  B2G_PlayerUseAbilityNotificationSchema,
+  C2G_PlayerUseAbilityRequest,
+  G2B_PlayerUseAbilityRequest,
+} from 'src/protocol/character_pb';
 import { create } from '@bufbuild/protobuf';
 import { PacketUtils } from 'ServerCore/utils/packetUtils';
 import { ePacketId } from 'ServerCore/network/packetId';
+import { Monster } from '../monsters/monster';
+import { Tower } from '../towers/tower';
 /**
  * 캐릭터 클래스입니다.
  */
@@ -42,21 +46,10 @@ export abstract class Character {
    */
   public useAbility() {
     if (this.isCooldownActive) {
-      console.log(`${this.prefabId}의 능력은 재사용 대기 중입니다.`);
       return;
-
-      // // 쿨다운 상태를 알리는 패킷 생성 및 전송
-      // const cooldownNotificationPacketBuffer = createCooldownNotification(
-      //   payload.prefabId,
-      //   this.cooldown,
-      //   session.getNextSequence.bind(this),
-      // );
-      // this.player.session.send(cooldownNotificationPacketBuffer);
-      // return;
     }
 
     // 능력 발동 로직
-    console.log(`${this.prefabId}의 고유 능력을 발동합니다.`);
     this.activateAbility();
 
     if (this.player.playerData.position == undefined) {
@@ -67,10 +60,15 @@ export abstract class Character {
       position: this.player.playerData.position,
       prefabId: this.player.playerData.prefabId,
       message: `${this.prefabId}의 고유 능력을 발동합니다.`,
-      roomId: this.room.id
+      roomId: this.room.id,
     });
 
-    const sendBuffer = PacketUtils.SerializePacket(notificationPacket, B2G_PlayerUseAbilityNotificationSchema, ePacketId.B2G_PlayerUseAbilityNotification, 0);
+    const sendBuffer = PacketUtils.SerializePacket(
+      notificationPacket,
+      B2G_PlayerUseAbilityNotificationSchema,
+      ePacketId.B2G_PlayerUseAbilityNotification,
+      0,
+    );
     this.room.broadcast(sendBuffer);
     // 쿨다운 시작
     this.startCooldown();
@@ -109,10 +107,8 @@ export abstract class Character {
     }
 
     return towers.filter((tower) => {
-      const distance = Math.sqrt(
-        Math.pow(tower.pos.x - playerPos.x, 2) + Math.pow(tower.pos.y - playerPos.y, 2),
-      );
-      return distance <= range; // 범위 내 타워 필터링
+      const distance = (tower.pos.x - playerPos.x) * (tower.pos.x - playerPos.x) + (tower.pos.y - playerPos.y) * (tower.pos.y - playerPos.y);
+      return distance <= range * range; // 범위 내 타워 필터링
     });
   }
 
@@ -123,11 +119,10 @@ export abstract class Character {
    * @param range 버프 적용 범위
    * @returns 범위 내 타워 목록
    */
-  protected getMonstersInRange(room: GameRoom, player: GamePlayer, range: number): Monster[] {
+  protected getMonstersInRange(room: GameRoom, player: GamePlayer, range: number){
     const monsters = Array.from(room.getMonsters().values()); // 모든 타워 가져오기
     //console.log(monsters);
     const playerPos = player.playerData.position; // 플레이어의 위치 가져오기 (캐릭터 기준)
-    console.log(playerPos);
     if (!playerPos) {
       console.log('플레이어 위치를 가져올 수 없습니다.');
       return [];
@@ -150,10 +145,6 @@ export abstract class Character {
   protected applyDamageToMonsters(monsters: Monster[], damage: number) {
     monsters.forEach((monster) => {
       monster.onDamaged(damage); //조정현
-      // monster.hp -= damage;
-      // if (monster.hp <= 0) {
-      //   monster.onDeath();
-      // }
     });
   }
 }

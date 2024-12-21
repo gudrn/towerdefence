@@ -7,7 +7,10 @@ import { create } from '@bufbuild/protobuf';
 import { PacketUtils } from 'ServerCore/utils/packetUtils';
 import { ePacketId } from 'ServerCore/network/packetId';
 import { B2G_UseSkillNotificationSchema, G2B_UseSkillRequest } from 'src/protocol/skill_pb';
-import { B2G_MonsterDeathNotificationSchema, B2G_MonsterHealthUpdateNotificationSchema } from 'src/protocol/monster_pb';
+import {
+  B2G_MonsterDeathNotificationSchema,
+  B2G_MonsterHealthUpdateNotificationSchema,
+} from 'src/protocol/monster_pb';
 import { B2G_TowerHealthUpdateNotificationSchema } from 'src/protocol/tower_pb';
 import { CustomError } from 'ServerCore/utils/error/customError';
 import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
@@ -24,19 +27,18 @@ export class SkillManager {
    [스킬 처리 함수]
    ---------------------------------------------*/
   handleSkill(packet: G2B_UseSkillRequest, session: BattleSession) {
-    
     const user = this.gameRoom.users.get(packet.userId);
-    if(user == undefined){
-      throw new CustomError(ErrorCodes.SERSSION_NOT_FOUND, "유저를 찾지 못했습니다.");
-    } 
-
-    if(packet.skill == undefined || packet.skill.skillPos == undefined) {
-      throw new CustomError(ErrorCodes.MISSING_FIELDS, "[handleSkill] Skill이 누락됐습니다.");
+    if (user == undefined) {
+      throw new CustomError(ErrorCodes.SERSSION_NOT_FOUND, '유저를 찾지 못했습니다.');
     }
 
-    user.useCard(packet.cardId, packet.roomId);
+    if (packet.skill == undefined || packet.skill.skillPos == undefined) {
+      throw new CustomError(ErrorCodes.MISSING_FIELDS, '[handleSkill] Skill이 누락됐습니다.');
+    }
+
+    user.useCard(packet.cardId);
     const skillData = assetManager.getSkillsDataByPrefabId(packet.skill.prefabId);
-    if (!skillData) return; 
+    if (!skillData) return;
 
     switch (skillData.prefabId) {
       case 'OrbitalBeam':
@@ -60,13 +62,18 @@ export class SkillManager {
         prefabId: skillData.prefabId,
         skillPos: create(PosInfoSchema, {
           x: packet.skill.skillPos.x,
-          y: packet.skill.skillPos.y
+          y: packet.skill.skillPos.y,
         }),
       }),
-      ownerId: packet.userId
+      ownerId: packet.userId,
     });
 
-    const sendBuffer = PacketUtils.SerializePacket(notificationPacket, B2G_UseSkillNotificationSchema, ePacketId.B2G_UseSkillNotification, 0);
+    const sendBuffer = PacketUtils.SerializePacket(
+      notificationPacket,
+      B2G_UseSkillNotificationSchema,
+      ePacketId.B2G_UseSkillNotification,
+      0,
+    );
     this.gameRoom.broadcast(sendBuffer);
   }
 
@@ -82,16 +89,15 @@ export class SkillManager {
       return distance <= skill.attackRange;
     });
 
-    this.applyDamageToMonsters(monstersInRange, skill.attackDamage);
+    this.applyPercentDamageToMonsters(monstersInRange, skill.attackDamage);
 
     monstersInRange.forEach((monster) => {
       const attackPacket = create(B2G_MonsterHealthUpdateNotificationSchema, {
         monsterId: monster.getId(),
-        hp:monster.hp,
-        maxHp:monster.maxHp,
-        roomId:this.gameRoom.id,
+        hp: monster.hp,
+        roomId: this.gameRoom.id,
       });
-    
+
       const attackBuffer = PacketUtils.SerializePacket(
         attackPacket,
         B2G_MonsterHealthUpdateNotificationSchema,
@@ -99,7 +105,6 @@ export class SkillManager {
         0,
       );
       this.gameRoom.broadcast(attackBuffer);
-      
     });
   }
 
@@ -110,7 +115,7 @@ export class SkillManager {
    * @returns {void}
    ---------------------------------------------*/
   //  private handlerMolotovCocktail (skill: any, skillPos: any){
-    
+
   //  }
 
   /**---------------------------------------------
@@ -131,15 +136,15 @@ export class SkillManager {
         towerId: tower.getId(),
         hp: tower.hp,
         maxHp: tower.maxHp,
-        roomId:this.gameRoom.id,
-    })
+        roomId: this.gameRoom.id,
+      });
 
-    const TowerHealBuffer = PacketUtils.SerializePacket(
+      const TowerHealBuffer = PacketUtils.SerializePacket(
         TowerHealPacket,
         B2G_TowerHealthUpdateNotificationSchema,
         ePacketId.B2G_TowerHealthUpdateNotification,
-        0
-    )
+        0,
+      );
       this.gameRoom.broadcast(TowerHealBuffer);
     }
   }
@@ -164,9 +169,9 @@ export class SkillManager {
    * @param {number} damage - 데미지 양
    * @returns {void}
    ---------------------------------------------*/
-  private applyDamageToMonsters(monsters: any[], damage: number) {
+  private applyPercentDamageToMonsters(monsters: any[], damage: number) {
     monsters.forEach((monster) => {
-      monster.hp -= damage;
+      monster.hp -= Math.floor(monster.maxHp * damage);
       if (monster.hp <= 0) {
         monster.onDeath();
       }

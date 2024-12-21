@@ -26,6 +26,8 @@ export function handleB2G_PlayerPositionUpdateNotification(buffer: Buffer, sessi
     
     const notificationPacket = create(G2C_PlayerPositionUpdateNotificationSchema, {
         posInfo: packet.posInfo,
+        parameter: packet.parameter,
+        state: packet.state,
     });
     
     const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_PlayerPositionUpdateNotificationSchema, ePacketId.G2C_PlayerPositionUpdateNotification, 0);
@@ -47,7 +49,7 @@ export function handleB2G_UseSkillNotification(buffer: Buffer, session: BattleSe
     
     const notificationPacket = create(G2C_UseSkillNotificationSchema, {
         skill: packet.skill,
-        ownerId: packet.ownerId
+        ownerId: packet.ownerId,
     });
     
     const sendBuffer = PacketUtils.SerializePacket(notificationPacket, G2C_UseSkillNotificationSchema, ePacketId.G2C_UseSkillNotification, 0);
@@ -55,7 +57,7 @@ export function handleB2G_UseSkillNotification(buffer: Buffer, session: BattleSe
 }
 
 /*---------------------------------------------
-    [스킬 사용 알림]
+    [캐릭터 고유 능력 사용 알림]
   ---------------------------------------------*/
   export function handleB2G_PlayerUseAbilityNotification(buffer: Buffer, session: BattleSession) {
     const packet = fromBinary(B2G_PlayerUseAbilityNotificationSchema, buffer);

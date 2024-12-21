@@ -30,7 +30,6 @@ class GameRoomManager {
 
   /*---------------------------------------------
     [방 입장]
-    -클라에게 B2C_EnterRoom패킷 전송
 ---------------------------------------------*/
   public enterRoomHandler(buffer: Buffer, session: BattleSession) {
     console.log('enterRoomHandler 호출됨');
@@ -58,7 +57,6 @@ class GameRoomManager {
    [방 생성]
    ---------------------------------------------*/
   public createGameRoomHandler(buffer: Buffer, session: BattleSession) {
-    console.log('createGameRoomHandler');
     // 1. 로비 서버 요청 패킷 역직렬화
     const packet = fromBinary(G2B_CreateGameRoomRequestSchema, buffer);
 
@@ -136,7 +134,6 @@ class GameRoomManager {
    [타워 설치]
   ---------------------------------------------*/
   public towerBuildHandler(buffer: Buffer, session: BattleSession) {
-    console.log('towerBuildHandler');
     const packet = fromBinary(G2B_TowerBuildRequestSchema, buffer);
     const room = this.rooms.get(packet.roomId);
 

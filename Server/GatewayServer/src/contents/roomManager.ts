@@ -48,7 +48,6 @@ class RoomManager {
   public handleL2G_CreateRoomResponse(buffer: Buffer, session: LobbySession) {
 
     const packet = fromBinary(L2G_CreateRoomResponseSchema, buffer);
-    console.log(packet.userId);
     const clientSession = gatewaySessionManager.getSessionOrNull(packet.userId);
     if(clientSession == null) {
         console.log("[handleL2G_CreateRoomResponse] 클라이언트가 유효하지 않습니다.");
@@ -100,7 +99,7 @@ class RoomManager {
     [방 입장 알림]
   ---------------------------------------------*/
   public handleL2G_JoinRoomNotification(buffer: Buffer, session: LobbySession) {
-    //console.log("handleL2G_JoinRoomNotification");
+    
 
     const packet = fromBinary(L2G_JoinRoomNotificationSchema, buffer);
     
@@ -121,7 +120,7 @@ class RoomManager {
     [방 퇴장 알림]
   ---------------------------------------------*/
   public handleL2G_LeaveRoomNotification(buffer: Buffer, session: LobbySession) {
-    console.log("handleL2G_LeaveRoomNotification");
+    //console.log("handleL2G_LeaveRoomNotification");
     const packet = fromBinary(L2G_LeaveRoomNotificationSchema, buffer);
 
     const room = roomManager.getRoom(packet.roomId);
@@ -149,6 +148,15 @@ class RoomManager {
     }
 
     this.rooms.delete(roomId);
+  }
+
+  public leaveRoom(roomId: number, userId: string){
+    const room = this.rooms.get(roomId);
+    if(room == undefined) {
+      throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, "방을 찾지 못했습니다");
+    }
+
+    room.leaveRoom(userId);
   }
 }
 

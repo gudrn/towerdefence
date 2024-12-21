@@ -30,7 +30,9 @@ export function handleC2G_PlayerPositionUpdateRequest(buffer: Buffer, session: G
 
     const requestPacket = create(G2B_PlayerPositionUpdateRequestSchema, {
         posInfo: packet.posInfo,
-        roomId: packet.roomId
+        parameter: packet.parameter,
+        state: packet.state,
+        roomId: packet.roomId,
     });
     
     const sendBuffer = PacketUtils.SerializePacket(requestPacket, G2B_PlayerPositionUpdateRequestSchema, ePacketId.G2B_PlayerPositionUpdateRequest, 0);
@@ -66,7 +68,6 @@ export function handleC2G_TowerBuildRequest(buffer: Buffer, session: GatewaySess
     [스킬 사용 요청]
   ---------------------------------------------*/
 export function handleC2G_UseSkillRequest(buffer: Buffer, session: GatewaySession) {
-    console.log("handleC2G_UseSkillRequest");
     const packet = fromBinary(C2G_UseSkillRequestSchema, buffer);
 
     const room = roomManager.getRoom(packet.roomId);

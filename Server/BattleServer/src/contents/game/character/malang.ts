@@ -2,15 +2,29 @@ import { GameRoom } from 'src/contents/room/gameRoom';
 import { Character } from './character';
 import { eCharacterId } from 'ServerCore/utils/characterId';
 import { GamePlayer } from '../gamePlayer';
-import { Tower } from '../tower';
 import { PacketUtils } from 'ServerCore/utils/packetUtils';
 import { B2G_TowerBuffNotificationSchema } from 'src/protocol/tower_pb';
 import { create } from '@bufbuild/protobuf';
 import { ePacketId } from 'ServerCore/network/packetId';
+import { Tower } from '../towers/tower';
+import { assetManager } from 'src/utils/assetManager';
+import { CustomError } from 'ServerCore/utils/error/customError';
+import { ErrorCodes } from 'ServerCore/utils/error/errorCodes';
 
 export class Malang extends Character {
+  private range: number;
+  private buffDuration: number;
+  private attackCoolDownBuff: number;
+
   constructor(room: GameRoom, player: GamePlayer) {
     super(eCharacterId.Malang, room, player); // 4초 쿨다운
+    const skillData = assetManager.getCharacterData('Malang');
+    if (skillData == null) {
+      throw new CustomError(ErrorCodes.UNKNOWN_ERROR, '데이터를 불러오지 못했습니다.');
+    }
+    this.range = skillData.range;
+    this.buffDuration = skillData.buffDuration;
+    this.attackCoolDownBuff = skillData.attackCoolDownBuff;
   }
 
   protected override activateAbility(): void {
@@ -23,19 +37,16 @@ export class Malang extends Character {
 
     console.log('Malang의 고유 능력 발동: 원형 범위 내 타워 공격력 증가');
 
-    const range = 5; // 버프 적용 범위 (단위: 거리)
-
-    const towers = this.getTowersInRange(this.room, player, range);
-
-    const attackCoolDownBuff = 0.9; // 버프할 공격속도 값
-    const buffDuration = 3 * 1000; // 버프 지속 시간 (밀리초)
+    const towers = this.getTowersInRange(this.room, player, this.range);
 
     const towersToBuff = towers.map((tower) => {
       const currentAttackCoolDown = tower.attackCoolDown; // 원래 공격속도 저장
-      const buffAmount = tower.attackCoolDown * attackCoolDownBuff; // 공격속도 증가수치
+      const buffAmount = tower.attackCoolDown * this.attackCoolDownBuff; // 공격속도 증가수치
 
       tower.attackCoolDown -= buffAmount; // 공격속도 증가
-      console.log(`${tower.getPrefabId()} 타워 공격속도가 ${attackCoolDownBuff} 증가했습니다.`);
+      console.log(
+        `${tower.getPrefabId()} 타워 공격속도가 ${this.attackCoolDownBuff} 증가했습니다.`,
+      );
 
       return {
         tower,
@@ -61,7 +72,7 @@ export class Malang extends Character {
         'asBuff',
         false,
       );
-    }, buffDuration);
+    }, this.buffDuration);
   }
 
   /**
@@ -75,9 +86,9 @@ export class Malang extends Character {
       towerId: towers.map((tower) => tower.getId()),
       buffType: buffType,
       isBuffed: isBuffActive,
-      roomId: this.room.id
+      roomId: this.room.id,
     });
-  
+
     const sendBuffer = PacketUtils.SerializePacket(
       notificationPacket,
       B2G_TowerBuffNotificationSchema,

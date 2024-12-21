@@ -4,7 +4,7 @@ import { ePacketId } from "ServerCore/network/packetId";
 import { CustomError } from "ServerCore/utils/error/customError";
 import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
 import { PacketUtils } from "ServerCore/utils/packetUtils";
-import { B2L_InitSchema, C2L_InitSchema, G2L_Init, G2L_InitSchema, L2C_InitSchema } from "src/protocol/init_pb";
+import { G2L_Init, G2L_InitSchema } from "src/protocol/init_pb";
 import { lobbySessionManager } from "../../server";
 import { Socket } from "net";
 import { PacketHeader } from "ServerCore/network/packetHeader";

@@ -11,7 +11,6 @@ import { ePacketId } from 'ServerCore/network/packetId';
     [초기 카드]
   ---------------------------------------------*/
 export function handleB2G_InitCardData(buffer: Buffer, session: BattleSession) {
-    console.log("handleB2G_InitCardData");
     const packet = fromBinary(B2G_InitCardDataSchema, buffer);
 
     const gatewaySession = gatewaySessionManager.getSessionOrNull(packet.userId);
@@ -32,7 +31,6 @@ export function handleB2G_InitCardData(buffer: Buffer, session: BattleSession) {
     [카드 추가]
   ---------------------------------------------*/
 export function handleB2G_AddCard(buffer: Buffer,session: BattleSession){
-    console.log("handleB2G_AddCard");
     const packet = fromBinary(B2G_AddCardSchema,buffer);
 
     const gatewaySession=gatewaySessionManager.getSessionOrNull(packet.userId);

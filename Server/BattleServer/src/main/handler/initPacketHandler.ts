@@ -5,7 +5,7 @@ import { ePacketId } from "ServerCore/network/packetId";
 import { CustomError } from "ServerCore/utils/error/customError";
 import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
 import { PacketUtils } from "ServerCore/utils/packetUtils";
-import { C2B_Init, C2B_InitSchema, G2B_Init, G2B_InitSchema } from "src/protocol/init_pb";
+import { G2B_Init, G2B_InitSchema } from "src/protocol/init_pb";
 import { sessionManager } from "src/server";
 import { BattleSession } from "../session/battleSession";
 import { GamePlayer } from "src/contents/game/gamePlayer";

@@ -69,10 +69,10 @@ export class Base {
 
         this.room.broadcast(baseDestroyedBuffer);  
 
-        // room제거
-        gameRoomManager.deleteGameRoom(this.room.id);
-
         //로비 서버에 방 제거 요청(redis에 있는 룸 제거)
+        setTimeout(() => {
+            gameRoomManager.deleteGameRoom(this.room.id);
+        }, 5000);
     }
 
 /*---------------------------------------------

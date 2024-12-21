@@ -6,7 +6,7 @@ import { ePacketId } from "ServerCore/network/packetId";
 import { CustomError } from "ServerCore/utils/error/customError";
 import { ErrorCodes } from "ServerCore/utils/error/errorCodes";
 import { PacketUtils } from "ServerCore/utils/packetUtils";
-import { C2B_Init, C2B_InitSchema, C2G_Init, C2G_InitSchema } from "src/protocol/init_pb";
+import { C2G_Init, C2G_InitSchema } from "src/protocol/init_pb";
 import { GatewaySession } from "../session/gatewaySession";
 import { gatewaySessionManager } from "src/server";
 import dotenv from "dotenv";
@@ -54,8 +54,6 @@ export const onConnection = (socket: Socket): void => {
     [초기화 핸들러]
 ---------------------------------------------*/
 const initialHandler = async (buffer: Buffer, socket: Socket) => {
-  console.log('initialHandler: called', socket.remoteAddress, socket.remotePort);
-
   let packet: C2G_Init;
   try {
     packet = fromBinary(C2G_InitSchema, buffer);
@@ -72,7 +70,6 @@ const initialHandler = async (buffer: Buffer, socket: Socket) => {
   // 세션이 생성되었으므로, 더 이상 주체 판별이 필요하지 않음
   if (token.userId) {
     session = gatewaySessionManager.addSession(token.userId, socket);
-    console.log(session.getId());
     console.log("게이트웨이 세션메니저에 추가됨")
   } else {
     throw new CustomError(ErrorCodes.PACKET_DECODE_ERROR, '패킷 디코딩 중 오류가 발생했습니다2');

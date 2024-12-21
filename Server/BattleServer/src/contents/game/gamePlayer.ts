@@ -35,21 +35,25 @@ export class GamePlayer {
     if (room == undefined) {
       throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, `유효하지 않은 roomID ${roomId}`);
     }
-    this.character = CreateCharacter.createChar(playerData.prefabId, room, this) ;
+    this.character = CreateCharacter.createChar(playerData.prefabId, room, this);
+    this.playerData.coolDown = this.character.cooldown;
   }
 
   /*---------------------------------------------
     [initCard]
 ---------------------------------------------*/
   initCard() {
-    console.log("이닛카드");
     if (this.isInitCard) return;
     this.isInitCard = true;
+
+
     // 포탑 카드를 무조건 하나 추가
     const mandatoryTowerCard: CardData[] = assetManager.getRandomTowerCards();
     this.cardList.set(mandatoryTowerCard[0].cardId, mandatoryTowerCard[0].prefabId);
 
     const cards = assetManager.getRandomCards(3); // 랜덤 카드 3개 가져오기
+
+
     for (let card of cards) {
       this.cardList.set(card.cardId, card.prefabId); // 카드 목록에 추가
     }
@@ -114,67 +118,14 @@ export class GamePlayer {
     gatewaySession.send(sendBuffer); // 카드 추가 데이터 전송
   }
 
-  //   /**
-  //    * 카드 사용 실패시 다시 추가
-  //    * @param {string} cardPrefabId 카드 prefabId
-  //    */
-  //   reAddCardOnFailure(cardPrefabId) {
-  //     const card = assetManager.getCardDataByPrefabId(cardPrefabId); // 카드 데이터 가져오기
-  //     if (!card) return;
-
-  //     const uuid = uuidv4(); // 새로운 UUID 생성
-  //     this.cardList.set(uuid, card.prefabId); // 카드 목록에 추가
-
-  //     const packet = create(B2C_AddCardSchema, {
-  //       cardId: uuid,
-  //       prefabId: card.prefabId,
-  //     });
-
-  //     const sendBuffer = PacketUtils.SerializePacket(
-  //       packet,
-  //       B2C_AddCardSchema,
-  //       ePacketId.B2C_AddCard,
-  //       this.session.getNextSequence(),
-  //     );
-
-  //     this.session.send(sendBuffer); // 카드 추가 데이터 전송
-  //   }
-
-  /*
-   * 1. 카드 사용시 카드 삭제
-   * 2. 타워 일 경우 tower관련 함수를 통해 타워 설치
-   * 2-1. 실패시 reAddCardOnFailure를 통해 다시 유저에게 보내기
-   * 3. 스킬 카드시 skill관련 함수를 통해 스킬 사용
-   * 3-1. 스킬 사용 실패시, reAddCardOnFailure를 통해 카드 다시 추가
-   */
   /*---------------------------------------------
    [useCard]
    ---------------------------------------------*/
 
-  useCard(cardId: string, roomId: number) {
+  useCard(cardId: string) {
     const card = this.cardList.get(cardId); // 카드 목록에서 카드 가져오기
     if (!card) return;
     this.cardList.delete(cardId); // 카드 목록에서 카드 삭제
-    const responsePacket = create(B2G_UseSkillNotificationSchema, {
-      roomId: roomId,
-      ownerId: this.playerData.position?.uuid,
-      skill: create(SkillDataSchema, {
-        prefabId: card,
-      }),
-    });
-
-    const sendBuffer = PacketUtils.SerializePacket(
-      responsePacket,
-      B2G_UseSkillNotificationSchema,
-      ePacketId.B2G_UseSkillNotification,
-      0,
-    );
-    const gatewaySession = sessionManager.getRandomSession();
-    if (gatewaySession == null) {
-      throw new CustomError(ErrorCodes.SERSSION_NOT_FOUND, '게이트웨이 세션을 찾지 못했습니다.');
-    }
-
-    gatewaySession.send(sendBuffer); // 카드 추가 데이터 전송
   }
 
   public getCardList() {

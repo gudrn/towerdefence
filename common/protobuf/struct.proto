@@ -44,6 +44,7 @@ message GamePlayerData {
   PosInfo position = 1;
   string nickname = 2;
   string prefabId = 3;
+  int32 coolDown = 4;
 }
 
 message ErrorData
