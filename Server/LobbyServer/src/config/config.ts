@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-export const PORT = 3000;
+export const PORT = 3001;
 export const HOST = '0.0.0.0';
 
 export const BATTLE_PORT = 3005;

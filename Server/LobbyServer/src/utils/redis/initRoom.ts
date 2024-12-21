@@ -3,7 +3,7 @@ import { lobbyConfig, roomConfig } from "src/config/config";
 import { redis } from "./redis";
 
 export async function initLobbyRoom() {
-    await redis.flushall(); //임시
+    //await redis.flushall(); //임시
     const isInitialized = await redis.exists(roomConfig.AVAILABLE_ROOM_IDS_KEY);
 
     if (!isInitialized) {
