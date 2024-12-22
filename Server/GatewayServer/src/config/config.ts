@@ -11,10 +11,10 @@ dotenv.config();
 // 공통 설정
 export const CLIENT_VERSION = '1.0.0';
 export const HOST = '0.0.0.0';
-export const lobbyHost = 'ec2-13-125-199-218.ap-northeast-2.compute.amazonaws.com';
-export const lobbyHost2 = 'ec2-43-203-173-26.ap-northeast-2.compute.amazonaws.com';
-export const battleHost = 'ec2-13-125-199-218.ap-northeast-2.compute.amazonaws.com';
-export const battleHost2 = 'ec2-43-203-173-26.ap-northeast-2.compute.amazonaws.com';
+export const lobbyHost = 'ec2-43-200-180-165.ap-northeast-2.compute.amazonaws.com';
+export const lobbyHost2 = 'ec2-13-125-6-178.ap-northeast-2.compute.amazonaws.com';
+export const battleHost = 'ec2-43-200-180-165.ap-northeast-2.compute.amazonaws.com';
+export const battleHost2 = 'ec2-13-125-6-178.ap-northeast-2.compute.amazonaws.com';
 
 // 로비 서버 설정
 export const lobbyConfig: iServerConfig[] = [
