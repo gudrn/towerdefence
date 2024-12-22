@@ -10,6 +10,7 @@ import { create } from "@bufbuild/protobuf";
 import { PacketUtils } from "ServerCore/utils/packetUtils";
 import { ePacketId } from "ServerCore/network/packetId";
 import { handleError } from "src/utils/errorHandler";
+import { roomManager } from "src/contents/roomManager";
 
 export class GatewaySession extends Session { 
   public isReady: boolean = false;
@@ -72,6 +73,7 @@ export class GatewaySession extends Session {
   }
 
   private onDisconnect() {
+    roomManager.leaveRoom(this.currentRoomId, this.id);
     gatewaySessionManager.removeSession(this.id);
     if(this.currentRoomId != -1){
       const lobbySession = lobbySessionManager.getRandomSession();
