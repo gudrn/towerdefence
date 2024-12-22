@@ -127,6 +127,7 @@ export class Room {
   ---------------------------------------------*/
   public onGameOver(){
     for(let user of this.users){
+      user.isReady = false;
       user.currentRoomId = -1;
     }
   }
