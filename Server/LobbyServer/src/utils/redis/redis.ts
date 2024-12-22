@@ -5,7 +5,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const redis = new Redis({
-    host: process.env.REDIS_HOST,
+    host: 'ec2-13-125-199-218.ap-northeast-2.compute.amazonaws.com',
     port: 6379,
-    tls: {}, // TLS(SSL) 연결 활성화
   });
