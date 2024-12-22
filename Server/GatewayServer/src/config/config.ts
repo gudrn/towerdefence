@@ -19,13 +19,13 @@ export const battleHost2 = 'ec2-43-203-173-26.ap-northeast-2.compute.amazonaws.c
 // 로비 서버 설정
 export const lobbyConfig: iServerConfig[] = [
   { host: lobbyHost, port: 3000 }, // 로비 서버 1
-  { host: lobbyHost2, port: 3001 }, // 로비 서버 2
+  //{ host: lobbyHost2, port: 3001 }, // 로비 서버 2
 ];
 
 // 배틀 서버 설정
 export const battleConfig: iServerConfig[] = [
   { host: battleHost, port: 3005 }, // 배틀 서버 1
-  { host: battleHost2, port: 3006 }, // 배틀 서버 2
+  //{ host: battleHost2, port: 3006 }, // 배틀 서버 2
 ];
 
 // 게이트웨이 서버 설정
