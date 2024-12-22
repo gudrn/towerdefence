@@ -23,6 +23,7 @@
 4명의 용감한 자들이 지원을 하였고,
 
 **그들은 시뮬레이터를 통해 영웅으로서 성장을 하려고 한다!**
+![게임로그인](./README/게임로그인.png)
 
 ## TowerDefense 게임 소개
 
@@ -136,11 +137,11 @@
 ## 기술 스택
 
 - **Backend**
-  ![Node.js](https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white) ![TypeScript](https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) ![MySQL](https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white) ![redis](https://img.shields.io/badge/redis-FF4438?style=for-the-badge&logo=redis&logoColor=white) ![.NET](https://img.shields.io/badge/.net-512BD4?style=for-the-badge&logo=.net&logoColor=white)
+  - ![Node.js](https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white) ![JavaScript](https://img.shields.io/badge/javaScript-F7DF1E?style=for-the-badge&logo=javaScript&logoColor=black) ![TypeScript](https://img.shields.io/badge/TypeScript-87ceeb?style=for-the-badge&logo=TypeScript&logoColor=black) ![MySQL](https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white) ![redis](https://img.shields.io/badge/redis-FF4438?style=for-the-badge&logo=redis&logoColor=white)
 - **Infra**
-  ![AWS](https://img.shields.io/badge/aws-232F3E?style=for-the-badge&logo=awsorganizations&logoColor=white) ![Docker](https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![ubuntu](https://img.shields.io/badge/ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
+  - ![AWS](https://img.shields.io/badge/aws-232F3E?style=for-the-badge&logo=awsorganizations&logoColor=white) ![ubuntu](https://img.shields.io/badge/ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
 - **Client**
-  ![Unity](https://img.shields.io/badge/unity-000000?style=for-the-badge&logo=unity&logoColor=white) ![C#](https://img.shields.io/badge/c%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white)
+  - ![Unity](https://img.shields.io/badge/unity-000000?style=for-the-badge&logo=unity&logoColor=white) ![C#](https://img.shields.io/badge/c%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white)
 
 ## 기획
 
@@ -152,7 +153,7 @@
 
 ## 관련 링크
 
-- [팀 노션](https://www.notion.so/teamsparta/9-2dfa6b2d1f674002821c8e0459caec93)
+- [팀 노션](https://teamsparta.notion.site/9-2dfa6b2d1f674002821c8e0459caec93)
 
 ## 👩‍💻 팀원
 
@@ -168,3 +169,11 @@
 ## 프로젝트 제작 기간
 
 2024.11.13 ~ 2024.12.22
+
+## 클라이언트
+
+- [클라이언트](https://github.com/im-cjh/last-client)
+
+## 회의록
+
+- [회의록](https://www.notion.so/teamsparta/640aefdbe069499388cd0b93217c13bc)

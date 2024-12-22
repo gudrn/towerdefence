@@ -11,14 +11,14 @@
       "prefabId": "Shark",
       "cooldown": 30000,
       "range": 5,
-      "attackDamage": 70
+      "attackDamage": 0.8
     },
     {
       "prefabId": "Malang",
       "cooldown": 30000,
       "range": 5,
       "buffDuration": 2500,
-      "attackCoolDownBuff": 0.5
+      "attackCoolDownBuff": 0.9
     },
     {
       "prefabId": "Frog",

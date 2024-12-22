@@ -181,6 +181,6 @@ export function handleB2G_BaseDestroyNotification(buffer: Buffer, session: Battl
     if(room == undefined) {
         throw new CustomError(ErrorCodes.ROOM_NOT_FOUND, `방을 찾지 못했습니다 ${packet.roomId}`);
     }
-
+    room.onGameOver();
     room.broadcast(sendBuffer);
 }
