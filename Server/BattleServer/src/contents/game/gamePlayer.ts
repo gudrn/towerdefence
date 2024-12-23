@@ -65,6 +65,10 @@ export class GamePlayer {
       }),
     );
 
+    if(this.playerData.position == undefined || this.playerData.position.uuid == undefined){
+      throw new CustomError(ErrorCodes.INVALID_PACKET, "유효하지 않은 userId");
+    }
+    
     const packet = create(B2G_InitCardDataSchema, {
       cardData: cardDatas,
       userId: this.playerData.position?.uuid,
