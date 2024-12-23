@@ -19,6 +19,7 @@ export class Base {
     private position: PosInfo;
     private size: number;
     private room: GameRoom;
+    private isDestroied: boolean = false;
 /*---------------------------------------------
     [생성자]
 ---------------------------------------------*/
@@ -53,7 +54,12 @@ export class Base {
     [기지 파괴 처리]
 ---------------------------------------------*/
     public onDestroyed(): void {
+        if(this.isDestroied){
+            return;
+        }
         console.log(`기지가 파괴되었습니다.`);
+
+        this.isDestroied = true;
 
         const baseDestroyedPacket = create(B2G_BaseDestroyNotificationSchema, {
             isDestroied: true,

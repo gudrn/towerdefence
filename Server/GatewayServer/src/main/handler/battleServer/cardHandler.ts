@@ -11,6 +11,7 @@ import { ePacketId } from 'ServerCore/network/packetId';
     [초기 카드]
   ---------------------------------------------*/
 export function handleB2G_InitCardData(buffer: Buffer, session: BattleSession) {
+    console.log("이닛카드");
     const packet = fromBinary(B2G_InitCardDataSchema, buffer);
 
     const gatewaySession = gatewaySessionManager.getSessionOrNull(packet.userId);
