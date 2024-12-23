@@ -68,7 +68,7 @@ export class GamePlayer {
     if(this.playerData.position == undefined || this.playerData.position.uuid == undefined){
       throw new CustomError(ErrorCodes.INVALID_PACKET, "유효하지 않은 userId");
     }
-    
+
     const packet = create(B2G_InitCardDataSchema, {
       cardData: cardDatas,
       userId: this.playerData.position?.uuid,
@@ -86,6 +86,7 @@ export class GamePlayer {
       throw new CustomError(ErrorCodes.SERSSION_NOT_FOUND, '게이트웨이 세션을 찾지 못했습니다.');
     }
 
+    console.log("initCard");
     gatewaySession.send(sendBuffer); // 초기 카드 데이터 전송
   }
 
