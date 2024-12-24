@@ -65,7 +65,7 @@ router.post('/signin', async (req, res) => {
         { userId: user.user_id, nickname: user.nickname },
         process.env.JWT_SECRET,
         {
-          expiresIn: '1h',
+          expiresIn: '1m',
         },
       );
       return res.status(200).json({ token, userId: user.user_id, nickname: user.nickname });
