@@ -272,41 +272,7 @@ export class GameRoom {
     for (const [uuid, tower] of this.towers) {
       tower.update();
     }
-
-    //베이스캠프 체력 0 일시 게임 종료
-    // if (this.checkBaseHealth()) {
-    //   const endBuffer = createEndGame(false);
-    //   this.broadcast(endBuffer);
-    //   gameRoomManager.deleteGameRoom(this.id);
-    // }
-    //유저가 0명이 되는 순간 게임 종료
   }
-
-  /**---------------------------------------------
-   * 오브젝트 추가
-   * 대상: 몬스터, 타워, 투사체
-   * 주의: 플레이어는 enterRoom으로 추가하기 
-   ---------------------------------------------*/
-  // addObject(object: Monster) {
-  //   this.monsterManager.addMonster(object);
-
-  //   const packet = create(B2G_SpawnMonsterNotificationSchema, {
-  //     posInfo: object.getPos(),
-  //     prefabId: object.getPrefabId(),
-  //     maxHp: object.maxHp,
-  //     roomId: this.id,
-  //   });
-
-  //   //console.log("방 아이디는", this.id);
-  //   //console.log(object.getPrefabId, object.maxHp);
-  //   const sendBuffer: Buffer = PacketUtils.SerializePacket(
-  //     packet,
-  //     B2G_SpawnMonsterNotificationSchema,
-  //     ePacketId.B2G_SpawnMonsterNotification,
-  //     0,
-  //   );
-  //   this.broadcast(sendBuffer);
-  // }
 
   /*---------------------------------------------
    [오브젝트 제거]
